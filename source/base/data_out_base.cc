@@ -823,12 +823,6 @@ namespace
     template<typename data>
     void write_dataset (const unsigned int       index,
                         const std::vector<data> &values);
-
-    /**
-     * Forwarding of output stream
-     */
-    template <typename T>
-    std::ostream &operator<< (const T &);
   };
 
   /**
@@ -878,12 +872,6 @@ namespace
                     const unsigned int x_offset,
                     const unsigned int y_offset,
                     const unsigned int z_offset);
-
-    /**
-     * Forwarding of output stream
-     */
-    template <typename T>
-    std::ostream &operator<< (const T &);
   };
 
   /**
@@ -932,12 +920,6 @@ namespace
                     const unsigned int x_offset,
                     const unsigned int y_offset,
                     const unsigned int z_offset);
-
-    /**
-     * Forwarding of output stream
-     */
-    template <typename T>
-    std::ostream &operator<< (const T &);
   };
 
   /**
@@ -1005,12 +987,6 @@ namespace
     template<typename data>
     void write_dataset (const unsigned int       index,
                         const std::vector<data> &values);
-
-    /**
-     * Forwarding of output stream
-     */
-    template <typename T>
-    std::ostream &operator<< (const T &);
   };
 
   /**
@@ -1060,12 +1036,6 @@ namespace
                     const unsigned int x_offset,
                     const unsigned int y_offset,
                     const unsigned int z_offset);
-
-    /**
-     * Forwarding of output stream
-     */
-    template <typename T>
-    std::ostream &operator<< (const T &);
   };
 
 
@@ -1603,45 +1573,9 @@ namespace
 
     return stream;
   }
-
-  template <typename T>
-  std::ostream &
-  DXStream::operator<< (const T &t)
-  {
-    stream << t;
-    return stream;
-  }
-
-
-  template <typename T>
-  std::ostream &
-  GmvStream::operator<< (const T &t)
-  {
-    stream << t;
-    return stream;
-  }
-
-
-  template <typename T>
-  std::ostream &
-  UcdStream::operator<< (const T &t)
-  {
-    stream << t;
-    return stream;
-  }
-
-
-  template <typename T>
-  std::ostream &
-  VtkStream::operator<< (const T &t)
-  {
-    stream << t;
-    return stream;
-  }
 }
 
 
-//----------------------------------------------------------------------//
 
 namespace DataOutBase
 {
