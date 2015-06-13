@@ -787,12 +787,6 @@ namespace
                       const Point<dim> &);
 
     /**
-     * Do whatever is necessary to
-     * terminate the list of points.
-     */
-    void flush_points ();
-
-    /**
      * Write dim-dimensional cell
      * with first vertex at
      * number start and further
@@ -815,12 +809,6 @@ namespace
                      const unsigned int x_offset,
                      const unsigned int y_offset,
                      const unsigned int z_offset);
-
-    /**
-     * Do whatever is necessary to
-     * terminate the list of cells.
-     */
-    void flush_cells ();
 
     /**
      * Write a complete set of
@@ -868,12 +856,6 @@ namespace
                       const Point<dim> &);
 
     /**
-     * Do whatever is necessary to
-     * terminate the list of points.
-     */
-    void flush_points ();
-
-    /**
      * Write dim-dimensional cell
      * with first vertex at
      * number start and further
@@ -896,12 +878,6 @@ namespace
                     const unsigned int x_offset,
                     const unsigned int y_offset,
                     const unsigned int z_offset);
-
-    /**
-     * Do whatever is necessary to
-     * terminate the list of cells.
-     */
-    void flush_cells ();
 
     /**
      * Forwarding of output stream
@@ -934,12 +910,6 @@ namespace
                       const Point<dim> &);
 
     /**
-     * Do whatever is necessary to
-     * terminate the list of points.
-     */
-    void flush_points ();
-
-    /**
      * Write dim-dimensional cell
      * with first vertex at
      * number start and further
@@ -962,12 +932,6 @@ namespace
                     const unsigned int x_offset,
                     const unsigned int y_offset,
                     const unsigned int z_offset);
-
-    /**
-     * Do whatever is necessary to
-     * terminate the list of cells.
-     */
-    void flush_cells ();
 
     /**
      * Forwarding of output stream
@@ -1001,12 +965,6 @@ namespace
                       const Point<dim> &);
 
     /**
-     * Do whatever is necessary to
-     * terminate the list of points.
-     */
-    void flush_points ();
-
-    /**
      * Write dim-dimensional cell
      * with first vertex at
      * number start and further
@@ -1033,12 +991,6 @@ namespace
                     const unsigned int x_offset,
                     const unsigned int y_offset,
                     const unsigned int z_offset);
-
-    /**
-     * Do whatever is necessary to
-     * terminate the list of cells.
-     */
-    void flush_cells ();
 
     /**
      * Write a complete set of
@@ -1086,12 +1038,6 @@ namespace
                       const Point<dim> &);
 
     /**
-     * Do whatever is necessary to
-     * terminate the list of points.
-     */
-    void flush_points ();
-
-    /**
      * Write dim-dimensional cell
      * with first vertex at
      * number start and further
@@ -1114,12 +1060,6 @@ namespace
                     const unsigned int x_offset,
                     const unsigned int y_offset,
                     const unsigned int z_offset);
-
-    /**
-     * Do whatever is necessary to
-     * terminate the list of cells.
-     */
-    void flush_cells ();
 
     /**
      * Forwarding of output stream
@@ -1252,10 +1192,6 @@ namespace
   }
 
 
-  void
-  DXStream::flush_points ()
-  {}
-
 
   template<int dim>
   void
@@ -1296,10 +1232,6 @@ namespace
       }
   }
 
-
-  void
-  DXStream::flush_cells ()
-  {}
 
 
   template<typename data>
@@ -1343,10 +1275,6 @@ namespace
   }
 
 
-  void
-  GmvStream::flush_points ()
-  {}
-
 
   template<int dim>
   void
@@ -1381,13 +1309,6 @@ namespace
 
 
 
-  void
-  GmvStream::flush_cells ()
-  {}
-
-
-//----------------------------------------------------------------------//
-
   TecplotStream::TecplotStream(std::ostream &out, const DataOutBase::TecplotFlags f)
     :
     StreamBase (out, f)
@@ -1404,10 +1325,6 @@ namespace
     stream << p(selected_component) << '\n';
   }
 
-
-  void
-  TecplotStream::flush_points ()
-  {}
 
 
   template<int dim>
@@ -1440,14 +1357,6 @@ namespace
 
 
 
-  void
-  TecplotStream::flush_cells ()
-  {}
-
-
-
-//----------------------------------------------------------------------//
-
   UcdStream::UcdStream(std::ostream &out, const DataOutBase::UcdFlags f)
     :
     StreamBase (out, f)
@@ -1470,11 +1379,6 @@ namespace
     stream << '\n';
   }
 
-
-
-  void
-  UcdStream::flush_points ()
-  {}
 
 
   template<int dim>
@@ -1516,11 +1420,6 @@ namespace
 
 
 
-  void
-  UcdStream::flush_cells ()
-  {}
-
-
   template<typename data>
   inline
   void
@@ -1558,11 +1457,6 @@ namespace
 
 
 
-  void
-  VtkStream::flush_points ()
-  {}
-
-
   template<int dim>
   void
   VtkStream::write_cell(
@@ -1589,11 +1483,6 @@ namespace
       }
     stream << '\n';
   }
-
-
-  void
-  VtkStream::flush_cells ()
-  {}
 
 
 
