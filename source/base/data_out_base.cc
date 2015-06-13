@@ -666,12 +666,109 @@ namespace
   }
 
   /**
+   * Class describing common functionality between different output streams.
+   *
+   * @ingroup output
+   */
+  template<typename FlagsType>
+  class StreamBase
+  {
+  public:
+    /*
+     * Constructor. Stores a reference to the output stream for immediate use.
+     */
+    StreamBase (std::ostream &stream,
+                const FlagsType &flags)
+      :
+      selected_component (numbers::invalid_unsigned_int),
+      stream (stream),
+      flags (flags)
+    {}
+
+    /**
+     * Output operator for points. All inheriting classes should implement this
+     * function.
+     */
+    template <int dim>
+    void write_point (const unsigned int,
+                      const Point<dim> &)
+    {
+      Assert (false, ExcMessage ("The derived class you are using needs to "
+                                 "reimplement this function if you want to call "
+                                 "it."));
+    }
+
+    /**
+     * Do whatever is necessary to terminate the list of points. The default
+     * implementation does nothing; derived classes that do not require any
+     * action do not need to reimplement this.
+     */
+    void flush_points () {}
+
+    /**
+     * Write dim-dimensional cell with first vertex at number start and further
+     * vertices offset by the specified values. Values not needed are
+     * ignored. All inheriting classes should implement this function.
+     */
+    template <int dim>
+    void write_cell (const unsigned int /*index*/,
+                     const unsigned int /*start*/,
+                     const unsigned int /*x_offset*/,
+                     const unsigned int /*y_offset*/,
+                     const unsigned int /*z_offset*/)
+    {
+      Assert (false, ExcMessage ("The derived class you are using needs to "
+                                 "reimplement this function if you want to call "
+                                 "it."));
+    }
+
+    /**
+     * Do whatever is necessary to terminate the list of cells. This function is
+     * usually only reimplemented if deal.II is compiled with zlib. The default
+     * implementation does nothing; derived classes that do not require any
+     * action do not need to reimplement this.
+     */
+    void flush_cells () {}
+
+    /**
+     * Forwarding of an output stream. This function is usually only
+     * reimplemented if inheriting classes use zlib.
+     */
+    template <typename T>
+    std::ostream &operator<< (const T &t)
+    {
+      stream << t;
+      return stream;
+    }
+
+    /**
+     * Since the GMV and Tecplot formats read the x, y and z coordinates in
+     * separate fields, we enable write() to output only a single selected
+     * component at once and do this dim times for the whole set of nodes. This
+     * integer can be used to select the component written.
+     */
+    unsigned int selected_component;
+
+  protected:
+    /**
+     * The ostream to use. Since the life span of these objects is small, we use
+     * a very simple storage technique.
+     */
+    std::ostream &stream;
+
+    /**
+     * The flags controlling the output.
+     */
+    const FlagsType flags;
+  };
+
+  /**
    * Class for writing basic
    * entities in @ref
    * SoftwareOpenDX format,
    * depending on the flags.
    */
-  class DXStream
+  class DXStream : public StreamBase<DataOutBase::DXFlags>
   {
   public:
     /**
@@ -744,21 +841,6 @@ namespace
      */
     template <typename T>
     std::ostream &operator<< (const T &);
-
-  private:
-    /**
-     * The ostream to use. Since
-     * the life span of these
-     * objects is small, we use a
-     * very simple storage
-     * technique.
-     */
-    std::ostream &stream;
-
-    /**
-     * The flags controlling the output
-     */
-    const DataOutBase::DXFlags flags;
   };
 
   /**
@@ -767,7 +849,7 @@ namespace
    * format, depending on the
    * flags.
    */
-  class GmvStream
+  class GmvStream : public StreamBase<DataOutBase::GmvFlags>
   {
   public:
     /**
@@ -826,37 +908,6 @@ namespace
      */
     template <typename T>
     std::ostream &operator<< (const T &);
-
-    /**
-     * Since GMV reads the x, y
-     * and z coordinates in
-     * separate fields, we enable
-     * write() to output only a
-     * single selected component
-     * at once and do this dim
-     * times for the whole set of
-     * nodes. This integer can be
-     * used to select the
-     * component written.
-     */
-    unsigned int selected_component;
-
-  private:
-    /**
-     * The ostream to use. Since
-     * the life span of these
-     * objects is small, we use a
-     * very simple storage
-     * technique.
-     */
-    std::ostream &stream;
-
-    /**
-     * The flags controlling the output
-     */
-    DEAL_II_DISABLE_EXTRA_DIAGNOSTICS
-    const DataOutBase::GmvFlags flags;
-    DEAL_II_ENABLE_EXTRA_DIAGNOSTICS
   };
 
   /**
@@ -865,7 +916,7 @@ namespace
    * SoftwareTecplot format,
    * depending on the flags.
    */
-  class TecplotStream
+  class TecplotStream : public StreamBase<DataOutBase::TecplotFlags>
   {
   public:
     /**
@@ -923,35 +974,6 @@ namespace
      */
     template <typename T>
     std::ostream &operator<< (const T &);
-
-    /**
-     * Since TECPLOT reads the x, y
-     * and z coordinates in
-     * separate fields, we enable
-     * write() to output only a
-     * single selected component
-     * at once and do this dim
-     * times for the whole set of
-     * nodes. This integer can be
-     * used to select the
-     * component written.
-     */
-    unsigned int selected_component;
-
-  private:
-    /**
-     * The ostream to use. Since
-     * the life span of these
-     * objects is small, we use a
-     * very simple storage
-     * technique.
-     */
-    std::ostream &stream;
-
-    /**
-     * The flags controlling the output
-     */
-    const DataOutBase::TecplotFlags flags;
   };
 
   /**
@@ -960,7 +982,7 @@ namespace
    * @ref SoftwareAVS, depending on
    * the flags.
    */
-  class UcdStream
+  class UcdStream : public StreamBase<DataOutBase::UcdFlags>
   {
   public:
     /**
@@ -1037,20 +1059,6 @@ namespace
      */
     template <typename T>
     std::ostream &operator<< (const T &);
-  private:
-    /**
-     * The ostream to use. Since
-     * the life span of these
-     * objects is small, we use a
-     * very simple storage
-     * technique.
-     */
-    std::ostream &stream;
-
-    /**
-     * The flags controlling the output
-     */
-    const DataOutBase::UcdFlags flags;
   };
 
   /**
@@ -1059,7 +1067,7 @@ namespace
    * format, depending on the
    * flags.
    */
-  class VtkStream
+  class VtkStream : public StreamBase<DataOutBase::VtkFlags>
   {
   public:
     /**
@@ -1118,25 +1126,10 @@ namespace
      */
     template <typename T>
     std::ostream &operator<< (const T &);
-
-  private:
-    /**
-     * The ostream to use. Since
-     * the life span of these
-     * objects is small, we use a
-     * very simple storage
-     * technique.
-     */
-    std::ostream &stream;
-
-    /**
-     * The flags controlling the output
-     */
-    const DataOutBase::VtkFlags flags;
   };
 
 
-  class VtuStream
+  class VtuStream : public StreamBase<DataOutBase::VtkFlags>
   {
   public:
     /**
@@ -1212,20 +1205,6 @@ namespace
 
   private:
     /**
-     * The ostream to use. Since
-     * the life span of these
-     * objects is small, we use a
-     * very simple storage
-     * technique.
-     */
-    std::ostream &stream;
-
-    /**
-     * The flags controlling the output
-     */
-    const DataOutBase::VtkFlags flags;
-
-    /**
      * A list of vertices and
      * cells, to be used in case we
      * want to compress the data.
@@ -1247,7 +1226,7 @@ namespace
   DXStream::DXStream(std::ostream &out,
                      const DataOutBase::DXFlags f)
     :
-    stream(out), flags(f)
+    StreamBase (out, f)
   {}
 
 
@@ -1349,8 +1328,7 @@ namespace
   GmvStream::GmvStream (std::ostream &out,
                         const DataOutBase::GmvFlags f)
     :
-    selected_component(numbers::invalid_unsigned_int),
-    stream(out), flags(f)
+    StreamBase (out, f)
   {}
 
 
@@ -1412,8 +1390,7 @@ namespace
 
   TecplotStream::TecplotStream(std::ostream &out, const DataOutBase::TecplotFlags f)
     :
-    selected_component(numbers::invalid_unsigned_int),
-    stream(out), flags(f)
+    StreamBase (out, f)
   {}
 
 
@@ -1473,7 +1450,7 @@ namespace
 
   UcdStream::UcdStream(std::ostream &out, const DataOutBase::UcdFlags f)
     :
-    stream(out), flags(f)
+    StreamBase (out, f)
   {}
 
 
@@ -1562,7 +1539,7 @@ namespace
 
   VtkStream::VtkStream(std::ostream &out, const DataOutBase::VtkFlags f)
     :
-    stream(out), flags(f)
+    StreamBase (out, f)
   {}
 
 
@@ -1622,7 +1599,7 @@ namespace
 
   VtuStream::VtuStream(std::ostream &out, const DataOutBase::VtkFlags f)
     :
-    stream(out), flags(f)
+    StreamBase (out, f)
   {}
 
 
