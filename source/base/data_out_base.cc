@@ -771,29 +771,14 @@ namespace
   class DXStream : public StreamBase<DataOutBase::DXFlags>
   {
   public:
-    /**
-     * Constructor, storing
-     * persistent values for
-     * later use.
-     */
     DXStream (std::ostream &stream,
               const DataOutBase::DXFlags flags);
 
-    /**
-     * Output operator for points.
-     */
     template <int dim>
     void write_point (const unsigned int index,
                       const Point<dim> &);
 
     /**
-     * Write dim-dimensional cell
-     * with first vertex at
-     * number start and further
-     * vertices offset by the
-     * specified values. Values
-     * not needed are ignored.
-     *
      * The order of vertices for
      * these cells in different
      * dimensions is
@@ -834,29 +819,14 @@ namespace
   class GmvStream : public StreamBase<DataOutBase::GmvFlags>
   {
   public:
-    /**
-     * Constructor, storing
-     * persistent values for
-     * later use.
-     */
     GmvStream (std::ostream &stream,
                const DataOutBase::GmvFlags flags);
 
-    /**
-     * Output operator for points.
-     */
     template <int dim>
     void write_point (const unsigned int index,
                       const Point<dim> &);
 
     /**
-     * Write dim-dimensional cell
-     * with first vertex at
-     * number start and further
-     * vertices offset by the
-     * specified values. Values
-     * not needed are ignored.
-     *
      * The order of vertices for
      * these cells in different
      * dimensions is
@@ -883,28 +853,13 @@ namespace
   class TecplotStream : public StreamBase<DataOutBase::TecplotFlags>
   {
   public:
-    /**
-     * Constructor, storing
-     * persistent values for
-     * later use.
-     */
     TecplotStream (std::ostream &stream, const DataOutBase::TecplotFlags flags);
 
-    /**
-     * Output operator for points.
-     */
     template <int dim>
     void write_point (const unsigned int index,
                       const Point<dim> &);
 
     /**
-     * Write dim-dimensional cell
-     * with first vertex at
-     * number start and further
-     * vertices offset by the
-     * specified values. Values
-     * not needed are ignored.
-     *
      * The order of vertices for
      * these cells in different
      * dimensions is
@@ -931,29 +886,14 @@ namespace
   class UcdStream : public StreamBase<DataOutBase::UcdFlags>
   {
   public:
-    /**
-     * Constructor, storing
-     * persistent values for
-     * later use.
-     */
     UcdStream (std::ostream &stream,
                const DataOutBase::UcdFlags flags);
 
-    /**
-     * Output operator for points.
-     */
     template <int dim>
     void write_point (const unsigned int index,
                       const Point<dim> &);
 
     /**
-     * Write dim-dimensional cell
-     * with first vertex at
-     * number start and further
-     * vertices offset by the
-     * specified values. Values
-     * not needed are ignored.
-     *
      * The additional offset 1 is
      * added inside this
      * function.
@@ -998,29 +938,14 @@ namespace
   class VtkStream : public StreamBase<DataOutBase::VtkFlags>
   {
   public:
-    /**
-     * Constructor, storing
-     * persistent values for
-     * later use.
-     */
     VtkStream (std::ostream &stream,
                const DataOutBase::VtkFlags flags);
 
-    /**
-     * Output operator for points.
-     */
     template <int dim>
     void write_point (const unsigned int index,
                       const Point<dim> &);
 
     /**
-     * Write dim-dimensional cell
-     * with first vertex at
-     * number start and further
-     * vertices offset by the
-     * specified values. Values
-     * not needed are ignored.
-     *
      * The order of vertices for
      * these cells in different
      * dimensions is
@@ -1042,35 +967,16 @@ namespace
   class VtuStream : public StreamBase<DataOutBase::VtkFlags>
   {
   public:
-    /**
-     * Constructor, storing
-     * persistent values for
-     * later use.
-     */
     VtuStream (std::ostream &stream,
                const DataOutBase::VtkFlags flags);
 
-    /**
-     * Output operator for points.
-     */
     template <int dim>
     void write_point (const unsigned int index,
                       const Point<dim> &);
 
-    /**
-     * Do whatever is necessary to
-     * terminate the list of points.
-     */
     void flush_points ();
 
     /**
-     * Write dim-dimensional cell
-     * with first vertex at
-     * number start and further
-     * vertices offset by the
-     * specified values. Values
-     * not needed are ignored.
-     *
      * The order of vertices for
      * these cells in different
      * dimensions is
@@ -1087,15 +993,8 @@ namespace
                     const unsigned int y_offset,
                     const unsigned int z_offset);
 
-    /**
-     * Do whatever is necessary to
-     * terminate the list of cells.
-     */
     void flush_cells ();
 
-    /**
-     * Forwarding of output stream
-     */
     template <typename T>
     std::ostream &operator<< (const T &);
 
