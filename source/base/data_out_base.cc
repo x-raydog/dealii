@@ -837,11 +837,11 @@ namespace
      * </ol>
      */
     template <int dim>
-    void write_cell(const unsigned int index,
-                    const unsigned int start,
-                    const unsigned int x_offset,
-                    const unsigned int y_offset,
-                    const unsigned int z_offset);
+    void write_cell (const unsigned int index,
+                     const unsigned int start,
+                     const unsigned int x_offset,
+                     const unsigned int y_offset,
+                     const unsigned int z_offset);
   };
 
   /**
@@ -853,7 +853,8 @@ namespace
   class TecplotStream : public StreamBase<DataOutBase::TecplotFlags>
   {
   public:
-    TecplotStream (std::ostream &stream, const DataOutBase::TecplotFlags &flags);
+    TecplotStream (std::ostream &stream,
+                   const DataOutBase::TecplotFlags &flags);
 
     template <int dim>
     void write_point (const unsigned int index,
@@ -870,11 +871,11 @@ namespace
      * </ol>
      */
     template <int dim>
-    void write_cell(const unsigned int index,
-                    const unsigned int start,
-                    const unsigned int x_offset,
-                    const unsigned int y_offset,
-                    const unsigned int z_offset);
+    void write_cell (const unsigned int index,
+                     const unsigned int start,
+                     const unsigned int x_offset,
+                     const unsigned int y_offset,
+                     const unsigned int z_offset);
   };
 
   /**
@@ -908,11 +909,11 @@ namespace
      * </ol>
      */
     template <int dim>
-    void write_cell(const unsigned int index,
-                    const unsigned int start,
-                    const unsigned int x_offset,
-                    const unsigned int y_offset,
-                    const unsigned int z_offset);
+    void write_cell (const unsigned int index,
+                     const unsigned int start,
+                     const unsigned int x_offset,
+                     const unsigned int y_offset,
+                     const unsigned int z_offset);
 
     /**
      * Write a complete set of
@@ -956,11 +957,11 @@ namespace
      * </ol>
      */
     template <int dim>
-    void write_cell(const unsigned int index,
-                    const unsigned int start,
-                    const unsigned int x_offset,
-                    const unsigned int y_offset,
-                    const unsigned int z_offset);
+    void write_cell (const unsigned int index,
+                     const unsigned int start,
+                     const unsigned int x_offset,
+                     const unsigned int y_offset,
+                     const unsigned int z_offset);
   };
 
 
@@ -987,11 +988,11 @@ namespace
      * </ol>
      */
     template <int dim>
-    void write_cell(const unsigned int index,
-                    const unsigned int start,
-                    const unsigned int x_offset,
-                    const unsigned int y_offset,
-                    const unsigned int z_offset);
+    void write_cell (const unsigned int index,
+                     const unsigned int start,
+                     const unsigned int x_offset,
+                     const unsigned int y_offset,
+                     const unsigned int z_offset);
 
     void flush_cells ();
 
@@ -1032,8 +1033,8 @@ namespace
 
 //----------------------------------------------------------------------//
 
-  DXStream::DXStream(std::ostream &out,
-                     const DataOutBase::DXFlags &f)
+  DXStream::DXStream (std::ostream &out,
+                      const DataOutBase::DXFlags &f)
     :
     StreamBase (out, f)
   {}
@@ -1064,12 +1065,11 @@ namespace
 
   template<int dim>
   void
-  DXStream::write_cell(
-    unsigned int,
-    unsigned int start,
-    unsigned int d1,
-    unsigned int d2,
-    unsigned int d3)
+  DXStream::write_cell (unsigned int,
+                        unsigned int start,
+                        unsigned int d1,
+                        unsigned int d2,
+                        unsigned int d3)
   {
     int nodes[1<<dim];
     nodes[GeometryInfo<dim>::dx_to_deal[0]] = start;
@@ -1106,8 +1106,8 @@ namespace
   template<typename data>
   inline
   void
-  DXStream::write_dataset(const unsigned int     /*index*/,
-                          const std::vector<data> &values)
+  DXStream::write_dataset (const unsigned int,
+                           const std::vector<data> &values)
   {
     if (flags.data_binary)
       {
@@ -1147,12 +1147,11 @@ namespace
 
   template<int dim>
   void
-  GmvStream::write_cell(
-    unsigned int,
-    unsigned int s,
-    unsigned int d1,
-    unsigned int d2,
-    unsigned int d3)
+  GmvStream::write_cell (unsigned int,
+                         unsigned int s,
+                         unsigned int d1,
+                         unsigned int d2,
+                         unsigned int d3)
   {
     // Vertices are numbered starting
     // with one.
@@ -1178,7 +1177,8 @@ namespace
 
 
 
-  TecplotStream::TecplotStream(std::ostream &out, const DataOutBase::TecplotFlags &f)
+  TecplotStream::TecplotStream (std::ostream &out,
+                                const DataOutBase::TecplotFlags &f)
     :
     StreamBase (out, f)
   {}
@@ -1198,12 +1198,11 @@ namespace
 
   template<int dim>
   void
-  TecplotStream::write_cell(
-    unsigned int,
-    unsigned int s,
-    unsigned int d1,
-    unsigned int d2,
-    unsigned int d3)
+  TecplotStream::write_cell (unsigned int,
+                             unsigned int s,
+                             unsigned int d1,
+                             unsigned int d2,
+                             unsigned int d3)
   {
     const unsigned int start = s+1;
 
@@ -1226,7 +1225,8 @@ namespace
 
 
 
-  UcdStream::UcdStream(std::ostream &out, const DataOutBase::UcdFlags &f)
+  UcdStream::UcdStream (std::ostream &out,
+                        const DataOutBase::UcdFlags &f)
     :
     StreamBase (out, f)
   {}
@@ -1252,12 +1252,11 @@ namespace
 
   template<int dim>
   void
-  UcdStream::write_cell(
-    unsigned int index,
-    unsigned int start,
-    unsigned int d1,
-    unsigned int d2,
-    unsigned int d3)
+  UcdStream::write_cell (unsigned int index,
+                         unsigned int start,
+                         unsigned int d1,
+                         unsigned int d2,
+                         unsigned int d3)
   {
     int nodes[1<<dim];
     nodes[GeometryInfo<dim>::ucd_to_deal[0]] = start;
@@ -1292,8 +1291,8 @@ namespace
   template<typename data>
   inline
   void
-  UcdStream::write_dataset(const unsigned int       index,
-                           const std::vector<data> &values)
+  UcdStream::write_dataset (const unsigned int index,
+                            const std::vector<data> &values)
   {
     stream << index+1;
     for (unsigned int i=0; i<values.size(); ++i)
@@ -1305,7 +1304,8 @@ namespace
 
 //----------------------------------------------------------------------//
 
-  VtkStream::VtkStream(std::ostream &out, const DataOutBase::VtkFlags &f)
+  VtkStream::VtkStream (std::ostream &out,
+                        const DataOutBase::VtkFlags &f)
     :
     StreamBase (out, f)
   {}
@@ -1328,12 +1328,11 @@ namespace
 
   template<int dim>
   void
-  VtkStream::write_cell(
-    unsigned int,
-    unsigned int start,
-    unsigned int d1,
-    unsigned int d2,
-    unsigned int d3)
+  VtkStream::write_cell (unsigned int,
+                         unsigned int start,
+                         unsigned int d1,
+                         unsigned int d2,
+                         unsigned int d3)
   {
     stream << GeometryInfo<dim>::vertices_per_cell << '\t'
            << start << '\t'
@@ -1355,7 +1354,8 @@ namespace
 
 
 
-  VtuStream::VtuStream(std::ostream &out, const DataOutBase::VtkFlags &f)
+  VtuStream::VtuStream (std::ostream &out,
+                        const DataOutBase::VtkFlags &f)
     :
     StreamBase (out, f)
   {}
@@ -1400,12 +1400,11 @@ namespace
 
   template<int dim>
   void
-  VtuStream::write_cell(
-    unsigned int,
-    unsigned int start,
-    unsigned int d1,
-    unsigned int d2,
-    unsigned int d3)
+  VtuStream::write_cell (unsigned int,
+                         unsigned int start,
+                         unsigned int d1,
+                         unsigned int d2,
+                         unsigned int d3)
   {
 #if !defined(DEAL_II_WITH_ZLIB)
     stream << start << '\t'
