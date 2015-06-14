@@ -772,7 +772,7 @@ namespace
   {
   public:
     DXStream (std::ostream &stream,
-              const DataOutBase::DXFlags flags);
+              const DataOutBase::DXFlags &flags);
 
     template <int dim>
     void write_point (const unsigned int index,
@@ -820,7 +820,7 @@ namespace
   {
   public:
     GmvStream (std::ostream &stream,
-               const DataOutBase::GmvFlags flags);
+               const DataOutBase::GmvFlags &flags);
 
     template <int dim>
     void write_point (const unsigned int index,
@@ -853,7 +853,7 @@ namespace
   class TecplotStream : public StreamBase<DataOutBase::TecplotFlags>
   {
   public:
-    TecplotStream (std::ostream &stream, const DataOutBase::TecplotFlags flags);
+    TecplotStream (std::ostream &stream, const DataOutBase::TecplotFlags &flags);
 
     template <int dim>
     void write_point (const unsigned int index,
@@ -887,7 +887,7 @@ namespace
   {
   public:
     UcdStream (std::ostream &stream,
-               const DataOutBase::UcdFlags flags);
+               const DataOutBase::UcdFlags &flags);
 
     template <int dim>
     void write_point (const unsigned int index,
@@ -939,7 +939,7 @@ namespace
   {
   public:
     VtkStream (std::ostream &stream,
-               const DataOutBase::VtkFlags flags);
+               const DataOutBase::VtkFlags &flags);
 
     template <int dim>
     void write_point (const unsigned int index,
@@ -968,7 +968,7 @@ namespace
   {
   public:
     VtuStream (std::ostream &stream,
-               const DataOutBase::VtkFlags flags);
+               const DataOutBase::VtkFlags &flags);
 
     template <int dim>
     void write_point (const unsigned int index,
@@ -1033,7 +1033,7 @@ namespace
 //----------------------------------------------------------------------//
 
   DXStream::DXStream(std::ostream &out,
-                     const DataOutBase::DXFlags f)
+                     const DataOutBase::DXFlags &f)
     :
     StreamBase (out, f)
   {}
@@ -1127,7 +1127,7 @@ namespace
 //----------------------------------------------------------------------//
 
   GmvStream::GmvStream (std::ostream &out,
-                        const DataOutBase::GmvFlags f)
+                        const DataOutBase::GmvFlags &f)
     :
     StreamBase (out, f)
   {}
@@ -1178,7 +1178,7 @@ namespace
 
 
 
-  TecplotStream::TecplotStream(std::ostream &out, const DataOutBase::TecplotFlags f)
+  TecplotStream::TecplotStream(std::ostream &out, const DataOutBase::TecplotFlags &f)
     :
     StreamBase (out, f)
   {}
@@ -1226,7 +1226,7 @@ namespace
 
 
 
-  UcdStream::UcdStream(std::ostream &out, const DataOutBase::UcdFlags f)
+  UcdStream::UcdStream(std::ostream &out, const DataOutBase::UcdFlags &f)
     :
     StreamBase (out, f)
   {}
@@ -1305,7 +1305,7 @@ namespace
 
 //----------------------------------------------------------------------//
 
-  VtkStream::VtkStream(std::ostream &out, const DataOutBase::VtkFlags f)
+  VtkStream::VtkStream(std::ostream &out, const DataOutBase::VtkFlags &f)
     :
     StreamBase (out, f)
   {}
@@ -1355,7 +1355,7 @@ namespace
 
 
 
-  VtuStream::VtuStream(std::ostream &out, const DataOutBase::VtkFlags f)
+  VtuStream::VtuStream(std::ostream &out, const DataOutBase::VtkFlags &f)
     :
     StreamBase (out, f)
   {}
