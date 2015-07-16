@@ -69,12 +69,7 @@ Subscriptor::~Subscriptor ()
   // so, output the actual name of
   // the class to which this object
   // belongs, i.e. the most derived
-  // class. note that the name may be
-  // mangled, so it need not be the
-  // clear-text class name. however,
-  // you can obtain the latter by
-  // running the c++filt program over
-  // the output.
+  // class.
 #ifdef DEBUG
 
   // if there are still active pointers, show
