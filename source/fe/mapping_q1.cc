@@ -1703,6 +1703,50 @@ transform_real_to_unit_cell_internal
  const Point<dim>                                 &initial_p_unit,
  InternalData                                     &mdata) const
 {
+  if (dim == spacedim && dim == 2)
+    {
+      auto x = p[0];
+      auto y = p[1];
+
+      auto x0 = cell->vertex(0)(0);
+      auto x1 = cell->vertex(1)(0);
+      auto x2 = cell->vertex(2)(0);
+      auto x3 = cell->vertex(3)(0);
+
+      auto y0 = cell->vertex(0)(1);
+      auto y1 = cell->vertex(1)(1);
+      auto y2 = cell->vertex(2)(1);
+      auto y3 = cell->vertex(3)(1);
+
+      auto a = (x1 - x3)*(y0 - y2) - (x0 - x2)*(y1 - y3);
+      std::cout << "a = " << a << std::endl;
+      auto b = -(x0 - x1 - x2 + x3)*y + (x - 2*x1 + x3)*y0 - (x - 2*x0 + x2)*y1
+        - (x - x1)*y2 + (x - x0)*y3;
+      std::cout << "b = " << b << std::endl;
+      auto c = (x0 - x1)*y - (x - x1)*y0 + (x - x0)*y1;
+      std::cout << "c = " << c << std::endl;
+
+      double eta1, eta2, xi1, xi2;
+      if (std::abs(a) < 1e-10)
+        {
+          eta1 = -c/b;
+          eta2 = -c/b;
+        }
+      else
+        {
+          eta1 = (-b - std::sqrt(b*b - 4*a*c))/(2*a);
+          eta2 = (-b + std::sqrt(b*b - 4*a*c))/(2*a);
+        }
+      xi1 = ((eta1 - 1)*x0 - eta1*x2 + x)
+         /((eta1 - 1)*x0 - (eta1 - 1)*x1 - eta1*x2 + eta1*x3);
+      xi2 = ((eta2 - 1)*x0 - eta2*x2 + x)
+         /((eta2 - 1)*x0 - (eta2 - 1)*x1 - eta2*x2 + eta2*x3);
+      std::cout << "eta1 = " << eta1 << std::endl;
+      std::cout << "eta2 = " << eta2 << std::endl;
+      std::cout << "xi1 = " << xi1 << std::endl;
+      std::cout << "xi2 = " << xi2 << std::endl;
+    }
+
   const unsigned int n_shapes=mdata.shape_values.size();
   (void)n_shapes;
   Assert(n_shapes!=0, ExcInternalError());
