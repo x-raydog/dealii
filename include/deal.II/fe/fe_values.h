@@ -1250,7 +1250,7 @@ namespace internal
  * FESubfaceValues.
  *
  * This class has been extracted from FEValuesBase to encapsulate in one
- * place all of the data, independent of the functions thater later
+ * place all of the data, independent of the functions that later
  * access this data in the public interfaces of the FEValues and related
  * classes. Consequently, this base class is protected in FEValuesBase.
  *
@@ -1916,7 +1916,7 @@ public:
    * @note The actual data type of the input vector may be either a
    * Vector&lt;T&gt;, BlockVector&lt;T&gt;, or one of the sequential PETSc or
    * Trilinos vector wrapper classes. It represents a global vector of DoF
-   * values associated with the DofHandler object with which this FEValues
+   * values associated with the DoFHandler object with which this FEValues
    * object was last initialized. Alternatively, if the vector argument is of
    * type IndexSet, then the function is represented as one that is either
    * zero or one, depending on whether a DoF index is in the set or not.
