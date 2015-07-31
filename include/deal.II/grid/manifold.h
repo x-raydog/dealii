@@ -65,7 +65,7 @@ namespace Manifolds
  * unlike almost all other cases in the library, we here interpret the points
  * in the quadrature object to be in real space, not on the reference cell.)
  *
- * Internaly, the get_new_point() function calls the project_to_manifold()
+ * Internally, the get_new_point() function calls the project_to_manifold()
  * function after computing the weighted average of the quadrature points.
  * This allows end users to only overload project_to_manifold() for simple
  * situations.
@@ -73,7 +73,7 @@ namespace Manifolds
  * Should a finer control be necessary, then get_new_point() can be
  * overloaded.
  *
- * FlatManifold is the specialization from which StraigthBoundary is derived,
+ * FlatManifold is the specialization from which StraightBoundary is derived,
  * where the project_to_manifold() function is the identity.
  *
  * @ingroup manifold
