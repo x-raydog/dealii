@@ -244,7 +244,7 @@ public:
    * exception will be thrown if one of the points which you are using for the
    * average lies outside the periodicity box. The return points are
    * guaranteed to lie in the periodicity box plus or minus
-   * tolerance*periodicity.norm().
+   * <tt>tolerance*periodicity.norm()</tt>.
    */
   FlatManifold (const Point<spacedim> periodicity=Point<spacedim>(),
                 const double tolerance=1e-10);
