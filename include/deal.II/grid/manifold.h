@@ -242,8 +242,9 @@ public:
    * has zero length, then no periodicity is computed in that direction.
    * Whenever a function that tries to compute averages is called, an
    * exception will be thrown if one of the points which you are using for the
-   * average lies outside the periodicity box. The return points are garanteed
-   * to lie in the perodicity box plus or minus tolerance*periodicity.norm().
+   * average lies outside the periodicity box. The return points are
+   * guaranteed to lie in the periodicity box plus or minus
+   * tolerance*periodicity.norm().
    */
   FlatManifold (const Point<spacedim> periodicity=Point<spacedim>(),
                 const double tolerance=1e-10);
