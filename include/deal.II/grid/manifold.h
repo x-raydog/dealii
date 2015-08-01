@@ -566,7 +566,7 @@ namespace Manifolds
                          hex->quad(i)->get_manifold().get_new_point_on_quad(hex->quad(i)));
             wp[j] = 1.0/12.0;
           }
-        // Overwrited the weights with 1/np if we don't want to use
+        // Overwrite the weights with 1/np if we don't want to use
         // laplace vectors.
         if (with_laplace == false)
           std::fill(wp.begin(), wp.end(), 1.0/np);
