@@ -761,7 +761,7 @@ public:
    * direction. @p true indicates, that the line is oriented from vertex 0 to
    * vertex 1, whereas it is the other way around otherwise. In 1d and 2d,
    * this is always @p true, but in 3d it may be different, see the respective
-   * discussion in the documentation of the GeometryInfo classe.
+   * discussion in the documentation of the GeometryInfo class.
    *
    * This function is really only for internal use in the library unless you
    * absolutely know what this is all about.
