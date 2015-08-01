@@ -124,7 +124,7 @@ struct CellData
   };
 
   /**
-   * Manifold identificator of this object. This identificator should be used
+   * Manifold identifier of this object. This identifier should be used
    * to identify the manifold to which this object belongs, and from which
    * this object will collect information on how to add points upon
    * refinement.
