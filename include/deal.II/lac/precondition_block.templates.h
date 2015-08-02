@@ -264,14 +264,10 @@ void PreconditionBlock<MATRIX,inverse_type>::forward_step (
                                              ? permutation[block_start]
                                              : block_start;
 
-//       deallog << std::endl << cell << '-' << block_start
-//            << '-' << permuted_block_start << (permuted ? 't' : 'f') << '\t';
-
       for (row = permuted_block_start, row_cell = 0;
            row_cell < this->blocksize;
            ++row_cell, ++row)
         {
-//        deallog << ' ' << row;
           const typename MATRIX::const_iterator row_end = M.end(row);
           typename MATRIX::const_iterator entry = M.begin(row);
 
