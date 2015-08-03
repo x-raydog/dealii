@@ -547,7 +547,7 @@ namespace PETScWrappers
 
     /**
      * A collective piecewise multiply operation on <code>this</code> vector
-     * with itself. TODO: The model for this function should be similer to add
+     * with itself. TODO: The model for this function should be similar to add
      * ().
      *
      * This function is deprecated.
@@ -764,7 +764,7 @@ namespace PETScWrappers
 
     /**
      * Denotes if this vector has ghost indices associated with it. This means
-     * that at least one of the processes in a parallel programm has at least
+     * that at least one of the processes in a parallel program has at least
      * one ghost index.
      */
     bool ghosted;
