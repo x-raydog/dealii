@@ -1023,9 +1023,6 @@ namespace MeshWorker
       const unsigned int level1,
       const unsigned int level2)
     {
-//      AssertDimension(local.n(), dof1.size());
-//      AssertDimension(local.m(), dof2.size());
-
       for (unsigned int j=0; j<local.n_rows(); ++j)
         for (unsigned int k=0; k<local.n_cols(); ++k)
           if (std::fabs(local(j,k)) >= threshold)
@@ -1088,9 +1085,6 @@ namespace MeshWorker
       const unsigned int level1,
       const unsigned int level2)
     {
-//      AssertDimension(local.n(), dof1.size());
-//      AssertDimension(local.m(), dof2.size());
-
       for (unsigned int j=0; j<local.n_rows(); ++j)
         for (unsigned int k=0; k<local.n_cols(); ++k)
           if (std::fabs(local(k,j)) >= threshold)
