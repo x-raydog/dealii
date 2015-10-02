@@ -1390,8 +1390,21 @@ bool ParameterHandler::read_input (const std::string &filename,
 
       while (std::getline(file, str))
         {
+          /*
+           * getline() splits lines around '\n' characters (and removes the
+           * trailing '\n'), but some files use the DOS/Windows convention of
+           * ending with "\r\n" instead. Get around this by removing '\r' if
+           * it appears in the last position.
+           */
+          if (str.size() > 0 && str.at(str.size() - 1) == '\r')
+            {
+              str.at(str.size() - 1) = '\n';
+            }
+          else
+            {
+              str.push_back('\n');
+            }
           file_contents += str;
-          file_contents.push_back('\n');
         }
 
       return ParameterHandler::read_input_from_string (file_contents.c_str());
