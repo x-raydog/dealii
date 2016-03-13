@@ -100,15 +100,13 @@
       the following steps generally appear to work where we simply unpack and
       build PETSc in its final location (i.e., we do not first build and then
       install it into a separate directory):
-      <pre>
-
-	tar xvzf petsc-x-y-z.tar.gz
-        cd petsc-x-y-z
-	export PETSC_DIR=`pwd`
-	export PETSC_ARCH=x86_64       # or any other identifying text for your machine
-	./config/configure.py --with-shared=1 --with-x=0 --with-mpi=1 --download-hypre=1
-	make
-      </pre>
+<pre>
+tar xvzf petsc-x-y-z.tar.gz
+cd petsc-x-y-z
+export PETSC_DIR=`pwd`
+export PETSC_ARCH=x86_64       # or any other identifying text for your machine
+./config/configure.py --with-shared=1 --with-x=0 --with-mpi=1 --download-hypre=1
+make </pre>
     </p>
 
     <p>
@@ -116,28 +114,22 @@
       multigrid preconditioner package Hypre (which we use in step-40).
       <br>
       Now let PETSc check his own sanity:
-      <pre>
-
-	make test
-      </pre>
+<pre>
+make test </pre>
       will self-check the serial (and MPI) implementation of PETSc.
       <br>
       You may wish to put the <code>export</code> commands into
       your <code>~/.bashrc</code> or <code>~/.cshrc</code> files, with
       the first one replaced by something of the kind
-      <pre>
-
-	export PETSC_DIR=/path/to/petsc-x-y-z
-      </pre>
+<pre>
+export PETSC_DIR=/path/to/petsc-x-y-z </pre>
     </p>
 
     <p>
       By default, PETSc is compiled in "debug mode". You can switch this to
       "optimized mode" by adding the command line parameter
-      <pre>
-
-	--with-debugging=0
-      </pre>
+<pre>
+--with-debugging=0 </pre>
       to the call of <code>./config/configure.py</code> above. In some cases,
       this has made linear solvers run up to 30% faster. As with choosing
       between <acronym>deal.II</acronym>'s debug and optimized modes, you

@@ -30,8 +30,7 @@
     <p>
 Get a clone of the OCE repository:
 <pre>
-git clone git://github.com/tpaviot/oce.git
-</pre>
+git clone git://github.com/tpaviot/oce.git </pre>
 
 It is a good practice to build in a separate directory:
 <pre>
@@ -42,8 +41,7 @@ cmake -D OCE_INSTALL_PREFIX=/path/to/where/you/want/oce \
       -D OCE_VISUALISATION=OFF \
       -D OCE_DISABLE_X11=ON \
       ..
-make install
-</pre>
+make install </pre>
 
 This will turn off some packages we don't need. The default package options also work, though.
 
@@ -55,10 +53,6 @@ This will turn off some packages we don't need. The default package options also
       enabled automatically if a system wide installation of
       <acronym>OpenCASCADE</acronym> can be found.
       To use a self compiled version, specify
-      <pre>
-
-    -DOPENCASCADE_DIR=/path/to/opencascade/or/oce
-      </pre>
       when invoking <code>cmake</code>. Alternatively, you can also set an environment
       variable <code>OPENCASCADE_DIR</code> (valid alternatives are
       also <code>OCC_DIR</code> and <code>OCE_DIR</code>) and cmake
@@ -66,11 +60,11 @@ This will turn off some packages we don't need. The default package options also
     </p>
     <p>
       You can override the autodetection by manually setting
-      <pre>
-
-    -DDEAL_II_WITH_OPENCASCADE=OFF|ON
-      </pre>.
     </p>
+<pre>
+-DOPENCASCADE_DIR=/path/to/opencascade/or/oce </pre>
+<pre>
+-DDEAL_II_WITH_OPENCASCADE=OFF|ON </pre>.
 
     <hr />
     <div class="right">

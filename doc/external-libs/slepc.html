@@ -71,20 +71,16 @@
 
     <p>
       This builds a simple SLEPc installation:
-      <pre>
-
-	tar xvzf slepc-x-y-z.tar.gz
-        cd slepc-x-y-z
-	export SLEPC_DIR=`pwd`
-	export LD_LIBRARY_PATH=$SLEPC_DIR/$PETSC_ARCH/lib:$LD_LIBRARY_PATH
-	./configure
-	make
-      </pre>
+<pre>
+tar xvzf slepc-x-y-z.tar.gz
+cd slepc-x-y-z
+export SLEPC_DIR=`pwd`
+export LD_LIBRARY_PATH=$SLEPC_DIR/$PETSC_ARCH/lib:$LD_LIBRARY_PATH
+./configure
+make </pre>
       Now let SLEPc check his own sanity:
-      <pre>
-
-	make test
-      </pre>
+<pre>
+make test </pre>
       will self-check the serial (and MPI) implementation of SLEPc.
     </p>
 
@@ -92,10 +88,8 @@
       Finally, you may want to put the two <code>export</code>
       commands above into your <code>~/.bashrc</code>
       or <code>~/.cshrc</code> files, with the first one replaced by
-      <pre>
-
-	export SLEPC_DIR=/path/to/slepc-x-y-z
-      </pre>
+<pre>
+export SLEPC_DIR=/path/to/slepc-x-y-z </pre>
       The <code>cmake</code> installation should then be able to pick
       up where you installed SLEPc and include it automatically in the
       deal.II build without any further need for instructions. You
