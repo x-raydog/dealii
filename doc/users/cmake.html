@@ -1,5 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-	  "http://www.w3.org/TR/html4/loose.dtd">
+      "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
     <title>deal.II CMake documentation</title>
@@ -24,36 +24,36 @@
 
     <div class="toc">
       <ol>
-	<li><a href="#operating">Operating cmake</a>
+    <li><a href="#operating">Operating cmake</a>
           <ol>
             <li><a href="#operatingmanip">Manipulating the cache</a></li>
             <li><a href="#operatingccmake"><code>ccmake</code> and special build targets </a></li>
             <li><a href="#operatingshortcuts">Shortcuts</a></li>
-	  </ol>
-	</li>
-	<li><a href="#build">Configuring and Building deal.II</a>
+      </ol>
+    </li>
+    <li><a href="#build">Configuring and Building deal.II</a>
           <ol>
             <li><a href="#buildtargets">Primary build targets</a></li>
             <li><a href="#buildinformation">Information about current configuration</a></li>
             <li><a href="#buildinsource">Out-of-source versus in-source builds</a></li>
             <li><a href="#buildgenerator">CMake Generators</a></li>
             <li><a href="#buildinstall">Installation</a></li>
-	  </ol>
+      </ol>
         </li>
-	<li><a href="#configure">Configuration options</a>
-	  <ol>
-	    <li><a href="#configurefeature">Feature configuration</a></li>
-	    <li><a href="#configureautoconf">Autoconfiguration</a></li>
-	    <li><a href="#configureext">External library locations</a></li>
-	    <li><a href="#configureoverride">Manual override</a></li>
-	    <li><a href="#configurecomp">Component selection</a></li>
-	    <li><a href="#configurebuild">Build configuration</a></li>
-	    <li><a href="#compiler">Selecting a compiler</a></li>
-	    <li><a href="#configureinstall">Installation</a></li>
-	  </ol>
-	</li>
-	<li><a href="#advanced">Initial cache file and advanced options</a></li>
-	<li><a href="#compiling">Compiling only certain parts</a></li>
+    <li><a href="#configure">Configuration options</a>
+      <ol>
+        <li><a href="#configurefeature">Feature configuration</a></li>
+        <li><a href="#configureautoconf">Autoconfiguration</a></li>
+        <li><a href="#configureext">External library locations</a></li>
+        <li><a href="#configureoverride">Manual override</a></li>
+        <li><a href="#configurecomp">Component selection</a></li>
+        <li><a href="#configurebuild">Build configuration</a></li>
+        <li><a href="#compiler">Selecting a compiler</a></li>
+        <li><a href="#configureinstall">Installation</a></li>
+      </ol>
+    </li>
+    <li><a href="#advanced">Initial cache file and advanced options</a></li>
+    <li><a href="#compiling">Compiling only certain parts</a></li>
       </ol>
     </div>
 
@@ -536,13 +536,13 @@ DEAL_II_CXX_VERSION_FLAG </pre>
     <p>
       This behavior can be controlled via several variables:
       <ul>
-	<li>
+    <li>
           <code>DEAL_II_ALLOW_AUTODETECTION=OFF</code>: This will
           disable any autoconfiguration by setting undefined
           <code>DEAL_II_WITH_&lt;FEATURE&gt;</code> toggles to
           <code>OFF</code>.
 
-	<li>
+    <li>
           <code>DEAL_II_FORCE_AUTODETECTION=ON</code>: This will
           force the reconfiguration of every feature by undefining
           <code>DEAL_II_WITH_&lt;FEATURE&gt;</code> prior to
@@ -559,32 +559,32 @@ DEAL_II_CXX_VERSION_FLAG </pre>
       External libraries will be searched depending on hints in the following
       order:
       <ol>
-	<li>
-	  <p>
+    <li>
+      <p>
             Paths specified via <code>CMAKE_PREFIX_PATH</code> take
             precedence, e.g. with
 <pre class="cmake">
 make -DCMAKE_PREFIX_PATH=~/workspace/local ../deal.II </pre>
-	    libraries from <code>~/workspace/local</code> will be
-	    preferred for dependency resolution.
-	  </p>
+        libraries from <code>~/workspace/local</code> will be
+        preferred for dependency resolution.
+      </p>
 
-	<li>
-	  <p>
-	    Hints given by <code>&lt;library&gt;_DIR</code> via command
+    <li>
+      <p>
+        Hints given by <code>&lt;library&gt;_DIR</code> via command
             line or environment for <i>some</i> libraries:
 <pre class="cmake">
 make -DP4EST_DIR=~/workspace/p4est-install/ ../deal.II </pre>
-	    or
+        or
 <pre class="cmake">
 export P4EST_DIR=~/workspace/p4est-install/
 cmake ../deal.II </pre>
             where <code>-D&lt;library&gt;_DIR</code> takes precedence
             over environment.
-	  </p>
+      </p>
 
-	  <p>
-	    Currently, the following variables will be considered:
+      <p>
+        Currently, the following variables will be considered:
 <pre class="cmake">
 ARPACK_DIR,
 BOOST_DIR,
@@ -598,12 +598,12 @@ SLEPC_DIR (forming ${SLEPC_DIR}/${PETSC_ARCH}),
 TBB_DIR,
 TRILINOS_DIR,
 UMFPACK_DIR and SUITESPARSE_DIR (AMD_DIR, CHOLMOD_DIR, COLAMD_DIR, SUITESPARSECONFIG_DIR) </pre>
-	  </p>
+      </p>
 
-	<li>
-	  <p>
-	    The default system locations for libraries and includes.
-	  </p>
+    <li>
+      <p>
+        The default system locations for libraries and includes.
+      </p>
       </ol>
     </p>
 
@@ -695,7 +695,7 @@ cmake -DLAPACK_FOUND=true \
       <acronym>deal.II</acronym> will be configured, built and installed:
 
       <ul>
-	<li>
+    <li>
           <p>
             <code>DEAL_II_COMPONENT_DOCUMENTATION</code>
             (default <code>OFF</code>):
@@ -707,7 +707,7 @@ cmake -DLAPACK_FOUND=true \
             component <code>documentation</code> to the build system.
           </p>
 
-	<li>
+    <li>
           <p>
             <code>DEAL_II_COMPONENT_EXAMPLES</code>
             (default <code>ON</code>):
@@ -718,7 +718,7 @@ cmake -DLAPACK_FOUND=true \
             This adds a component <code>examples</code> to the build system.
           </p>
 
-	<li>
+    <li>
           <p>
             <code>DEAL_II_COMPONENT_PARAMETER_GUI</code> (default
             <code>OFF</code>):
@@ -728,7 +728,7 @@ cmake -DLAPACK_FOUND=true \
             <code>parameter_gui</code> binary. This adds a component
             <code>parameter_gui</code> to the build system. Beware of the
             fact that this component needs development packages for Qt.
-	  </p>
+      </p>
 
       </ul>
     </p>
@@ -771,7 +771,7 @@ cmake -DLAPACK_FOUND=true \
           (default), <acronym>deal.II</acronym> will perform platform
           introspection for the given CPU.
 
-	<li>
+    <li>
           <code>BUILD_SHARED_LIBS</code>: If set (default),
           <acronym>deal.II</acronym> will be linked as a shared library
 
@@ -780,7 +780,7 @@ cmake -DLAPACK_FOUND=true \
         to true, static archives will be preferred over dynamic libraries when
         searching for features and corresponding link interface.
 
-	<li>
+    <li>
           <code>DEAL_II_STATIC_EXECUTABLE</code> (defaults to off):
           If set to true, <acronym>deal.II</acronym> will be configured in
           a way to provide a link interface that is suitable for static
@@ -788,11 +788,11 @@ cmake -DLAPACK_FOUND=true \
           <code>BUILD_SHARED_LIBS=OFF</code> and
           <code>DEAL_II_PREFER_STATIC_LIBS=ON</code>.
 
-	<li>
-	  <code>CMAKE_INSTALL_RPATH_USE_LINK_PATH</code>: If set
-	  (default), the <acronym>deal.II</acronym> library will be
-	  installed with rpaths  set for all libraries outside of the
-	  system search paths
+    <li>
+      <code>CMAKE_INSTALL_RPATH_USE_LINK_PATH</code>: If set
+      (default), the <acronym>deal.II</acronym> library will be
+      installed with rpaths  set for all libraries outside of the
+      system search paths
       </ul>
     </p>
 
@@ -824,9 +824,9 @@ cmake -DCMAKE_C_COMPILER="mpicc" -DCMAKE_CXX_COMPILER="mpicxx" -DCMAKE_Fortran_C
       target. There are two options to override this behaviour:
 
       <ol>
-	<li>
-	  Override the default configuration by setting the following
-	  cached variables:
+    <li>
+      Override the default configuration by setting the following
+      cached variables:
 <pre class="cmake">
 DEAL_II_CXX_FLAGS         - used during all builds
 DEAL_II_CXX_FLAGS_DEBUG   - additional flags for the debug library
@@ -836,11 +836,11 @@ DEAL_II_LINKER_FLAGS         - used during all builds
 DEAL_II_LINKER_FLAGS_DEBUG   - additional flags for the debug library
 DEAL_II_LINKER_FLAGS_RELEASE - additional flags for the release library </pre>
 
-	  The content of the cached variables will be preserved
-	  and added <i>to the end</i> of the default compiler flags,
-	  hence providing the possibility for overriding a flag. E.g.:
-	  <code>-Wsign-compare</code>, set by the build system, can be
-	  overwritten by specifying:
+      The content of the cached variables will be preserved
+      and added <i>to the end</i> of the default compiler flags,
+      hence providing the possibility for overriding a flag. E.g.:
+      <code>-Wsign-compare</code>, set by the build system, can be
+      overwritten by specifying:
 <pre class="cmake">
 cmake -DDEAL_II_CXX_FLAGS="-Wno-sign-compare" &lt;...&gt; </pre>
 
@@ -850,11 +850,11 @@ cmake -DDEAL_II_CXX_FLAGS="-Wno-sign-compare" &lt;...&gt; </pre>
           variables will also be appended after the default compiler flags
           (but before the corresponding cached variables).
 
-	<li>
-	  Disable the configuration completely by adding the flag
-	  <code>-D DEAL_II_SETUP_DEFAULT_COMPILER_FLAGS=OFF</code>.
-	  Beware of the fact that certain features
-	  may still pull in necessary compiler flags.
+    <li>
+      Disable the configuration completely by adding the flag
+      <code>-D DEAL_II_SETUP_DEFAULT_COMPILER_FLAGS=OFF</code>.
+      Beware of the fact that certain features
+      may still pull in necessary compiler flags.
 
         <li>
           You can setup additional debug compiler flags to provide test
