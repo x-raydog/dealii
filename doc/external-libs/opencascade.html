@@ -1,16 +1,16 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"                  
 	  "http://www.w3.org/TR/html4/loose.dtd">                        
 
-<html>                                                                          
-  <head>                            
+<html>
+  <head>
     <title>The deal.II Readme on interfacing to OpenCASCADE</title>
     <link href="../screen.css" rel="StyleSheet">
     <meta name="copyright" content="Copyright (C) 2010, 2013, 2014, 2015 by the deal.II authors">
-    <meta name="keywords" content="deal.II"> 
-  </head>                                                                      
-  <body> 
+    <meta name="keywords" content="deal.II">
+  </head>
+  <body>
 
-    
+
     <h2>Installation of <acronym>OpenCASCADE</acronym></h2>
 
     <p> <a href="http://www.opencascade.org/">OpenCASCADE</a> is a
@@ -18,21 +18,22 @@
       applications dealing with 3D CAD data, freely available in open
       source. It includes a set of C++ class libraries providing
       services for 3D surface and solid modeling, visualization, data
-      exchange and rapid application development.</p>
+      exchange and rapid application development.
+    </p>
 
     <p> Below is a short summary of instructions on how to compile and
       install <acronym>OpenCASCADE</acronym> community edition by hand
-      (for the case you wish to do so).  </p>
+      (for the case you wish to do so).
+    </p>
 
-    <h3>How to compile and install <acronym>OpenCASCADE</acronym>
-     </h3>
+    <h3>How to compile and install <acronym>OpenCASCADE</acronym></h3>
 
     <p>
-Get a clone of the OCE repository:
+      Get a clone of the OCE repository:
 <pre>
 git clone git://github.com/tpaviot/oce.git </pre>
 
-It is a good practice to build in a separate directory:
+      It is a good practice to build in a separate directory:
 <pre>
 mkdir build
 cd build
@@ -43,28 +44,29 @@ cmake -D OCE_INSTALL_PREFIX=/path/to/where/you/want/oce \
       ..
 make install </pre>
 
-This will turn off some packages we don't need. The default package options also work, though.
+      This will turn off some packages we don't need. The default package
+      options also work, though.
 
-    <h2>Interfacing <acronym>deal.II</acronym>
+      <h2>Interfacing <acronym>deal.II</acronym>
       to <acronym>OpenCASCADE</acronym></h2>
 
-    <p>
-      Support for <acronym>OpenCASCADE</acronym> will be
-      enabled automatically if a system wide installation of
-      <acronym>OpenCASCADE</acronym> can be found.
-      To use a self compiled version, specify
-      when invoking <code>cmake</code>. Alternatively, you can also set an environment
-      variable <code>OPENCASCADE_DIR</code> (valid alternatives are
-      also <code>OCC_DIR</code> and <code>OCE_DIR</code>) and cmake
-      will pick up this path.
-    </p>
-    <p>
-      You can override the autodetection by manually setting
-    </p>
+      <p>
+        Support for <acronym>OpenCASCADE</acronym> will be
+        enabled automatically if a system wide installation of
+        <acronym>OpenCASCADE</acronym> can be found.
+        To use a self compiled version, specify
 <pre>
 -DOPENCASCADE_DIR=/path/to/opencascade/or/oce </pre>
+        when invoking <code>cmake</code>. Alternatively, you can also set an environment
+        variable <code>OPENCASCADE_DIR</code> (valid alternatives are
+        also <code>OCC_DIR</code> and <code>OCE_DIR</code>) and cmake
+        will pick up this path.
+      </p>
+      <p>
+        You can override the autodetection by manually setting
 <pre>
 -DDEAL_II_WITH_OPENCASCADE=OFF|ON </pre>.
+      </p>
 
     <hr />
     <div class="right">
