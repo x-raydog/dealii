@@ -14,40 +14,39 @@
     <h1>Writing Documentation</h1>
 
     <p>
-    It is our firm belief that software can only be successful if it
-    is properly documented. Too many academic software projects die
-    prematurely once their creators leave the university or the
-    workgroup in which the software was developed, since with their
-    creators also knowledge of internal structures, interfaces, and
-    the valuable bag of tricks leaves, a gap that can not be closed by
-    reading sources, trial-and-error, and guessing.
+      It is our firm belief that software can only be successful if it is
+      properly documented. Too many academic software projects die prematurely
+      once their creators leave the university or the workgroup in which the
+      software was developed, since with their creators also knowledge of
+      internal structures, interfaces, and the valuable bag of tricks leaves, a
+      gap that can not be closed by reading sources, trial-and-error, and
+      guessing.
     </p>
 
     <p>
-    The <acronym>deal.II</acronym> project has therefore from its
-    infancy adopted a policy that every aspect of the interface
-    needs to be well-documented before its inclusion into the
-    source tree. Since we have found that it is impossible to keep
-    documentation up-to-date if it is not written directly into the
-    program code, we write the documentation directly at the place of
-    declaration of a function or class and use automatic tools to
-    extract this information from the files and process it into HTML
-    for our web-pages, or LaTeX for printing.
+      The <acronym>deal.II</acronym> project has therefore from its infancy
+      adopted a policy that every aspect of the interface needs to be
+      well-documented before its inclusion into the source tree. Since we have
+      found that it is impossible to keep documentation up-to-date if it is not
+      written directly into the program code, we write the documentation
+      directly at the place of declaration of a function or class and use
+      automatic tools to extract this information from the files and process it
+      into HTML for our web-pages, or LaTeX for printing.
     </p>
 
     <p>
-    In addition to the API documentation, we maintain a series of
-    <a href="../doxygen/deal.II/Tutorial.html" target="_top">
-    well-documented example programs</a>, which also follow a certain
-    ``literate programming'' style in that the explanations of what
-    is happening are integrated into the program source by means of
-    comments, and are extracted by small scripts.
+      In addition to the API documentation, we maintain a series of
+      <a href="../doxygen/deal.II/Tutorial.html" target="_top">
+        well-documented example programs</a>, which also follow a certain
+      ``literate programming'' style in that the explanations of what is
+      happening are integrated into the program source by means of comments, and
+      are extracted by small scripts.
     </p>
 
     <p>
-    This document first explains the basics of
-    <a href="#API" target="body">documenting the API</a> and then of
-    <a href="#examples" target="body">writing example programs</a>.
+      This document first explains the basics of
+      <a href="#API" target="body">documenting the API</a> and then of
+      <a href="#examples" target="body">writing example programs</a>.
     </p>
 
 
@@ -55,22 +54,21 @@
     <h2>Writing API documentation</h2>
 
     <p>
-    In order to extract documentation from the header files of the
-    project, we use
-    <a href="http://www.doxygen.org/" target="_top">doxygen</a>.
-    It requires that documentation is written in a form which
-    closely follows the
-    <a href="http://java.sun.com/products/jdk/javadoc/index.html" target="_top">
-    JavaDoc</a> standard.
+      In order to extract documentation from the header files of the
+      project, we use
+      <a href="http://www.doxygen.org/" target="_top">doxygen</a>.  It requires
+      that documentation is written in a form which closely follows the
+      <a href="http://java.sun.com/products/jdk/javadoc/index.html" target="_top">
+        JavaDoc</a> standard.
     </p>
 
 
     <h3>Basic layout of documentation</h3>
 
     <p>
-    Basically, every declaration, whether class or member
-    function/variable declaration, global function or namespace, may
-    be preceded by a comment of the following form:
+      Basically, every declaration, whether class or member function/variable
+      declaration, global function or namespace, may be preceded by a comment of
+      the following form:
     </p>
 <pre>
 /**
@@ -98,34 +96,35 @@ class TestClass
 };
 </pre>
     <p>
-    <acronym>doxygen</acronym> will then generate a page for the class
-    <code>TestClass</code> and document each of the member functions
-    and variables. The content of the <code>@author</code> tag will be
-    included into the online documentation of the class.
+      <acronym>doxygen</acronym> will then generate a page for the class
+      <code>TestClass</code> and document each of the member functions and
+      variables. The content of the <code>@author</code> tag will be included
+      into the online documentation of the class.
     </p>
 
 
     <h3>Extended Layout</h3>
 
     <p>
-    In order to allow better structured output for long comments,
-    doxygen supports a great number of tags for enumerations,
-    sectioning, markup, and other fields. We encourage you to take a
-    look at the <a href="http://www.doxygen.org/"
-    target="_top">doxygen webpage</a> to get an overview. However,
-    here is a brief summary of the most often used features:
+      In order to allow better structured output for long comments, doxygen
+      supports a great number of tags for enumerations, sectioning, markup, and
+      other fields. We encourage you to take a look at
+      the <a href="http://www.doxygen.org/" target="_top">doxygen webpage</a> to
+      get an overview. However, here is a brief summary of the most often used
+      features:
     </p>
     <ul>
-    <li> <em>Virtual functions:</em>
-        Do not document virtual functions in derived classes, if there
-        is nothing different from the base class. If a virtual
-        function is documented in a base class, doxygen will
-        automatically copy this documentation to the derived
-        classes. This mechanism is interrupted, if a documentation
-        block is found in the derived class.
+      <li>
+        <em>Virtual functions:</em>
+        Do not document virtual functions in derived classes, if there is
+        nothing different from the base class. If a virtual function is
+        documented in a base class, doxygen will automatically copy this
+        documentation to the derived classes. This mechanism is interrupted, if
+        a documentation block is found in the derived class.
 
-    <li> <em>Itemized lists:</em>
-         By writing comments like the following,
+      <li>
+        <em>Itemized lists:</em>
+        By writing comments like the following,
 <pre>
 /**
  * &lt;ul&gt;
@@ -138,23 +137,27 @@ class TestClass
  * &lt;/ul&gt;
  */
 </pre>
-         you can get itemized lists both in the online and printed
-         documentation:
-         <ul>
-         <li> foo
-         <li> bar
-         </ul>
+        you can get itemized lists both in the online and printed documentation:
+        <ul>
+          <li>
+            foo
+          </li>
+          <li>
+            bar
+          </li>
+        </ul>
 
-         <p>
-         In other words, one can use standard HTML tags for this
-         task. Likewise, you can get numbered lists by using the
-         respective HTML tags <code>&lt;ol&gt;</code>.
-         </p>
+        <p>
+          In other words, one can use standard HTML tags for this
+          task. Likewise, you can get numbered lists by using the
+          respective HTML tags <code>&lt;ol&gt;</code>.
+        </p>
 
-    <li> <em>Verbatim output:</em>
-         <p>
-         If you write comments like this,
-         </p>
+      <li>
+        <em>Verbatim output:</em>
+        <p>
+          If you write comments like this,
+        </p>
 <pre>
 /**
  * @verbatim
@@ -165,75 +168,87 @@ class TestClass
  * @endverbatim
  */
 </pre>
-         you will get the lines between the verbatim environment with
-         the same formatting and in typewriter font:
+        you will get the lines between the verbatim environment with the same
+        formatting and in typewriter font:
 <pre>
 void foobar ()
 {
   i = 0;
 }
 </pre>
-         This is useful if you want to include small sample code snippets
-         into your documentation. In particular, it is important that
-         the formatting is preserved, which is not the case for all
-         other text.
+        This is useful if you want to include small sample code snippets into
+        your documentation. In particular, it is important that the formatting
+        is preserved, which is not the case for all other text.
 
-    <li> <em>Typewriter font:</em>
-         <p>In order to use typewriter font for instance for function
-         arguments or variables, use the <code>&lt;code&gt;</code> HTML
-         tag. For a single word, you can also use the form <code>@p
-         one_word_without_spaces</code>. The <code>&lt;tt&gt;</code> is obsolete in HTML5</p>
-
-         <p>
-         If you refer to member variables and member functions
-         <acronym>doxygen</acronym> has better options than this: use
-         <tt>function_name()</tt> to reference member functions and
-         <tt>#variable_name</tt> for member variables to create links
-         automatically. Refer to the documentation of <a
-         href="http:www.doxygen.org"><acronym>doxygen</acronym></a> to
-         get even more options for global variables.
-         </p>
-
-    <li> <em>Emphasis:</em>
-         <p>
-         To generate output in italics, use the <code>@em
-         one_word_without_spaces</code> tag or the <tt>&lt;em&gt;</tt>
-         HTML tag. To generate boldface, use <tt>&lt;b&gt;</tt>
-         </p>
-
-    <li> <em>Formul&aelig;:</em>
-         <p>
-         For simple and short formul&aelig; use the <tt>&lt;i&gt;</tt>
-         HTML tag. Note that you can use <tt>&lt;sub&gt;</tt> and
-         <tt>&lt;sup&gt;</tt> to get subscripts an superscripts,
-         respectively. Only for longer formul&aelig; use
-         <tt>$formula$</tt> to generate a LaTeX formula which will then be
-         included as a graphical image.
-         </p>
-
-    <li> <em>Sections:</em>
-         <p>
-         Sections in class and function documentations can be
-         generated using the <tt>&lt;hN&gt;</tt> HTML headline
-         tags. Headlines inside class documentation should start at
-         level 3 (<tt>&lt;h3&gt;</tt>) to stay consistent with the
-         structure of the <acronym>doxygen</acronym> output.
-         </p>
+      <li>
+        <em>Typewriter font:</em>
+        <p>
+          In order to use typewriter font for instance for function arguments or
+          variables, use the <code>&lt;code&gt;</code> HTML tag. For a single
+          word, you can also use the form <code>@p
+          one_word_without_spaces</code>. The <code>&lt;tt&gt;</code> is
+          obsolete in HTML5.
+        </p>
 
          <p>
-         Sections cannot be referenced, unless you add a <tt>&lt;A
-         NAME="..."&gt;</tt> name anchor to them. If you really have
-         to do this, please make sure the name does not interfere with
-         <acronym>doxygen</acronym> generated anchors.
+           If you refer to member variables and member functions
+           <acronym>doxygen</acronym> has better options than this: use
+           <tt>function_name()</tt> to reference member functions and
+           <tt>#variable_name</tt> for member variables to create links
+           automatically. Refer to the documentation
+           of <a href="http:www.doxygen.org"><acronym>doxygen</acronym></a> to
+           get even more options for global variables.
+         </p>
+      </li>
+
+      <li>
+        <em>Emphasis:</em>
+         <p>
+           To generate output in italics, use the <code>@em
+           one_word_without_spaces</code> tag or the <tt>&lt;em&gt;</tt> HTML
+           tag. To generate boldface, use <tt>&lt;b&gt;</tt>
          </p>
 
-    <li> <em>Exclusion from documentation:</em>
-         <p> <acronym>doxygen</acronym> sometimes has problems with inlined
-         functions of template classes. For these cases (and other cases of
-         parts of the code to be excluded from documentation), we define a
-         preprocessor symbol <tt>DOXYGEN</tt> when running
-         <acronym>doxygen</acronym>. Therefore, the following template can be
-         used to avoid documentation:</p>
+      <li>
+        <em>Formul&aelig;:</em>
+        <p>
+          For simple and short formul&aelig; use the <tt>&lt;i&gt;</tt> HTML
+          tag. Note that you can use <tt>&lt;sub&gt;</tt>
+          and <tt>&lt;sup&gt;</tt> to get subscripts an superscripts,
+          respectively. Only for longer formul&aelig; use <tt>$formula$</tt> to
+          generate a LaTeX formula which will then be included as a graphical
+          image.
+         </p>
+      </li>
+
+      <li>
+        <em>Sections:</em>
+        <p>
+          Sections in class and function documentations can be generated using
+          the <tt>&lt;hN&gt;</tt> HTML headline tags. Headlines inside class
+          documentation should start at level 3 (<tt>&lt;h3&gt;</tt>) to stay
+          consistent with the structure of the <acronym>doxygen</acronym>
+          output.
+        </p>
+
+         <p>
+           Sections cannot be referenced, unless you add a <tt>&lt;A
+           NAME="..."&gt;</tt> name anchor to them. If you really have to do
+           this, please make sure the name does not interfere
+           with <acronym>doxygen</acronym> generated anchors.
+         </p>
+
+      <li>
+        <em>Exclusion from documentation:</em>
+        <p>
+          <acronym>doxygen</acronym> sometimes has problems with inlined
+          functions of template classes. For these cases (and other cases of
+          parts of the code to be excluded from documentation), we define a
+          preprocessor symbol <tt>DOXYGEN</tt> when
+          running <acronym>doxygen</acronym>. Therefore, the following template
+          can be used to avoid documentation:
+        </p>
+      </li>
 <pre>
 /* documented code here */
 
@@ -244,45 +259,41 @@ void foobar ()
 #endif // DOXYGEN
 </pre>
     </ul>
-
     <h3>Code examples for the usage of single classes</h3>
     <p>
-    Writing example files for classes is supported by
-    <acronym>doxygen</acronym>. These example files go into
-    <tt>deal.II/examples/doxygen</tt>. If they are short,
-    documentation should be inside and they are included into the
-    documentation with <code>@include filename</code>. Take a look how
-    the class <code>BlockMatrixArray</code> does this.
+      Writing example files for classes is supported
+      by <acronym>doxygen</acronym>. These example files go
+      into <tt>deal.II/examples/doxygen</tt>. If they are short, documentation
+      should be inside and they are included into the documentation
+      with <code>@include filename</code>. Take a look how the
+      class <code>BlockMatrixArray</code> does this.
     </p>
 
     <p>
-    Larger example files should be documented using the
-    <acronym>doxygen</acronym> command <code>@dotinclude</code> and
-    related commands. However, if these programs do something
-    reasonable and do not only demonstrate a single topic, you should
-    consider converting them to a complete example program in the
-    <code>step-XX</code> series.
+      Larger example files should be documented using
+      the <acronym>doxygen</acronym> command <code>@dotinclude</code> and
+      related commands. However, if these programs do something reasonable and
+      do not only demonstrate a single topic, you should consider converting
+      them to a complete example program in the <code>step-XX</code> series.
     </p>
-
-
 
     <a name="examples"></a>
     <h2>Writing example programs for the tutorial</h2>
 
     <p>
-    Tutorial programs consist of an introduction, a well documented
-    code, and a section that shows the output and numerical results
-    of running the program. These three parts are written in separate
-    files: for the <code>step-xx</code> program, for example, they
-    would be in the
-    files <code>examples/doc/step-xx/doc/intro.dox</code>,
-    <code>examples/doc/step-xx/step-xx.cc</code> and
-    <code>examples/doc/step-xx/doc/results.dox</code>. There are a
-    number of scripts that then process and concatenate these three
-    different files and send them through doxygen for generation of
-    HTML output. In general, if you want to see how certain markup
-    features can be used, it is worthwhile looking at the existing
-    tutorial program pages and the files they are generated from.
+      Tutorial programs consist of an introduction, a well documented
+      code, and a section that shows the output and numerical results
+      of running the program. These three parts are written in separate
+      files: for the <code>step-xx</code> program, for example, they
+      would be in the
+      files <code>examples/doc/step-xx/doc/intro.dox</code>,
+      <code>examples/doc/step-xx/step-xx.cc</code> and
+      <code>examples/doc/step-xx/doc/results.dox</code>. There are a
+      number of scripts that then process and concatenate these three
+      different files and send them through doxygen for generation of
+      HTML output. In general, if you want to see how certain markup
+      features can be used, it is worthwhile looking at the existing
+      tutorial program pages and the files they are generated from.
     </p>
 
     <h3>The introduction</h3>
@@ -454,7 +465,6 @@ void foobar ()
       verbatim into input for doxygen, so all doxygen markup is
       possible there.
     </p>
-
 
     <hr />
     <div class="right">
