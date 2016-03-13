@@ -19,22 +19,43 @@
 
 <div class="toc">
   <ol>
-    <li><a href="#codingstyle">Coding convention</a></li>
-    <li>Configuration
+    <li>
+      <a href="#codingstyle">Coding convention</a>
+    </li>
+    <li>
+      Configuration
       <ol>
-    <li><a href="#setup"><code>./CMakeLists.txt</code> and
-        <code>./cmake/setup_*.cmake</code></a></li>
-    <li><a href="#checks"><code>./cmake/checks/check_*.cmake</code></a></li>
-        <li><a href="#findmodules"><code>./cmake/modules/Find*.cmake</code></a></li>
-    <li><a href="#configure"><code>./cmake/configure/configure_*.cmake</code></a></li>
-    <li><a href="#variables">Global variables controlling the build process</a></li>
+        <li>
+          <a href="#setup"><code>./CMakeLists.txt</code> and
+            <code>./cmake/setup_*.cmake</code></a>
+        </li>
+        <li>
+          <a href="#checks"><code>./cmake/checks/check_*.cmake</code></a>
+        </li>
+        <li>
+          <a href="#findmodules"><code>./cmake/modules/Find*.cmake</code></a>
+        </li>
+        <li>
+          <a href="#configure"><code>./cmake/configure/configure_*.cmake</code></a>
+        </li>
+        <li>
+          <a href="#variables">Global variables controlling the build
+            process</a>
+        </li>
       </ol>
     </li>
-    <li>Target definition and installation
+    <li>
+      Target definition and installation
       <ol>
-    <li><a href="#config.h.in"><code>./include/deal.II/base/config.h.in</code></a></li>
-        <li><a href="#source"><code>./source/CMakeLists.txt</code></a></li>
-        <li><a href="#projectconfig"><code>./cmake/config/CMakeLists.txt</code></a></li>
+        <li>
+          <a href="#config.h.in"><code>./include/deal.II/base/config.h.in</code></a>
+        </li>
+        <li>
+          <a href="#source"><code>./source/CMakeLists.txt</code></a>
+        </li>
+        <li>
+          <a href="#projectconfig"><code>./cmake/config/CMakeLists.txt</code></a>
+        </li>
       </ol>
     </li>
   </ol>
@@ -48,16 +69,20 @@
   <ul>
     <li>
       Statements and keywords are written in all caps.
+    </li>
     <li>
       Indenting is done by two spaces; the usual indenting rules apply.
+    </li>
     <li>
       The <code>ELSE()</code>, <code>ENDIF()</code>,
       <code>ENDFOREACH()</code>, etc. statements shall not repeat the
       corresponding condition in <code>IF()</code>,
       <code>FOREACH()</code>, etc.
+    </li>
     <li>
       To emphasize a comment it may be enclosed by a leading and
       trailing empty comment line.
+    </li>
   </ul>
   An example:
 <pre class="cmake">
@@ -80,13 +105,16 @@ ENDFOREACH() </pre>
   <li>
     Line break is at 78 characters and should be obeyed whenever
     reasonable.
+  </li>
   <li>
     Long statements should be broken into several lines at reasonable
     places. Additional lines for a statement are indented by 2
     spaces.
+  </li>
   <li>
     Multiline statements must end with the closing bracket at a
     single line:
+  </li>
 </ul>
 <pre class="cmake">
 LIST(APPEND CONFIG_LIBRARIES
@@ -115,14 +143,17 @@ SET_TARGET_PROPERTIES(${DEAL_II_BASE_NAME}${DEAL_II_${build}_SUFFIX}
     introducing a new one, ensure that the name isn't already used
     somewhere else. Unrelated global variables must never be
     overwritten.
+  </li>
   <li>
     Global variables can be prefixed by <code>DEAL_II_</code>.
     (Global variables defined by CMake are usually prefixed by
     <code>CMAKE_</code>.)
+  </li>
   <li>
     Local variables should always be named in all lowercase with a
     leading "_". Local variables cannot be assumed to remain valid.
     The may get overwritten at any time.
+  </li>
 </ul>
 </p>
 
@@ -136,25 +167,30 @@ SET_TARGET_PROPERTIES(${DEAL_II_BASE_NAME}${DEAL_II_${build}_SUFFIX}
   <code>./CMakeLists.txt</code> takes place in some
   <code>./cmake/setup_*.cmake</code> files:
   <ul>
-    <li> <code>setup_cached_variables.cmake</code>:
+    <li>
+      <code>setup_cached_variables.cmake</code>:
       This sets up all cached variables prior to the call to
       <code>PROJECT(deal.II)</code>. For details see the comment at the
       top. Furthermore, some bookkeeping for compiler and linker flags
       takes place, see <a href="../users/cmake.html#configurebuild">the section
         about compile flags</a>.
-    <li> <code>setup_deal_ii.cmake</code>:
+    </li>
+    <li>
+      <code>setup_deal_ii.cmake</code>:
       This file is included immediately after the call to
       <code>PROJECT(deal.II)</code> and will set up all <i>magic
         numbers</i> such as names, definitions, relative and absolute
       paths used in the build system. Most of the definitions are
       guarded with the help of the <code>SET_IF_EMPTY</code> macro so
       that it is possible to override the values from the command line.
-    <li> <code>setup_compiler_flags.cmake</code>
+    </li>
+    <li>
+      <code>setup_compiler_flags.cmake</code>
       sets up a suitable set of default compile flag for a known
       compiler by including the appropriate
       <code>setup_compiler_flags_*.cmake</code> file. When adding new
       flags or compiler support, please respect the following note
-
+    </li>
 <pre>
 #
 # (./cmake/setup_compiler_flags.cmake)
@@ -244,9 +280,11 @@ SET_TARGET_PROPERTIES(${DEAL_II_BASE_NAME}${DEAL_II_${build}_SUFFIX}
       exclusively reserved for the feature mechanism described
       below.</b> For some tests it might be necessary to manipulate
     <a href="#variables">global variables</a>.
+  </li>
   <li>
     A platform check should have a prominent comment explaining what
     it does and why it is there, and should state author and year.
+  </li>
   <li>
     There are a number of readily available platform check macros:
 
@@ -283,8 +321,10 @@ CHECK_CXX_SYMBOL_EXISTS(symbol header_file variable)
 
 CHECK_CXX_COMPILER_FLAG(flag variable)
   - Sets the variable to 1 if the compiler understands the flag. </pre>
+  </li>
 
-  <li> Necessary compiler flags can easily set in the string variable
+  <li>
+    Necessary compiler flags can easily set in the string variable
     <code>CMAKE_REQUIRED_FLAGS</code>. There is a small macro that does this
     job nicely:
 
@@ -293,7 +333,9 @@ PUSH_CMAKE_REQUIRED("-Werror")
 CHECK_CXX_SOURCE_COMPILES(...)
 RESET_CMAKE_REQUIRED() </pre>
 
-  <li> Necessary include directories and libraries necessary for
+  </li>
+  <li>
+    Necessary include directories and libraries necessary for
     linkage can be set in the list variables
     <code>CMAKE_REQUIRED_INCLUDES</code> and
     <code>CMAKE_REQUIRED_LIBRARIES</code>. It is best to append these
@@ -305,6 +347,7 @@ LIST(APPEND CMAKE_REQUIRED_INCLUDES &lt;a list of includes&gt;)
 LIST(APPEND CMAKE_REQUIRED_LIBRARIES &lt;a list of libraries&gt;)
 CHECK_CXX_SOURCE_COMPILES(...)
 RESET_CMAKE_REQUIRED() </pre>
+  </li>
 </ul>
 </p>
 
@@ -321,16 +364,19 @@ RESET_CMAKE_REQUIRED() </pre>
       The <i>sole</i> purpose of a find module is to find an external
       library (no deal.II specific dependency checking, no
       compatibility checking).
+    </li>
     <li>
       It should do so by appropriate <code>DEAL_II_FIND_LIBRARY</code>,
       <code>DEAL_II_FIND_PATH</code> and <code>DEAL_II_FIND_FILE</code>
       calls (same syntax as the native CMake functions; just a small
       wrapper to provide some useful output). The results of this calls
       should be the only cached variables.
+    </li>
     <li>
       A <code>WARNING</code>, <code>SEND_ERROR</code> or
       <code>FATAL_ERROR</code> must be avoided (the only exception is
       the <code>REQUIRED</code> keyword).
+    </li>
     <li>
       The following uncached variables are recognized by the feature
       configuration mechanism:
@@ -372,11 +418,13 @@ DEAL_II_PACKAGE_HANDLE(UMFPACK
       As a last set of parameters the full list of cached search result
       variables must be specified after the <code>CLEAR</code> keyword -
       this is used to provide a possibility to undo a feature search.
+    </li>
     <li>
       Only "local" variables "<code>_&lt;all lowercase&gt;</code>" or
       "global" variables prefixed by <code>FEATURE_</code> may be
       altered. Do not set <code>DEAL_II_*</code> or <code>CMAKE_*</code>
       variables directly!
+    </li>
     <li>
       A hint with <code>FEATURE_DIR</code> can be set up for
       convenience. It is best to start the <code>Find</code> module by
@@ -384,6 +432,7 @@ DEAL_II_PACKAGE_HANDLE(UMFPACK
 SET(FEATURE_DIR "" CACHE PATH "short description")
 SET_IF_EMPTY(FEATURE_DIR "$ENV{FEATURE_DIR}") </pre>
       and use <code>FEATURE_DIR</code> as a hint.
+    </li>
 </ul>
 
 
@@ -428,7 +477,7 @@ FEATURE_DEFINITIONS(|_DEBUG|_RELEASE) </pre>
     <li>
      <code>&lt;FEATURE&gt;</code> means all caps,
      <code>&lt;feature&gt;</code> means all lowercase
-
+    </li>
     <li>
       In <code>./cmake/configure/configure_&lt;feature&gt;.cmake</code>:
 <pre>
@@ -469,7 +518,7 @@ FEATURE_&lt;FEATURE&gt;_ERROR_MESSAGE()      (macro)
     the case that no external library was found (and bundled is not
     allowed to be used.) If not defined, a suitable default error message
     will be printed. </pre>
-
+    </li>
     <li>
       In <code>./bundled/configure_bundled.cmake</code>:
 <pre>
@@ -482,7 +531,7 @@ DEAL_II_FORCE_BUNDLED_&lt;FEATURE&gt;        (an option)
   - If &lt;feature&gt; can be set up by bundled libraries, this
     configuration option must be present to force a use of bundled
     dependencies </pre>
-
+    </li>
     <li>
       Furthermore, if
       <code>FEATURE_&lt;FEATURE&gt;_BUNDLED_CONFIGURED</code> is set to
@@ -517,10 +566,16 @@ DEAL_II_FORCE_BUNDLED_&lt;FEATURE&gt;        (an option)
     <li>
       The general (internal) logic for variables applies:
       <ul>
-        <li>A variable name without <code>_DEBUG</code> or
+        <li>
+          A variable name without <code>_DEBUG</code> or
           <code>_RELEASE</code>: Used for all targets
-        <li> <code>&lt;...&gt;_DEBUG</code>: <i>additionally</i> used for debug targets
-        <li> <code>&lt;...&gt;_RELEASE</code>: <i>additionally</i> used for release targets
+        </li>
+        <li>
+          <code>&lt;...&gt;_DEBUG</code>: <i>additionally</i> used for debug targets
+        </li>
+        <li>
+          <code>&lt;...&gt;_RELEASE</code>: <i>additionally</i> used for release targets
+        </li>
       </ul>
 
     <li>
@@ -528,66 +583,106 @@ DEAL_II_FORCE_BUNDLED_&lt;FEATURE&gt;        (an option)
       libraries, the <acronym>deal.II</acronym> library and user
       programs have to be linked against:
       <ul>
-        <li> <code>DEAL_II_LIBRARIES</code>
-        <li> <code>DEAL_II_LIBRARIES_DEBUG</code>
-        <li> <code>DEAL_II_LIBRARIES_RELEASE</code>
+        <li>
+          <code>DEAL_II_LIBRARIES</code>
+        </li>
+        <li>
+          <code>DEAL_II_LIBRARIES_DEBUG</code>
+        </li>
+        <li>
+          <code>DEAL_II_LIBRARIES_RELEASE</code>
+        </li>
       </ul>
+    </li>
 
     <li>
       For internal use, for setting necessary include dirs for the compilation of the
       <acronym>deal.II</acronym> library:
       <ul>
-        <li> <code>DEAL_II_INCLUDE_DIRS</code>
+        <li>
+          <code>DEAL_II_INCLUDE_DIRS</code>
+        </li>
       </ul>
+    </li>
     <li>
       Used to keep track of external include dirs, necessary for the
       compilation of user programs:
       <ul>
-        <li> <code>DEAL_II_USER_INCLUDE_DIRS</code>
+        <li>
+          <code>DEAL_II_USER_INCLUDE_DIRS</code>
+        </li>
       </ul>
+    </li>
     <li>
       Include dirs from bundled packages necessary for the compilation of
       the library and user projects out of the build directory:
       <ul>
-        <li> <code>DEAL_II_BUNDLED_INCLUDE_DIRS</code>
+        <li>
+          <code>DEAL_II_BUNDLED_INCLUDE_DIRS</code>
+        </li>
       </ul>
-
+    </li>
     <li>
       For internal use, for setting necessary preprocessor definitions
       (<code>-D&lt;...&gt;</code>) for the compilation of the
       deal.II library:
       <ul>
-        <li> <code>DEAL_II_DEFINITIONS</code>
-        <li> <code>DEAL_II_DEFINITIONS_DEBUG</code>
-        <li> <code>DEAL_II_DEFINITIONS_RELEASE</code>
+        <li>
+          <code>DEAL_II_DEFINITIONS</code>
+        </li>
+        <li>
+          <code>DEAL_II_DEFINITIONS_DEBUG</code>
+        </li>
+        <li>
+          <code>DEAL_II_DEFINITIONS_RELEASE</code>
+        </li>
       </ul>
+    </li>
     <li>
       For external use, used to keep track of external preprocessor
       definitions, necessary for the compilation of user programs:
       <ul>
-        <li> <code>DEAL_II_USER_DEFINITIONS</code>
-        <li> <code>DEAL_II_USER_DEFINITIONS_DEBUG</code>
-        <li> <code>DEAL_II_USER_DEFINITIONS_RELEASE</code>
+        <li>
+          <code>DEAL_II_USER_DEFINITIONS</code>
+        </li>
+        <li>
+          <code>DEAL_II_USER_DEFINITIONS_DEBUG</code>
+        </li>
+        <li>
+          <code>DEAL_II_USER_DEFINITIONS_RELEASE</code>
+        </li>
       </ul>
-
+    </li>
     <li>
       For internal and external use, for setting necessary compiler flags,
       e.g. <code>-std=c++11</code> (if available):
       <ul>
-        <li> <code>DEAL_II_CXX_FLAGS</code>
-        <li> <code>DEAL_II_CXX_FLAGS_DEBUG</code>
-        <li> <code>DEAL_II_CXX_FLAGS_RELEASE</code>
+        <li>
+          <code>DEAL_II_CXX_FLAGS</code>
+        </li>
+        <li>
+          <code>DEAL_II_CXX_FLAGS_DEBUG</code>
+        </li>
+        <li>
+          <code>DEAL_II_CXX_FLAGS_RELEASE</code>
+        </li>
       </ul>
-
+    </li>
     <li>
       For internal and external use, for setting necessary linker flags for
       the deal.II library and user programs:
       <ul>
-        <li> <code>DEAL_II_LINKER_FLAGS</code>
-        <li> <code>DEAL_II_LINKER_FLAGS_DEBUG</code>
-        <li> <code>DEAL_II_LINKER_FLAGS_RELEASE</code>
+        <li>
+          <code>DEAL_II_LINKER_FLAGS</code>
+        </li>
+        <li>
+          <code>DEAL_II_LINKER_FLAGS_DEBUG</code>
+        </li>
+        <li>
+          <code>DEAL_II_LINKER_FLAGS_RELEASE</code>
+        </li>
       </ul>
-
+    </li>
   </ul>
 </p>
 
@@ -600,12 +695,16 @@ In contrast to autoconf there is no intermediate step any more that
 automatically generates config.h.in. The setup in this file has to be
 done by hand. Please note:
   <ul>
-    <li> <code>config.h.in</code> should only contain a minimum of
-    necessary compile definitions to avoid unnecessary recompilation if
-    configuration changes.
-    <li> Definition toggles in <code>config.h.in</code> should have a
+    <li>
+      <code>config.h.in</code> should only contain a minimum of necessary
+      compile definitions to avoid unnecessary recompilation if configuration
+      changes.
+    </li>
+    <li>
+      Definition toggles in <code>config.h.in</code> should have a
       prominent comment explaining it and should be grouped by file
       exporting the definition.
+    </li>
   </ul>
 
 

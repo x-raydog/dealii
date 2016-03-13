@@ -49,19 +49,25 @@ cp contrib/utilities/dotgdbinit.py ~/.gdbinit</pre>
   pretty-printers from <acronym>deal.II</acronym> as well as other projects)
   takes a little more work. The recommended procedure is
   <ol>
-    <li> Decide on a directory where you will place all of your pretty-printing
+    <li>
+      Decide on a directory where you will place all of your pretty-printing
       files. A good choice would be creating a new
       folder <code>.gdbscripts</code> in your home directory, and this is the
       choice assumed for the rest of this demonstration.
-    <li> Move the Python source code parts (so everything after, and not
+    </li>
+    <li>
+      Move the Python source code parts (so everything after, and not
       including, the line containing just the word <code>python</code> near the
       beginning up to (and also not including) the line containing just the
       word <code>end</code>) of the
       file <code>contrib/utilities/dotgdbinit.py</code> into the directory from
       the first step. Rename this file to <code>deal.py</code> so that we can
       import it into the master GDB file in the next step.
-    <li> Add the following to your <code>.gdbinit</code> file, which also
+    </li>
+    <li>
+      Add the following to your <code>.gdbinit</code> file, which also
       resides in your home directory:
+    </li>
       <pre class="sample">
 set print pretty 1
 
