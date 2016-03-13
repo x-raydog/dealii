@@ -81,9 +81,7 @@
 <pre class="cmake">
 mkdir build
 cd build
-cmake -DCMAKE_INSTALL_PREFIX=/path/install/dir ../deal.II
-cmake ../deal.II
-</pre>
+cmake -DCMAKE_INSTALL_PREFIX=/path/install/dir ../deal.II cmake ../deal.II </pre>
       has no effect: In particular, the <code>CMAKE_INSTALL_PREFIX</code>
       specified on the first invocation of <code>cmake</code> is
       cached and therefore still valid after the second invocation
@@ -99,18 +97,14 @@ cmake ../deal.II
 <pre class="cmake">
 mkdir build
 cd build
-cmake  ../deal.II
-ccmake
-</pre>
+cmake  ../deal.II ccmake </pre>
       first configure a bare-bone setup and then call
       the <code>ccmake</code> program -- an interactive editor for the
       cached variables. Similarly,
 <pre class="cmake">
 mkdir build
 cd build
-cmake  ../deal.II
-cmake -D&lt;OPTION&gt;=&lt;VALUE&gt; [...] ../deal.II
-</pre>
+cmake  ../deal.II cmake -D&lt;OPTION&gt;=&lt;VALUE&gt; [...] ../deal.II </pre>
       sets a variable the second time around without destroying all
       the configuration that has happened the first time around. Likewise,
 <pre class="cmake">
@@ -118,8 +112,7 @@ mkdir build
 cd build
 cmake  ../deal.II
 cmake -DDEAL_II_WITH_METIS=OFF .
-cmake -DDEAL_II_WITH_TRILINOS=ON -DTRILINOS_DIR=/path/to/trilinos .
-</pre>
+cmake -DDEAL_II_WITH_TRILINOS=ON -DTRILINOS_DIR=/path/to/trilinos . </pre>
       switches off support for the METIS library that may have been
       automatically detected during the first invocation of
       <code>cmake</code> and enables support for Trilinos by enabling
@@ -133,19 +126,16 @@ cmake -DDEAL_II_WITH_TRILINOS=ON -DTRILINOS_DIR=/path/to/trilinos .
     <p>
       A cached variable can be set on the command line via
 <pre class="cmake">
-cmake -D&lt;VARIABLE&gt;=&lt;VALUE&gt; .
-</pre>
+cmake -D&lt;VARIABLE&gt;=&lt;VALUE&gt; . </pre>
 
       Cached variables can be removed from the cache via
 <pre class="cmake">
-cmake -U&lt;VARIABLE&gt; .
-</pre>
+cmake -U&lt;VARIABLE&gt; . </pre>
       It is possible to use <code>-U</code> together with a globbing
       expression. E.g. to remove the current feature configuration and
       rerun the autodetection one can invoke
 <pre class="cmake">
-cmake -U"DEAL_II_WITH_*" .
-</pre>
+cmake -U"DEAL_II_WITH_*" . </pre>
     </p>
 
     <a name="operatingccmake"></a>
@@ -156,17 +146,14 @@ cmake -U"DEAL_II_WITH_*" .
       user interface <code>ccmake</code> to the
       variables <code>cmake</code> stores upon running. It can be invoked via
 <pre class="cmake">
-ccmake .
-</pre>
+ccmake . </pre>
       or by
 <pre class="cmake">
-make edit_cache
-</pre>
+make edit_cache </pre>
 
       A reconfiguration (without editing the cache) can be run via
 <pre class="cmake">
-make rebuild_cache
-</pre>
+make rebuild_cache </pre>
     </p>
 
     <a name="operatingshortcuts"></a>
@@ -176,16 +163,14 @@ make rebuild_cache
       All variables starting with <code>WITH_</code> will be automatically
       renamed to <code>DEAL_II_WITH_*</code>. So, it suffices to specify
 <pre class="cmake">
-cmake -DWITH_MPI=ON &lt;...&gt;
-</pre>
+cmake -DWITH_MPI=ON &lt;...&gt; </pre>
       instead of the longer
 <pre class="cmake">
-cmake -DDEAL_II_WITH_MPI=ON &lt;...&gt;
-</pre>
+cmake -DDEAL_II_WITH_MPI=ON &lt;...&gt; </pre>
       The same holds for all variables starting with <code>COMPONENT_</code>
       and all individual component names:
       <code>DOCUMENTATION</code>, <code>EXAMPLES</code>
-      and <code>PARAMETER_GUI</code> (which will be expanded to the 
+      and <code>PARAMETER_GUI</code> (which will be expanded to the
       full <code>DEAL_II_COMPONENT_*</code> variable name).
     </p>
 
@@ -233,8 +218,7 @@ cmake -DDEAL_II_WITH_MPI=ON &lt;...&gt;
 #    setup_tests    - set up testsuite subprojects
 #    prune_tests    - remove all testsuite subprojects
 #
-###
-</pre>
+### </pre>
 
 
     <a name="buildinformation"></a>
@@ -271,8 +255,7 @@ cmake -DDEAL_II_WITH_MPI=ON &lt;...&gt;
 #
 #  Run  $ make info  to print a help message with a list of top level targets
 #
-###
-</pre>
+### </pre>
       This summary is also printed at the end of the configuration phase.
       It tells you about build and install directory locations, feature
       configuration (whether a feature is enabled with external/internal
@@ -285,9 +268,7 @@ cmake -DDEAL_II_WITH_MPI=ON &lt;...&gt;
 #            BOOST_VERSION = 1.52.0
 #            BOOST_DIR =
 #            Boost_INCLUDE_DIRS = /usr/include
-#            Boost_LIBRARIES = /usr/lib64/libboost_serialization-mt.so;/usr/lib64/libboost_system-mt.so;
-# [...]
-</pre>
+#            Boost_LIBRARIES = /usr/lib64/libboost_serialization-mt.so;/usr/lib64/libboost_system-mt.so; # [...] </pre>
       If this information is not sufficient, you might want to have a look
       at the following files in <code>CMAKE_BUILD_DIR</code>
       <ul>
@@ -316,8 +297,7 @@ cmake -DDEAL_II_WITH_MPI=ON &lt;...&gt;
 <pre class="cmake">
 $ mkdir build
 $ cd build
-$ cmake ..
-</pre>
+$ cmake .. </pre>
       The big advantage is that source files and intermediate files are
       strictly separated (highly desired for version control) and that you
       can have multiple build directories (with different configuration) at
@@ -328,8 +308,7 @@ $ cmake ..
       <b>Note:</b> However, under rare occasions an in-source build might be
       useful or needed , so it is supported
 <pre class="cmake">
-$ cmake .
-</pre>
+$ cmake . </pre>
       But we highly discourage it!
     </p>
 
@@ -341,8 +320,7 @@ $ cmake .
       generator that is used to something different. If you for example want
       to automatically generate an Eclipse project of deal.II, you can run
 <pre class="cmake">
-$ cmake -G"Eclipse CDT4 - Unix Makefiles" [...]
-</pre>
+$ cmake -G"Eclipse CDT4 - Unix Makefiles" [...] </pre>
       and load up the build directory as a project directly into Eclipse.
       Have a look at the <a href="https://code.google.com/p/dealii/w/list"
       target="_top">Wiki</a> for more information.
@@ -352,8 +330,7 @@ $ cmake -G"Eclipse CDT4 - Unix Makefiles" [...]
       An interesting alternative to (GNU) Make might also be <a
       href="http://martine.github.io/ninja/">Ninja</a>. Configure via
 <pre class="cmake">
-$ cmake -GNinja [...]
-</pre>
+$ cmake -GNinja [...] </pre>
       and run <code>ninja</code> instead of <code>make</code>.
     </p>
 
@@ -402,8 +379,7 @@ $ cmake -GNinja [...]
 documentation  - builds and installs the 'documentation' component
 examples       - builds and installs the 'examples' component
 library        - builds and installs the 'library' component
-parameter_gui  - builds and installs the 'parameter_gui' component
-</pre>
+parameter_gui  - builds and installs the 'parameter_gui' component </pre>
 
 
     <a name="configure"></a>
@@ -475,8 +451,7 @@ DEAL_II_WITH_SLEPC
 DEAL_II_WITH_THREADS
 DEAL_II_WITH_TRILINOS
 DEAL_II_WITH_UMFPACK
-DEAL_II_WITH_ZLIB
-</pre>
+DEAL_II_WITH_ZLIB </pre>
       They all have standard meaning with the exception of
       two:
       <ul>
@@ -498,8 +473,7 @@ DEAL_II_WITH_ZLIB
     <p>
       Additionally, the variable
 <pre class="cmake">
-DEAL_II_CXX_VERSION_FLAG
-</pre>
+DEAL_II_CXX_VERSION_FLAG </pre>
       may be set to specify the <code>C++</code> language version flag passed to
       the compiler.
     </p>
@@ -590,8 +564,7 @@ DEAL_II_CXX_VERSION_FLAG
             Paths specified via <code>CMAKE_PREFIX_PATH</code> take
             precedence, e.g. with
 <pre class="cmake">
-make -DCMAKE_PREFIX_PATH=~/workspace/local ../deal.II
-</pre>
+make -DCMAKE_PREFIX_PATH=~/workspace/local ../deal.II </pre>
 	    libraries from <code>~/workspace/local</code> will be
 	    preferred for dependency resolution.
 	  </p>
@@ -601,13 +574,11 @@ make -DCMAKE_PREFIX_PATH=~/workspace/local ../deal.II
 	    Hints given by <code>&lt;library&gt;_DIR</code> via command
             line or environment for <i>some</i> libraries:
 <pre class="cmake">
-make -DP4EST_DIR=~/workspace/p4est-install/ ../deal.II
-</pre>
+make -DP4EST_DIR=~/workspace/p4est-install/ ../deal.II </pre>
 	    or
 <pre class="cmake">
 export P4EST_DIR=~/workspace/p4est-install/
-cmake ../deal.II
-</pre>
+cmake ../deal.II </pre>
             where <code>-D&lt;library&gt;_DIR</code> takes precedence
             over environment.
 	  </p>
@@ -626,8 +597,7 @@ PETSC_DIR and PETSC_ARCH (forming ${PETSC_DIR}/${PETSC_ARCH}),
 SLEPC_DIR (forming ${SLEPC_DIR}/${PETSC_ARCH}),
 TBB_DIR,
 TRILINOS_DIR,
-UMFPACK_DIR and SUITESPARSE_DIR (AMD_DIR, CHOLMOD_DIR, COLAMD_DIR, SUITESPARSECONFIG_DIR)
-</pre>
+UMFPACK_DIR and SUITESPARSE_DIR (AMD_DIR, CHOLMOD_DIR, COLAMD_DIR, SUITESPARSECONFIG_DIR) </pre>
 	  </p>
 
 	<li>
@@ -643,8 +613,7 @@ UMFPACK_DIR and SUITESPARSE_DIR (AMD_DIR, CHOLMOD_DIR, COLAMD_DIR, SUITESPARSECO
       hinted or overwritten directly (variable names are highly
       dependent on the actual library). You can get a list via
 <pre class="cmake">
-make edit_cache
-</pre>
+make edit_cache </pre>
       and entering advanced configuration mode by pressing [t].
       Variables that could not be determined are suffixed with
       <code>-NOTFOUND</code> and may be set by hand.
@@ -666,8 +635,7 @@ CMake Warning at source/CMakeLists.txt:65 (ADD_LIBRARY):
     runtime library [libtbb.so.2] in /usr/lib may be hidden by files in:
       /my/private/lib
 
-  Some of these libraries may not be found correctly.
-</pre>
+  Some of these libraries may not be found correctly. </pre>
 
 <p>This is not a problem of CMake or deal.II, but rather a general
   Linux problem. In order to fix this, you have two options:</p>
@@ -692,8 +660,7 @@ cmake -D&lt;feature&gt;_FOUND=true \
       -D&lt;feature&gt;_LIBRARIES="library;and;complete;link;interface" \
     ( -D&lt;feature&gt;_INCLUDE_DIRS="semicolon;separated;list;of;include;dirs" \
       -D&lt;feature&gt;_LINKER_FLAGS="..." \
-      -D&lt;feature&gt;_&lt;...depending on library...&gt; )
-</pre>
+      -D&lt;feature&gt;_&lt;...depending on library...&gt; ) </pre>
 
       The first define ensures that <code>cmake</code> does not
       call the corresponding <code>Find&lt;lib&gt;.cmake</code> module.
@@ -710,8 +677,7 @@ cmake -D&lt;feature&gt;_FOUND=true \
 <pre class="cmake">
 cmake -DLAPACK_FOUND=true \
       -DLAPACK_LIBRARIES="/tmp/petsc-3.3-p6/arch-linux2-c-debug/lib/libflapack.a;/tmp/petsc-3.3-p6/arch-linux2-c-debug/lib/libfblas.a" \
-      -DLAPACK_LINKER_FLAGS="-lgfortran -lm"
-</pre>
+      -DLAPACK_LINKER_FLAGS="-lgfortran -lm" </pre>
 
       You can set these values on the command line, with <code>ccmake</code>
       or by providing an initial cache file, see
@@ -840,8 +806,7 @@ cmake -DLAPACK_FOUND=true \
 <pre class="cmake">
 CC=mpicc CXX=mpicxx FC=mpif90 cmake &lt;...&gt;
 
-cmake -DCMAKE_C_COMPILER="mpicc" -DCMAKE_CXX_COMPILER="mpicxx" -DCMAKE_Fortran_COMPILER="mpif90" &lt;...&gt;
-</pre>
+cmake -DCMAKE_C_COMPILER="mpicc" -DCMAKE_CXX_COMPILER="mpicxx" -DCMAKE_Fortran_COMPILER="mpif90" &lt;...&gt; </pre>
       Please note that
       <ul>
         <li>
@@ -869,8 +834,7 @@ DEAL_II_CXX_FLAGS_RELEASE - additional flags for the release library
 
 DEAL_II_LINKER_FLAGS         - used during all builds
 DEAL_II_LINKER_FLAGS_DEBUG   - additional flags for the debug library
-DEAL_II_LINKER_FLAGS_RELEASE - additional flags for the release library
-</pre>
+DEAL_II_LINKER_FLAGS_RELEASE - additional flags for the release library </pre>
 
 	  The content of the cached variables will be preserved
 	  and added <i>to the end</i> of the default compiler flags,
@@ -878,8 +842,7 @@ DEAL_II_LINKER_FLAGS_RELEASE - additional flags for the release library
 	  <code>-Wsign-compare</code>, set by the build system, can be
 	  overwritten by specifying:
 <pre class="cmake">
-cmake -DDEAL_II_CXX_FLAGS="-Wno-sign-compare" &lt;...&gt;
-</pre>
+cmake -DDEAL_II_CXX_FLAGS="-Wno-sign-compare" &lt;...&gt; </pre>
 
         <li>
           Set the corresponding environment variables: <code>CFLAGS</code>,
@@ -909,8 +872,7 @@ cmake -DDEAL_II_CXX_FLAGS="-Wno-sign-compare" &lt;...&gt;
       installed when invoking <code>make install</code> to is set with the
       help of
 <pre class="cmake">
-CMAKE_INSTALL_PREFIX
-</pre>
+CMAKE_INSTALL_PREFIX </pre>
 
       The default directory structure is:
 <pre class="cmake">
@@ -923,8 +885,7 @@ ${CMAKE_INSTALL_PREFIX}/
     share/deal.II/cmake/macros
     ./
     doc
-    examples
-</pre>
+    examples </pre>
       </ul>
     </p>
 
@@ -939,8 +900,7 @@ DEAL_II_PROJECT_CONFIG_RELDIR
 DEAL_II_SHARE_RELDIR
 DEAL_II_DOCREADME_RELDIR
 DEAL_II_DOCHTML_RELDIR
-DEAL_II_EXAMPLES_RELDIR
-</pre>
+DEAL_II_EXAMPLES_RELDIR </pre>
     </p>
 
     <a name="advanced"></a>
@@ -949,8 +909,7 @@ DEAL_II_EXAMPLES_RELDIR
     <p>
       A sample configuration file for preloading the CMake cache with
 <pre class="cmake">
-$ cmake -C config.sample <...>
-</pre>
+$ cmake -C config.sample <...> </pre>
       can be found <a href="config.sample" target="_top">here</a>.
       This sample configuration covers all options mentioned in this
       documentation as well as some advanced aspects in feature
@@ -973,24 +932,21 @@ make  deal_II.g        # only debug library
 make  deal_II          # only release (optimized) library
 make  all              # both
 
-make  obj_grid.release # all objects in ./source/grid in release configuration
-</pre>
+make  obj_grid.release # all objects in ./source/grid in release configuration </pre>
     </p>
 
     <p>
       For a complete list of possible targets that allow even
       finer-grained control, do
 <pre class="cmake">
-make  help
-</pre>
+make  help </pre>
     </p>
 
     <p>
       It is frequently useful to be able to see what a particular
       command does. In that case, use the following:
 <pre class="cmake">
-make  deal_II.g VERBOSE=ON
-</pre>
+make  deal_II.g VERBOSE=ON </pre>
       This will show, for every command executed, the exact command
       line with which it was invoked, including compiler arguments,
       etc. Every command <code>cmake</code> executes starts with

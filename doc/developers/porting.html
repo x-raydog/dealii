@@ -41,8 +41,7 @@
 <pre>
 DEAL_II_CXX_FLAGS         - used during all builds
 DEAL_II_CXX_FLAGS_DEBUG   - additional flags for the debug library
-DEAL_II_CXX_FLAGS_RELEASE - additional flags for the release library
-</pre>
+DEAL_II_CXX_FLAGS_RELEASE - additional flags for the release library </pre>
           After that try to compile the library with minimal external
           dependencies (<code>-DDEAL_II_ALLOW_AUTODETECTION=OFF</code>, for
           further information see the <a href="../users/cmake.html">deal.II CMake
@@ -53,8 +52,7 @@ DEAL_II_CXX_FLAGS_RELEASE - additional flags for the release library
 <pre>
 cmake/setup_compiler_flags.cmake
 cmake/setup_compiler_flags_gnu.cmake
-cmake/setup_compiler_flags_icc.cmake
-</pre>
+cmake/setup_compiler_flags_icc.cmake </pre>
           Patches are highly welcome! See <a href="http://www.dealii.org/participate.html">here</a>
           for information on how to get in contact with us.
         <li>
@@ -63,8 +61,7 @@ cmake/setup_compiler_flags_icc.cmake
 cmake/checks/check_01_for_compiler_features.cmake
 cmake/checks/check_01_for_cxx_features.cmake
 cmake/checks/check_03_for_compiler_bugs.cmake
-include/deal.II/base/config.h.in
-</pre>
+include/deal.II/base/config.h.in </pre>
           to see how compiler specific checks are done.
       </ul>
     </p>
@@ -105,8 +102,7 @@ cmake/checks/check_for_compiler_bugs.cmake
 cmake/checks/check_for_compiler_features.cmake
 cmake/checks/check_for_cxx_features.cmake
 cmake/checks/check_for_system_features.cmake
-include/deal.II/base/config.h.in
-</pre>
+include/deal.II/base/config.h.in </pre>
           to see how platform and compiler specific checks are done.
 	<li>
           Of course, we would be happy to hear about the changes you made
@@ -147,8 +143,7 @@ include/deal.II/base/config.h.in
 $ cmake -DCMAKE_TOOLCHAIN_FILE=&lt;...&gt;/Toolchain.sample \
         -DDEAL_II_FORCE_BUNDLED_BOOST=ON \
         -DDEAL_II_ALLOW_AUTODETECTION=OFF \
-        ../deal.II
-</pre>
+        ../deal.II </pre>
       where <code>CMAKE_TOOLCHAIN_FILE</code> points to the toolchain file.
       The remaining configuration can be adjusted at will, see <a
       href="cmake.html">the documentation</a>.

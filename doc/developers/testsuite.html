@@ -73,8 +73,7 @@
       under the <code>tests</code> subdirectory. The easiest way to obtain
       both of them is to check out the current development sources via git:
 <pre>
-$ git clone https://github.com/dealii/dealii
-</pre>
+$ git clone https://github.com/dealii/dealii </pre>
     </p>
 
     <a name="setupbuild"></a>
@@ -86,8 +85,7 @@ $ git clone https://github.com/dealii/dealii
       necessary). After that you can set up the testsuite via the
       "setup_tests" target:
 <pre>
-$ make setup_tests
-</pre>
+$ make setup_tests </pre>
       This will set up all tests supported by the current configuration.
       The testsuite can now be run in the current <i>build directory</i> as
       described below.
@@ -96,9 +94,7 @@ $ make setup_tests
     <p>
       The setup can be fine-tuned using the following commands:
 <pre>
-
-$ make prune_tests - removes all testsuite subprojects
-</pre>
+$ make prune_tests - removes all testsuite subprojects </pre>
 
     <p>
       In addition, when setting up the testsuite, the following environment
@@ -111,12 +107,10 @@ TEST_TIME_LIMIT
 
 TEST_PICKUP_REGEX
   - A regular expression to select only a subset of tests during setup.
-    An empty string is interpreted as a catchall (this is the default).
-</pre>
+    An empty string is interpreted as a catchall (this is the default). </pre>
 For example,
 <pre>
-TEST_PICKUP_REGEX="umfpack" make setup_tests
-</pre>
+TEST_PICKUP_REGEX="umfpack" make setup_tests </pre>
 will only enable tests which match the string "umfpack" in category or
 name.
     </p>
@@ -132,8 +126,7 @@ name.
 <pre>
 $ mkdir tests/build
 $ cd tests/build
-$ cmake ..
-</pre>
+$ cmake .. </pre>
       After that the same configuration targets as described <a
       href="setupbuild">above</a> are available.
     </p>
@@ -144,8 +137,7 @@ $ cmake ..
     <p>
       The testsuite can now be run in the <i>build directory</i> via
 <pre>
-$ ctest [-j N]
-</pre>
+$ ctest [-j N] </pre>
       Here, <code>N</code> is the number of concurrent tests that should be
       run, in the same way as you can say <code>make -jN</code>. The testsuite
       is huge and will need around 12h on current computers
@@ -158,8 +150,7 @@ $ ctest [-j N]
       a regular expression, you can use
 <pre>
 $ ctest [-j N] -R '&lt;positive regular expression&gt;'
-$ ctest [-j N] -E '&lt;negative regular expression&gt;'
-</pre>
+$ ctest [-j N] -E '&lt;negative regular expression&gt;' </pre>
     </p>
 
     <p>
@@ -207,8 +198,7 @@ Total Test time (real) =  20.43 sec
 The following tests FAILED:
         1077 - base/thread_validity_08.debug (Failed)
         1078 - base/thread_validity_08.release (Failed)
-Errors while running CTest
-</pre>
+Errors while running CTest </pre>
       If a test failed (like <code>base/thread_validity_08.debug</code> in above
       example output), you might want to find out what exactly went wrong. To
       this end, you can search
@@ -240,8 +230,7 @@ test 1077
 1077:
 1077: base/thread_validity_08.debug: ******    RUN failed    *******
 1077:
-1077: ===============================    OUTPUT END   ===============================
-</pre>
+1077: ===============================    OUTPUT END   =============================== </pre>
       So this specific test aborted in the <code>RUN</code> stage.
     </p>
 
@@ -254,8 +243,7 @@ xx: Test &lt;category&gt;/&lt;test&gt;.&lt;build&gt;: PASSED
 xx: ===============================   OUTPUT BEGIN  ===============================
 xx: [...]
 xx: &lt;category&gt;/&lt;test&gt;.&lt;build&gt;: PASSED.
-xx: ===============================    OUTPUT END   ===============================
-</pre>
+xx: ===============================    OUTPUT END   =============================== </pre>
       And for a test that fails in stage <code>&lt;stage&gt;</code>:
 <pre>
 xx: Test &lt;category&gt;/&lt;test&gt;.&lt;build&gt;: &lt;stage&gt;
@@ -264,8 +252,7 @@ xx: [...]
 xx: &lt;category&gt;/&lt;test&gt;.&lt;build&gt;: &lt;stage&gt; failed. [...]
 xx:
 xx: &lt;category&gt;/&lt;test&gt;.&lt;build&gt;: ******    &lt;stage&gt; failed    *******
-xx: ===============================    OUTPUT END   ===============================
-</pre>
+xx: ===============================    OUTPUT END   =============================== </pre>
       Hereby, <code>&lt;stage&gt;</code> indicates the stage in which the
       test failed:
       <ul>
@@ -320,8 +307,7 @@ xx: ===============================    OUTPUT END   ============================
       </ol>
       In order to achieve the first two, configure the library with
 <pre>
-cmake -DCMAKE_BUILD_TYPE=Debug -DDEAL_II_SETUP_COVERAGE=ON <...>
-</pre>
+cmake -DCMAKE_BUILD_TYPE=Debug -DDEAL_II_SETUP_COVERAGE=ON <...> </pre>
       You can then build the library and run the tests as usual.
     </p>
 
@@ -332,12 +318,10 @@ cmake -DCMAKE_BUILD_TYPE=Debug -DDEAL_II_SETUP_COVERAGE=ON <...>
       where we already gather testsuite results
       (see <a href="#submit">below</a>). You can do so by invoking
 <pre>
-ctest -DCOVERAGE=ON <...> -S ../tests/run_testsuite.cmake
-</pre>
+ctest -DCOVERAGE=ON <...> -S ../tests/run_testsuite.cmake </pre>
       when running the testsuite, or directly by
 <pre>
-ctest <...> -S ../tests/run_coverage.cmake
-</pre>
+ctest <...> -S ../tests/run_coverage.cmake </pre>
     </p>
 
     <p>
@@ -367,8 +351,7 @@ ctest <...> -S ../tests/run_coverage.cmake
       comparison (under the testsuite directory <code>tests</code>):
 <pre>
 category/test.cc
-category/test.output
-</pre>
+category/test.output </pre>
       <code>category</code> will be one of the existing subdirectory
       under <code>tests/</code>, e.g., <code>lac/</code>, <code>base/</code>,
       or <code>mpi/</code>. Historically, we have grouped tests into the
@@ -427,8 +410,7 @@ category/test.output
       just <code>category/test.output</code>. In pseudo code:
 <pre>
 category/test.[with_&lt;string&gt;(&lt;=|&gt;=|=|&lt;|&gt;)&lt;on|off|version&gt;.]*
-              [mpirun=&lt;x&gt;.][expect=&lt;y&gt;.][binary.][&lt;debug|release&gt;.]output
-</pre>
+              [mpirun=&lt;x&gt;.][expect=&lt;y&gt;.][binary.][&lt;debug|release&gt;.]output </pre>
       Normally, a test will be set up so that it runs twice, once in debug and
       once in release configuration.
       If a specific test can only be run in debug or release configurations but
@@ -436,8 +418,7 @@ category/test.[with_&lt;string&gt;(&lt;=|&gt;=|=|&lt;|&gt;)&lt;on|off|version&gt
       <code>.debug</code> or <code>.release</code> directly before
       <code>.output</code>, e.g.:
 <pre>
-category/test.debug.output
-</pre>
+category/test.debug.output </pre>
       This way, the test will only be set up to build and run against the debug
       library. If a test should run in both configurations but, for some
       reason, produces different output (e.g., because it triggers an
@@ -445,8 +426,7 @@ category/test.debug.output
       files:
 <pre>
 category/test.debug.output
-category/test.release.output
-</pre>
+category/test.release.output </pre>
     </p>
 
     <a name="restrictfeature"></a>
@@ -456,20 +436,17 @@ category/test.release.output
       tests to specific feature configurations, e.g.,
 <pre>
 category/test.with_umfpack=on.output, or
-category/test.with_zlib=off.output
-</pre>
+category/test.with_zlib=off.output </pre>
       These tests will only be set up if the specified feature was configured.
       It is possible to provide different output files for disabled/enabled
       features, e.g.,
 <pre>
 category/test.with_64bit_indices=on.output
-category/test.with_64bit_indices=off.output
-</pre>
+category/test.with_64bit_indices=off.output </pre>
       Furthermore, a test can be restricted to be run only if specific
       versions of a feature are available. For example
 <pre>
-category/test.with_trilinos.geq.11.14.1.output
-</pre>
+category/test.with_trilinos.geq.11.14.1.output </pre>
       will only be run if (a) trilinos is available, i.e.,
       <code>DEAL_II_WITH_TRILINOS=TRUE</code> and (b) if trilinos is at least
       of version 11.14.1. Supported operators are
@@ -479,8 +456,7 @@ category/test.with_trilinos.geq.11.14.1.output
     <p>
       It is also possible to declare multiple constraints subsequently, e.g.
 <pre>
-category/test.with_umfpack=on.with_zlib=on.output
-</pre>
+category/test.with_umfpack=on.with_zlib=on.output </pre>
     </p>
     <p>
       <b>Note:</b> The tests in some subdirectories of <code>tests/</code> are
@@ -501,8 +477,7 @@ category/test.with_umfpack=on.with_zlib=on.output
       processes <code>N</code> with which a program needs to be run for
       comparison with a given output file is specified as follows:
 <pre>
-category/test.mpirun=N.output
-</pre>
+category/test.mpirun=N.output </pre>
       It is quite typical for an MPI-enabled test to have multiple output
       files for different numbers of MPI processes.
     </p>
@@ -514,8 +489,7 @@ category/test.mpirun=N.output
       If a test produces binary output add <code>binary</code> to the
       output file to indicate this:
 <pre>
-category/test.binary.output
-</pre>
+category/test.binary.output </pre>
       The testsuite ensures that a diff tool suitable for comparing binary
       output files is used instead of the default diff tool, which (as in
       the case of <code>numdiff</code>) might be unable to compare binary
@@ -538,8 +512,7 @@ category/test.binary.output
 category/test.output
 category/test.output.2
 category/test.output.3
-category/test.output.4
-</pre>
+category/test.output.4 </pre>
       The testsuite will try to match the output against all variants in
       alphabetical order starting with the main output file.
     </p>
@@ -573,8 +546,7 @@ category/test.output.4
       test stage different than <code>PASSED</code> you can specify it via
       <code>expect=&lt;stage&gt;</code>, e.g.:
 <pre>
-category/test.expect=run.output
-</pre>
+category/test.expect=run.output </pre>
     </p>
 
 
@@ -627,8 +599,7 @@ int main ()
   deallog << i << std::endl;
 
   return 0;
-}
-</pre>
+} </pre>
 
     <p>This code opens an output file <code>output</code> in the current working
     directory and then writes all output you generate to it, through the
@@ -658,17 +629,14 @@ int main ()
       create an empty comparison file for it:
 <pre>
 category/my_new_test.cc
-category/my_new_test.output
-</pre>
+category/my_new_test.output </pre>
       Now, rerun
 <pre>
-$ make setup_tests
-</pre>
+$ make setup_tests </pre>
       so that your new test is picked up. After that it is possible to
       invoke it with
 <pre>
-$ ctest -V -R "category/my_new_test"
-</pre>
+$ ctest -V -R "category/my_new_test" </pre>
     </p>
 
     <p>
@@ -686,12 +654,10 @@ $ ctest -V -R "category/my_new_test"
       The next step is to copy and rename this output file to the source
       directory and replace the original comparison file with it:
 <pre>
-category/my_new_test.output
-</pre>
+category/my_new_test.output </pre>
       At this point running the test again should be successful:
 <pre>
-$ ctest -V -R "category/my_new_test"
-</pre>
+$ ctest -V -R "category/my_new_test" </pre>
     </p>
 
     <a name="layoutaddcategory"></a>
@@ -707,8 +673,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 2.8.8)
 INCLUDE(../setup_testsubproject.cmake)
 PROJECT(testsuite CXX)
 INCLUDE(${DEAL_II_TARGET_CONFIG})
-DEAL_II_PICKUP_TESTS()
-</pre>
+DEAL_II_PICKUP_TESTS() </pre>
 
     <a name="submit"></a>
     <h2>Submitting test results</h2>
@@ -719,8 +684,7 @@ DEAL_II_PICKUP_TESTS()
       instance just invoke ctest within a build directory (or designated
       build directory) with the <code>-S</code> option pointing to the
 <pre>
-$ ctest [...] -V -S ../tests/run_testsuite.cmake
-</pre>
+$ ctest [...] -V -S ../tests/run_testsuite.cmake </pre>
       The script will run configure, build and ctest and submit the results
       to the CDash server. It does not matter whether the configure, build
       or ctest stages were run before that. Also in script mode, you can
@@ -736,8 +700,7 @@ $ ctest [...] -V -S ../tests/run_testsuite.cmake
     <p>
       <b>Note:</b> The following variables can be set to via
 <pre>
-ctest -D&lt;variable&gt;=&lt;value&gt; [...]
-</pre>
+ctest -D&lt;variable&gt;=&lt;value&gt; [...] </pre>
       to control the behaviour of the <code>run_testsuite.cmake</code>
       script:
 <pre>
@@ -792,8 +755,7 @@ COVERAGE
     "Experimental" section.
 
 MAKEOPTS
-  - Additional options that will be passed directly to make (or ninja).
-</pre>
+  - Additional options that will be passed directly to make (or ninja). </pre>
       Furthermore, the variables described <a href="#setup">above</a> can also be
       set and will be handed automatically down to <code>cmake</code>.
     </p>
@@ -818,8 +780,7 @@ MAKEOPTS
 <pre>
 mkdir dealii/build
 cd dealii/build
-ctest -j4 -S ../tests/run_buildtest.cmake
-</pre>
+ctest -j4 -S ../tests/run_buildtest.cmake </pre>
     </p>
 
     <p>
@@ -835,8 +796,7 @@ ctest -j4 -S ../tests/run_buildtest.cmake
       cmake use a <a href="../users/config.sample">configuration file</a>
       to preseed the cache as explained <a href="#submit">above</a>:
 <pre>
-$ ctest -DCONFIG_FILE="[...]/config.sample" [...]
-</pre>
+$ ctest -DCONFIG_FILE="[...]/config.sample" [...] </pre>
     </p>
 
 

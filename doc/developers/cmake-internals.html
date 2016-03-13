@@ -74,8 +74,7 @@ FOREACH(_build ${DEAL_II_BUILD_TYPES})
       SET(_keyword "optimized")
     ENDIF()
   ENDIF()
-ENDFOREACH()
-</pre>
+ENDFOREACH() </pre>
 
 <ul>
   <li>
@@ -102,8 +101,7 @@ SET_TARGET_PROPERTIES(${DEAL_II_BASE_NAME}${DEAL_II_${build}_SUFFIX}
   LINK_FLAGS "${DEAL_II_LINKER_FLAGS_${build}}"
   COMPILE_DEFINITIONS "${DEAL_II_DEFINITIONS};${DEAL_II_DEFINITIONS_${build}}"
   COMPILE_FLAGS "${DEAL_II_CXX_FLAGS_${build}}"
-  )
-</pre>
+  ) </pre>
 
 <p>
   CMake operates almost always with variables in global state. To
@@ -202,8 +200,7 @@ SET_TARGET_PROPERTIES(${DEAL_II_BASE_NAME}${DEAL_II_${build}_SUFFIX}
 #   ./cmake/checks/check_01_cxx_features.cmake
 #   ./cmake/checks/check_01_system_features.cmake
 #   ./cmake/checks/check_02_compiler_bugs.cmake
-#
-</pre>
+# </pre>
   </ul>
 </p>
 
@@ -234,8 +231,7 @@ SET_TARGET_PROPERTIES(${DEAL_II_BASE_NAME}${DEAL_II_${build}_SUFFIX}
     features and support
 
 ./cmake/checks/check_02_compiler_bugs.cmake
-  - Check for compiler bugs
-</pre>
+  - Check for compiler bugs </pre>
 
 <ul>
   <li>
@@ -286,8 +282,7 @@ CHECK_CXX_SYMBOL_EXISTS(symbol header_file variable)
     (Don't forget to specify the link libraries, see below.)
 
 CHECK_CXX_COMPILER_FLAG(flag variable)
-  - Sets the variable to 1 if the compiler understands the flag.
-</pre>
+  - Sets the variable to 1 if the compiler understands the flag. </pre>
 
   <li> Necessary compiler flags can easily set in the string variable
     <code>CMAKE_REQUIRED_FLAGS</code>. There is a small macro that does this
@@ -296,8 +291,7 @@ CHECK_CXX_COMPILER_FLAG(flag variable)
 <pre class="cmake">
 PUSH_CMAKE_REQUIRED("-Werror")
 CHECK_CXX_SOURCE_COMPILES(...)
-RESET_CMAKE_REQUIRED()
-</pre>
+RESET_CMAKE_REQUIRED() </pre>
 
   <li> Necessary include directories and libraries necessary for
     linkage can be set in the list variables
@@ -310,8 +304,7 @@ RESET_CMAKE_REQUIRED()
 LIST(APPEND CMAKE_REQUIRED_INCLUDES &lt;a list of includes&gt;)
 LIST(APPEND CMAKE_REQUIRED_LIBRARIES &lt;a list of libraries&gt;)
 CHECK_CXX_SOURCE_COMPILES(...)
-RESET_CMAKE_REQUIRED()
-</pre>
+RESET_CMAKE_REQUIRED() </pre>
 </ul>
 </p>
 
@@ -350,8 +343,7 @@ FEATURE_LINKER_FLAGS(|_DEBUG|_RELEASE)
 FEATURE_CXX_FLAGS(|_DEBUG|_RELEASE)
 FEATURE_DEFINITIONS(|_DEBUG|_RELEASE)
 FEATURE_VERSION
-FEATURE_VERSION(_MAJOR|_MINOR|_SUBMINOR)
-</pre>
+FEATURE_VERSION(_MAJOR|_MINOR|_SUBMINOR) </pre>
       The <code>DEAL_II_PACKAGE_HANDLE</code> macro should be exclusively
       used for setting up these variables (except the version variants). An
       example invocation is
@@ -371,8 +363,7 @@ DEAL_II_PACKAGE_HANDLE(UMFPACK
     UMFPACK_LIBRARY CHOLMOD_LIBRARY CCOLAMD_LIBRARY COLAMD_LIBRARY
     CAMD_LIBRARY SuiteSparse_config_LIBRARY AMD_LIBRARY UMFPACK_INCLUDE_DIR
     AMD_INCLUDE_DIR SuiteSparse_config_INCLUDE_DIR
-  )
-</pre>
+  ) </pre>
       The macro concatenates all specified variables into the final
       <code>FEATURE_SUFFIX</code> variable. Hereby, a feature is
       successfully found if all <code>REQUIRED</code> variables are
@@ -391,8 +382,7 @@ DEAL_II_PACKAGE_HANDLE(UMFPACK
       convenience. It is best to start the <code>Find</code> module by
 <pre class="cmake">
 SET(FEATURE_DIR "" CACHE PATH "short description")
-SET_IF_EMPTY(FEATURE_DIR "$ENV{FEATURE_DIR}")
-</pre>
+SET_IF_EMPTY(FEATURE_DIR "$ENV{FEATURE_DIR}") </pre>
       and use <code>FEATURE_DIR</code> as a hint.
 </ul>
 
@@ -424,8 +414,7 @@ FEATURE_LIBRARIES(|_DEBUG|_RELEASE)
 FEATURE_(|USER_|BUNDLED_)INCLUDE_DIRS
 FEATURE_LINKER_FLAGS(|_DEBUG|_RELEASE)
 FEATURE_CXX_FLAGS(|_DEBUG|_RELEASE)
-FEATURE_DEFINITIONS(|_DEBUG|_RELEASE)
-</pre>
+FEATURE_DEFINITIONS(|_DEBUG|_RELEASE) </pre>
   are appended to the set of <a href="#variables">global variables</a>
   and <code>DEAL_II_WITH_&lt;FEATURE&gt;</code> is set to
   <code>TRUE</code>.
@@ -479,8 +468,7 @@ FEATURE_&lt;FEATURE&gt;_ERROR_MESSAGE()      (macro)
   - which should print a meaningful error message (with FATAL_ERROR) for
     the case that no external library was found (and bundled is not
     allowed to be used.) If not defined, a suitable default error message
-    will be printed.
-</pre>
+    will be printed. </pre>
 
     <li>
       In <code>./bundled/configure_bundled.cmake</code>:
@@ -493,8 +481,7 @@ FEATURE_&lt;FEATURE&gt;_HAVE_BUNDLED         (a boolean)
 DEAL_II_FORCE_BUNDLED_&lt;FEATURE&gt;        (an option)
   - If &lt;feature&gt; can be set up by bundled libraries, this
     configuration option must be present to force a use of bundled
-    dependencies
-</pre>
+    dependencies </pre>
 
     <li>
       Furthermore, if
@@ -678,8 +665,7 @@ DEAL_II_ADD_LIBRARY(obj_dofs OBJECT ${_src} ${_header} ${_inst})
 # files listed in ${inst_in_files}. Appropriate target dependencies
 # will be added to obj_dofs.debug and obj_dofs.release.
 #
-EXPAND_INSTANTIATIONS(obj_dofs "${inst_in_files}")
-</pre>
+EXPAND_INSTANTIATIONS(obj_dofs "${inst_in_files}") </pre>
 </p>
 
 <p>
