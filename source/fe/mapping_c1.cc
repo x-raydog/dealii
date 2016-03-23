@@ -66,7 +66,7 @@ MappingC1<2>::MappingC1Generic::add_line_support_points (const Triangulation<2>:
                                                          std::vector<Point<2> > &a) const
 {
   const unsigned int dim = 2;
-  std::vector<Point<dim> > line_points (2);
+  static const QGaussLobatto<1> quad_points(4);
 
   // loop over each of the lines, and if it is at the boundary, then first get
   // the boundary description and second compute the points on it. if not at
@@ -79,11 +79,10 @@ MappingC1<2>::MappingC1Generic::add_line_support_points (const Triangulation<2>:
         {
           // first get the normal vectors at the two vertices of this line
           // from the boundary description
-          const Boundary<dim> &boundary
-            = line->get_triangulation().get_boundary(line->boundary_id());
+          const Manifold<dim> &manifold = line->get_manifold();
 
-          Boundary<dim>::FaceVertexNormals face_vertex_normals;
-          boundary.get_normals_at_vertices (line, face_vertex_normals);
+          Manifold<dim>::FaceVertexNormals face_vertex_normals;
+          manifold.get_normals_at_vertices (line, face_vertex_normals);
 
           // then transform them into interpolation points for a cubic
           // polynomial
@@ -124,7 +123,6 @@ MappingC1<2>::MappingC1Generic::add_line_support_points (const Triangulation<2>:
                              -face_vertex_normals[1][0] * std::sin(alpha)))
                            -2*c;
 
-          QGaussLobatto<1> quad_points(4);
           const double t1 = quad_points.point(1)[0];
           const double t2 = quad_points.point(2)[0];
           const double s_t1 = (((-b-c)*t1+b)*t1+c)*t1;
@@ -149,11 +147,14 @@ MappingC1<2>::MappingC1Generic::add_line_support_points (const Triangulation<2>:
             };
         }
       else
-        // not at boundary
+        // not at boundary, so just use scaled Gauss-Lobatto points (i.e., use
+        // plain straight lines).
         {
-          static const StraightBoundary<dim> straight_boundary;
-          straight_boundary.get_intermediate_points_on_line (line, line_points);
-          a.insert (a.end(), line_points.begin(), line_points.end());
+          for (unsigned int point_n = 1; point_n < 3; ++point_n)
+            {
+              a.push_back((1.0 - quad_points.point(point_n)[0])*line->vertex(0) +
+                          (quad_points.point(point_n)[0]*line->vertex(1)));
+            }
         }
     }
 }

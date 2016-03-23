@@ -8927,6 +8927,16 @@ namespace internal
         return true;
       }
     };
+
+
+
+    template <int dim, int spacedim>
+    const Manifold<dim, spacedim> &
+    get_default_flat_manifold()
+    {
+      static const FlatManifold<dim, spacedim> flat_manifold;
+      return flat_manifold;
+    }
   }
 }
 
@@ -9214,12 +9224,10 @@ Triangulation<dim, spacedim>::get_manifold (const types::manifold_id m_number) c
       //if we have found an entry, return it
       return *(it->second);
     }
-  else
-    {
-      //if we have not found an entry connected with number, we return
-      //straight_boundary
-      return straight_boundary;
-    }
+
+  // if we have not found an entry connected with number, we return
+  // the default (flat) manifold
+  return internal::Triangulation::get_default_flat_manifold<dim,spacedim>();
 }
 
 
