@@ -646,6 +646,14 @@ public:
   std::size_t size () const;
 
   /**
+   * Return the local dimension of the vector, i.e., the number of elements
+   * stored on the present MPI process across all components. Since this is
+   * not a distributed vector this method always returns the same value as
+   * size().
+   */
+  std::size_t local_size () const;
+
+  /**
    * Return an index set that describes which elements of this vector are
    * owned by the current processor. Note that this index set does not include
    * elements this vector may store locally as ghost elements but that are in
@@ -1508,6 +1516,16 @@ std::size_t
 BlockVectorBase<VectorType>::size () const
 {
   return block_indices.total_size();
+}
+
+
+
+template <class VectorType>
+inline
+std::size_t
+BlockVectorBase<VectorType>::local_size () const
+{
+  return size();
 }
 
 

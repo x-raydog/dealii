@@ -922,6 +922,13 @@ public:
   bool in_local_range (const size_type global_index) const;
 
   /**
+   * Return the local dimension of the vector, i.e., the number of elements
+   * stored on the present MPI process. Since this is not a distributed vector
+   * this method always returns the same value as size().
+   */
+  std::size_t local_size () const;
+
+  /**
    * Return an index set that describes which elements of this vector are
    * owned by the current processor. Note that this index set does not include
    * elements this vector may store locally as ghost elements but that are in
@@ -1092,6 +1099,15 @@ std::size_t Vector<Number>::size () const
 {
   return vec_size;
 }
+
+
+template <typename Number>
+inline
+std::size_t Vector<Number>::local_size() const
+{
+  return size();
+}
+
 
 
 template <typename Number>
