@@ -357,56 +357,55 @@ namespace GridTools
   (const std::vector<Point<2> > &all_vertices,
    const unsigned int (&vertex_indices) [GeometryInfo<2>::vertices_per_cell])
   {
-    /*
-      Get the computation of the measure by this little Maple script. We
-      use the blinear mapping of the unit quad to the real quad. However,
-      every transformation mapping the unit faces to straight lines should
-      do.
-
-      Remember that the area of the quad is given by
-      \int_K 1 dx dy  = \int_{\hat K} |det J| d(xi) d(eta)
-
-      # x and y are arrays holding the x- and y-values of the four vertices
-      # of this cell in real space.
-      x := array(0..3);
-      y := array(0..3);
-      z := array(0..3);
-      tphi[0] := (1-xi)*(1-eta):
-      tphi[1] :=     xi*(1-eta):
-      tphi[2] := (1-xi)*eta:
-      tphi[3] :=     xi*eta:
-      x_real := sum(x[s]*tphi[s], s=0..3):
-      y_real := sum(y[s]*tphi[s], s=0..3):
-      z_real := sum(z[s]*tphi[s], s=0..3):
-
-      Jxi := <diff(x_real,xi)  | diff(y_real,xi) | diff(z_real,xi)>;
-      Jeta := <diff(x_real,eta)| diff(y_real,eta)| diff(z_real,eta)>;
-      with(VectorCalculus):
-      J := CrossProduct(Jxi, Jeta);
-      detJ := sqrt(J[1]^2 + J[2]^2 +J[3]^2);
-
-      # measure := evalf (Int (Int (detJ, xi=0..1, method = _NCrule ) , eta=0..1, method = _NCrule  ) ):
-      # readlib(C):
-
-      # C(measure, optimized);
-
-      additional optimizaton: divide by 2 only one time
-    */
-
     const double x[4] = { all_vertices[vertex_indices[0]](0),
                           all_vertices[vertex_indices[1]](0),
                           all_vertices[vertex_indices[2]](0),
-                          all_vertices[vertex_indices[3]](0)
+                          all_vertices[vertex_indices[3]](0),
                         };
-
     const double y[4] = { all_vertices[vertex_indices[0]](1),
                           all_vertices[vertex_indices[1]](1),
                           all_vertices[vertex_indices[2]](1),
-                          all_vertices[vertex_indices[3]](1)
+                          all_vertices[vertex_indices[3]](1),
                         };
-
-    return (-x[1]*y[0]+x[1]*y[3]+y[0]*x[2]+x[0]*y[1]-x[0]*y[2]-y[1]*x[3]-x[2]*y[3]+x[3]*y[2])/2;
-
+    /*
+     * This formula was computed with the following python script:
+     *
+     * #!/usr/bin/env python
+     * import sympy
+     *
+     * from sympy.matrices import Matrix
+     * from sympy.simplify import rcollect
+     *
+     * xs = sympy.symbols(['x[{}]'.format(index) for index in range(4)])
+     * ys = sympy.symbols(['y[{}]'.format(index) for index in range(4)])
+     *
+     * x_ref, y_ref = sympy.symbols(['x_ref', 'y_ref'])
+     *
+     * bilinear_map = [(1-x_ref) * (1-y_ref), x_ref * (1-y_ref),
+     *                 (1-x_ref) *     y_ref, x_ref *     y_ref]
+     *
+     * x_real = sum([x*t for (x, t) in zip(xs, bilinear_map)])
+     * y_real = sum([y*t for (y, t) in zip(ys, bilinear_map)])
+     * real_coordinates = [x_real, y_real]
+     *
+     * jacobian = Matrix([[0, 0], [0, 0]])
+     *
+     * for row_n, variable in enumerate([x_ref, y_ref]):
+     *     for column_n in range(2):
+     *         jacobian[row_n, column_n] = real_coordinates[column_n].diff(variable)
+     *
+     * # Since the mapping is bilinear, its integral is exactly the value at the
+     * # midpoint.
+     * half = sympy.Rational(1, 2)
+     * jacobian = jacobian.subs({x_ref: half, y_ref: half})
+     *
+     * # These collection variables create a nicer final answer.
+     * print("0.5*({});".format(
+     *     rcollect(rcollect(rcollect(rcollect(
+     *         2*jacobian.det(), xs[0]), ys[0]), xs[3]), ys[3])))
+     */
+    return 0.5*(x[0]*(y[1] - y[2]) + x[3]*(-y[1] + y[2])
+                + y[0]*(-x[1] + x[2]) + y[3]*(x[1] - x[2]));
   }
 
 
