@@ -85,24 +85,11 @@ namespace FETools
     Assert(u2.size()==dof2.n_dofs(),
            ExcDimensionMismatch(u2.size(), dof2.n_dofs()));
 
-#ifdef DEAL_II_WITH_PETSC
-    if (dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1) != 0)
-      if (dynamic_cast<const DoFHandler<dim>*>(&dof1) != 0)
-        {
-          // if u1 is a parallel distributed
-          // PETSc vector, we check the local
-          // size of u1 for safety
-          Assert(dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1)->local_size() == dof1.n_locally_owned_dofs(),
-                 ExcDimensionMismatch(dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1)->local_size(), dof1.n_locally_owned_dofs()));
-        };
+    Assert(u1.local_size() == dof1.n_locally_owned_dofs(),
+           ExcDimensionMismatch(u1.local_size(), dof1.n_locally_owned_dofs()));
+    Assert(u2.local_size() == dof2.n_locally_owned_dofs(),
+           ExcDimensionMismatch(u2.local_size(), dof2.n_locally_owned_dofs()));
 
-    if (dynamic_cast<PETScWrappers::MPI::Vector *>(&u2) != 0)
-      if (dynamic_cast<const DoFHandler<dim>*>(&dof2) != 0)
-        {
-          Assert(dynamic_cast<PETScWrappers::MPI::Vector *>(&u2)->local_size() == dof2.n_locally_owned_dofs(),
-                 ExcDimensionMismatch(dynamic_cast<PETScWrappers::MPI::Vector *>(&u2)->local_size(), dof2.n_locally_owned_dofs()));
-        };
-#endif
     // allocate vectors at maximal
     // size. will be reinited in inner
     // cell, but Vector makes sure that
@@ -248,24 +235,10 @@ namespace FETools
     Assert(u1_interpolated.size()==dof1.n_dofs(),
            ExcDimensionMismatch(u1_interpolated.size(), dof1.n_dofs()));
 
-#ifdef DEAL_II_WITH_PETSC
-    if (dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1) != 0)
-      if (dynamic_cast<const DoFHandler<dim>*>(&dof1) != 0)
-        {
-          // if u1 is a parallel distributed
-          // PETSc vector, we check the local
-          // size of u1 for safety
-          Assert(dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1)->local_size() == dof1.n_locally_owned_dofs(),
-                 ExcDimensionMismatch(dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1)->local_size(), dof1.n_locally_owned_dofs()));
-        };
-
-    if (dynamic_cast<PETScWrappers::MPI::Vector *>(&u1_interpolated) != 0)
-      if (dynamic_cast<const DoFHandler<dim>*>(&dof1) != 0)
-        {
-          Assert(dynamic_cast<PETScWrappers::MPI::Vector *>(&u1_interpolated)->local_size() == dof1.n_locally_owned_dofs(),
-                 ExcDimensionMismatch(dynamic_cast<PETScWrappers::MPI::Vector *>(&u1_interpolated)->local_size(), dof1.n_locally_owned_dofs()));
-        };
-#endif
+    Assert(u1.local_size() == dof1.n_locally_owned_dofs(),
+           ExcDimensionMismatch(u1.local_size(), dof1.n_locally_owned_dofs()));
+    Assert(u1_interpolated.local_size() == dof1.n_locally_owned_dofs(),
+           ExcDimensionMismatch(u1_interpolated.local_size(), dof1.n_locally_owned_dofs()))
 
     // For continuous elements on grids
     // with hanging nodes we need
@@ -328,24 +301,11 @@ namespace FETools
     Assert(u1_interpolated.size() == dof1.n_dofs(),
            ExcDimensionMismatch(u1_interpolated.size(), dof1.n_dofs()));
 
-#ifdef DEAL_II_WITH_PETSC
-    if (dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1) != 0)
-      if (dynamic_cast<const DoFHandler<dim>*>(&dof1) != 0)
-        {
-          // if u1 is a parallel distributed
-          // PETSc vector, we check the local
-          // size of u1 for safety
-          Assert(dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1)->local_size() == dof1.n_locally_owned_dofs(),
-                 ExcDimensionMismatch(dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1)->local_size(), dof1.n_locally_owned_dofs()));
-        };
-
-    if (dynamic_cast<PETScWrappers::MPI::Vector *>(&u1_interpolated) != 0)
-      if (dynamic_cast<const DoFHandler<dim>*>(&dof1) != 0)
-        {
-          Assert(dynamic_cast<PETScWrappers::MPI::Vector *>(&u1_interpolated)->local_size() == dof1.n_locally_owned_dofs(),
-                 ExcDimensionMismatch(dynamic_cast<PETScWrappers::MPI::Vector *>(&u1_interpolated)->local_size(), dof1.n_locally_owned_dofs()));
-        };
-#endif
+    Assert(u1.local_size() == dof1.n_locally_owned_dofs(),
+           ExcDimensionMismatch(u1.local_size(), dof1.n_locally_owned_dofs()));
+    Assert(u1_interpolated.local_size() == dof1.n_locally_owned_dofs(),
+           ExcDimensionMismatch(u1_interpolated.local_size(),
+                                dof1.n_locally_owned_dofs()));
 
     Vector<typename OutVector::value_type> u1_local(DoFTools::max_dofs_per_cell(dof1));
     Vector<typename OutVector::value_type> u1_int_local(DoFTools::max_dofs_per_cell(dof1));
@@ -560,24 +520,11 @@ namespace FETools
     Assert(u1_difference.size()==dof1.n_dofs(),
            ExcDimensionMismatch(u1_difference.size(), dof1.n_dofs()));
 
-#ifdef DEAL_II_WITH_PETSC
-    if (dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1) != 0)
-      if (dynamic_cast<const DoFHandler<dim>*>(&dof1) != 0)
-        {
-          // if u1 is a parallel distributed
-          // PETSc vector, we check the local
-          // size of u1 for safety
-          Assert(dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1)->local_size() == dof1.n_locally_owned_dofs(),
-                 ExcDimensionMismatch(dynamic_cast<const PETScWrappers::MPI::Vector *>(&u1)->local_size(), dof1.n_locally_owned_dofs()));
-        };
-
-    if (dynamic_cast<PETScWrappers::MPI::Vector *>(&u1_difference) != 0)
-      if (dynamic_cast<const DoFHandler<dim>*>(&dof1) != 0)
-        {
-          Assert(dynamic_cast<PETScWrappers::MPI::Vector *>(&u1_difference)->local_size() == dof1.n_locally_owned_dofs(),
-                 ExcDimensionMismatch(dynamic_cast<PETScWrappers::MPI::Vector *>(&u1_difference)->local_size(), dof1.n_locally_owned_dofs()));
-        };
-#endif
+    Assert(u1.local_size() == dof1.n_locally_owned_dofs(),
+           ExcDimensionMismatch(u1.local_size(), dof1.n_locally_owned_dofs()));
+    Assert(u1_difference.local_size() == dof1.n_locally_owned_dofs(),
+           ExcDimensionMismatch(u1_difference.local_size(),
+                                dof1.n_locally_owned_dofs()));
 
     // For continuous elements on grids
     // with hanging nodes we need
