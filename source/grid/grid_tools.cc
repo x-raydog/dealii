@@ -257,85 +257,96 @@ namespace GridTools
                         };
 
     /*
-      This is the same Maple script as in the barycenter method above
-      except of that here the shape functions tphi[0]-tphi[7] are ordered
-      according to the lexicographic numbering.
+     * This formula was computed with the following python script:
+     *
+     * #!/usr/bin/env python
+     * import itertools
+     * import sympy
+     *
+     * from sympy.matrices import Matrix
+     * from sympy.simplify import rcollect
+     * from sympy.simplify.cse_main import cse
+     *
+     * xs, ys, zs = [sympy.symbols(['{}[{}]'.format(var, index) for index in range(8)])
+     *               for var in ['x', 'y', 'z']]
+     *
+     * x_ref, y_ref, z_ref = sympy.symbols(['x_ref', 'y_ref', 'z_ref'])
+     * reference_coordinates = [x_ref, y_ref, z_ref]
+     *
+     * trilinear_map = [a*b*c for c in [1 - z_ref, z_ref]
+     *                  for b in [1 - y_ref, y_ref]
+     *                  for a in [1 - x_ref, x_ref]]
+     *
+     * x_real = sum([x*t for (x, t) in zip(xs, trilinear_map)])
+     * y_real = sum([y*t for (y, t) in zip(ys, trilinear_map)])
+     * z_real = sum([z*t for (z, t) in zip(zs, trilinear_map)])
+     * real_coordinates = [x_real, y_real, z_real]
+     *
+     * def symbol_stream(prefix='temp'):
+     *     for index in itertools.count():
+     *         yield sympy.symbols('{}_{}'.format(prefix, index))
+     *
+     * jacobian = Matrix([[0, 0, 0], [0, 0, 0], [0, 0, 0]])
+     * for row_n, variable in enumerate(reference_coordinates):
+     *     for column_n in range(3):
+     *         jacobian[row_n, column_n] = real_coordinates[column_n].diff(variable).expand()
+     * jacobian[0, 0:] *= 16
+     *
+     * def multi_rcollect(expression, variables):
+     *     for variable in variables:
+     *         expression = rcollect(expression, variable)
+     *     return expression
+     *
+     * half = sympy.Rational(1, 2)
+     * volume = multi_rcollect(jacobian.subs({x_ref: half, y_ref: half, z_ref: half})
+     *                         .det().expand(), xs + ys + zs)
+     *
+     * temporaries, volume_expression = cse(volume, symbol_stream())
+     *
+     * for pair in temporaries:
+     *     print("const double {} = {};".format(*pair))
+     *
+     * print("return {}*({});".format(1.0/16.0, volume_expression[0]))
+     */
 
-      x := array(0..7):
-      y := array(0..7):
-      z := array(0..7):
-      tphi[0] := (1-xi)*(1-eta)*(1-zeta):
-      tphi[1] :=     xi*(1-eta)*(1-zeta):
-      tphi[2] := (1-xi)*    eta*(1-zeta):
-      tphi[3] :=     xi*    eta*(1-zeta):
-      tphi[4] := (1-xi)*(1-eta)*zeta:
-      tphi[5] :=     xi*(1-eta)*zeta:
-      tphi[6] := (1-xi)*    eta*zeta:
-      tphi[7] :=     xi*    eta*zeta:
-      x_real := sum(x[s]*tphi[s], s=0..7):
-      y_real := sum(y[s]*tphi[s], s=0..7):
-      z_real := sum(z[s]*tphi[s], s=0..7):
-      with (linalg):
-      J := matrix(3,3, [[diff(x_real, xi), diff(x_real, eta), diff(x_real, zeta)],
-      [diff(y_real, xi), diff(y_real, eta), diff(y_real, zeta)],
-      [diff(z_real, xi), diff(z_real, eta), diff(z_real, zeta)]]):
-      detJ := det (J):
+    const double temp_0 = -z[2] + z[5];
+    const double temp_1 = -z[3] + z[4];
+    const double temp_2 = temp_0 + temp_1;
+    const double temp_3 = z[1] - z[6];
+    const double temp_4 = z[3] - z[4];
+    const double temp_5 = temp_3 + temp_4;
+    const double temp_6 = temp_0 + temp_3;
+    const double temp_7 = -z[1] + z[6];
+    const double temp_8 = z[2] - z[5];
+    const double temp_9 = temp_7 + temp_8;
+    const double temp_10 = temp_1 + temp_7;
+    const double temp_11 = temp_4 + temp_8;
+    const double temp_12 = -z[0] + z[7];
+    const double temp_13 = temp_12 + temp_4;
+    const double temp_14 = temp_0 + temp_12;
+    const double temp_15 = z[0] - z[7];
+    const double temp_16 = temp_15 + temp_8;
+    const double temp_17 = temp_1 + temp_15;
+    const double temp_18 = temp_15 + temp_3;
+    const double temp_19 = temp_12 + temp_7;
 
-      measure := simplify ( int ( int ( int (detJ, xi=0..1), eta=0..1), zeta=0..1)):
-
-      readlib(C):
-
-      C(measure, optimized);
-
-      The C code produced by this maple script is further optimized by
-      hand. In particular, division by 12 is performed only once, not
-      hundred of times.
-    */
-
-    const double t3 = y[3]*x[2];
-    const double t5 = z[1]*x[5];
-    const double t9 = z[3]*x[2];
-    const double t11 = x[1]*y[0];
-    const double t14 = x[4]*y[0];
-    const double t18 = x[5]*y[7];
-    const double t20 = y[1]*x[3];
-    const double t22 = y[5]*x[4];
-    const double t26 = z[7]*x[6];
-    const double t28 = x[0]*y[4];
-    const double t34 = z[3]*x[1]*y[2]+t3*z[1]-t5*y[7]+y[7]*x[4]*z[6]+t9*y[6]-t11*z[4]-t5*y[3]-t14*z[2]+z[1]*x[4]*y[0]-t18*z[3]+t20*z[0]-t22*z[0]-y[0]*x[5]*z[4]-t26*y[3]+t28*z[2]-t9*y[1]-y[1]*x[4]*z[0]-t11*z[5];
-    const double t37 = y[1]*x[0];
-    const double t44 = x[1]*y[5];
-    const double t46 = z[1]*x[0];
-    const double t49 = x[0]*y[2];
-    const double t52 = y[5]*x[7];
-    const double t54 = x[3]*y[7];
-    const double t56 = x[2]*z[0];
-    const double t58 = x[3]*y[2];
-    const double t64 = -x[6]*y[4]*z[2]-t37*z[2]+t18*z[6]-x[3]*y[6]*z[2]+t11*z[2]+t5*y[0]+t44*z[4]-t46*y[4]-t20*z[7]-t49*z[6]-t22*z[1]+t52*z[3]-t54*z[2]-t56*y[4]-t58*z[0]+y[1]*x[2]*z[0]+t9*y[7]+t37*z[4];
-    const double t66 = x[1]*y[7];
-    const double t68 = y[0]*x[6];
-    const double t70 = x[7]*y[6];
-    const double t73 = z[5]*x[4];
-    const double t76 = x[6]*y[7];
-    const double t90 = x[4]*z[0];
-    const double t92 = x[1]*y[3];
-    const double t95 = -t66*z[3]-t68*z[2]-t70*z[2]+t26*y[5]-t73*y[6]-t14*z[6]+t76*z[2]-t3*z[6]+x[6]*y[2]*z[4]-z[3]*x[6]*y[2]+t26*y[4]-t44*z[3]-x[1]*y[2]*z[0]+x[5]*y[6]*z[4]+t54*z[5]+t90*y[2]-t92*z[2]+t46*y[2];
-    const double t102 = x[2]*y[0];
-    const double t107 = y[3]*x[7];
-    const double t114 = x[0]*y[6];
-    const double t125 = y[0]*x[3]*z[2]-z[7]*x[5]*y[6]-x[2]*y[6]*z[4]+t102*z[6]-t52*z[6]+x[2]*y[4]*z[6]-t107*z[5]-t54*z[6]+t58*z[6]-x[7]*y[4]*z[6]+t37*z[5]-t114*z[4]+t102*z[4]-z[1]*x[2]*y[0]+t28*z[6]-y[5]*x[6]*z[4]-z[5]*x[1]*y[4]-t73*y[7];
-    const double t129 = z[0]*x[6];
-    const double t133 = y[1]*x[7];
-    const double t145 = y[1]*x[5];
-    const double t156 = t90*y[6]-t129*y[4]+z[7]*x[2]*y[6]-t133*z[5]+x[5]*y[3]*z[7]-t26*y[2]-t70*z[3]+t46*y[3]+z[5]*x[7]*y[4]+z[7]*x[3]*y[6]-t49*z[4]+t145*z[7]-x[2]*y[7]*z[6]+t70*z[5]+t66*z[5]-z[7]*x[4]*y[6]+t18*z[4]+x[1]*y[4]*z[0];
-    const double t160 = x[5]*y[4];
-    const double t165 = z[1]*x[7];
-    const double t178 = z[1]*x[3];
-    const double t181 = t107*z[6]+t22*z[7]+t76*z[3]+t160*z[1]-x[4]*y[2]*z[6]+t70*z[4]+t165*y[5]+x[7]*y[2]*z[6]-t76*z[5]-t76*z[4]+t133*z[3]-t58*z[1]+y[5]*x[0]*z[4]+t114*z[2]-t3*z[7]+t20*z[2]+t178*y[7]+t129*y[2];
-    const double t207 = t92*z[7]+t22*z[6]+z[3]*x[0]*y[2]-x[0]*y[3]*z[2]-z[3]*x[7]*y[2]-t165*y[3]-t9*y[0]+t58*z[7]+y[3]*x[6]*z[2]+t107*z[2]+t73*y[0]-x[3]*y[5]*z[7]+t3*z[0]-t56*y[6]-z[5]*x[0]*y[4]+t73*y[1]-t160*z[6]+t160*z[0];
-    const double t228 = -t44*z[7]+z[5]*x[6]*y[4]-t52*z[4]-t145*z[4]+t68*z[4]+t92*z[5]-t92*z[0]+t11*z[3]+t44*z[0]+t178*y[5]-t46*y[5]-t178*y[0]-t145*z[0]-t20*z[5]-t37*z[3]-t160*z[7]+t145*z[3]+x[4]*y[6]*z[2];
-
-    return (t34+t64+t95+t125+t156+t181+t207+t228)/12.;
+    return 0.0625
+      *(x[0]*(temp_10*y[5] + temp_11*y[6] + temp_2*y[1] + temp_5*y[2]
+              + temp_6*y[3] + temp_9*y[4])
+        + x[1]*(temp_11*y[0] + temp_13*y[2] + temp_14*y[3] + temp_16*y[4]
+                + temp_17*y[5] + temp_2*y[7])
+        + x[2]*(temp_10*y[0] + temp_13*y[6] + temp_17*y[1] + temp_18*y[3]
+                + temp_19*y[4] + temp_5*y[7])
+        + x[3]*(temp_14*y[6] + temp_16*y[1] + temp_18*y[5] + temp_19*y[2]
+                + temp_6*y[7] + temp_9*y[0])
+        + x[4]*(temp_14*y[1] + temp_16*y[6] + temp_18*y[2] + temp_19*y[5]
+                + temp_6*y[0] + temp_9*y[7])
+        + x[5]*(temp_10*y[7] + temp_13*y[1] + temp_17*y[6] + temp_18*y[4]
+                + temp_19*y[3] + temp_5*y[0])
+        + x[6]*(temp_11*y[7] + temp_13*y[5] + temp_14*y[4] + temp_16*y[3]
+                + temp_17*y[2] + temp_2*y[0])
+        + x[7]*(temp_10*y[2] + temp_11*y[1] + temp_2*y[6] + temp_5*y[5]
+                + temp_6*y[4] + temp_9*y[3]));
   }
 
 
