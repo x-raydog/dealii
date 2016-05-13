@@ -206,6 +206,65 @@ namespace GridTools
 
   template <>
   double
+  cell_measure<2, 2>
+  (const std::vector<Point<2> > &all_vertices,
+   const unsigned int (&vertex_indices) [GeometryInfo<2>::vertices_per_cell])
+  {
+    const double x[4] = { all_vertices[vertex_indices[0]](0),
+                          all_vertices[vertex_indices[1]](0),
+                          all_vertices[vertex_indices[2]](0),
+                          all_vertices[vertex_indices[3]](0),
+                        };
+    const double y[4] = { all_vertices[vertex_indices[0]](1),
+                          all_vertices[vertex_indices[1]](1),
+                          all_vertices[vertex_indices[2]](1),
+                          all_vertices[vertex_indices[3]](1),
+                        };
+    /*
+     * This formula was computed with the following python script:
+     *
+     * #!/usr/bin/env python
+     * import sympy
+     *
+     * from sympy.matrices import Matrix
+     * from sympy.simplify import rcollect
+     *
+     * xs = sympy.symbols(['x[{}]'.format(index) for index in range(4)])
+     * ys = sympy.symbols(['y[{}]'.format(index) for index in range(4)])
+     *
+     * x_ref, y_ref = sympy.symbols(['x_ref', 'y_ref'])
+     *
+     * bilinear_map = [(1-x_ref) * (1-y_ref), x_ref * (1-y_ref),
+     *                 (1-x_ref) *     y_ref, x_ref *     y_ref]
+     *
+     * x_real = sum([x*t for (x, t) in zip(xs, bilinear_map)])
+     * y_real = sum([y*t for (y, t) in zip(ys, bilinear_map)])
+     * real_coordinates = [x_real, y_real]
+     *
+     * jacobian = Matrix([[0, 0], [0, 0]])
+     *
+     * for row_n, variable in enumerate([x_ref, y_ref]):
+     *     for column_n in range(2):
+     *         jacobian[row_n, column_n] = real_coordinates[column_n].diff(variable)
+     *
+     * # Since the mapping is bilinear, its integral is exactly the value at the
+     * # midpoint.
+     * half = sympy.Rational(1, 2)
+     * jacobian = jacobian.subs({x_ref: half, y_ref: half})
+     *
+     * # These collection variables create a nicer final answer.
+     * print("0.5*({});".format(
+     *     rcollect(rcollect(rcollect(rcollect(
+     *         2*jacobian.det(), xs[0]), ys[0]), xs[3]), ys[3])))
+     */
+    return 0.5*(x[0]*(y[1] - y[2]) + x[3]*(-y[1] + y[2])
+                + y[0]*(-x[1] + x[2]) + y[3]*(x[1] - x[2]));
+  }
+
+
+
+  template <>
+  double
   cell_measure<2, 3>
   (const std::vector<Point<3> > &,
    const unsigned int (&)[GeometryInfo<2>::vertices_per_cell])
@@ -349,64 +408,6 @@ namespace GridTools
                 + temp_6*y[4] + temp_9*y[3]));
   }
 
-
-
-  template <>
-  double
-  cell_measure<2, 2>
-  (const std::vector<Point<2> > &all_vertices,
-   const unsigned int (&vertex_indices) [GeometryInfo<2>::vertices_per_cell])
-  {
-    const double x[4] = { all_vertices[vertex_indices[0]](0),
-                          all_vertices[vertex_indices[1]](0),
-                          all_vertices[vertex_indices[2]](0),
-                          all_vertices[vertex_indices[3]](0),
-                        };
-    const double y[4] = { all_vertices[vertex_indices[0]](1),
-                          all_vertices[vertex_indices[1]](1),
-                          all_vertices[vertex_indices[2]](1),
-                          all_vertices[vertex_indices[3]](1),
-                        };
-    /*
-     * This formula was computed with the following python script:
-     *
-     * #!/usr/bin/env python
-     * import sympy
-     *
-     * from sympy.matrices import Matrix
-     * from sympy.simplify import rcollect
-     *
-     * xs = sympy.symbols(['x[{}]'.format(index) for index in range(4)])
-     * ys = sympy.symbols(['y[{}]'.format(index) for index in range(4)])
-     *
-     * x_ref, y_ref = sympy.symbols(['x_ref', 'y_ref'])
-     *
-     * bilinear_map = [(1-x_ref) * (1-y_ref), x_ref * (1-y_ref),
-     *                 (1-x_ref) *     y_ref, x_ref *     y_ref]
-     *
-     * x_real = sum([x*t for (x, t) in zip(xs, bilinear_map)])
-     * y_real = sum([y*t for (y, t) in zip(ys, bilinear_map)])
-     * real_coordinates = [x_real, y_real]
-     *
-     * jacobian = Matrix([[0, 0], [0, 0]])
-     *
-     * for row_n, variable in enumerate([x_ref, y_ref]):
-     *     for column_n in range(2):
-     *         jacobian[row_n, column_n] = real_coordinates[column_n].diff(variable)
-     *
-     * # Since the mapping is bilinear, its integral is exactly the value at the
-     * # midpoint.
-     * half = sympy.Rational(1, 2)
-     * jacobian = jacobian.subs({x_ref: half, y_ref: half})
-     *
-     * # These collection variables create a nicer final answer.
-     * print("0.5*({});".format(
-     *     rcollect(rcollect(rcollect(rcollect(
-     *         2*jacobian.det(), xs[0]), ys[0]), xs[3]), ys[3])))
-     */
-    return 0.5*(x[0]*(y[1] - y[2]) + x[3]*(-y[1] + y[2])
-                + y[0]*(-x[1] + x[2]) + y[3]*(x[1] - x[2]));
-  }
 
 
   template <int dim, int spacedim>
