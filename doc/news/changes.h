@@ -38,6 +38,15 @@ inconvenience this causes.
 </p>
 
 <ol>
+ <li> Deprecated: ParameterHandler::read_input,
+ ParameterHandler::read_input_from_xml, and
+ ParameterHandler::read_input_from_string are now deprecated in favor of
+ ParameterHandler::parse_input, ParameterHandler::parse_input_from_xml, and
+ ParameterHandler::parse_input_from_string. These new functions raise
+ exceptions to indicate failure instead of using return codes.
+ <br>
+ (David Wells, 2016/09/15)
+ </li>
 
  <li> Deprecated: MGCoarseGridLACIteration got deprecated in favor of
  MGCoarseGridIterativeSolver.
@@ -529,7 +538,7 @@ inconvenience this causes.
 <h3>Specific improvements</h3>
 
 <ol>
- <li> Fixed: EmbeddedRungeKutta methods now correctly increase delta_t_guess 
+ <li> Fixed: EmbeddedRungeKutta methods now correctly increase delta_t_guess
  when the error is below coarsen_tol.
  </br>
  (Vaibhav Palkar, Bruno Turcksin, 2016/09/16)
@@ -537,7 +546,7 @@ inconvenience this causes.
 
  <li> Fixed: TrilinosWrappers::MPI::Vector::locally_owned_elements()
  now returns the correct IndexSet also if initialized with two
- IndexSets. 
+ IndexSets.
  <br>
  (Daniel Arndt, 2016/09/16)
  </li>
@@ -573,8 +582,8 @@ inconvenience this causes.
  (Daniel Arndt, 2016/09/11)
  </li>
 
- <li> New: IndexSet::is_ascending_and_one_to_one allows to find out 
- whether the nth range of indices is stored on the nth process in case 
+ <li> New: IndexSet::is_ascending_and_one_to_one allows to find out
+ whether the nth range of indices is stored on the nth process in case
  the IndexSets are contiguous.
  <br>
  (Daniel Arndt, 2016/09/11)
