@@ -1696,10 +1696,10 @@ void ParameterHandler::parse_input (std::istream &input,
 
 
 
-bool ParameterHandler::read_input (const std::string &filename,
-                                   const bool optional,
-                                   const bool write_compact,
-                                   const std::string &last_line)
+bool ParameterHandler::read_input(const std::string &filename,
+                                  const bool optional,
+                                  const bool write_compact,
+                                  const std::string &last_line)
 {
   PathSearch search("PARAMETERS");
 
@@ -1707,24 +1707,29 @@ bool ParameterHandler::read_input (const std::string &filename,
     {
       std::string openname = search.find(filename);
       std::ifstream file_stream (openname.c_str());
-      AssertThrow(file_stream, ExcIO());
-
       read_input (file_stream, filename, last_line);
     }
   catch (const PathSearch::ExcFileNotFound &)
     {
-      std::cerr << "ParameterHandler::read_input: could not open file <"
-                << filename << "> for reading." << std::endl;
       if (!optional)
         {
-          std:: cerr << "Trying to make file <"
-                     << filename << "> with default values for you." << std::endl;
           std::ofstream output (filename.c_str());
-          if (output)
-            print_parameters (output, (write_compact ? ShortText : Text));
+          print_parameters (output, (write_compact ? ShortText : Text));
         }
     }
-  return false;
+  return true;
+}
+
+
+
+void ParameterHandler::parse_input (const std::string &filename,
+                                    const std::string &last_line)
+{
+  PathSearch search("PARAMETERS");
+
+  std::string openname = search.find(filename);
+  std::ifstream file_stream (openname.c_str());
+  read_input (file_stream, filename, last_line);
 }
 
 
