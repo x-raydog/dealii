@@ -41,8 +41,7 @@ protected:
         const boost::serialization::extended_type_info & eti
     ) : 
         m_eti(& eti)
-    {
-    }
+    {}
 public:
     inline bool 
     operator<(const basic_serializer & rhs) const {

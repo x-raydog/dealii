@@ -1,7 +1,7 @@
 ## ---------------------------------------------------------------------
 ## $Id$
 ##
-## Copyright (C) 2012 - 2015 by the deal.II authors
+## Copyright (C) 2012 - 2016 by the deal.II authors
 ##
 ## This file is part of the deal.II library.
 ##
@@ -20,6 +20,7 @@ INCLUDE_DIRECTORIES(
   )
 
 SET(src_boost_serialization
+  archive_exception.cpp
   basic_archive.cpp
   basic_iarchive.cpp
   basic_iserializer.cpp
@@ -30,24 +31,34 @@ SET(src_boost_serialization
   basic_serializer_map.cpp
   basic_text_iprimitive.cpp
   basic_text_oprimitive.cpp
+  basic_text_wiprimitive.cpp
+  basic_text_woprimitive.cpp
   basic_xml_archive.cpp
   binary_iarchive.cpp
   binary_oarchive.cpp
+  binary_wiarchive.cpp
+  binary_woarchive.cpp
+  codecvt_null.cpp
   extended_type_info.cpp
-  extended_type_info_typeid.cpp
   extended_type_info_no_rtti.cpp
+  extended_type_info_typeid.cpp
   polymorphic_iarchive.cpp
   polymorphic_oarchive.cpp
+  singleton.cpp
   stl_port.cpp
   text_iarchive.cpp
   text_oarchive.cpp
+  text_wiarchive.cpp
+  text_woarchive.cpp
+  utf8_codecvt_facet.cpp
   void_cast.cpp
-  archive_exception.cpp
+  xml_archive_exception.cpp
   xml_grammar.cpp
   xml_iarchive.cpp
   xml_oarchive.cpp
-  xml_archive_exception.cpp
+  xml_wgrammar.cpp
+  xml_wiarchive.cpp
+  xml_woarchive.cpp
   )
 
 DEAL_II_ADD_LIBRARY(obj_boost_serialization OBJECT ${src_boost_serialization})
-
