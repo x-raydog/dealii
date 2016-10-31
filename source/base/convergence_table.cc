@@ -97,6 +97,24 @@ void ConvergenceTable::evaluate_convergence_rates(const std::string &data_column
             }
         }
       break;
+    case power_law_exponent:
+      rate_key += "power.law.exponent";
+      no_rate_entries = columns[rate_key].entries.size();
+      // Calculate all missing rate values:
+      for (unsigned int i = no_rate_entries; i<n; ++i)
+        {
+          if (i == 0)
+            {
+              // no value available for the first row
+              add_value(rate_key, std::string("-"));
+            }
+          else
+            {
+              add_value(rate_key, (std::log(values[i]) - std::log(values[i - 1]))
+                        /(std::log(ref_values[i]) - std::log(ref_values[i - 1])));
+            }
+        }
+      break;
     default:
       AssertThrow(false, ExcNotImplemented());
     }

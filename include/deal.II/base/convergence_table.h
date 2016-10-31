@@ -84,7 +84,15 @@ public:
      * Logarithm of #reduction_rate to the base 2 representing the order of
      * convergence when halving the grid size, e.g. from h to h/2.
      */
-    reduction_rate_log2
+    reduction_rate_log2,
+    /**
+     * Calculate the exponent in the power law fit between the data column and
+     * the reference column. Put another way: if one calls the data column $x$
+     * and the reference column $y$ then this function computes the slope $a$
+     * in the expression $\log(y) = a \log(x) + C$, which is usually a known
+     * rate of convergence.
+     */
+    power_law_exponent
   };
 
   /**

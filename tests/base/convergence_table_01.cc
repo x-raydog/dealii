@@ -47,6 +47,7 @@ int main ()
 
   table.evaluate_convergence_rates("error", "key", ConvergenceTable::reduction_rate);
   table_2.evaluate_convergence_rates("error", "key", ConvergenceTable::reduction_rate_log2);
+  table_2.evaluate_convergence_rates("error", "key", ConvergenceTable::power_law_exponent);
 
   // output
   table.write_text(deallog.get_file_stream());
