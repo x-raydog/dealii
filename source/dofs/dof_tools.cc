@@ -54,40 +54,6 @@ namespace DoFTools
 {
   namespace internal
   {
-    /**
-     * Comparison functor struct to compare two Points and return if one is
-     * "less" than the other one. This can be used to use Point<dim> as a key in
-     * std::map.
-     *
-     * Comparison is done by comparing values in each dimension in ascending
-     * order (first x, then y, etc.). Note that comparisons are done without an
-     * epsilon, so points need to have identical floating point components to be
-     * considered equal.
-     */
-    template <int dim,typename Number=double>
-    struct ComparisonHelper
-    {
-      /**
-        * Comparison operator.
-        *
-        * Return true if @p lhs is considered less than @p rhs.
-        */
-      bool operator() (const Point<dim, Number> &lhs,
-                       const Point<dim, Number> &rhs) const
-      {
-        for (unsigned int d=0; d<dim; ++d)
-          {
-            if (lhs[d] == rhs[d])
-              continue;
-            return lhs[d]<rhs[d];
-          }
-        return false;
-      }
-
-    };
-
-
-
     // return an array that for each dof on the reference cell
     // lists the corresponding vector component.
     //
@@ -2136,42 +2102,44 @@ namespace DoFTools
 
   template <int spacedim>
   void
-  write_gnuplot_dof_support_point_info(std::ostream &out,
-                                       const std::map<types::global_dof_index, Point<spacedim> > &support_points)
+  write_gnuplot_dof_support_point_info
+  (std::ostream &out,
+   const std::map<types::global_dof_index, Point<spacedim> > &support_points)
   {
     AssertThrow (out, ExcIO());
 
-    typedef std::map< types::global_dof_index, Point<spacedim> >
-    dof_map_t;
-
-    typedef std::map<Point<spacedim>, std::vector<types::global_dof_index>, typename internal::ComparisonHelper<spacedim> >
-    point_map_t;
-
-    point_map_t point_map;
+    // A comparison for sorting the map instantiated below: points are sorted
+    // by value in each dimension in ascending order (first x, then y, etc.)
+    auto comparator = [](const Point<spacedim> &lhs,
+                         const Point<spacedim> &rhs)
+      {
+        for (unsigned int d=0; d<spacedim; ++d)
+          {
+            if (lhs[d] == rhs[d])
+              continue;
+            return lhs[d]<rhs[d];
+          }
+        return false;
+      };
+    std::map<Point<spacedim>, std::vector<types::global_dof_index>,
+             decltype(comparator)> point_map(comparator);
 
     // convert to map point -> list of DoFs
-    for (typename dof_map_t::const_iterator it = support_points.begin();
-         it!=support_points.end();
-         ++it)
-      {
-        std::vector<types::global_dof_index> &v = point_map[it->second];
-        v.push_back(it->first);
-      }
+    for (const auto &support_point : support_points)
+      point_map[support_point.second].push_back(support_point.first);
 
     // print the newly created map:
-    for (typename point_map_t::iterator it = point_map.begin();
-         it!=point_map.end();
-         ++it)
+    for (const auto &support_points : point_map)
       {
-        out << it->first << " \"";
-        const std::vector<types::global_dof_index> &v = it->second;
-        for (unsigned int i=0; i < v.size(); ++i)
+        out << support_points.first << " \"";
+        bool write_comma = false;
+        for (const auto &point : support_points.second)
           {
-            if (i>0)
+            if (write_comma)
               out << ", ";
-            out << v[i];
+            out << point;
+            write_comma = true;
           }
-
         out << "\"\n";
       }
 

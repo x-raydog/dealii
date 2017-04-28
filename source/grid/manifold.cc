@@ -26,25 +26,6 @@ DEAL_II_NAMESPACE_OPEN
 
 using namespace Manifolds;
 
-// This structure is used as comparison function for std::sort when sorting
-// points according to their weight.
-struct CompareWeights
-{
-public:
-  CompareWeights(const std::vector<double> &weights)
-    :
-    compare_weights(weights)
-  {}
-
-  bool operator() (unsigned int a, unsigned int b) const
-  {
-    return compare_weights[a] < compare_weights[b];
-  }
-
-private:
-  const std::vector<double> &compare_weights;
-};
-
 /* -------------------------- Manifold --------------------- */
 
 template <int dim, int spacedim>
@@ -125,9 +106,11 @@ get_new_point (const std::vector<Point<spacedim> > &surrounding_points,
   for (unsigned int i=0; i<n_points; ++i)
     permutation[i] = i;
 
-  std::sort(permutation,
-            permutation + n_points,
-            CompareWeights(weights));
+  std::sort(permutation, permutation + n_points,
+            [&weights](const unsigned int a, const unsigned int b) -> bool
+            {
+              return weights[a] < weights[b];
+            });
 
   // Now loop over points in the order of their associated weight
   Point<spacedim> p = surrounding_points[permutation[0]];
