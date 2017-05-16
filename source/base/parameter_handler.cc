@@ -1400,22 +1400,22 @@ ParameterHandler::mangle (const std::string &s)
   // for all parts of the string, see
   // if it is an allowed character or
   // not
-  for (unsigned int i=0; i<s.size(); ++i)
+  for (char c : s)
     {
       static const std::string allowed_characters
       ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789");
 
       if ((! mangle_whole_string)
           &&
-          (allowed_characters.find (s[i]) != std::string::npos))
-        u.push_back (s[i]);
+          (allowed_characters.find (c) != std::string::npos))
+        u.push_back (c);
       else
         {
           u.push_back ('_');
           static const char hex[16]
             = { '0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'};
-          u.push_back (hex[static_cast<unsigned char>(s[i])/16]);
-          u.push_back (hex[static_cast<unsigned char>(s[i])%16]);
+          u.push_back (hex[static_cast<unsigned char>(c)/16]);
+          u.push_back (hex[static_cast<unsigned char>(c)%16]);
         }
     }
 
@@ -2412,10 +2412,10 @@ ParameterHandler::print_parameters_section (std::ostream      &out,
     {
       // if there are top level elements to print, do it
       if (include_top_level_elements && (subsection_path.size() > 0))
-        for (unsigned int i=0; i<subsection_path.size(); ++i)
+        for (const std::string &path : subsection_path)
           {
             out << std::setw(overall_indent_level*2) << ""
-                << "subsection " << demangle (subsection_path[i]) << std::endl;
+                << "subsection " << demangle (path) << std::endl;
             overall_indent_level += 1;
           };
 
@@ -2486,10 +2486,10 @@ ParameterHandler::print_parameters_section (std::ostream      &out,
                     break_text_into_lines (p->second.get<std::string>("documentation"),
                                            78 - overall_indent_level*2 - 2);
 
-                for (unsigned int i=0; i<doc_lines.size(); ++i)
+                for (const std::string &doc_line : doc_lines)
                   out << std::setw(overall_indent_level*2) << ""
                       << "# "
-                      << doc_lines[i]
+                      << doc_line
                       << std::endl;
               }
 
@@ -2556,8 +2556,8 @@ ParameterHandler::print_parameters_section (std::ostream      &out,
                 // print name
                 out << "\\item {\\it Parameter name:} {\\tt " << demangle(p->first) << "}\n"
                     << "\\phantomsection\\label{parameters:";
-                for (unsigned int i=0; i<subsection_path.size(); ++i)
-                  out << subsection_path[i] << "/";
+                for (const std::string &path : subsection_path)
+                  out << path << "/";
                 out << demangle(p->first);
                 out << "}\n\n"
                     << std::endl;
@@ -2566,8 +2566,8 @@ ParameterHandler::print_parameters_section (std::ostream      &out,
                     << demangle(p->first)
                     << "}\n";
                 out << "\\index[prmindexfull]{";
-                for (unsigned int i=0; i<subsection_path.size(); ++i)
-                  out << subsection_path[i] << "!";
+                for (const std::string &path : subsection_path)
+                  out << path << "!";
                 out << demangle(p->first)
                     << "}\n";
 
@@ -2600,8 +2600,8 @@ ParameterHandler::print_parameters_section (std::ostream      &out,
                 // print name
                 out << "\\item {\\it Parameter name:} {\\tt " << demangle(p->first) << "}\n"
                     << "\\phantomsection\\label{parameters:";
-                for (unsigned int i=0; i<subsection_path.size(); ++i)
-                  out << subsection_path[i] << "/";
+                for (const std::string &path : subsection_path)
+                  out << path << "/";
                 out << demangle(p->first);
                 out << "}\n\n"
                     << std::endl;
@@ -2610,8 +2610,8 @@ ParameterHandler::print_parameters_section (std::ostream      &out,
                     << demangle(p->first)
                     << "}\n";
                 out << "\\index[prmindexfull]{";
-                for (unsigned int i=0; i<subsection_path.size(); ++i)
-                  out << subsection_path[i] << "!";
+                for (const std::string &path : subsection_path)
+                  out << path << "!";
                 out << demangle(p->first)
                     << "}\n";
 
@@ -2636,10 +2636,10 @@ ParameterHandler::print_parameters_section (std::ostream      &out,
     {
       // if there are top level elements to print, do it
       if (include_top_level_elements && (subsection_path.size() > 0))
-        for (unsigned int i=0; i<subsection_path.size(); ++i)
+        for (const std::string &path : subsection_path)
           {
             out << std::setw(overall_indent_level*2) << ""
-                << "subsection " << demangle (subsection_path[i]) << std::endl;
+                << "subsection " << demangle (path) << std::endl;
             overall_indent_level += 1;
           };
 
@@ -2679,9 +2679,9 @@ ParameterHandler::print_parameters_section (std::ostream      &out,
             if (description_str.size() > 1)
               {
                 out << std::endl;
-                for (unsigned int i=0; i<description_str.size(); ++i)
+                for (const std::string & description : description_str)
                   out << std::setw(overall_indent_level*2+6) << ""
-                      << description_str[i] << std::endl;
+                      << description << std::endl;
               }
             else if (description_str.empty() == false)
               out << "  " << description_str[0] << std::endl;
@@ -2756,14 +2756,14 @@ ParameterHandler::print_parameters_section (std::ostream      &out,
                 // current section so that we
                 // can print it in the
                 // \subsection{...} heading
-                for (unsigned int i=0; i<subsection_path.size(); ++i)
-                  out << subsection_path[i] << "/";
+                for (const std::string &path : subsection_path)
+                  out << path << "/";
                 out << demangle(p->first);
 
                 out << "}" << std::endl;
                 out << "\\label{parameters:";
-                for (unsigned int i=0; i<subsection_path.size(); ++i)
-                  out << mangle(subsection_path[i]) << "/";
+                for (const std::string &path : subsection_path)
+                  out << mangle(path) << "/";
                 out << p->first << "}";
                 out << std::endl;
 
@@ -3164,24 +3164,24 @@ void MultipleParameterLoop::init_branches ()
   init_branches_current_section ();
 
   // split up different values
-  for (unsigned int i=0; i<multiple_choices.size(); ++i)
-    multiple_choices[i].split_different_values ();
+  for (Entry &multiple_choice : multiple_choices)
+    multiple_choice.split_different_values ();
 
   // finally calculate number of branches
   n_branches = 1;
-  for (unsigned int i=0; i<multiple_choices.size(); ++i)
-    if (multiple_choices[i].type == Entry::variant)
-      n_branches *= multiple_choices[i].different_values.size();
+  for (const Entry &entry : multiple_choices)
+    if (entry.type == Entry::variant)
+      n_branches *= entry.different_values.size();
 
   // check whether array entries have the correct
   // number of entries
-  for (unsigned int i=0; i<multiple_choices.size(); ++i)
-    if (multiple_choices[i].type == Entry::array)
-      if (multiple_choices[i].different_values.size() != n_branches)
+  for (const Entry &entry : multiple_choices)
+    if (entry.type == Entry::array)
+      if (entry.different_values.size() != n_branches)
         std::cerr << "    The entry value" << std::endl
-                  << "        " << multiple_choices[i].entry_value << std::endl
+                  << "        " << entry.entry_value << std::endl
                   << "    for the entry named" << std::endl
-                  << "        " << multiple_choices[i].entry_name << std::endl
+                  << "        " << entry.entry_name << std::endl
                   << "    does not have the right number of entries for the " << std::endl
                   << "        " << n_branches << " variant runs that will be performed."
                   << std::endl;
@@ -3290,8 +3290,8 @@ std::size_t
 MultipleParameterLoop::memory_consumption () const
 {
   std::size_t mem = ParameterHandler::memory_consumption ();
-  for (unsigned int i=0; i<multiple_choices.size(); ++i)
-    mem += multiple_choices[i].memory_consumption ();
+  for (const Entry &multiple_choice : multiple_choices)
+    mem += multiple_choice.memory_consumption ();
 
   return mem;
 }

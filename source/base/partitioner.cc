@@ -347,10 +347,10 @@ namespace Utilities
           // sanity check
 #ifdef DEBUG
           const types::global_dof_index n_local_dofs = local_range_data.second-local_range_data.first;
-          for (unsigned int i=0; i<import_indices_data.size(); ++i)
+          for (const auto &range : import_indices_data)
             {
-              AssertIndexRange (import_indices_data[i].first, n_local_dofs);
-              AssertIndexRange (import_indices_data[i].second-1, n_local_dofs);
+              AssertIndexRange (range.first, n_local_dofs);
+              AssertIndexRange (range.second-1, n_local_dofs);
             }
 #endif
         }

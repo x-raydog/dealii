@@ -171,10 +171,10 @@ TableHandler::Column::invalidate_cache()
 {
   max_length = 0;
 
-  for (std::vector<dealii::internal::TableEntry>::iterator it=entries.begin(); it!=entries.end(); ++it)
+  for (auto &entry : entries)
     {
-      it->cache_string(this->scientific, this->precision);
-      max_length = std::max(max_length, static_cast<unsigned int>(it->get_cached_string().length()));
+      entry.cache_string(this->scientific, this->precision);
+      max_length = std::max(max_length, static_cast<unsigned int>(entry.get_cached_string().length()));
     }
 }
 
@@ -206,19 +206,19 @@ void TableHandler::start_new_row ()
 {
   // figure out the longest current column
   unsigned int max_col_length = 0;
-  for (std::map< std::string, Column >::iterator p = columns.begin(); p != columns.end(); ++p)
+  for (auto &column : columns)
     max_col_length = std::max(max_col_length,
-                              static_cast<unsigned int>(p->second.entries.size()));
+                              static_cast<unsigned int>(column.second.entries.size()));
 
 
   // then pad all columns to that length with empty strings
-  for (std::map<std::string,Column>::iterator col=columns.begin(); col!=columns.end(); ++col)
-    while (col->second.entries.size() < max_col_length)
+  for (auto &column : columns)
+    while (column.second.entries.size() < max_col_length)
       {
-        col->second.entries.emplace_back("");
-        internal::TableEntry &entry = col->second.entries.back();
-        entry.cache_string(col->second.scientific, col->second.precision);
-        col->second.max_length = std::max(col->second.max_length,
+        column.second.entries.emplace_back("");
+        internal::TableEntry &entry = column.second.entries.back();
+        entry.cache_string(column.second.scientific, column.second.precision);
+        column.second.max_length = std::max(column.second.max_length,
                                           static_cast<unsigned int>(entry.get_cached_string().length()));
       }
 }
@@ -244,10 +244,10 @@ void TableHandler::add_column_to_supercolumn (const std::string &key,
       supercolumns.insert(new_column);
       // replace key in column_order
       // by superkey
-      for (unsigned int j=0; j<column_order.size(); ++j)
-        if (column_order[j]==key)
+      for (auto &j : column_order)
+        if (j==key)
           {
-            column_order[j]=superkey;
+            j=superkey;
             break;
           }
     }
@@ -280,9 +280,9 @@ void TableHandler::add_column_to_supercolumn (const std::string &key,
 
 void TableHandler::set_column_order (const std::vector<std::string> &new_order)
 {
-  for (unsigned int j=0; j<new_order.size(); ++j)
-    Assert(supercolumns.count(new_order[j]) || columns.count(new_order[j]),
-           ExcColumnOrSuperColumnNotExistent(new_order[j]));
+  for (const auto &j : new_order)
+    Assert(supercolumns.count(j) || columns.count(j),
+           ExcColumnOrSuperColumnNotExistent(j));
 
   column_order=new_order;
 }
@@ -370,9 +370,8 @@ void TableHandler::write_text(std::ostream &out,
            p != columns.end(); ++p)
         max_rows = std::max<unsigned int>(max_rows, p->second.entries.size());
 
-      for (std::map<std::string, Column>::iterator p = columns.begin();
-           p != columns.end(); ++p)
-        p->second.pad_column_below (max_rows);
+      for (auto &column : columns)
+        column.second.pad_column_below (max_rows);
     }
 
   std::vector<std::string> sel_columns;
@@ -473,9 +472,8 @@ void TableHandler::write_text(std::ostream &out,
     {
       // This format output supercolumn headers and aligns them centered
       // over all the columns that belong to it.
-      for (unsigned int j=0; j<column_order.size(); ++j)
+      for (const auto &key : column_order)
         {
-          const std::string &key = column_order[j];
           unsigned int width=0;
           {
             // compute the width of this column or supercolumn
@@ -592,18 +590,16 @@ void TableHandler::write_tex (std::ostream &out, const bool with_header) const
            p != columns.end(); ++p)
         max_rows = std::max<unsigned int>(max_rows, p->second.entries.size());
 
-      for (std::map<std::string, Column>::iterator p = columns.begin();
-           p != columns.end(); ++p)
-        p->second.pad_column_below (max_rows);
+      for (auto &column : columns)
+        column.second.pad_column_below (max_rows);
     }
 
   std::vector<std::string> sel_columns;
   get_selected_columns(sel_columns);
 
   // write the column formats
-  for (unsigned int j=0; j<column_order.size(); ++j)
+  for (const std::string &key : column_order)
     {
-      std::string key=column_order[j];
       // avoid `supercolumns[key]'
       const std::map<std::string, std::vector<std::string> >::const_iterator
       super_iter=supercolumns.find(key);
@@ -742,9 +738,8 @@ void TableHandler::get_selected_columns(std::vector<std::string> &sel_columns) c
 {
   sel_columns.clear();
 
-  for (unsigned int j=0; j<column_order.size(); ++j)
+  for (const auto &key : column_order)
     {
-      std::string key=column_order[j];
       const std::map<std::string, std::vector<std::string> >::const_iterator
       super_iter=supercolumns.find(key);
 
@@ -774,14 +769,14 @@ void TableHandler::clear_current_row ()
   // Figure out what is the currect (max) length of the columns
   // so that we "shave" one off.
   std::vector<internal::TableEntry>::size_type n = 0;
-  for (std::map< std::string, Column >::iterator p = columns.begin(); p != columns.end(); ++p)
-    n = std::max(n, p->second.entries.size());
+  for (const auto &column_pair : columns)
+    n = std::max(n, column_pair.second.entries.size());
 
   // shave the top most element
   if (n != 0)
-    for (std::map< std::string, Column >::iterator p = columns.begin(); p != columns.end(); ++p)
-      if (p->second.entries.size() == n)
-        p->second.entries.pop_back();
+    for (auto &column_pair : columns)
+      if (column_pair.second.entries.size() == n)
+        column_pair.second.entries.pop_back();
 }
 
 

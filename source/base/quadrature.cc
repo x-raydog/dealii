@@ -780,7 +780,7 @@ QProjector<3>::project_to_all_faces (const SubQuadrature &quadrature)
   const unsigned int dim = 3;
 
   SubQuadrature q_reflected=reflect (quadrature);
-  SubQuadrature q[8]=
+  SubQuadrature sub_quadratures[8]=
   {
     quadrature,
     rotate (quadrature,1),
@@ -809,21 +809,21 @@ QProjector<3>::project_to_all_faces (const SubQuadrature &quadrature)
   // mutations of a face (mutation==0
   // corresponds to a face with standard
   // orientation, no flip and no rotation)
-  for (unsigned int mutation=0; mutation<8; ++mutation)
+  for (const SubQuadrature &mutation : sub_quadratures)
     {
       // project to each face and append
       // results
       for (unsigned int face=0; face<n_faces; ++face)
         {
-          project_to_face(q[mutation], face, help);
+          project_to_face(mutation, face, help);
           std::copy (help.begin(), help.end(),
                      std::back_inserter (q_points));
         }
 
       // next copy over weights
       for (unsigned int face=0; face<n_faces; ++face)
-        std::copy (q[mutation].get_weights().begin(),
-                   q[mutation].get_weights().end(),
+        std::copy (mutation.get_weights().begin(),
+                   mutation.get_weights().end(),
                    std::back_inserter (weights));
     }
 
@@ -932,7 +932,7 @@ QProjector<3>::project_to_all_subfaces (const SubQuadrature &quadrature)
 {
   const unsigned int dim = 3;
   SubQuadrature q_reflected=reflect (quadrature);
-  SubQuadrature q[8]=
+  SubQuadrature sub_quadratures[8]=
   {
     quadrature,
     rotate (quadrature,1),
@@ -960,7 +960,7 @@ QProjector<3>::project_to_all_subfaces (const SubQuadrature &quadrature)
   // mutations of a face (mutation==0
   // corresponds to a face with standard
   // orientation, no flip and no rotation)
-  for (unsigned int mutation=0; mutation<8; ++mutation)
+  for (const SubQuadrature &mutation : sub_quadratures)
     {
       // project to each face and copy
       // results
@@ -970,7 +970,7 @@ QProjector<3>::project_to_all_subfaces (const SubQuadrature &quadrature)
              --ref_case)
           for (unsigned int subface=0; subface<GeometryInfo<dim-1>::n_children(RefinementCase<dim-1>(ref_case)); ++subface)
             {
-              project_to_subface(q[mutation], face, subface, help,
+              project_to_subface(mutation, face, subface, help,
                                  RefinementCase<dim-1>(ref_case));
               std::copy (help.begin(), help.end(),
                          std::back_inserter (q_points));
@@ -982,8 +982,8 @@ QProjector<3>::project_to_all_subfaces (const SubQuadrature &quadrature)
              ref_case>=RefinementCase<dim-1>::cut_x;
              --ref_case)
           for (unsigned int subface=0; subface<GeometryInfo<dim-1>::n_children(RefinementCase<dim-1>(ref_case)); ++subface)
-            std::copy (q[mutation].get_weights().begin(),
-                       q[mutation].get_weights().end(),
+            std::copy (mutation.get_weights().begin(),
+                       mutation.get_weights().end(),
                        std::back_inserter (weights));
     }
 

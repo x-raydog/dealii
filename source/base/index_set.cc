@@ -516,10 +516,8 @@ void IndexSet::fill_index_vector(std::vector<size_type> &indices) const
   indices.clear();
   indices.reserve(n_elements());
 
-  for (std::vector<Range>::iterator it = ranges.begin();
-       it != ranges.end();
-       ++it)
-    for (size_type i=it->begin; i<it->end; ++i)
+  for (const Range &range : ranges)
+    for (size_type i=range.begin; i<range.end; ++i)
       indices.push_back (i);
 
   Assert (indices.size() == n_elements(), ExcInternalError());

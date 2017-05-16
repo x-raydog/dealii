@@ -872,9 +872,9 @@ void TableHandler::add_value (const std::string &key,
       // follow the algorithm given in the introduction to this class
       // of padding columns as necessary
       unsigned int max_col_length = 0;
-      for (std::map< std::string, Column >::iterator p = columns.begin(); p != columns.end(); ++p)
+      for (const auto &column_pair : columns)
         max_col_length = std::max(max_col_length,
-                                  static_cast<unsigned int>(p->second.entries.size()));
+                                  static_cast<unsigned int>(column_pair.second.entries.size()));
 
       while (columns[key].entries.size()+1 < max_col_length)
         {

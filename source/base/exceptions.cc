@@ -18,11 +18,12 @@
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/mpi.h>
 
-#include <string>
-#include <cstring>
+#include <algorithm>
 #include <cstdlib>
+#include <cstring>
 #include <iostream>
 #include <sstream>
+#include <string>
 
 #ifdef DEAL_II_WITH_MPI
 #  include <mpi.h>
@@ -79,8 +80,7 @@ ExceptionBase::ExceptionBase ()
   what_str("")
 {
 #ifdef DEAL_II_HAVE_GLIBC_STACKTRACE
-  for (unsigned int i=0; i<sizeof(raw_stacktrace)/sizeof(raw_stacktrace[0]); ++i)
-    raw_stacktrace[i] = nullptr;
+  std::fill(std::begin(raw_stacktrace), std::end(raw_stacktrace), nullptr);
 #endif
 }
 
@@ -98,8 +98,7 @@ ExceptionBase::ExceptionBase (const ExceptionBase &exc)
   what_str("") // don't copy the error message, it gets generated dynamically by what()
 {
 #ifdef DEAL_II_HAVE_GLIBC_STACKTRACE
-  for (unsigned int i=0; i<sizeof(raw_stacktrace)/sizeof(raw_stacktrace[0]); ++i)
-    raw_stacktrace[i] = nullptr;
+  std::fill(std::begin(raw_stacktrace), std::end(raw_stacktrace), nullptr);
 #endif
 }
 

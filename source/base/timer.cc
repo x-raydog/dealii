@@ -496,9 +496,8 @@ TimerOutput::print_summary () const
       // generated a lot of overhead in this
       // function.
       double check_time = 0.;
-      for (std::map<std::string, Section>::const_iterator
-           i = sections.begin(); i!=sections.end(); ++i)
-        check_time += i->second.total_cpu_time;
+      for (const auto & section : sections)
+        check_time += section.second.total_cpu_time;
 
       const double time_gap = check_time-total_cpu_time;
       if (time_gap > 0.0)
@@ -519,10 +518,9 @@ TimerOutput::print_summary () const
       out_stream << "  CPU time "  << " | % of total |\n";
       out_stream << "+---------------------------------+-----------+------------"
                  << "+------------+";
-      for (std::map<std::string, Section>::const_iterator
-           i = sections.begin(); i!=sections.end(); ++i)
+      for (const auto & section : sections)
         {
-          std::string name_out = i->first;
+          std::string name_out = section.first;
 
           // resize the array so that it is always
           // of the same size
@@ -533,17 +531,17 @@ TimerOutput::print_summary () const
           out_stream << "| " << name_out;
           out_stream << "| ";
           out_stream << std::setw(9);
-          out_stream << i->second.n_calls << " |";
+          out_stream << section.second.n_calls << " |";
           out_stream << std::setw(10);
           out_stream << std::setprecision(3);
-          out_stream << i->second.total_cpu_time << "s |";
+          out_stream << section.second.total_cpu_time << "s |";
           out_stream << std::setw(10);
           if (total_cpu_time != 0)
             {
               // if run time was less than 0.1%, just print a zero to avoid
               // printing silly things such as "2.45e-6%". otherwise print
               // the actual percentage
-              const double fraction = i->second.total_cpu_time/total_cpu_time;
+              const double fraction = section.second.total_cpu_time/total_cpu_time;
               if (fraction > 0.001)
                 {
                   out_stream << std::setprecision(2);
@@ -590,10 +588,9 @@ TimerOutput::print_summary () const
       out_stream << "  wall time | % of total |\n";
       out_stream << "+---------------------------------+-----------+------------"
                  << "+------------+";
-      for (std::map<std::string, Section>::const_iterator
-           i = sections.begin(); i!=sections.end(); ++i)
+      for (const auto & section : sections)
         {
-          std::string name_out = i->first;
+          std::string name_out = section.first;
 
           // resize the array so that it is always
           // of the same size
@@ -604,10 +601,10 @@ TimerOutput::print_summary () const
           out_stream << "| " << name_out;
           out_stream << "| ";
           out_stream << std::setw(9);
-          out_stream << i->second.n_calls << " |";
+          out_stream << section.second.n_calls << " |";
           out_stream << std::setw(10);
           out_stream << std::setprecision(3);
-          out_stream << i->second.total_wall_time << "s |";
+          out_stream << section.second.total_wall_time << "s |";
           out_stream << std::setw(10);
 
           if (total_wall_time != 0)
@@ -615,7 +612,7 @@ TimerOutput::print_summary () const
               // if run time was less than 0.1%, just print a zero to avoid
               // printing silly things such as "2.45e-6%". otherwise print
               // the actual percentage
-              const double fraction = i->second.total_wall_time/total_wall_time;
+              const double fraction = section.second.total_wall_time/total_wall_time;
               if (fraction > 0.001)
                 {
                   out_stream << std::setprecision(2);

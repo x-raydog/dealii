@@ -91,14 +91,14 @@ namespace Utilities
     compute_point_to_point_communication_pattern (const MPI_Comm &mpi_comm,
                                                   const std::vector<unsigned int> &destinations)
     {
-      unsigned int myid = Utilities::MPI::this_mpi_process(mpi_comm);
-      unsigned int n_procs = Utilities::MPI::n_mpi_processes(mpi_comm);
+      const unsigned int myid = Utilities::MPI::this_mpi_process(mpi_comm);
+      const unsigned int n_procs = Utilities::MPI::n_mpi_processes(mpi_comm);
 
-      for (unsigned int i=0; i<destinations.size(); ++i)
+      for (const unsigned int destination : destinations)
         {
-          Assert (destinations[i] < n_procs,
-                  ExcIndexRange (destinations[i], 0, n_procs));
-          Assert (destinations[i] != myid,
+          Assert (destination < n_procs,
+                  ExcIndexRange (destination, 0, n_procs));
+          Assert (destination != myid,
                   ExcMessage ("There is no point in communicating with ourselves."));
         }
 

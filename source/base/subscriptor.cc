@@ -90,11 +90,11 @@ void Subscriptor::check_no_subscribers () const
       if (std::uncaught_exception() == false)
         {
           std::string infostring;
-          for (map_iterator it = counter_map.begin(); it != counter_map.end(); ++it)
+          for (const auto &counter_pair : counter_map)
             {
-              if (it->second > 0)
+              if (counter_pair.second > 0)
                 infostring += std::string("\n  from Subscriber ")
-                              + std::string(it->first);
+                              + std::string(counter_pair.first);
             }
 
           if (infostring == "")

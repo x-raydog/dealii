@@ -108,13 +108,13 @@ namespace Functions
     std::string expression = prm.get("Function expression");
     std::string constants_list = prm.get("Function constants");
 
-    std::vector<std::string> const_list =
+    const std::vector<std::string> const_list =
       Utilities::split_string_list(constants_list, ',');
     std::map<std::string, double> constants;
-    for (unsigned int i = 0; i < const_list.size(); ++i)
+    for (const std::string &constant : const_list)
       {
-        std::vector<std::string> this_c =
-          Utilities::split_string_list(const_list[i], '=');
+        const std::vector<std::string> this_c =
+          Utilities::split_string_list(constant, '=');
         AssertThrow(this_c.size() == 2, ExcMessage("Invalid format"));
         double tmp;
         AssertThrow( std::sscanf(this_c[1].c_str(), "%lf", &tmp),
