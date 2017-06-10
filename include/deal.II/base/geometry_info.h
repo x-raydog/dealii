@@ -1886,6 +1886,7 @@ struct GeometryInfo
    * mother cell.
    */
   static
+  inline
   Point<dim>
   child_to_cell_coordinates (const Point<dim>          &p,
                              const unsigned int         child_index,
@@ -1897,6 +1898,7 @@ struct GeometryInfo
    * space dimension.
    */
   static
+  inline
   bool
   is_inside_unit_cell (const Point<dim> &p);
 
@@ -2614,6 +2616,42 @@ GeometryInfo<1>::child_to_cell_coordinates (const Point<1>         &p,
 
 template <>
 inline
+Point<2>
+GeometryInfo<2>::child_to_cell_coordinates (const Point<2>         &p,
+                                            const unsigned int      child_index,
+                                            const RefinementCase<2> refine_case)
+{
+  Assert (child_index < GeometryInfo<2>::n_children(refine_case),
+          ExcIndexRange (child_index, 0, GeometryInfo<2>::n_children(refine_case)));
+
+  Point<2> point=p;
+  switch (refine_case)
+    {
+    case RefinementCase<2>::cut_x:
+      if (child_index==1)
+        point[0]+=1.0;
+      point[0]*=0.5;
+      break;
+    case RefinementCase<2>::cut_y:
+      if (child_index==1)
+        point[1]+=1.0;
+      point[1]*=0.5;
+      break;
+    case RefinementCase<2>::cut_xy:
+      point+=unit_cell_vertex(child_index);
+      point*=0.5;
+      break;
+    default:
+      Assert(false, ExcInternalError());
+    }
+
+  return point;
+}
+
+
+
+template <>
+inline
 Point<3>
 GeometryInfo<3>::child_to_cell_coordinates (const Point<3>         &p,
                                             const unsigned int      child_index,
@@ -2675,42 +2713,6 @@ GeometryInfo<3>::child_to_cell_coordinates (const Point<3>         &p,
       point[2]*=0.5;
       break;
     case RefinementCase<3>::cut_xyz:
-      point+=unit_cell_vertex(child_index);
-      point*=0.5;
-      break;
-    default:
-      Assert(false, ExcInternalError());
-    }
-
-  return point;
-}
-
-
-
-template <>
-inline
-Point<2>
-GeometryInfo<2>::child_to_cell_coordinates (const Point<2>         &p,
-                                            const unsigned int      child_index,
-                                            const RefinementCase<2> refine_case)
-{
-  Assert (child_index < GeometryInfo<2>::n_children(refine_case),
-          ExcIndexRange (child_index, 0, GeometryInfo<2>::n_children(refine_case)));
-
-  Point<2> point=p;
-  switch (refine_case)
-    {
-    case RefinementCase<2>::cut_x:
-      if (child_index==1)
-        point[0]+=1.0;
-      point[0]*=0.5;
-      break;
-    case RefinementCase<2>::cut_y:
-      if (child_index==1)
-        point[1]+=1.0;
-      point[1]*=0.5;
-      break;
-    case RefinementCase<2>::cut_xy:
       point+=unit_cell_vertex(child_index);
       point*=0.5;
       break;
