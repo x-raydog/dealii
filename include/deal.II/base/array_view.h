@@ -77,6 +77,9 @@ public:
    */
   typedef ElementType value_type;
 
+  typedef ElementType * iterator;
+  typedef const ElementType * const_iterator;
+
   /**
    * Default constructor. Creates an invalid view that does not point to
    * anything at all.
@@ -121,6 +124,16 @@ public:
    * represents.
    */
   std::size_t size() const;
+
+  inline
+  iterator begin();
+  inline
+  iterator end();
+
+  inline
+  const_iterator begin() const;
+  inline
+  const_iterator end() const;
 
   /**
    * Return a reference to the $i$th element of the range represented by the
@@ -190,6 +203,40 @@ std::size_t
 ArrayView<ElementType>::size() const
 {
   return n_elements;
+}
+
+template <typename ElementType>
+inline
+typename ArrayView<ElementType>::iterator
+ArrayView<ElementType>::begin()
+{
+  return starting_element;
+}
+
+
+template <typename ElementType>
+inline
+typename ArrayView<ElementType>::iterator
+ArrayView<ElementType>::end()
+{
+  return starting_element + n_elements;
+}
+
+template <typename ElementType>
+inline
+typename ArrayView<ElementType>::const_iterator
+ArrayView<ElementType>::begin() const
+{
+  return starting_element;
+}
+
+
+template <typename ElementType>
+inline
+typename ArrayView<ElementType>::const_iterator
+ArrayView<ElementType>::end() const
+{
+  return starting_element + n_elements;
 }
 
 
