@@ -20,6 +20,7 @@
 /*----------------------------   manifold.h     ---------------------------*/
 
 #include <deal.II/base/config.h>
+#include <deal.II/base/array_view.h>
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/thread_management.h>
@@ -372,9 +373,19 @@ public:
    * only the project_to_manifold() function.
    */
   virtual
+  inline
   Point<spacedim>
   get_new_point (const std::vector<Point<spacedim> > &surrounding_points,
                  const std::vector<double>           &weights) const;
+
+  /**
+   * Same, but for an ArrayView instead of a std::vector.
+   */
+  virtual
+  Point<spacedim>
+  get_new_point (const ArrayView<Point<spacedim> > &surrounding_points,
+                 const ArrayView<double>           &weights) const;
+
 
   /**
    * Compute a new set of points that interpolate between the given points
@@ -421,6 +432,11 @@ public:
   virtual
   Point<spacedim> project_to_manifold (const std::vector<Point<spacedim> > &surrounding_points,
                                        const Point<spacedim> &candidate) const;
+
+  virtual
+  Point<spacedim> project_to_manifold (const ArrayView<Point<spacedim> > &surrounding_points,
+                                       const Point<spacedim> &candidate) const;
+
 
   /**
    * Backward compatibility interface.  Return the point which shall become
@@ -681,6 +697,8 @@ public:
   FlatManifold (const Tensor<1,spacedim> &periodicity = Tensor<1,spacedim>(),
                 const double tolerance=1e-10);
 
+  using Manifold<dim,spacedim>::get_new_point;
+
   /**
    * Let the new point be the average sum of surrounding vertices.
    *
@@ -704,8 +722,9 @@ public:
    */
   virtual
   Point<spacedim>
-  get_new_point(const std::vector<Point<spacedim> > &surrounding_points,
-                const std::vector<double>           &weights) const;
+  get_new_point(const ArrayView<Point<spacedim> > &surrounding_points,
+                const ArrayView<double>           &weights) const override;
+
 
   /**
    * Compute a new set of points that interpolate between the given points
@@ -737,6 +756,11 @@ public:
   Point<spacedim>
   project_to_manifold (const std::vector<Point<spacedim> > &points,
                        const Point<spacedim> &candidate) const;
+
+  virtual
+  Point<spacedim> project_to_manifold (const ArrayView<Point<spacedim> > &surrounding_points,
+                                       const Point<spacedim> &candidate) const;
+
 
   /**
    * Return a vector that, at $\mathbf x_1$, is tangential to
@@ -916,14 +940,16 @@ public:
    */
   virtual ~ChartManifold ();
 
+  using Manifold<dim,spacedim>::get_new_point;
+
   /**
    * Refer to the general documentation of this class and the documentation of
    * the base class for more information.
    */
   virtual
   Point<spacedim>
-  get_new_point(const std::vector<Point<spacedim> > &surrounding_points,
-                const std::vector<double>           &weights) const;
+  get_new_point(const ArrayView<Point<spacedim> > &surrounding_points,
+                const ArrayView<double>           &weights) const override;
 
   /**
    * Compute a new set of points that interpolate between the given points
@@ -1076,6 +1102,18 @@ private:
 };
 
 
+template <int dim, int spacedim>
+inline
+Point<spacedim>
+Manifold<dim, spacedim>::
+get_new_point (const std::vector<Point<spacedim> > &surrounding_points,
+               const std::vector<double>           &weights) const
+{
+  // we need a const ArrayView, not an ArrayView of const
+  return get_new_point(ArrayView<Point<spacedim> >(const_cast<Point<spacedim> *>(surrounding_points.data()),
+                                                   surrounding_points.size()),
+                       ArrayView<double>(const_cast<double *>(weights.data()), weights.size()));
+}
 
 
 /* -------------- declaration of explicit specializations ------------- */

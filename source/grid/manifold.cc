@@ -28,28 +28,23 @@ using namespace Manifolds;
 
 // This structure is used as comparison function for std::sort when sorting
 // points according to their weight.
-struct CompareWeights
-{
-public:
-  CompareWeights(const std::vector<double> &weights)
-    :
-    compare_weights(weights)
-  {}
-
-  bool operator() (unsigned int a, unsigned int b) const
-  {
-    return compare_weights[a] < compare_weights[b];
-  }
-
-private:
-  const std::vector<double> &compare_weights;
-};
-
 /* -------------------------- Manifold --------------------- */
 
 template <int dim, int spacedim>
 Manifold<dim, spacedim>::~Manifold ()
 {}
+
+
+
+template <int dim, int spacedim>
+Point<spacedim>
+Manifold<dim, spacedim>::
+project_to_manifold (const ArrayView<Point<spacedim> > &,
+                     const Point<spacedim> &) const
+{
+  Assert (false, ExcPureFunctionCalled());
+  return Point<spacedim>();
+}
 
 
 
@@ -83,8 +78,8 @@ get_intermediate_point (const Point<spacedim> &p1,
 template <int dim, int spacedim>
 Point<spacedim>
 Manifold<dim, spacedim>::
-get_new_point (const std::vector<Point<spacedim> > &surrounding_points,
-               const std::vector<double>           &weights) const
+get_new_point (const ArrayView<Point<spacedim> > &surrounding_points,
+               const ArrayView<double>           &weights) const
 {
   const double tol = 1e-10;
   const unsigned int n_points = surrounding_points.size();
@@ -115,9 +110,11 @@ get_new_point (const std::vector<Point<spacedim> > &surrounding_points,
   for (unsigned int i=0; i<n_points; ++i)
     permutation[i] = i;
 
-  std::sort(permutation,
-            permutation + n_points,
-            CompareWeights(weights));
+  std::sort(permutation, permutation + n_points,
+            [&weights](const std::size_t a, const std::size_t b)
+            {
+              return weights[a] < weights[b];
+            });
 
   // Now loop over points in the order of their associated weight
   Point<spacedim> p = surrounding_points[permutation[0]];
@@ -544,8 +541,8 @@ FlatManifold<dim,spacedim>::FlatManifold (const Tensor<1,spacedim> &periodicity,
 template <int dim, int spacedim>
 Point<spacedim>
 FlatManifold<dim, spacedim>::
-get_new_point (const std::vector<Point<spacedim> > &surrounding_points,
-               const std::vector<double>           &weights) const
+get_new_point (const ArrayView<Point<spacedim> > &surrounding_points,
+               const ArrayView<double>           &weights) const
 {
   Assert(std::abs(std::accumulate(weights.begin(), weights.end(), 0.0)-1.0) < 1e-10,
          ExcMessage("The weights for the individual points should sum to 1!"));
@@ -664,6 +661,15 @@ add_new_points (const std::vector<Point<spacedim> > &surrounding_points,
 }
 
 
+template <int dim, int spacedim>
+Point<spacedim>
+FlatManifold<dim, spacedim>::project_to_manifold (const ArrayView<Point<spacedim> > &/*vertices*/,
+                                                  const Point<spacedim> &candidate) const
+{
+  return candidate;
+}
+
+
 
 template <int dim, int spacedim>
 Point<spacedim>
@@ -728,15 +734,16 @@ ChartManifold<dim,spacedim,chartdim>::ChartManifold (const Tensor<1,chartdim> &p
 template <int dim, int spacedim, int chartdim>
 Point<spacedim>
 ChartManifold<dim,spacedim,chartdim>::
-get_new_point (const std::vector<Point<spacedim> > &surrounding_points,
-               const std::vector<double>           &weights) const
+get_new_point (const ArrayView<Point<spacedim> > &surrounding_points,
+               const ArrayView<double>           &weights) const
 {
   std::vector<Point<chartdim> > chart_points(surrounding_points.size());
 
   for (unsigned int i=0; i<surrounding_points.size(); ++i)
     chart_points[i] = pull_back(surrounding_points[i]);
 
-  const Point<chartdim> p_chart = sub_manifold.get_new_point(chart_points,weights);
+  const Point<chartdim> p_chart = sub_manifold.get_new_point
+    (make_array_view<Point<chartdim>>(chart_points), weights);
 
   return push_forward(p_chart);
 }

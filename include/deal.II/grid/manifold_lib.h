@@ -227,14 +227,16 @@ public:
   get_tangent_vector (const Point<spacedim> &x1,
                       const Point<spacedim> &x2) const;
 
+  using Manifold<dim,spacedim>::get_new_point;
+
   /**
    * Return a point on the spherical manifold which is intermediate
    * with respect to the surrounding points.
    */
   virtual
   Point<spacedim>
-  get_new_point (const std::vector<Point<spacedim> > &vertices,
-                 const std::vector<double> &weights) const;
+  get_new_point (const ArrayView<Point<spacedim> > &vertices,
+                 const ArrayView<double> &weights) const override;
 
   /**
    * The center of the spherical coordinate system.
@@ -298,17 +300,19 @@ public:
   virtual Point<spacedim>
   push_forward(const Point<3> &chart_point) const override;
 
+  using Manifold<dim,spacedim>::get_new_point;
+
   /**
    * Compute new points on the CylindricalManifold. See the documentation of
    * the base class for a detailed description of what this function does.
    */
   virtual Point<spacedim>
-  get_new_point(const std::vector<Point<spacedim> > &surrounding_points,
-                const std::vector<double>           &weights) const override;
+  get_new_point (const ArrayView<Point<spacedim> > &surrounding_points,
+                 const ArrayView<double>           &weights) const override;
 
 protected:
   /**
-   * A vector orthogonal to direcetion.
+   * A vector orthogonal to the normal direction.
    */
   const Tensor<1,spacedim> normal_direction;
 
@@ -617,11 +621,10 @@ private:
  * the case for PolarManifold but not for Spherical manifold, so be careful
  * when using the latter. In case the quality of the manifold is not good
  * enough, upon mesh refinement it may happen that the transformation to a
- * chart inside the get_new_point() or add_new_points() methods produces points
- * that are outside the unit cell. Then this class throws an exception of
- * type Manifold@<dim,spacedim@>::ExcTransformationFailed. In that case,
- * the mesh should be refined before attaching this class, as done in the
- * following example:
+ * chart inside the get_new_point() or add_new_points() methods produces
+ * points that are outside the unit cell. Then this class throws an exception
+ * of type Mapping::ExcTransformationFailed. In that case, the mesh should be
+ * refined before attaching this class, as done in the following example:
  *
  * @code
  * SphericalManifold<dim> spherical_manifold;
@@ -679,6 +682,8 @@ public:
    */
   void initialize (const Triangulation<dim,spacedim> &triangulation);
 
+  using Manifold<dim,spacedim>::get_new_point;
+
   /**
    * Return the point which shall become the new vertex surrounded by the
    * given points @p surrounding_points. @p weights contains appropriate
@@ -696,8 +701,8 @@ public:
    */
   virtual
   Point<spacedim>
-  get_new_point (const std::vector<Point<spacedim> > &surrounding_points,
-                 const std::vector<double>           &weights) const;
+  get_new_point (const ArrayView<Point<spacedim> > &surrounding_points,
+                 const ArrayView<double>           &weights) const override;
 
   /**
    * Compute a new set of points that interpolate between the given points
@@ -739,7 +744,7 @@ private:
    * 10 entries of a the indices <tt>cell->index()</tt>.
    */
   std::array<unsigned int, 10>
-  get_possible_cells_around_points(const std::vector<Point<spacedim> > &surrounding_points) const;
+  get_possible_cells_around_points(const ArrayView<Point<spacedim> > &surrounding_points) const;
 
   /**
    * Finalizes the identification of the correct chart and returns the location
@@ -748,7 +753,7 @@ private:
    */
   std::pair<typename Triangulation<dim,spacedim>::cell_iterator,
       std::vector<Point<dim> > >
-      compute_chart_points(const std::vector<Point<spacedim> > &surrounding_points) const;
+      compute_chart_points(const ArrayView<Point<spacedim> > &surrounding_points) const;
 
   /**
    * Pull back operation into the unit coordinates on the given coarse cell.
