@@ -655,6 +655,7 @@ public:
    * parallel::distributed::Triangulation, specific to that part of the
    * distributed triangulation stored on the current processor.
    */
+  inline
   unsigned int vertex_index (const unsigned int i) const;
 
   /**
@@ -694,6 +695,7 @@ public:
    * positions may or may not be preserved across the re-partitioning that
    * accompanies mesh refinement.
    */
+  inline
   Point<spacedim> &vertex (const unsigned int i) const;
 
   /**
