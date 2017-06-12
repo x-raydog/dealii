@@ -212,14 +212,15 @@ MappingManifold<dim,spacedim>::
 transform_unit_to_real_cell (const typename Triangulation<dim,spacedim>::cell_iterator &cell,
                              const Point<dim> &p) const
 {
-  std::vector<Point<spacedim> > vertices;
-  std::vector<double> weights;
+  std::array<Point<spacedim>, GeometryInfo<dim>::vertices_per_cell> vertices;
+  std::array<double, GeometryInfo<dim>::vertices_per_cell> weights;
   for (unsigned int v=0; v<GeometryInfo<dim>::vertices_per_cell; ++v)
     {
-      vertices.push_back(cell->vertex(v));
-      weights.push_back(GeometryInfo<dim>::d_linear_shape_function(p,v));
+      vertices[v] = cell->vertex(v);
+      weights[v] = GeometryInfo<dim>::d_linear_shape_function(p,v);
     }
-  return cell->get_manifold().get_new_point(vertices, weights);
+  return cell->get_manifold().get_new_point(make_array_view(vertices),
+                                            make_array_view(weights));
 }
 
 
@@ -398,13 +399,14 @@ namespace internal
 
       AssertDimension(data.vertices.size(), GeometryInfo<dim>::vertices_per_cell);
 
+      const ArrayView<Point<spacedim>> vertices_view = make_array_view(data.vertices);
       if (update_flags & update_quadrature_points)
         {
           for (unsigned int point=0; point<quadrature_points.size(); ++point)
             {
-              quadrature_points[point] = data.manifold->
-                                         get_new_point(data.vertices,
-                                                       data.cell_manifold_quadrature_weights[point+data_set]);
+              const ArrayView<double> weights_view(const_cast<double *>(data.cell_manifold_quadrature_weights[point+data_set].data()),
+                                                   data.cell_manifold_quadrature_weights[point+data_set].size());
+              quadrature_points[point] = data.manifold->get_new_point(vertices_view, weights_view);
             }
         }
     }
@@ -432,6 +434,8 @@ namespace internal
 
           AssertDimension(GeometryInfo<dim>::vertices_per_cell,
                           data.vertices.size());
+
+          const ArrayView<Point<spacedim>> vertices_view = make_array_view(data.vertices);
           for (unsigned int point=0; point<n_q_points; ++point)
             {
               // Start by figuring out how to compute the direction in
@@ -439,9 +443,11 @@ namespace internal
               const Point<dim> &p = data.quad.point(point+data_set);
 
               // And get its image on the manifold:
-              const Point<spacedim> P = data.manifold->
-                                        get_new_point(data.vertices,
-                                                      data.cell_manifold_quadrature_weights[point+data_set]);
+              const ArrayView<double> weights_view(const_cast<double *>(data.cell_manifold_quadrature_weights[point+data_set].data()),
+                                                   data.cell_manifold_quadrature_weights[point+data_set].size());
+              const ArrayView<double> vertex_weights_view(data.vertex_weights.data(), data.vertex_weights.size());
+
+              const Point<spacedim> P = data.manifold->get_new_point(vertices_view, weights_view);
 
               // To compute the Jacobian, we choose dim points aligned
               // with the dim reference axes, which are still in the
@@ -468,9 +474,8 @@ namespace internal
                   for (unsigned int j=0; j<GeometryInfo<dim>::vertices_per_cell; ++j)
                     data.vertex_weights[j] = GeometryInfo<dim>::d_linear_shape_function(np, j);
 
-                  const Point<spacedim> NP=
-                    data.manifold->get_new_point(data.vertices,
-                                                 data.vertex_weights);
+                  const Point<spacedim> NP =
+                    data.manifold->get_new_point(vertices_view, vertex_weights_view);
 
                   const Tensor<1,spacedim> T = data.manifold->get_tangent_vector(P, NP);
 
@@ -1347,4 +1352,3 @@ transform (const ArrayView<const  Tensor<3,dim> >                  &input,
 
 
 DEAL_II_NAMESPACE_CLOSE
-

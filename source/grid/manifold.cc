@@ -26,10 +26,7 @@ DEAL_II_NAMESPACE_OPEN
 
 using namespace Manifolds;
 
-// This structure is used as comparison function for std::sort when sorting
-// points according to their weight.
 /* -------------------------- Manifold --------------------- */
-
 template <int dim, int spacedim>
 Manifold<dim, spacedim>::~Manifold ()
 {}
@@ -51,26 +48,13 @@ project_to_manifold (const ArrayView<Point<spacedim> > &,
 template <int dim, int spacedim>
 Point<spacedim>
 Manifold<dim, spacedim>::
-project_to_manifold (const std::vector<Point<spacedim> > &,
-                     const Point<spacedim> &) const
-{
-  Assert (false, ExcPureFunctionCalled());
-  return Point<spacedim>();
-}
-
-
-
-template <int dim, int spacedim>
-Point<spacedim>
-Manifold<dim, spacedim>::
 get_intermediate_point (const Point<spacedim> &p1,
                         const Point<spacedim> &p2,
                         const double w) const
 {
-  std::vector<Point<spacedim> > vertices;
-  vertices.push_back(p1);
-  vertices.push_back(p2);
-  return project_to_manifold(vertices, w * p2 + (1-w)*p1 );
+  std::array<Point<spacedim>, 2> vertices {{p1, p2}};
+  ArrayView<Point<spacedim>> vertices_view(vertices.begin(), vertices.size());
+  return project_to_manifold(vertices_view, w * p2 + (1-w)*p1 );
 }
 
 
@@ -145,19 +129,23 @@ add_new_points (const std::vector<Point<spacedim> > &surrounding_points,
                 const Table<2,double>               &weights,
                 std::vector<Point<spacedim> >       &new_points) const
 {
+  (void)surrounding_points;
+  (void)weights;
+  (void)new_points;
   AssertDimension(surrounding_points.size(), weights.size(1));
   Assert(&surrounding_points != &new_points,
          ExcMessage("surrounding_points and new_points cannot be the same "
                     "array"));
 
-  const unsigned int n_points = surrounding_points.size();
-  std::vector<double> local_weights(n_points);
-  for (unsigned int row=0; row<weights.size(0); ++row)
-    {
-      for (unsigned int i=0; i<n_points; ++i)
-        local_weights[i] = weights(row,i);
-      new_points.push_back(get_new_point(surrounding_points, local_weights));
-    }
+  AssertThrow(false, ExcNotImplemented());
+  // const unsigned int n_points = surrounding_points.size();
+  // std::vector<double> local_weights(n_points);
+  // for (unsigned int row=0; row<weights.size(0); ++row)
+  //   {
+  //     for (unsigned int i=0; i<n_points; ++i)
+  //       local_weights[i] = weights(row,i);
+  //     new_points.push_back(get_new_point(surrounding_points, local_weights));
+  //   }
 }
 
 
@@ -361,8 +349,11 @@ Point<spacedim>
 Manifold<dim, spacedim>::
 get_new_point_on_line (const typename Triangulation<dim, spacedim>::line_iterator &line) const
 {
-  const std::pair<std::vector<Point<spacedim> >, std::vector<double> > points_weights(get_default_points_and_weights(line));
-  return get_new_point (points_weights.first,points_weights.second);
+  auto points_weights = get_default_points_and_weights(line);
+  return get_new_point (ArrayView<Point<spacedim>>(points_weights.first.data(),
+                                                   points_weights.first.size()),
+                        ArrayView<double>(points_weights.second.data(),
+                                          points_weights.second.size()));
 }
 
 
@@ -372,8 +363,11 @@ Point<spacedim>
 Manifold<dim, spacedim>::
 get_new_point_on_quad (const typename Triangulation<dim, spacedim>::quad_iterator &quad) const
 {
-  const std::pair<std::vector<Point<spacedim> >, std::vector<double> > points_weights(get_default_points_and_weights(quad));
-  return get_new_point (points_weights.first,points_weights.second);
+  auto points_weights = get_default_points_and_weights(quad);
+  return get_new_point (ArrayView<Point<spacedim>>(points_weights.first.data(),
+                                                   points_weights.first.size()),
+                        ArrayView<double>(points_weights.second.data(),
+                                          points_weights.second.size()));
 }
 
 
@@ -500,8 +494,12 @@ Point<3>
 Manifold<3,3>::
 get_new_point_on_hex (const Triangulation<3, 3>::hex_iterator &hex) const
 {
-  const std::pair<std::vector<Point<3> >, std::vector<double> > points_weights(get_default_points_and_weights(hex,true));
-  return get_new_point (points_weights.first,points_weights.second);
+  auto points_weights = get_default_points_and_weights(hex, true);
+  constexpr int spacedim = decltype(points_weights.first)::value_type::dimension;
+  return get_new_point (ArrayView<Point<spacedim>>(points_weights.first.data(),
+                                                   points_weights.first.size()),
+                        ArrayView<double>(points_weights.second.data(),
+                                          points_weights.second.size()));
 }
 
 
@@ -513,15 +511,14 @@ Manifold<dim,spacedim>::get_tangent_vector(const Point<spacedim> &x1,
 {
   const double epsilon = 1e-8;
 
-  std::vector<Point<spacedim> > q;
-  q.push_back(x1);
-  q.push_back(x2);
+  std::array<Point<spacedim>, 2> points {{x1, x2}};
+  std::array<double, 2> weights {{epsilon, 1.0 - epsilon}};
+  // TODO why is this necessary? GCC does not like creating weights_view as an
+  // rvalue
+  const ArrayView<Point<spacedim>> points_view = make_array_view(points);
+  const ArrayView<double> weights_view = make_array_view(weights);
 
-  std::vector<double> w;
-  w.push_back(epsilon);
-  w.push_back(1.0-epsilon);
-
-  const Tensor<1,spacedim> neighbor_point = get_new_point (q, w);
+  const Point<spacedim> neighbor_point = get_new_point (points_view, weights_view);
   return (neighbor_point-x1)/epsilon;
 }
 
@@ -600,80 +597,74 @@ add_new_points (const std::vector<Point<spacedim> > &surrounding_points,
                 const Table<2,double>               &weights,
                 std::vector<Point<spacedim> >       &new_points) const
 {
-  AssertDimension(surrounding_points.size(), weights.size(1));
-  if (weights.size(0) == 0)
-    return;
+  (void)surrounding_points;
+  (void)weights;
+  (void)new_points;
+  AssertThrow(false, ExcNotImplemented());
+  // AssertDimension(surrounding_points.size(), weights.size(1));
+  // if (weights.size(0) == 0)
+  //   return;
 
-  const unsigned int n_points = surrounding_points.size();
+  // const unsigned int n_points = surrounding_points.size();
 
-  Tensor<1,spacedim> minP = periodicity;
-  for (unsigned int d=0; d<spacedim; ++d)
-    if (periodicity[d] > 0)
-      for (unsigned int i=0; i<n_points; ++i)
-        {
-          minP[d] = std::min(minP[d], surrounding_points[i][d]);
-          Assert( (surrounding_points[i][d] < periodicity[d]+tolerance*periodicity[d]) ||
-                  (surrounding_points[i][d] >= -tolerance*periodicity[d]),
-                  ExcPeriodicBox(d, surrounding_points[i], periodicity[i]));
-        }
+  // Tensor<1,spacedim> minP = periodicity;
+  // for (unsigned int d=0; d<spacedim; ++d)
+  //   if (periodicity[d] > 0)
+  //     for (unsigned int i=0; i<n_points; ++i)
+  //       {
+  //         minP[d] = std::min(minP[d], surrounding_points[i][d]);
+  //         Assert( (surrounding_points[i][d] < periodicity[d]+tolerance*periodicity[d]) ||
+  //                 (surrounding_points[i][d] >= -tolerance*periodicity[d]),
+  //                 ExcPeriodicBox(d, surrounding_points[i], periodicity[i]));
+  //       }
 
-  // check whether periodicity shifts some of the points. Only do this if
-  // necessary to avoid memory allocation
-  const Point<spacedim> *surrounding_points_start = &surrounding_points[0];
-  std::vector<Point<spacedim> > modified_points;
-  bool adjust_periodicity = false;
-  for (unsigned int d=0; d<spacedim; ++d)
-    if (periodicity[d] > 0)
-      for (unsigned int i=0; i<n_points; ++i)
-        if ((surrounding_points[i][d]-minP[d]) > periodicity[d]/2.0)
-          {
-            adjust_periodicity = true;
-            break;
-          }
-  if (adjust_periodicity == true)
-    {
-      modified_points = surrounding_points;
-      for (unsigned int d=0; d<spacedim; ++d)
-        if (periodicity[d] > 0)
-          for (unsigned int i=0; i<n_points; ++i)
-            if ((surrounding_points[i][d]-minP[d]) > periodicity[d]/2.0)
-              modified_points[i][d] -= periodicity[d];
-      surrounding_points_start = &modified_points[0];
-    }
+  // // check whether periodicity shifts some of the points. Only do this if
+  // // necessary to avoid memory allocation
+  // const Point<spacedim> *surrounding_points_start = &surrounding_points[0];
+  // std::vector<Point<spacedim> > modified_points;
+  // bool adjust_periodicity = false;
+  // for (unsigned int d=0; d<spacedim; ++d)
+  //   if (periodicity[d] > 0)
+  //     for (unsigned int i=0; i<n_points; ++i)
+  //       if ((surrounding_points[i][d]-minP[d]) > periodicity[d]/2.0)
+  //         {
+  //           adjust_periodicity = true;
+  //           break;
+  //         }
+  // if (adjust_periodicity == true)
+  //   {
+  //     modified_points = surrounding_points;
+  //     for (unsigned int d=0; d<spacedim; ++d)
+  //       if (periodicity[d] > 0)
+  //         for (unsigned int i=0; i<n_points; ++i)
+  //           if ((surrounding_points[i][d]-minP[d]) > periodicity[d]/2.0)
+  //             modified_points[i][d] -= periodicity[d];
+  //     surrounding_points_start = &modified_points[0];
+  //   }
 
-  // Now perform the interpolation
-  for (unsigned int row=0; row<weights.size(0); ++row)
-    {
-      Assert(std::abs(std::accumulate(&weights(row,0), &weights(row,0)+n_points, 0.0)-1.0) < 1e-10,
-             ExcMessage("The weights for the individual points should sum to 1!"));
-      Point<spacedim> new_point;
-      for (unsigned int p=0; p<n_points; ++p)
-        new_point += surrounding_points_start[p] * weights(row,p);
+  // // Now perform the interpolation
+  // for (unsigned int row=0; row<weights.size(0); ++row)
+  //   {
+  //     Assert(std::abs(std::accumulate(&weights(row,0), &weights(row,0)+n_points, 0.0)-1.0) < 1e-10,
+  //            ExcMessage("The weights for the individual points should sum to 1!"));
+  //     Point<spacedim> new_point;
+  //     for (unsigned int p=0; p<n_points; ++p)
+  //       new_point += surrounding_points_start[p] * weights(row,p);
 
-      // if necessary, also adjust the weighted point by the periodicity
-      for (unsigned int d=0; d<spacedim; ++d)
-        if (periodicity[d] > 0)
-          if (new_point[d] < 0)
-            new_point[d] += periodicity[d];
+  //     // if necessary, also adjust the weighted point by the periodicity
+  //     for (unsigned int d=0; d<spacedim; ++d)
+  //       if (periodicity[d] > 0)
+  //         if (new_point[d] < 0)
+  //           new_point[d] += periodicity[d];
 
-      new_points.push_back(project_to_manifold(surrounding_points, new_point));
-    }
+  //     new_points.push_back(project_to_manifold(surrounding_points, new_point));
+  //   }
 }
 
 
 template <int dim, int spacedim>
 Point<spacedim>
 FlatManifold<dim, spacedim>::project_to_manifold (const ArrayView<Point<spacedim> > &/*vertices*/,
-                                                  const Point<spacedim> &candidate) const
-{
-  return candidate;
-}
-
-
-
-template <int dim, int spacedim>
-Point<spacedim>
-FlatManifold<dim, spacedim>::project_to_manifold (const std::vector<Point<spacedim> > &/*vertices*/,
                                                   const Point<spacedim> &candidate) const
 {
   return candidate;
@@ -737,15 +728,32 @@ ChartManifold<dim,spacedim,chartdim>::
 get_new_point (const ArrayView<Point<spacedim> > &surrounding_points,
                const ArrayView<double>           &weights) const
 {
-  std::vector<Point<chartdim> > chart_points(surrounding_points.size());
+  if (surrounding_points.size() <= internal::n_default_points_per_cell<dim>())
+    {
+      std::array<Point<chartdim>, internal::n_default_points_per_cell<dim>()> chart_points;
 
-  for (unsigned int i=0; i<surrounding_points.size(); ++i)
-    chart_points[i] = pull_back(surrounding_points[i]);
+      for (unsigned int i = 0; i < surrounding_points.size(); ++i)
+        {
+          chart_points[i] = pull_back(surrounding_points[i]);
+        }
 
-  const Point<chartdim> p_chart = sub_manifold.get_new_point
-    (make_array_view<Point<chartdim>>(chart_points), weights);
+      const Point<chartdim> p_chart = sub_manifold.get_new_point
+        (ArrayView<Point<chartdim>>(chart_points.begin(), surrounding_points.size()),
+         weights);
+      return push_forward(p_chart);
+    }
+  else
+    {
+      std::vector<Point<chartdim> > chart_points(surrounding_points.size());
 
-  return push_forward(p_chart);
+      for (unsigned int i=0; i<surrounding_points.size(); ++i)
+        chart_points[i] = pull_back(surrounding_points[i]);
+
+      const Point<chartdim> p_chart = sub_manifold.get_new_point
+        (make_array_view<Point<chartdim>>(chart_points), weights);
+
+      return push_forward(p_chart);
+    }
 }
 
 
@@ -757,21 +765,25 @@ add_new_points (const std::vector<Point<spacedim> > &surrounding_points,
                 const Table<2,double>               &weights,
                 std::vector<Point<spacedim> >       &new_points) const
 {
-  Assert(weights.size(0) > 0, ExcEmptyObject());
-  AssertDimension(surrounding_points.size(), weights.size(1));
+  (void)surrounding_points;
+  (void)weights;
+  (void)new_points;
+  AssertThrow(false, ExcNotImplemented());
+  // Assert(weights.size(0) > 0, ExcEmptyObject());
+  // AssertDimension(surrounding_points.size(), weights.size(1));
 
-  const unsigned int n_points = surrounding_points.size();
+  // const unsigned int n_points = surrounding_points.size();
 
-  std::vector<Point<chartdim> > chart_points(n_points);
-  for (unsigned int i=0; i<n_points; ++i)
-    chart_points[i] = pull_back(surrounding_points[i]);
+  // std::vector<Point<chartdim> > chart_points(n_points);
+  // for (unsigned int i=0; i<n_points; ++i)
+  //   chart_points[i] = pull_back(surrounding_points[i]);
 
-  std::vector<Point<chartdim> > new_points_on_chart;
-  new_points_on_chart.reserve(weights.size(0));
-  sub_manifold.add_new_points(chart_points, weights, new_points_on_chart);
+  // std::vector<Point<chartdim> > new_points_on_chart;
+  // new_points_on_chart.reserve(weights.size(0));
+  // sub_manifold.add_new_points(chart_points, weights, new_points_on_chart);
 
-  for (unsigned int row=0; row<weights.size(0); ++row)
-    new_points.push_back(push_forward(new_points_on_chart[row]));
+  // for (unsigned int row=0; row<weights.size(0); ++row)
+  //   new_points.push_back(push_forward(new_points_on_chart[row]));
 }
 
 

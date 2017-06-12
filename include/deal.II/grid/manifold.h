@@ -33,6 +33,38 @@ DEAL_II_NAMESPACE_OPEN
 // forward declaration
 template <int, typename> class Table;
 
+namespace internal
+{
+  template<int dim>
+  inline
+  constexpr int n_default_points_per_cell()
+  {
+    return std::numeric_limits<int>::max();
+  }
+
+  template <>
+  inline
+  constexpr int n_default_points_per_cell<1>()
+  {
+    return 2;
+  }
+
+  template <>
+  inline
+  constexpr int n_default_points_per_cell<2>()
+  {
+    return 8;
+  }
+
+  template <>
+  inline
+  constexpr int n_default_points_per_cell<3>()
+  {
+    return GeometryInfo<3>::vertices_per_cell + GeometryInfo<3>::lines_per_cell
+      + GeometryInfo<3>::faces_per_cell;
+  }
+}
+
 /**
  * We collect here some helper functions used in the Manifold<dim,spacedim>
  * classes.
@@ -127,10 +159,13 @@ namespace Manifolds
    *   <code>cell-@>face(f)</code> or <code>cell-@>line(l)</code>.
    */
   template <typename MeshIteratorType>
-  std::pair<std::vector<Point<MeshIteratorType::AccessorType::space_dimension> >,
-      std::vector<double> >
-      get_default_points_and_weights(const MeshIteratorType &iterator,
-                                     const bool              with_laplace = false);
+  std::pair<std::array<Point<MeshIteratorType::AccessorType::space_dimension>,
+                       internal::n_default_points_per_cell
+                       <MeshIteratorType::AccessorType::structure_dimension>()>,
+            std::array<double, internal::n_default_points_per_cell
+                       <MeshIteratorType::AccessorType::structure_dimension>()>>
+  get_default_points_and_weights(const MeshIteratorType &iterator,
+                                 const bool              with_laplace = false);
 }
 
 
@@ -373,15 +408,6 @@ public:
    * only the project_to_manifold() function.
    */
   virtual
-  inline
-  Point<spacedim>
-  get_new_point (const std::vector<Point<spacedim> > &surrounding_points,
-                 const std::vector<double>           &weights) const;
-
-  /**
-   * Same, but for an ArrayView instead of a std::vector.
-   */
-  virtual
   Point<spacedim>
   get_new_point (const ArrayView<Point<spacedim> > &surrounding_points,
                  const ArrayView<double>           &weights) const;
@@ -430,13 +456,8 @@ public:
    * the default behavior should work out of the box.
    */
   virtual
-  Point<spacedim> project_to_manifold (const std::vector<Point<spacedim> > &surrounding_points,
-                                       const Point<spacedim> &candidate) const;
-
-  virtual
   Point<spacedim> project_to_manifold (const ArrayView<Point<spacedim> > &surrounding_points,
                                        const Point<spacedim> &candidate) const;
-
 
   /**
    * Backward compatibility interface.  Return the point which shall become
@@ -697,8 +718,6 @@ public:
   FlatManifold (const Tensor<1,spacedim> &periodicity = Tensor<1,spacedim>(),
                 const double tolerance=1e-10);
 
-  using Manifold<dim,spacedim>::get_new_point;
-
   /**
    * Let the new point be the average sum of surrounding vertices.
    *
@@ -754,13 +773,8 @@ public:
    */
   virtual
   Point<spacedim>
-  project_to_manifold (const std::vector<Point<spacedim> > &points,
+  project_to_manifold (const ArrayView<Point<spacedim> > &points,
                        const Point<spacedim> &candidate) const;
-
-  virtual
-  Point<spacedim> project_to_manifold (const ArrayView<Point<spacedim> > &surrounding_points,
-                                       const Point<spacedim> &candidate) const;
-
 
   /**
    * Return a vector that, at $\mathbf x_1$, is tangential to
@@ -940,8 +954,6 @@ public:
    */
   virtual ~ChartManifold ();
 
-  using Manifold<dim,spacedim>::get_new_point;
-
   /**
    * Refer to the general documentation of this class and the documentation of
    * the base class for more information.
@@ -1102,20 +1114,6 @@ private:
 };
 
 
-template <int dim, int spacedim>
-inline
-Point<spacedim>
-Manifold<dim, spacedim>::
-get_new_point (const std::vector<Point<spacedim> > &surrounding_points,
-               const std::vector<double>           &weights) const
-{
-  // we need a const ArrayView, not an ArrayView of const
-  return get_new_point(ArrayView<Point<spacedim> >(const_cast<Point<spacedim> *>(surrounding_points.data()),
-                                                   surrounding_points.size()),
-                       ArrayView<double>(const_cast<double *>(weights.data()), weights.size()));
-}
-
-
 /* -------------- declaration of explicit specializations ------------- */
 
 #ifndef DOXYGEN
@@ -1168,24 +1166,23 @@ namespace Manifolds
   get_default_quadrature(const MeshIteratorType &iterator,
                          const bool              with_laplace)
   {
-    const std::pair<std::vector<Point<MeshIteratorType::AccessorType::space_dimension> >,
-          std::vector<double> > points_and_weights = get_default_points_and_weights(iterator,
-                                                     with_laplace);
+    const auto points_and_weights = get_default_points_and_weights(iterator, with_laplace);
     return Quadrature<MeshIteratorType::AccessorType::space_dimension>(points_and_weights.first,
            points_and_weights.second);
   }
 
   template <typename MeshIteratorType>
-  std::pair<std::vector<Point<MeshIteratorType::AccessorType::space_dimension> >,
-      std::vector<double> >
-      get_default_points_and_weights(const MeshIteratorType &iterator,
-                                     const bool              with_laplace)
+  std::pair<std::array<Point<MeshIteratorType::AccessorType::space_dimension>,
+                       internal::n_default_points_per_cell<MeshIteratorType::AccessorType::structure_dimension>()>,
+            std::array<double, internal::n_default_points_per_cell<MeshIteratorType::AccessorType::structure_dimension>()>>
+  get_default_points_and_weights(const MeshIteratorType &iterator,
+                                 const bool              with_laplace)
   {
-    const int spacedim = MeshIteratorType::AccessorType::space_dimension;
     const int dim = MeshIteratorType::AccessorType::structure_dimension;
 
-    std::pair<std::vector<Point<spacedim> >,
-        std::vector<double> > points_weights;
+    std::pair<std::array<Point<MeshIteratorType::AccessorType::space_dimension>,
+                         internal::n_default_points_per_cell<dim>()>,
+              std::array<double, internal::n_default_points_per_cell<dim>()>> points_weights;
 
 
     // note that the exact weights are chosen such as to minimize the
@@ -1195,16 +1192,16 @@ namespace Manifolds
     switch (dim)
       {
       case 1:
-        points_weights.first.resize(2);
-        points_weights.second.resize(2);
+        Assert(points_weights.first.size() == 2, ExcInternalError());
+        Assert(points_weights.second.size() == 2, ExcInternalError());
         points_weights.first[0] = iterator->vertex(0);
         points_weights.second[0] = .5;
         points_weights.first[1] = iterator->vertex(1);
         points_weights.second[1] = .5;
         break;
       case 2:
-        points_weights.first.resize(8);
-        points_weights.second.resize(8);
+        Assert(points_weights.first.size() == 8, ExcInternalError());
+        Assert(points_weights.second.size() == 8, ExcInternalError());
 
         for (unsigned int i=0; i<4; ++i)
           {
@@ -1230,9 +1227,11 @@ namespace Manifolds
           GeometryInfo<dim>::vertices_per_cell+
           GeometryInfo<dim>::lines_per_cell+
           GeometryInfo<dim>::faces_per_cell;
-        points_weights.first.resize(np);
-        points_weights.second.resize(np);
-        std::vector<Point<3> > *sp3 = reinterpret_cast<std::vector<Point<3> > *>(&points_weights.first);
+        Assert(points_weights.first.size() == np, ExcInternalError());
+        Assert(points_weights.second.size() == np, ExcInternalError());
+        std::array<Point<3>, internal::n_default_points_per_cell<dim>()> *sp3 =
+          reinterpret_cast<std::array<Point<3>, internal::n_default_points_per_cell<dim>()> *>
+          (&points_weights.first);
 
         unsigned int j=0;
 

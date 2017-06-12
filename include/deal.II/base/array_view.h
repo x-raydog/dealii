@@ -273,6 +273,14 @@ make_array_view (std::vector<ElementType> &vector)
   return ArrayView<ElementType> (&vector[0], vector.size());
 }
 
+template <typename ElementType, std::size_t size>
+inline
+ArrayView<ElementType>
+make_array_view (std::array<ElementType, size> &array)
+{
+  return ArrayView<ElementType> (array.data(), size);
+}
+
 
 
 /**

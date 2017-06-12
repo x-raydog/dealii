@@ -90,7 +90,7 @@ namespace OpenCASCADE
 
   template <int dim, int spacedim>
   Point<spacedim>  NormalProjectionBoundary<dim,spacedim>::
-  project_to_manifold (const std::vector<Point<spacedim> > &surrounding_points,
+  project_to_manifold (const ArrayView<Point<spacedim> > &surrounding_points,
                        const Point<spacedim> &candidate) const
   {
     (void)surrounding_points;
@@ -120,7 +120,7 @@ namespace OpenCASCADE
 
   template <int dim, int spacedim>
   Point<spacedim>  DirectionalProjectionBoundary<dim,spacedim>::
-  project_to_manifold (const std::vector<Point<spacedim> > &surrounding_points,
+  project_to_manifold (const ArrayView<Point<spacedim> > &surrounding_points,
                        const Point<spacedim> &candidate) const
   {
     (void)surrounding_points;
@@ -151,7 +151,7 @@ namespace OpenCASCADE
 
   template <int dim, int spacedim>
   Point<spacedim>  NormalToMeshProjectionBoundary<dim,spacedim>::
-  project_to_manifold (const std::vector<Point<spacedim> > &surrounding_points,
+  project_to_manifold (const ArrayView<Point<spacedim> > &surrounding_points,
                        const Point<spacedim> &candidate) const
   {
     TopoDS_Shape out_shape;

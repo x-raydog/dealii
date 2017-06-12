@@ -22,6 +22,8 @@
 #include <deal.II/base/function.h>
 #include <deal.II/base/function_parser.h>
 
+#include <boost/container/small_vector.hpp>
+
 DEAL_II_NAMESPACE_OPEN
 
 /**
@@ -227,8 +229,6 @@ public:
   get_tangent_vector (const Point<spacedim> &x1,
                       const Point<spacedim> &x2) const;
 
-  using Manifold<dim,spacedim>::get_new_point;
-
   /**
    * Return a point on the spherical manifold which is intermediate
    * with respect to the surrounding points.
@@ -299,8 +299,6 @@ public:
    */
   virtual Point<spacedim>
   push_forward(const Point<3> &chart_point) const override;
-
-  using Manifold<dim,spacedim>::get_new_point;
 
   /**
    * Compute new points on the CylindricalManifold. See the documentation of
@@ -682,8 +680,6 @@ public:
    */
   void initialize (const Triangulation<dim,spacedim> &triangulation);
 
-  using Manifold<dim,spacedim>::get_new_point;
-
   /**
    * Return the point which shall become the new vertex surrounded by the
    * given points @p surrounding_points. @p weights contains appropriate
@@ -752,8 +748,8 @@ private:
    * @p get_possible_cells_around_points().
    */
   std::pair<typename Triangulation<dim,spacedim>::cell_iterator,
-      std::vector<Point<dim> > >
-      compute_chart_points(const ArrayView<Point<spacedim> > &surrounding_points) const;
+            boost::container::small_vector<Point<dim>, internal::n_default_points_per_cell<dim>()>>
+  compute_chart_points(const ArrayView<Point<spacedim> > &surrounding_points) const;
 
   /**
    * Pull back operation into the unit coordinates on the given coarse cell.
