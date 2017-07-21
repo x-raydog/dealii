@@ -19,15 +19,14 @@
 
 #include <deal.II/base/config.h>
 #include <deal.II/base/derivative_form.h>
-#include <deal.II/base/array_view.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/fe/fe_update_flags.h>
 
 #include <array>
-#include <cmath>
 
 DEAL_II_NAMESPACE_OPEN
 
+template <typename T> class ArrayView;
 template <int dim> class Quadrature;
 template <int dim, int spacedim> class FEValues;
 template <int dim, int spacedim> class FEValuesBase;
