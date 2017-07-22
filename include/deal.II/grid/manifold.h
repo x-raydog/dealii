@@ -437,7 +437,7 @@ public:
   void
   add_new_points (const ArrayView<const Point<spacedim> > &surrounding_points,
                   const Table<2,double>                   &weights,
-                  ArrayView<Point<spacedim> >             &new_points) const;
+                  ArrayView<Point<spacedim> >              new_points) const;
 
   /**
    * Given a point which lies close to the given manifold, it modifies it and
@@ -756,7 +756,7 @@ public:
   void
   add_new_points (const ArrayView<const Point<spacedim> > &surrounding_points,
                   const Table<2,double>                   &weights,
-                  ArrayView<Point<spacedim> >             &new_points) const;
+                  ArrayView<Point<spacedim> >              new_points) const;
 
   /**
    * Project to FlatManifold. This is the identity function for flat,
@@ -982,7 +982,7 @@ public:
   void
   add_new_points (const ArrayView<const Point<spacedim> > &surrounding_points,
                   const Table<2,double>                   &weights,
-                  ArrayView<Point<spacedim> >             &new_points) const;
+                  ArrayView<Point<spacedim> >              new_points) const;
   /**
    * Pull back the given point in spacedim to the Euclidean chartdim
    * dimensional space.

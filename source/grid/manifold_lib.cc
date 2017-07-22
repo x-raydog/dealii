@@ -1142,7 +1142,7 @@ void
 TransfiniteInterpolationManifold<dim,spacedim>::
 add_new_points (const ArrayView<const Point<spacedim> > &surrounding_points,
                 const Table<2,double>                   &weights,
-                ArrayView<Point<spacedim> >             &new_points) const
+                ArrayView<Point<spacedim> >              new_points) const
 {
   Assert(weights.size(0) > 0, ExcEmptyObject());
   AssertDimension(surrounding_points.size(), weights.size(1));
@@ -1151,12 +1151,11 @@ add_new_points (const ArrayView<const Point<spacedim> > &surrounding_points,
 
   // TODO find a better dimension-dependent estimate for the size of this array
   boost::container::small_vector<Point<dim>, 20> new_points_on_chart(weights.size(0));
-  auto new_point_view = make_array_view(new_points_on_chart.begin(),
-                                        new_points_on_chart.end());
   chart_manifold.add_new_points(make_array_view(chart_points.second.begin(),
                                                 chart_points.second.end()),
                                 weights,
-                                new_point_view);
+                                make_array_view(new_points_on_chart.begin(),
+                                                new_points_on_chart.end()));
 
   for (unsigned int row=0; row<weights.size(0); ++row)
     new_points[row] = push_forward(chart_points.first, new_points_on_chart[row]);

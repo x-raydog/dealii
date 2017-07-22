@@ -129,7 +129,7 @@ void
 Manifold<dim, spacedim>::
 add_new_points (const ArrayView<const Point<spacedim> > &surrounding_points,
                 const Table<2,double>                   &weights,
-                ArrayView<Point<spacedim> >             &new_points) const
+                ArrayView<Point<spacedim> >              new_points) const
 {
   AssertDimension(surrounding_points.size(), weights.size(1));
 
@@ -513,14 +513,10 @@ Manifold<dim,spacedim>::get_tangent_vector(const Point<spacedim> &x1,
 
   const std::array<Point<spacedim>, 2> points {{x1, x2}};
   const std::array<double, 2> weights {{epsilon, 1.0 - epsilon}};
-  // TODO why is this necessary? GCC does not like creating weights_view as an
-  // rvalue
-  const ArrayView<const Point<spacedim>> points_view = make_array_view(points.begin(),
-                                                                       points.end());
-  const ArrayView<const double> weights_view = make_array_view(weights.begin(),
-                                                               weights.end());
-
-  const Point<spacedim> neighbor_point = get_new_point (points_view, weights_view);
+  const Point<spacedim> neighbor_point = get_new_point (make_array_view(points.begin(),
+                                                                        points.end()),
+                                                        make_array_view(weights.begin(),
+                                                                        weights.end()));
   return (neighbor_point-x1)/epsilon;
 }
 
@@ -597,7 +593,7 @@ void
 FlatManifold<dim, spacedim>::
 add_new_points (const ArrayView<const Point<spacedim> > &surrounding_points,
                 const Table<2,double>                   &weights,
-                ArrayView<Point<spacedim> >             &new_points) const
+                ArrayView<Point<spacedim> >              new_points) const
 {
   AssertDimension(surrounding_points.size(), weights.size(1));
   if (weights.size(0) == 0)
@@ -756,7 +752,7 @@ void
 ChartManifold<dim,spacedim,chartdim>::
 add_new_points (const ArrayView<const Point<spacedim> > &surrounding_points,
                 const Table<2,double>                   &weights,
-                ArrayView<Point<spacedim> >             &new_points) const
+                ArrayView<Point<spacedim> >              new_points) const
 {
   Assert(weights.size(0) > 0, ExcEmptyObject());
   AssertDimension(surrounding_points.size(), weights.size(1));
@@ -771,12 +767,11 @@ add_new_points (const ArrayView<const Point<spacedim> > &surrounding_points,
 
   // same here
   boost::container::small_vector<Point<chartdim>, 20> new_points_on_chart(weights.size(0));
-  auto new_point_view = make_array_view(new_points_on_chart.begin(),
-                                        new_points_on_chart.end());
   sub_manifold.add_new_points(make_array_view(chart_points.begin(),
                                               chart_points.end()),
                               weights,
-                              new_point_view);
+                              make_array_view(new_points_on_chart.begin(),
+                                              new_points_on_chart.end()));
 
   for (std::size_t row=0; row<weights.size(0); ++row)
     new_points[row] = push_forward(new_points_on_chart[row]);

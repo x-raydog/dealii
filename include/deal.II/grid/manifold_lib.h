@@ -723,7 +723,7 @@ public:
   void
   add_new_points (const ArrayView<const Point<spacedim> > &surrounding_points,
                   const Table<2,double>                   &weights,
-                  ArrayView<Point<spacedim> >             &new_points) const;
+                  ArrayView<Point<spacedim> >              new_points) const;
 
 private:
   /**
