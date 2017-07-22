@@ -78,7 +78,8 @@ void test(unsigned int ref=1)
 
   for (unsigned int i=0; i<ps.size(); ++i)
     {
-      middle = manifold.get_new_point(ps[i],ws);
+      middle = manifold.get_new_point(make_array_view(ps[i].begin(), ps[i].end()),
+                                      make_array_view(ws.begin(), ws.end()));
       deallog << "P0: " << ps[i][0] << " , P1: " << ps[i][1] << " , Middle: " << middle << std::endl;
     }
 
@@ -97,4 +98,3 @@ int main ()
 
   return 0;
 }
-

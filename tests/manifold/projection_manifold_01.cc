@@ -33,8 +33,8 @@ class MyManifold : public Manifold<dim, spacedim>
 {
 public:
   Point<spacedim>
-  project_to_manifold (const std::vector<Point<spacedim> > &vertices,
-                       const Point<spacedim> &candidate) const
+  project_to_manifold (const ArrayView<const Point<spacedim> > &vertices,
+                       const Point<spacedim>                   &candidate) const
   {
     // Shift the y coordinate to 4*x*(1-x)
     Point<spacedim> p = candidate;
@@ -76,4 +76,3 @@ int main ()
 
   return 0;
 }
-

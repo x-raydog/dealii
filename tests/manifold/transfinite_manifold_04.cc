@@ -45,14 +45,16 @@ void do_test(const Triangulation<dim,spacedim> &tria)
             std::vector<double> weights(2);
             weights[0] = 0.1;
             weights[1] = 0.9;
-            Point<spacedim> p = cell->get_manifold().get_new_point(points, weights);
-            Point<spacedim> pref = cell->face(face)->get_manifold().get_new_point(points, weights);
+            const auto points_view = make_array_view(points);
+            const auto weights_view = make_array_view(weights);
+            Point<spacedim> p = cell->get_manifold().get_new_point(points_view, weights_view);
+            Point<spacedim> pref = cell->face(face)->get_manifold().get_new_point(points_view, weights_view);
             deallog << "Distance between cell manifold and face manifold: "
                     << (pref-p) << std::endl;
             weights[0] = 0.55;
             weights[1] = 0.45;
-            p = cell->get_manifold().get_new_point(points, weights);
-            pref = cell->face(face)->get_manifold().get_new_point(points, weights);
+            p = cell->get_manifold().get_new_point(points_view, weights_view);
+            pref = cell->face(face)->get_manifold().get_new_point(points_view, weights_view);
             deallog << "Distance between cell manifold and face manifold: "
                     << (pref-p) << std::endl;
           }
@@ -120,5 +122,3 @@ int main ()
 
   return 0;
 }
-
-
