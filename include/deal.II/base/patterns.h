@@ -74,7 +74,7 @@ namespace Patterns
     /**
      * Make destructor of this and all derived classes virtual.
      */
-    virtual ~PatternBase ();
+    virtual ~PatternBase () = default;
 
     /**
      * Return <tt>true</tt> if the given string matches the pattern.

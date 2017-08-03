@@ -373,7 +373,7 @@ public:
    * Virtual destructor; absolutely necessary in this case.
    *
    */
-  virtual ~ZeroFunction ();
+  virtual ~ZeroFunction () = default;
 
   virtual Number value (const Point<dim>   &p,
                         const unsigned int  component) const;
@@ -453,7 +453,7 @@ public:
   /**
    * Virtual destructor; absolutely necessary in this case.
    */
-  virtual ~ConstantFunction ();
+  virtual ~ConstantFunction () = default;
 
   virtual Number value (const Point<dim>   &p,
                         const unsigned int  component) const;
@@ -818,7 +818,7 @@ public:
    * This destructor is defined as virtual so as to coincide with all other
    * aspects of class.
    */
-  virtual ~VectorFunctionFromTensorFunction();
+  virtual ~VectorFunctionFromTensorFunction() = default;
 
   /**
    * Return a single component of a vector-valued function at a given point.

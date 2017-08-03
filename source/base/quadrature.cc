@@ -35,12 +35,6 @@ Quadrature<0>::Quadrature (const unsigned int n_q)
 
 
 
-template <>
-Quadrature<0>::~Quadrature ()
-{}
-
-
-
 template <int dim>
 Quadrature<dim>::Quadrature (const unsigned int n_q)
   :
@@ -266,12 +260,6 @@ Quadrature<dim>::operator == (const Quadrature<dim> &q) const
           &&
           (weights == q.weights));
 }
-
-
-
-template <int dim>
-Quadrature<dim>::~Quadrature ()
-{}
 
 
 

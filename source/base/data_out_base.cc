@@ -4279,7 +4279,6 @@ namespace DataOutBase
                     const unsigned int n_vars = 0,
                     const unsigned int n_cells = 0,
                     const unsigned int n_vert = 0);
-      ~TecplotMacros();
       float &nd(const unsigned int i, const unsigned int j);
       int    &cd(const unsigned int i, const unsigned int j);
       std::vector<float> nodalData;
@@ -4306,12 +4305,6 @@ namespace DataOutBase
       nodalData.resize(n_nodes*n_vars);
       connData.resize(n_cells*n_vert);
     }
-
-
-
-    inline
-    TecplotMacros::~TecplotMacros()
-    {}
 
 
 
@@ -6296,12 +6289,6 @@ template <int dim, int spacedim>
 DataOutInterface<dim,spacedim>::DataOutInterface ()
   : default_subdivisions(1)
 {}
-
-
-template <int dim, int spacedim>
-DataOutInterface<dim,spacedim>::~DataOutInterface ()
-{}
-
 
 
 

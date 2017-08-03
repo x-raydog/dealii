@@ -127,10 +127,6 @@ namespace Patterns
 
 
 
-  PatternBase::~PatternBase ()
-  {}
-
-
   std::size_t
   PatternBase::memory_consumption () const
   {

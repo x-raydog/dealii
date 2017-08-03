@@ -58,12 +58,12 @@ public:
   /**
    * Default constructor.
    */
-  CellDataStorage();
+  CellDataStorage() = default;
 
   /**
    * Default destructor.
    */
-  ~CellDataStorage();
+  ~CellDataStorage() = default;
 
   /**
    * Initialize data on the @p cell to store @p number_of_data_points_per_cell of objects of type @p T .
@@ -174,12 +174,12 @@ public:
   /**
    * Default constructor.
    */
-  TransferableQuadraturePointData();
+  TransferableQuadraturePointData() = default;
 
   /**
    * Default virtual destructor.
    */
-  virtual ~TransferableQuadraturePointData();
+  virtual ~TransferableQuadraturePointData() = default;
 
   /**
    * Return the total number of values which will be
@@ -346,7 +346,7 @@ namespace parallel
       /**
        * Destructor.
        */
-      ~ContinuousQuadratureDataTransfer();
+      ~ContinuousQuadratureDataTransfer() = default;
 
       /**
        * Prepare for coarsening and refinement of a triangulation @p tria .
@@ -467,32 +467,8 @@ namespace parallel
 // -------------------  inline and template functions ----------------
 
 //--------------------------------------------------------------------
-//                         TransferableQuadraturePointData
-//--------------------------------------------------------------------
-inline TransferableQuadraturePointData::TransferableQuadraturePointData()
-{}
-
-inline TransferableQuadraturePointData::~TransferableQuadraturePointData()
-{}
-
-//--------------------------------------------------------------------
 //                         CellDataStorage
 //--------------------------------------------------------------------
-
-template <typename CellIteratorType, typename DataType>
-CellDataStorage<CellIteratorType,DataType>::
-CellDataStorage()
-  :
-  Subscriptor()
-{}
-
-
-
-template <typename CellIteratorType, typename DataType>
-CellDataStorage<CellIteratorType,DataType>::
-~CellDataStorage()
-{}
-
 
 
 template <typename CellIteratorType, typename DataType>
@@ -717,12 +693,6 @@ namespace parallel
        rhs_quadrature,
        project_to_qp_matrix);
     }
-
-
-
-    template <int dim, typename DataType>
-    ContinuousQuadratureDataTransfer<dim,DataType>::~ContinuousQuadratureDataTransfer()
-    {}
 
 
 

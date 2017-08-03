@@ -450,11 +450,6 @@ public:
   TableBase (TableBase<N,T> &&src);
 
   /**
-   * Destructor. Free allocated memory.
-   */
-  ~TableBase ();
-
-  /**
    * Assignment operator. Copy all elements of <tt>src</tt> into the matrix.
    * The size is adjusted if needed.
    *
@@ -1794,13 +1789,6 @@ namespace internal
     }
   }
 }
-
-
-
-template <int N, typename T>
-inline
-TableBase<N,T>::~TableBase ()
-{}
 
 
 

@@ -83,7 +83,7 @@ namespace TimeStepping
     /**
      * Virtual destructor.
      */
-    virtual ~TimeStepping() {}
+    virtual ~TimeStepping() = default;
 
     /**
      * Purely virtual function. This function is used to advance from time @p
@@ -128,7 +128,7 @@ namespace TimeStepping
     /**
      * Virtual destructor.
      */
-    virtual ~RungeKutta() {}
+    virtual ~RungeKutta() = default;
 
     /**
      * Purely virtual method used to initialize the Runge-Kutta method.

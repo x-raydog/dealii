@@ -48,9 +48,12 @@ FunctionParser<dim>::FunctionParser(const unsigned int n_components,
 
 
 
+// This must be in the source file since some muparser types are only
+// forward-declared in the header
 template <int dim>
-FunctionParser<dim>::~FunctionParser()
-{}
+FunctionParser<dim>::~FunctionParser() = default;
+
+
 
 #ifdef DEAL_II_WITH_MUPARSER
 

@@ -45,9 +45,9 @@ Function<dim, Number>::Function (const unsigned int n_components,
 }
 
 
+
 template <int dim, typename Number>
-Function<dim, Number>::~Function ()
-{}
+Function<dim, Number>::~Function() = default;
 
 
 
@@ -307,11 +307,6 @@ ZeroFunction<dim, Number>::ZeroFunction (const unsigned int n_components)
 
 
 template <int dim, typename Number>
-ZeroFunction<dim, Number>::~ZeroFunction ()
-{}
-
-
-template <int dim, typename Number>
 Number ZeroFunction<dim, Number>::value (const Point<dim> &,
                                          const unsigned int) const
 {
@@ -455,13 +450,6 @@ ConstantFunction (const Number *begin_ptr, const unsigned int n_components)
   std::copy (begin_ptr, begin_ptr+n_components, function_value_vector.begin());
 }
 
-
-
-template <int dim, typename Number>
-ConstantFunction<dim, Number>::~ConstantFunction ()
-{
-  function_value_vector.clear();
-}
 
 
 template <int dim, typename Number>
@@ -730,11 +718,6 @@ VectorFunctionFromTensorFunction<dim, Number>::VectorFunctionFromTensorFunction 
   Assert (selected_component + dim - 1 < this->n_components,
           ExcIndexRange (selected_component, 0, this->n_components));
 }
-
-
-template <int dim, typename Number>
-VectorFunctionFromTensorFunction<dim, Number>::~VectorFunctionFromTensorFunction ()
-{}
 
 
 template <int dim, typename Number>

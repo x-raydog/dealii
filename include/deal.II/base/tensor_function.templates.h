@@ -34,11 +34,6 @@ TensorFunction<rank, dim, Number>::TensorFunction (const Number initial_time)
 
 
 template <int rank, int dim, typename Number>
-TensorFunction<rank, dim, Number>::~TensorFunction ()
-{}
-
-
-template <int rank, int dim, typename Number>
 typename TensorFunction<rank, dim, Number>::value_type
 TensorFunction<rank, dim, Number>::value (const Point<dim> &) const
 {
@@ -92,11 +87,6 @@ ConstantTensorFunction<rank, dim, Number>::ConstantTensorFunction (
   :
   TensorFunction<rank, dim, Number> (initial_time),
   _value(value)
-{}
-
-
-template <int rank, int dim, typename Number>
-ConstantTensorFunction<rank, dim, Number>::~ConstantTensorFunction ()
 {}
 
 

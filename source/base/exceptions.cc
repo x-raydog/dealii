@@ -105,7 +105,7 @@ ExceptionBase::ExceptionBase (const ExceptionBase &exc)
 
 
 
-ExceptionBase::~ExceptionBase () noexcept
+ExceptionBase::~ExceptionBase ()
 {
   free (stacktrace); // free(NULL) is allowed
   stacktrace = nullptr;

@@ -163,7 +163,7 @@ public:
   /**
    * Virtual destructor.
    */
-  virtual ~Quadrature ();
+  virtual ~Quadrature () = default;
 
   /**
    * Assignment operator. Copies contents of #weights and #quadrature_points
@@ -405,8 +405,6 @@ Quadrature<0>::Quadrature (const Quadrature<-1> &,
                            const Quadrature<1> &);
 template <>
 Quadrature<0>::Quadrature (const Quadrature<1> &);
-template <>
-Quadrature<0>::~Quadrature ();
 
 template <>
 Quadrature<1>::Quadrature (const Quadrature<0> &,

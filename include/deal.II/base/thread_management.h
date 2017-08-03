@@ -104,7 +104,7 @@ namespace Threads
        * Destructor. Unlock the mutex. Since this is a dummy mutex class, this
        * of course does nothing.
        */
-      ~ScopedLock () {}
+      ~ScopedLock () = default;
     };
 
     /**
@@ -273,8 +273,7 @@ namespace Threads
       }
 
       /**
-       * Destructor. Unlock the mutex. Since this is a dummy mutex class, this
-       * of course does nothing.
+       * Destructor. Unlock the mutex.
        */
       ~ScopedLock ()
       {
