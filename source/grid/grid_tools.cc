@@ -3019,13 +3019,10 @@ next_cell:
 
 
       /**
-       * Try to fix up a single cell. Return
-       * whether we succeeded with this.
+       * Try to fix up a single cell. Return whether we succeeded with this.
        *
-       * The second argument indicates
-       * whether we need to respect the
-       * manifold/boundary on which this
-       * object lies when moving around its
+       * The second argument indicates whether we need to respect the
+       * manifold/boundary on which this object lies when moving around its
        * mid-point.
        */
       template <typename Iterator>
@@ -3036,52 +3033,36 @@ next_cell:
         const unsigned int structdim = Iterator::AccessorType::structure_dimension;
         const unsigned int spacedim  = Iterator::AccessorType::space_dimension;
 
-        // right now we can only deal
-        // with cells that have been
-        // refined isotropically
-        // because that is the only
-        // case where we have a cell
-        // mid-point that can be moved
-        // around without having to
-        // consider boundary
-        // information
+        // right now we can only deal with cells that have been refined
+        // isotropically because that is the only case where we have a cell
+        // mid-point that can be moved around without having to consider
+        // boundary information
         Assert (object->has_children(), ExcInternalError());
         Assert (object->refinement_case() == RefinementCase<structdim>::isotropic_refinement,
                 ExcNotImplemented());
 
-        // get the current location of
-        // the object mid-vertex:
+        // get the current location of the object mid-vertex:
         Point<spacedim> object_mid_point
           = object->child(0)->vertex (GeometryInfo<structdim>::max_children_per_cell-1);
 
-        // now do a few steepest descent
-        // steps to reduce the objective
-        // function. compute the diameter in
-        // the helper function above
+        // now do a few steepest descent steps to reduce the objective
+        // function. compute the diameter in the helper function above
         unsigned int iteration = 0;
         const double diameter = minimal_diameter (object);
 
-        // current value of objective
-        // function and initial delta
+        // current value of objective function and initial delta
         double current_value = objective_function (object, object_mid_point);
         double initial_delta = 0;
 
         do
           {
-            // choose a step length
-            // that is initially 1/4
-            // of the child objects'
-            // diameter, and a sequence
-            // whose sum does not
-            // converge (to avoid
-            // premature termination of
-            // the iteration)
+            // choose a step length that is initially 1/4 of the child
+            // objects' diameter, and a sequence whose sum does not converge
+            // (to avoid premature termination of the iteration)
             const double step_length = diameter / 4 / (iteration + 1);
 
-            // compute the objective
-            // function's derivative using a
-            // two-sided difference formula
-            // with eps=step_length/10
+            // compute the objective function's derivative using a two-sided
+            // difference formula with eps=step_length/10
             Tensor<1,spacedim> gradient;
             for (unsigned int d=0; d<spacedim; ++d)
               {
@@ -3334,8 +3315,7 @@ next_cell:
   {
     typename Triangulation<dim,spacedim>::DistortedCellList unfixable_subset;
 
-    // loop over all cells that we have
-    // to fix up
+    // loop over all cells that we have to fix up
     for (typename std::list<typename Triangulation<dim,spacedim>::cell_iterator>::const_iterator
          cell_ptr = distorted_cells.distorted_cells.begin();
          cell_ptr != distorted_cells.distorted_cells.end(); ++cell_ptr)
