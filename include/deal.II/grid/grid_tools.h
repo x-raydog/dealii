@@ -2110,7 +2110,6 @@ namespace GridTools
   project_to_object(const Iterator &object,
                     const Point<Iterator::AccessorType::space_dimension> &trial_point)
   {
-    const unsigned int dim = Iterator::AccessorType::dimension;
     const unsigned int spacedim = Iterator::AccessorType::space_dimension;
     const unsigned int structdim = Iterator::AccessorType::structure_dimension;
 

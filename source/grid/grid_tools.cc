@@ -3033,12 +3033,6 @@ next_cell:
       fix_up_object (const Iterator &object,
                      const bool respect_manifold)
       {
-        const Manifold<Iterator::AccessorType::dimension,
-              Iterator::AccessorType::space_dimension>
-              *manifold = (respect_manifold ?
-                           &object->get_manifold() :
-                           nullptr);
-
         const unsigned int structdim = Iterator::AccessorType::structure_dimension;
         const unsigned int spacedim  = Iterator::AccessorType::space_dimension;
 
