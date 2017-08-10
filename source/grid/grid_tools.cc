@@ -3252,32 +3252,15 @@ next_cell:
                          dealii::internal::int2type<structdim>,
                          dealii::internal::int2type<spacedim>)
       {
-        // see if we first can fix up
-        // some of the faces of this
-        // object. we can mess with
-        // faces if and only if it is
-        // not at the boundary (since
-        // otherwise the location of
-        // the face mid-point has been
-        // determined by the boundary
-        // object) and if the
-        // neighboring cell is not even
-        // more refined than we are
-        // (since in that case the
-        // sub-faces have themselves
-        // children that we can't move
-        // around any more). however,
-        // the latter case shouldn't
-        // happen anyway: if the
-        // current face is distorted
-        // but the neighbor is even
-        // more refined, then the face
-        // had been deformed before
-        // already, and had been
-        // ignored at the time; we
-        // should then also be able to
-        // ignore it this time as well
-        for (unsigned int f=0; f<GeometryInfo<structdim>::faces_per_cell; ++f)
+        // see if we first can fix up some of the faces of this object. We can
+        // mess with faces if and only if the neighboring cell is not even
+        // more refined than we are (since in that case the sub-faces have
+        // themselves children that we can't move around any more). however,
+        // the latter case shouldn't happen anyway: if the current face is
+        // distorted but the neighbor is even more refined, then the face had
+        // been deformed before already, and had been ignored at the time; we
+        // should then also be able to ignore it this time as well
+        for (unsigned int f=0; f<GeometryInfo<dim>::faces_per_cell; ++f)
           {
             Assert (cell->face(f)->has_children(), ExcInternalError());
             Assert (cell->face(f)->refinement_case() ==
