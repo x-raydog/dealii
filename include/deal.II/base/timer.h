@@ -26,9 +26,10 @@
 #  include <mpi.h>
 #endif
 
-#include <string>
+#include <chrono>
 #include <list>
 #include <map>
+#include <string>
 
 DEAL_II_NAMESPACE_OPEN
 
@@ -71,7 +72,7 @@ DEAL_II_NAMESPACE_OPEN
  * used, the CPU time is accumulated from all the children.
  *
  * @ingroup utilities
- * @author G. Kanschat, W. Bangerth, M. Kronbichler
+ * @author G. Kanschat, W. Bangerth, M. Kronbichler, D. Wells
  */
 class Timer
 {
@@ -194,63 +195,71 @@ public:
   double get_lap_time () const DEAL_II_DEPRECATED;
 
 private:
+  /**
+   * typedef for the type of clock used by this class.
+   */
+  typedef clock_type std::chrono::system_clock;
+
+  /**
+   * typedef for the time point type of the clock.
+   */
+  typedef time_point_type std::chrono::time_point<clock_type>;
+
+  /**
+   * typedef for the duration type of the clock.
+   */
+  typedef duration_type clock_type::duration;
 
   /**
    * Value of the user time when start() was called the last time or when the
    * object was created and no stop() was issued in between.
    */
-  double              start_time;
-
+  time_point_type start_time;
 
   /**
    * Similar to #start_time, but needed for children threads in multithread
    * mode. Value of the user time when start() was called the last time or
    * when the object was created and no stop() was issued in between.
-   *
-   * For some reason (error in operating system?) the function call
-   * <tt>getrusage(RUSAGE_CHILDREN,.)</tt> gives always 0 (at least on
-   * Solaris7). Hence the Timer class still does not yet work for
-   * multithreading mode.
    */
-  double              start_time_children;
+  time_point_type start_time_children;
 
   /**
    * Value of the wall time when start() was called the last time or when the
    * object was created and no stop() was issued in between.
    */
-  double              start_wall_time;
+  time_point_type start_wall_time;
 
   /**
    * Accumulated time for all previous start()/stop() cycles. The time for the
    * present cycle is not included.
    */
-  double              cumulative_time;
+  duration_type cumulative_time;
 
   /**
    * Accumulated wall time for all previous start()/stop() cycles. The wall
    * time for the present cycle is not included.
    */
-  double              cumulative_wall_time;
+  duration_type cumulative_wall_time;
 
   /**
    * Stores the wall time between the last start()/stop() cycle.
    */
-  double              last_lap_time;
+  duration_type last_lap_time;
 
   /**
    * Stores the CPU time between the last start()/stop() cycle.
    */
-  double              last_lap_cpu_time;
+  duration_type last_lap_cpu_time;
 
   /**
    * Store whether the timer is presently running.
    */
-  bool                running;
+  bool running;
 
   /**
    * Store whether the timer is presently running.
    */
-  MPI_Comm            mpi_communicator;
+  MPI_Comm mpi_communicator;
 
 #ifdef DEAL_II_WITH_MPI
   /**

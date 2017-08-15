@@ -18,22 +18,18 @@
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/signaling_nan.h>
-#include <sstream>
-#include <iostream>
-#include <iomanip>
-#include <algorithm>
 #include <stddef.h>
 
-#if defined(DEAL_II_HAVE_SYS_TIME_H) && defined(DEAL_II_HAVE_SYS_RESOURCE_H)
-#  include <sys/time.h>
-#  include <sys/resource.h>
-#endif
+#include <algorithm>
+#include <chrono>
+#include <iostream>
+#include <iomanip>
+#include <sstream>
 
+// #if defined(DEAL_II_HAVE_SYS_TIME_H) && defined(DEAL_II_HAVE_SYS_RESOURCE_H)
 #ifdef DEAL_II_MSVC
 #  include <windows.h>
 #endif
-
-
 
 DEAL_II_NAMESPACE_OPEN
 
@@ -42,9 +38,9 @@ DEAL_II_NAMESPACE_OPEN
 // current process
 Timer::Timer()
   :
-  start_time (0.),
+  // start_time (0.),
   start_time_children (0.),
-  start_wall_time (0.),
+  // start_wall_time (0.),
   cumulative_time (0.),
   cumulative_wall_time (0.),
   last_lap_time (numbers::signaling_nan<double>()),
@@ -74,9 +70,9 @@ Timer::Timer()
 Timer::Timer(MPI_Comm mpi_communicator,
              const bool sync_wall_time_)
   :
-  start_time (0.),
+  // start_time (0.),
   start_time_children (0.),
-  start_wall_time (0.),
+  // start_wall_time (0.),
   cumulative_time (0.),
   cumulative_wall_time (0.),
   last_lap_time (numbers::signaling_nan<double>()),
@@ -142,14 +138,8 @@ void Timer::start ()
     }
 #endif
 
-#if defined(DEAL_II_HAVE_SYS_TIME_H) && defined(DEAL_II_HAVE_SYS_RESOURCE_H)
-
-//TODO: Break this out into a function like the functions in
-//namespace windows above
-  struct timeval wall_timer;
-  gettimeofday(&wall_timer, nullptr);
-  start_wall_time = wall_timer.tv_sec + 1.e-6 * wall_timer.tv_usec;
-
+  start_wall_time = std::chrono::system_clock::now();
+#ifdef DEAL_II_HAVE_SYS_RESOURCE_H
   rusage usage;
   getrusage (RUSAGE_SELF, &usage);
   start_time = usage.ru_utime.tv_sec + 1.e-6 * usage.ru_utime.tv_usec;
@@ -159,7 +149,6 @@ void Timer::start ()
   start_time_children = usage_children.ru_utime.tv_sec + 1.e-6 * usage_children.ru_utime.tv_usec;
 
 #elif defined(DEAL_II_MSVC)
-  start_wall_time = windows::wall_clock();
   start_time = windows::cpu_clock();
   start_time_children = start_time;
 #else
@@ -191,6 +180,7 @@ double Timer::stop ()
 
       struct timeval wall_timer;
       gettimeofday(&wall_timer, nullptr);
+      auto wall_time = std::chrono::system_clock::now();
       last_lap_time = wall_timer.tv_sec + 1.e-6 * wall_timer.tv_usec
                       - start_wall_time;
 #elif defined(DEAL_II_MSVC)
