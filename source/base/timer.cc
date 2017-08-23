@@ -151,11 +151,6 @@ Timer::Timer(MPI_Comm mpi_communicator,
   mpi_communicator (mpi_communicator),
   sync_wall_time(sync_wall_time_)
 {
-  last_lap_data.sum = last_lap_data.min = last_lap_data.max = last_lap_data.avg = numbers::signaling_nan<double>();
-  last_lap_data.min_index = last_lap_data.max_index = numbers::invalid_unsigned_int;
-  accumulated_wall_time_data.sum = accumulated_wall_time_data.min = accumulated_wall_time_data.max = accumulated_wall_time_data.avg = 0.;
-  accumulated_wall_time_data.min_index = accumulated_wall_time_data.max_index = 0;
-
   start();
 }
 
@@ -192,7 +187,7 @@ double Timer::stop ()
       if (sync_wall_time)
         {
           wall_times.last_lap_time = internal::Timer::from_seconds<decltype(wall_times)::duration_type>
-                                     (last_lap_data.max);
+                                     (last_lap_data.get().max);
           cpu_times.last_lap_time = internal::Timer::from_seconds<decltype(cpu_times)::duration_type>
                                     (Utilities::MPI::min_max_avg
                                      (internal::Timer::to_seconds(cpu_times.last_lap_time),
@@ -275,11 +270,9 @@ void Timer::reset ()
 {
   wall_times.reset();
   cpu_times.reset();
-  running         = false;
-  last_lap_data.sum = last_lap_data.min = last_lap_data.max = last_lap_data.avg = numbers::signaling_nan<double>();
-  last_lap_data.min_index = last_lap_data.max_index = numbers::invalid_unsigned_int;
-  accumulated_wall_time_data.sum = accumulated_wall_time_data.min = accumulated_wall_time_data.max = accumulated_wall_time_data.avg = 0.;
-  accumulated_wall_time_data.min_index = accumulated_wall_time_data.max_index = 0;
+  running = false;
+  last_lap_data = boost::none;
+  accumulated_wall_time_data = boost::none;
 }
 
 

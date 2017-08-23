@@ -1,0 +1,28 @@
+
+DEAL::
+--------------------------------------------------------
+An error occurred in file <timer.h> in function
+    const dealii::Utilities::MPI::MinMaxAvg& dealii::Timer::get_accumulated_wall_time_data() const
+The violated condition was:
+    accumulated_wall_time_data
+Additional information:
+    The field accumulated_wall_time_data does not contain meaningful data unless stop() has been called.
+--------------------------------------------------------
+
+DEAL::
+--------------------------------------------------------
+An error occurred in file <timer.h> in function
+    const dealii::Utilities::MPI::MinMaxAvg& dealii::Timer::get_last_lap_data() const
+The violated condition was:
+    last_lap_data
+Additional information:
+    The field last_lap_data does not contain meaningful data unless stop() has been called.
+--------------------------------------------------------
+
+DEAL::last lap data:
+xxxxxxxxxxx wall, max @x, min=xxxxxxxxxxx @x, avg=xxxxxxxxxxx
+
+accumulated wall time data:
+xxxxxxxxxxx wall, max @x, min=xxxxxxxxxxx @x, avg=xxxxxxxxxxx
+
+DEAL::OK

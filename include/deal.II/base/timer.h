@@ -24,8 +24,11 @@
 
 #include <chrono>
 #include <list>
+#include <limits>
 #include <map>
 #include <string>
+
+#include <boost/optional.hpp>
 
 DEAL_II_NAMESPACE_OPEN
 
@@ -147,7 +150,11 @@ public:
   /**
    * Return a reference to the data structure containing timing information
    * across all MPI processes in the given communicator about the last
-   * lap. Filled after calling stop().
+   * lap.
+   *
+   * @note The value returned by this function is meaningful only if
+   * Timer::stop() has been called at least once; if the timer has not been
+   * stopped then calling this function results in an exception.
    */
   const Utilities::MPI::MinMaxAvg &get_last_lap_data() const;
 
@@ -163,6 +170,10 @@ public:
   /**
    * Return a reference to the data structure with global timing information
    * for the total run. Filled after calling stop().
+   *
+   * @note The value returned by this function is meaningful only if
+   * Timer::stop() has been called at least once; if the timer has not been
+   * stopped then calling this function results in an exception.
    */
   const Utilities::MPI::MinMaxAvg &get_accumulated_wall_time_data() const;
 
@@ -366,17 +377,19 @@ private:
   /**
    * A structure for parallel wall time measurement that includes the minimum,
    * maximum, and average over all processors known to the MPI communicator of
-   * the last lap time.
+   * the last lap time. This variable does not contain any data until
+   * Timer::stop() has been called.
    */
-  Utilities::MPI::MinMaxAvg last_lap_data;
+  boost::optional<Utilities::MPI::MinMaxAvg> last_lap_data;
 
   /**
    * A structure for parallel wall time measurement that includes the minimum
    * time recorded among all processes, the maximum time as well as the
    * average time defined as the sum of all individual times divided by the
-   * number of MPI processes in the MPI_Comm for the total run time.
+   * number of MPI processes in the MPI_Comm for the total run time. This
+   * variable does not contain any data until Timer::stop() has been called.
    */
-  Utilities::MPI::MinMaxAvg accumulated_wall_time_data;
+  boost::optional<Utilities::MPI::MinMaxAvg> accumulated_wall_time_data;
 };
 
 
@@ -871,7 +884,17 @@ inline
 const Utilities::MPI::MinMaxAvg &
 Timer::get_data() const
 {
-  return last_lap_data;
+  if (last_lap_data)
+    {
+      return last_lap_data.value();
+    }
+  // These values were used by the reset() function to populate last_lap_data
+  // at a time when it was not implemented with boost::optional. If nothing is
+  // stored then the return value doesn't matter.
+  const double d = std::numeric_limits<double>::signaling_NaN();
+  const unsigned int i = numbers::invalid_unsigned_int;
+  static const Utilities::MPI::MinMaxAvg invalid = {d, d, d, i, i, d};
+  return invalid;
 }
 
 
@@ -880,7 +903,10 @@ inline
 const Utilities::MPI::MinMaxAvg &
 Timer::get_last_lap_data() const
 {
-  return last_lap_data;
+  AssertThrow(last_lap_data,
+              ExcMessage("The field last_lap_data does not contain meaningful "
+                         "data unless stop() has been called."));
+  return last_lap_data.value();
 }
 
 
@@ -889,7 +915,19 @@ inline
 const Utilities::MPI::MinMaxAvg &
 Timer::get_total_data() const
 {
-  return accumulated_wall_time_data;
+  if (accumulated_wall_time_data)
+    {
+      return accumulated_wall_time_data.value();
+    }
+  // These values were used by the reset() function to populate
+  // accumulated_wall_time_data at a time when it was not implemented with
+  // boost::optional. If nothing is stored then the return value doesn't
+  // matter.
+  const double d = 0;
+  const unsigned int i = 0;
+  static const Utilities::MPI::MinMaxAvg invalid = {d, d, d, i, i, d};
+  return invalid;
+
 }
 
 
@@ -898,7 +936,10 @@ inline
 const Utilities::MPI::MinMaxAvg &
 Timer::get_accumulated_wall_time_data() const
 {
-  return accumulated_wall_time_data;
+  AssertThrow(accumulated_wall_time_data,
+              ExcMessage("The field accumulated_wall_time_data does not contain "
+                         "meaningful data unless stop() has been called."));
+  return accumulated_wall_time_data.value();
 }
 
 
