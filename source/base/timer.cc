@@ -230,8 +230,6 @@ double Timer::stop ()
       if (sync_wall_time)
         {
           last_lap_time = last_lap_data.max;
-          last_lap_cpu_time = Utilities::MPI::min_max_avg (last_lap_cpu_time,
-                                                           mpi_communicator).max;
         }
       accumulated_wall_time += last_lap_time;
       accumulated_cpu_time += last_lap_cpu_time;
