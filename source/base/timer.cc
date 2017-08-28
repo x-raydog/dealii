@@ -37,6 +37,7 @@
 #  include <windows.h>
 #endif
 
+#include <boost/io/ios_state.hpp>
 
 
 DEAL_II_NAMESPACE_OPEN
@@ -497,13 +498,9 @@ TimerOutput::get_summary_data (const OutputData kind) const
 void
 TimerOutput::print_summary () const
 {
-  // we are going to change the
-  // precision and width of output
-  // below. store the old values so we
-  // can restore it later on
-  const std::istream::fmtflags old_flags = out_stream.get_stream().flags();
-  const std::streamsize    old_precision = out_stream.get_stream().precision ();
-  const std::streamsize    old_width     = out_stream.get_stream().width ();
+  // we are going to change the precision and width of output below. store the
+  // old values so we can restore it later on
+  boost::io::ios_flags_saver restore_flags(out_stream.get_stream());
 
   // in case we want to write CPU times
   if (output_type != wall_times)
@@ -655,10 +652,6 @@ TimerOutput::print_summary () const
                  << std::endl;
     }
 
-  // restore previous precision and width
-  out_stream.get_stream().precision (old_precision);
-  out_stream.get_stream().width (old_width);
-  out_stream.get_stream().flags (old_flags);
 }
 
 
