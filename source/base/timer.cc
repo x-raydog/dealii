@@ -593,17 +593,20 @@ TimerOutput::print_summary () const
 
           if (total_time != 0)
             {
-              // if run time was less than 0.1%, just print a zero to avoid
-              // printing silly things such as "2.45e-6%". otherwise print
-              // the actual percentage
-              const double fraction = current_section.total_wall_time/total_wall_time;
-              if (fraction > 0.001)
-                {
-                  out_stream << std::setprecision(2);
-                  out_stream << fraction * 100;
-                }
-              else
+              // If the current section time is less than 0.1%, then just
+              // print a zero to avoid printing silly things such as
+              // "2.45e-6%". If not, then either print the actual percentage
+              // or round up to 100.
+              const double fraction = output_type == wall_times ?
+                current_section.total_wall_time/total_time :
+                current_section.total_cpu_time/total_time;
+              if (fraction < 0.001)
                 out_stream << 0.0;
+              else if (fraction < 0.999)
+                out_stream << std::fixed << std::setprecision(2) << fraction * 100;
+              else
+                out_stream << std::fixed << std::setprecision(1) << 100.0;
+
 
               out_stream << "% |";
             }
