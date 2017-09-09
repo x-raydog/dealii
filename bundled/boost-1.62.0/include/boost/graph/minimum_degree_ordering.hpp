@@ -171,7 +171,7 @@ namespace boost {
         return data[get(id, node)] < 0;
       }
       void indistinguishable(Vertex i, Vertex j) {
-        data[get(id, i)] = - (get(id, j) + offset);
+        data[get(id, i)] = - (get(id, j) + offset); // TODO unary minus?
       }
     };
 

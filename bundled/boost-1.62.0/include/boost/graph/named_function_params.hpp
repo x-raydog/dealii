@@ -237,6 +237,7 @@ BOOST_BGL_DECLARE_NAMED_PARAMS
   inline
   const typename lookup_named_param_def<Tag, Args, param_not_found>::type&
   get_param(const Args& p, Tag) {
+	  // TODO local address?
     return lookup_named_param_def<Tag, Args, param_not_found>::get(p, param_not_found());
   }
 

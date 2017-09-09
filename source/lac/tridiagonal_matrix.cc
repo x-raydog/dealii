@@ -226,7 +226,7 @@ TridiagonalMatrix<number>::matrix_norm_square(
   return matrix_scalar_product(v,v);
 }
 
-
+// TODO implement with floats too
 template <>
 void
 TridiagonalMatrix<double>::compute_eigenvalues()

@@ -163,11 +163,6 @@ public:
     const_iterator &operator++ ();
 
     /**
-     * Postfix increment.
-     */
-    const_iterator &operator++ (int);
-
-    /**
      * Dereferencing operator.
      */
     const Accessor &operator* () const;

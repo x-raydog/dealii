@@ -1109,6 +1109,15 @@ measure () const
 
 
 
+template <int structdim, int dim, int spacedim>
+double TriaAccessor<structdim, dim, spacedim>::extent_in_direction(const unsigned int axis) const
+{
+	Assert(false, ExcNotImplemented());
+	return std::numeric_limits<double>::signaling_NaN();
+}
+
+
+
 template <>
 double TriaAccessor<1,1,1>::extent_in_direction(const unsigned int axis) const
 {
