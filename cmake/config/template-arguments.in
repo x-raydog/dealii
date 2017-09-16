@@ -126,11 +126,6 @@ VECTORS_WITH_MATRIX := { Vector<double>;
                          @DEAL_II_EXPAND_EPETRA_VECTOR@;
                        }
 
-// General container types
-GENERAL_CONTAINER_TYPES := {std::vector;
-                            ArrayView
-                       }
-
 // DoFHandler and hp::DoFHandler templates
 DOFHANDLER_TEMPLATES := { DoFHandler;
                           hp::DoFHandler }

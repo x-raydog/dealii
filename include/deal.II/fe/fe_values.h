@@ -334,11 +334,8 @@ namespace FEValuesViews
     /**
      * Same as above, but using a vector of local degree-of-freedom values.
      *
-     * The @p dof_values vector must have a length equal to number of DoFs on
-     * a cell, and  each entry @p dof_values[i] is the value of the local DoF
-     * @p i. The fundamental prerequisite for the @p InputVector is that it must
-     * be possible to create an ArrayView from it; this is satisfied by the
-     * @p std::vector class.
+     * @p dof_values must have a length equal to number of DoFs on a cell, and
+     * each entry @p dof_values[i] is the value of the local DoF @p i.
      *
      * The DoF values typically would be obtained in the following way:
      * @code
@@ -351,9 +348,9 @@ namespace FEValuesViews
      * cell->get_dof_values(solution, local_dof_values.begin(), local_dof_values.end());
      * @endcode
      */
-    template <class InputVector>
-    void get_function_values_from_local_dof_values (const InputVector &dof_values,
-                                                    std::vector<typename OutputType<typename InputVector::value_type>::value_type> &values) const;
+    template <typename Number>
+    void get_function_values_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                    std::vector<typename OutputType<Number>::value_type> &values) const;
 
     /**
      * Return the gradients of the selected scalar component of the finite
@@ -379,9 +376,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Scalar::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_gradients_from_local_dof_values (const InputVector &dof_values,
-                                                       std::vector<typename OutputType<typename InputVector::value_type>::gradient_type> &gradients) const;
+    template <typename Number>
+    void get_function_gradients_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                       std::vector<typename OutputType<Number>::gradient_type> &gradients) const;
 
     /**
      * Return the Hessians of the selected scalar component of the finite
@@ -407,9 +404,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Scalar::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_hessians_from_local_dof_values (const InputVector &dof_values,
-                                                      std::vector<typename OutputType<typename InputVector::value_type>::hessian_type> &hessians) const;
+    template <typename Number>
+    void get_function_hessians_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                      std::vector<typename OutputType<Number>::hessian_type> &hessians) const;
 
 
     /**
@@ -437,10 +434,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Scalar::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_laplacians_from_local_dof_values (const InputVector &dof_values,
-                                                        std::vector<typename OutputType<typename InputVector::value_type>::laplacian_type> &laplacians) const;
-
+    template <typename Number>
+    void get_function_laplacians_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                        std::vector<typename OutputType<Number>::laplacian_type> &laplacians) const;
 
     /**
      * Return the third derivatives of the selected scalar component of the
@@ -468,9 +464,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Scalar::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_third_derivatives_from_local_dof_values (const InputVector &dof_values,
-                                                               std::vector<typename OutputType<typename InputVector::value_type>::third_derivative_type> &third_derivatives) const;
+    template <typename Number>
+    void get_function_third_derivatives_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                               std::vector<typename OutputType<Number>::third_derivative_type> &third_derivatives) const;
 
 
   private:
@@ -864,9 +860,9 @@ namespace FEValuesViews
      * cell->get_dof_values(solution, local_dof_values.begin(), local_dof_values.end());
      * @endcode
      */
-    template <class InputVector>
-    void get_function_values_from_local_dof_values (const InputVector &dof_values,
-                                                    std::vector<typename OutputType<typename InputVector::value_type>::value_type> &values) const;
+    template <typename Number>
+    void get_function_values_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                    std::vector<typename OutputType<Number>::value_type> &values) const;
 
     /**
      * Return the gradients of the selected vector components of the finite
@@ -892,9 +888,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Vector::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_gradients_from_local_dof_values (const InputVector &dof_values,
-                                                       std::vector<typename OutputType<typename InputVector::value_type>::gradient_type> &gradients) const;
+    template <typename Number>
+    void get_function_gradients_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                       std::vector<typename OutputType<Number>::gradient_type> &gradients) const;
 
     /**
      * Return the symmetrized gradients of the selected vector components of
@@ -927,10 +923,10 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Vector::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
+    template <typename Number>
     void
-    get_function_symmetric_gradients_from_local_dof_values (const InputVector &dof_values,
-                                                            std::vector<typename OutputType<typename InputVector::value_type>::symmetric_gradient_type> &symmetric_gradients) const;
+    get_function_symmetric_gradients_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                            std::vector<typename OutputType<Number>::symmetric_gradient_type> &symmetric_gradients) const;
 
     /**
      * Return the divergence of the selected vector components of the finite
@@ -957,9 +953,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Vector::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_divergences_from_local_dof_values (const InputVector &dof_values,
-                                                         std::vector<typename OutputType<typename InputVector::value_type>::divergence_type> &divergences) const;
+    template <typename Number>
+    void get_function_divergences_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                         std::vector<typename OutputType<Number>::divergence_type> &divergences) const;
 
     /**
      * Return the curl of the selected vector components of the finite element
@@ -986,9 +982,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Vector::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_curls_from_local_dof_values (const InputVector &dof_values,
-                                                   std::vector<typename OutputType<typename InputVector::value_type>::curl_type> &curls) const;
+    template <typename Number>
+    void get_function_curls_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                   std::vector<typename OutputType<Number>::curl_type> &curls) const;
 
     /**
      * Return the Hessians of the selected vector components of the finite
@@ -1014,9 +1010,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Vector::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_hessians_from_local_dof_values (const InputVector &dof_values,
-                                                      std::vector<typename OutputType<typename InputVector::value_type>::hessian_type> &hessians) const;
+    template <typename Number>
+    void get_function_hessians_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                      std::vector<typename OutputType<Number>::hessian_type> &hessians) const;
 
     /**
      * Return the Laplacians of the selected vector components of the finite
@@ -1043,9 +1039,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Vector::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_laplacians_from_local_dof_values (const InputVector &dof_values,
-                                                        std::vector<typename OutputType<typename InputVector::value_type>::laplacian_type> &laplacians) const;
+    template <typename Number>
+    void get_function_laplacians_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                        std::vector<typename OutputType<Number>::laplacian_type> &laplacians) const;
 
     /**
      * Return the third derivatives of the selected scalar component of the
@@ -1073,9 +1069,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Vector::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_third_derivatives_from_local_dof_values (const InputVector &dof_values,
-                                                               std::vector<typename OutputType<typename InputVector::value_type>::third_derivative_type> &third_derivatives) const;
+    template <typename Number>
+    void get_function_third_derivatives_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                               std::vector<typename OutputType<Number>::third_derivative_type> &third_derivatives) const;
 
   private:
     /**
@@ -1308,9 +1304,9 @@ namespace FEValuesViews
      * cell->get_dof_values(solution, local_dof_values.begin(), local_dof_values.end());
      * @endcode
      */
-    template <class InputVector>
-    void get_function_values_from_local_dof_values (const InputVector &dof_values,
-                                                    std::vector<typename OutputType<typename InputVector::value_type>::value_type> &values) const;
+    template <typename Number>
+    void get_function_values_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                    std::vector<typename OutputType<Number>::value_type> &values) const;
 
 
     /**
@@ -1341,9 +1337,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::SymmetricTensor<2,dim,spacedim>::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_divergences_from_local_dof_values (const InputVector &dof_values,
-                                                         std::vector<typename OutputType<typename InputVector::value_type>::divergence_type> &divergences) const;
+    template <typename Number>
+    void get_function_divergences_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                         std::vector<typename OutputType<Number>::divergence_type> &divergences) const;
 
   private:
     /**
@@ -1564,9 +1560,9 @@ namespace FEValuesViews
      * cell->get_dof_values(solution, local_dof_values.begin(), local_dof_values.end());
      * @endcode
      */
-    template <class InputVector>
-    void get_function_values_from_local_dof_values (const InputVector &dof_values,
-                                                    std::vector<typename OutputType<typename InputVector::value_type>::value_type> &values) const;
+    template <typename Number>
+    void get_function_values_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                    std::vector<typename OutputType<Number>::value_type> &values) const;
 
 
     /**
@@ -1597,9 +1593,9 @@ namespace FEValuesViews
     /**
      * @copydoc FEValuesViews::Tensor<2,dim,spacedim>::get_function_values_from_local_dof_values()
      */
-    template <class InputVector>
-    void get_function_divergences_from_local_dof_values (const InputVector &dof_values,
-                                                         std::vector<typename OutputType<typename InputVector::value_type>::divergence_type> &values) const;
+    template <typename Number>
+    void get_function_divergences_from_local_dof_values (const ArrayView<const Number> dof_values,
+                                                         std::vector<typename OutputType<Number>::divergence_type> &values) const;
 
 
   private:
