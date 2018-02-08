@@ -39,15 +39,24 @@ namespace LACExceptions
 #ifdef DEAL_II_WITH_PETSC
     // PetscErrorMessage changes the value in a pointer to refer to a
     // statically allocated description of the current error message.
-    const char *petsc_message;
-    const PetscErrorCode ierr = PetscErrorMessage (error_code, &petsc_message,
-                                                   /*specific=*/nullptr);
+    const char *petsc_message = nullptr;
+    char *specific_message = nullptr;
+    const PetscErrorCode ierr = PetscErrorMessage (error_code,
+                                                   &petsc_message,
+                                                   &specific_message);
     if (ierr == 0 && petsc_message != nullptr)
       {
-        out << "The description of the error provided by PETSc is \""
+        out << "The description of the error code provided by PETSc is \""
             << petsc_message
             << "\"."
             << std::endl;
+        if (specific_message != nullptr && std::strlen(specific_message) > 0)
+          {
+            out << "The specific error message set by PETSc is \""
+                << specific_message
+                << "\"."
+                << std::endl;
+          }
       }
     else
       {
