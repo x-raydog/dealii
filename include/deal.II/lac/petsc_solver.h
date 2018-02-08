@@ -213,10 +213,6 @@ namespace PETScWrappers
      * save some computation time, if setting up a preconditioner is
      * expensive, such as in the case of an ILU for example.
      *
-     * The actual declaration of this class is complicated by the fact that
-     * PETSc changed its solver interface completely and incompatibly between
-     * versions 2.1.6 and 2.2.0 :-(
-     *
      * Objects of this type are explicitly created, but are destroyed when the
      * surrounding solver object goes out of scope, or when we assign a new
      * value to the pointer to this object. The respective *Destroy functions
@@ -316,11 +312,14 @@ namespace PETScWrappers
 
 
   /**
-   * An implementation of the solver interface using the PETSc Chebyshev (or,
-   * prior version 3.3, Chebychev) solver.
+   * An implementation of the solver interface using the PETSc Chebyshev
+   * solver.
    *
    * @ingroup PETScWrappers
    * @author Wolfgang Bangerth, 2004
+   *
+   * @note The name of this class matches the old (prior to version 3.3) name
+   * of the corresponding KSP solver.
    */
   class SolverChebychev : public SolverBase
   {
@@ -686,11 +685,7 @@ namespace PETScWrappers
 
   /**
    * An implementation of the solver interface using the PETSc TFQMR-2 solver
-   * (called TCQMR in PETSc). Note that this solver had a serious bug in
-   * versions up to and including PETSc 2.1.6, in that it did not check
-   * convergence and always returned an error code. Thus, this class will
-   * abort with an error indicating failure to converge with PETSc 2.1.6 and
-   * prior. This should be fixed in later versions of PETSc, though.
+   * (called TCQMR in PETSc).
    *
    * @ingroup PETScWrappers
    * @author Wolfgang Bangerth, 2004
