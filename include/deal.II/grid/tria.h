@@ -751,7 +751,7 @@ namespace internal
  * cells are flagged for refinement to smooth the grid. This enlarges the
  * number of resulting cells but makes the grid more regular, thus leading to
  * better approximation properties and, above all, making the handling of data
- * structures and algorithms much much easier. To be honest, this is mostly an
+ * structures and algorithms much easier. To be honest, this is mostly an
  * algorithmic step than one needed by the finite element method.
  *
  * To coarsen a grid, the same way as above is possible by using
@@ -3165,7 +3165,7 @@ public:
 
   /**
    * Declare the (coarse) face pairs given in the argument of this function as
-   * periodic. This way it it possible to obtain neighbors across periodic
+   * periodic. This way it is possible to obtain neighbors across periodic
    * boundaries.
    *
    * The vector can be filled by the function
