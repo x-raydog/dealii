@@ -2385,6 +2385,9 @@ namespace GridGenerator
 
     if (colorize)
       colorize_hyper_shell(tria, center, inner_radius, outer_radius);
+
+    tria.set_all_manifold_ids_on_boundary(0);
+    tria.set_manifold(0, SphericalManifold<2>(center));
   }
 
 
@@ -4465,7 +4468,7 @@ namespace GridGenerator
                 }
             }
       }
-    triangulation.set_manifold(0, SphericalManifold<3>());
+    triangulation.set_manifold(0, CylindricalManifold<3>(2));
   }
 
   template <int dim, int spacedim1, int spacedim2>
