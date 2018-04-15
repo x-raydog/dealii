@@ -883,9 +883,16 @@ namespace GridGenerator
 
 
   /**
-   * This class produces a square in the <i>xy</i>-plane with a circular hole
-   * in the middle. Square and circle are centered at the origin. In 3d, this
-   * geometry is extruded in $z$ direction to the interval $[0,L]$.
+   * This class produces a square in the <i>xy</i>-plane with a cylindrical
+   * hole in the middle. The square and the circle are centered at the
+   * origin. In 3d, this geometry is extruded in $z$ direction to the interval
+   * $[0,L]$.
+   *
+   * The inner boundary has a manifold id of $0$ and a boundary id of
+   * $6$. This function attaches a PolarManifold or CylindricalManifold to the
+   * interior boundary in 2d and 3d respectively. The other faces have
+   * boundary ids of $0, 1, 2, 3, 4$, or $5$ given in the standard order of
+   * faces in 2d or 3d.
    *
    * @image html cubes_hole.png
    *

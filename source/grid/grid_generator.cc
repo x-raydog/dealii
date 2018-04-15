@@ -2386,7 +2386,7 @@ namespace GridGenerator
     if (colorize)
       colorize_hyper_shell(tria, center, inner_radius, outer_radius);
 
-    tria.set_all_manifold_ids_on_boundary(0);
+    tria.set_all_manifold_ids(0);
     tria.set_manifold(0, SphericalManifold<2>(center));
   }
 
@@ -2947,6 +2947,8 @@ namespace GridGenerator
         for (unsigned int i = 0; i < 4; ++i)
           cell->face (i)->set_boundary_id (0);
       }
+
+    triangulation.set_manifold(0, CylindricalManifold<3>());
   }
 
 
@@ -3236,6 +3238,7 @@ namespace GridGenerator
                     }
               }
           }
+    tria.set_manifold(0, CylindricalManifold<3>());
   }
 
 
@@ -4349,7 +4352,7 @@ namespace GridGenerator
                 }
             }
       }
-    triangulation.set_manifold(0, SphericalManifold<2>(center));
+    triangulation.set_manifold(0, PolarManifold<2>(center));
   }
 
 
