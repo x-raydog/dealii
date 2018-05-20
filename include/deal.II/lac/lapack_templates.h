@@ -17,6 +17,7 @@
 #define dealii_lapack_templates_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/lac/lapack_support.h>
 
 #ifdef DEAL_II_HAVE_FP_EXCEPTIONS

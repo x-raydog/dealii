@@ -18,13 +18,17 @@
 
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/fe/fe_values.h>
+
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/grid_tools_cache.h>
+
 #include <deal.II/hp/fe_collection.h>
 #include <deal.II/hp/fe_values.h>
 #include <deal.II/hp/mapping_collection.h>
 #include <deal.II/hp/q_collection.h>
+
 #include <deal.II/numerics/fe_field_function.h>
 #include <deal.II/numerics/vector_tools.h>
 

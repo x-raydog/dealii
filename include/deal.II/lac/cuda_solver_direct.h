@@ -20,6 +20,7 @@
 
 #ifdef DEAL_II_WITH_CUDA
 #  include <deal.II/base/cuda.h>
+
 #  include <deal.II/lac/cuda_sparse_matrix.h>
 #  include <deal.II/lac/cuda_vector.h>
 #  include <deal.II/lac/solver_control.h>

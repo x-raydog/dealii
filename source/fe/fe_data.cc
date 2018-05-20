@@ -14,6 +14,7 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/geometry_info.h>
+
 #include <deal.II/fe/fe.h>
 
 DEAL_II_NAMESPACE_OPEN

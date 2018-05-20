@@ -17,10 +17,13 @@
 #define dealii_matrix_tools_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/function.h>
 #include <deal.II/base/thread_management.h>
+
 #include <deal.II/dofs/function_map.h>
+
 #include <deal.II/lac/constraint_matrix.h>
 
 #include <map>

@@ -17,9 +17,11 @@
 #define dealii_dynamic_sparsity_pattern_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/index_set.h>
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/lac/exceptions.h>
 
 #include <algorithm>

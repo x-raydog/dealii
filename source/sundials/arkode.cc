@@ -14,11 +14,13 @@
 //-----------------------------------------------------------
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/sundials/arkode.h>
 
 #ifdef DEAL_II_WITH_SUNDIALS
 
 #  include <deal.II/base/utilities.h>
+
 #  include <deal.II/lac/block_vector.h>
 #  ifdef DEAL_II_WITH_TRILINOS
 #    include <deal.II/lac/trilinos_parallel_block_vector.h>
@@ -29,11 +31,12 @@
 #    include <deal.II/lac/petsc_parallel_vector.h>
 #  endif
 #  include <deal.II/base/utilities.h>
+
 #  include <deal.II/sundials/copy.h>
 
+#  include <arkode/arkode_impl.h>
 #  include <sundials/sundials_config.h>
 
-#  include <arkode/arkode_impl.h>
 #  include <iomanip>
 #  include <iostream>
 

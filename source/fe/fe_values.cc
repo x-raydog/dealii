@@ -20,13 +20,18 @@
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/signaling_nan.h>
 #include <deal.II/base/std_cxx14/memory.h>
+
 #include <deal.II/differentiation/ad.h>
+
 #include <deal.II/dofs/dof_accessor.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping_q1.h>
+
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/lac/block_vector.h>
 #include <deal.II/lac/la_parallel_block_vector.h>
 #include <deal.II/lac/la_parallel_vector.h>
@@ -38,10 +43,10 @@
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/vector_element_access.h>
 
+#include <boost/container/small_vector.hpp>
+
 #include <iomanip>
 #include <type_traits>
-
-#include <boost/container/small_vector.hpp>
 
 DEAL_II_NAMESPACE_OPEN
 

@@ -14,6 +14,7 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/fe/mapping.h>
+
 #include <deal.II/grid/tria.h>
 
 DEAL_II_NAMESPACE_OPEN

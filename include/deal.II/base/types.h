@@ -16,8 +16,9 @@
 #ifndef dealii_types_h
 #define dealii_types_h
 
-#include <cstddef>
 #include <deal.II/base/config.h>
+
+#include <cstddef>
 
 DEAL_II_NAMESPACE_OPEN
 

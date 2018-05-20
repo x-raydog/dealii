@@ -17,9 +17,12 @@
 #define dealii_tria_accessor_templates_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/geometry_info.h>
 #include <deal.II/base/template_constraints.h>
+
 #include <deal.II/distributed/tria_base.h>
+
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_faces.h>

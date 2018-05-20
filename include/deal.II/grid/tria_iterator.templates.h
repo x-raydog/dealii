@@ -17,6 +17,7 @@
 #define dealii_tria_iterator_templates_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_iterator.h>
 

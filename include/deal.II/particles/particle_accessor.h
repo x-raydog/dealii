@@ -17,7 +17,9 @@
 #define dealii_particles_particle_accessor_h
 
 #include <deal.II/base/array_view.h>
+
 #include <deal.II/grid/tria.h>
+
 #include <deal.II/particles/particle.h>
 
 DEAL_II_NAMESPACE_OPEN

@@ -17,6 +17,7 @@
 #define dealii_parallel_block_vector_templates_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/lac/la_parallel_block_vector.h>
 #include <deal.II/lac/lapack_support.h>
 #include <deal.II/lac/petsc_parallel_block_vector.h>

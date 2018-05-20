@@ -17,6 +17,7 @@
 #define dealii_mapping_q1_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/fe/mapping_q_generic.h>
 
 #include <cmath>

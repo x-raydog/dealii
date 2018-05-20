@@ -19,7 +19,9 @@
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/lac/block_vector.h>
+
 #include <deal.II/meshworker/dof_info.h>
 
 DEAL_II_NAMESPACE_OPEN

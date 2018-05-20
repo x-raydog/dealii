@@ -17,8 +17,10 @@
 #  define dealii_chunk_sparse_matrix_h
 
 #  include <deal.II/base/config.h>
+
 #  include <deal.II/base/smartpointer.h>
 #  include <deal.II/base/subscriptor.h>
+
 #  include <deal.II/lac/chunk_sparsity_pattern.h>
 #  include <deal.II/lac/exceptions.h>
 #  include <deal.II/lac/identity_matrix.h>

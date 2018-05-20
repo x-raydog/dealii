@@ -21,41 +21,27 @@
 #  include <deal.II/base/point.h>
 #  include <deal.II/base/utilities.h>
 
-#  include <cstdio>
-#  include <iostream>
-#  include <set>
-
 #  include <IGESControl_Controller.hxx>
 #  include <IGESControl_Reader.hxx>
 #  include <IGESControl_Writer.hxx>
-
 #  include <STEPControl_Controller.hxx>
 #  include <STEPControl_Reader.hxx>
 #  include <STEPControl_Writer.hxx>
-
+#  include <Standard_Version.hxx>
 #  include <TopExp_Explorer.hxx>
 #  include <TopoDS.hxx>
 #  include <TopoDS_Edge.hxx>
 #  include <TopoDS_Face.hxx>
 #  include <TopoDS_Shape.hxx>
 
-#  include <Standard_Version.hxx>
+#  include <cstdio>
+#  include <iostream>
+#  include <set>
 #  if(OCC_VERSION_MAJOR < 7)
 #    include <Handle_Standard_Transient.hxx>
 #  else
 #    include <Standard_Transient.hxx>
 #  endif
-
-#  include <TColStd_HSequenceOfTransient.hxx>
-#  include <TColStd_SequenceOfTransient.hxx>
-#  include <TColgp_HArray1OfPnt.hxx>
-
-#  include <GeomAPI_ProjectPointOnCurve.hxx>
-#  include <GeomAPI_ProjectPointOnSurf.hxx>
-#  include <IntCurvesFace_ShapeIntersector.hxx>
-#  include <gp_Lin.hxx>
-#  include <gp_Pnt.hxx>
-#  include <gp_Vec.hxx>
 
 #  include <BRepAdaptor_Curve.hxx>
 #  include <BRepAdaptor_HCompCurve.hxx>
@@ -66,15 +52,22 @@
 #  include <BRepBuilderAPI_Transform.hxx>
 #  include <BRepTools.hxx>
 #  include <BRep_Builder.hxx>
-
+#  include <GCPnts_AbscissaPoint.hxx>
 #  include <GeomAPI_Interpolate.hxx>
+#  include <GeomAPI_ProjectPointOnCurve.hxx>
+#  include <GeomAPI_ProjectPointOnSurf.hxx>
 #  include <GeomConvert_CompCurveToBSplineCurve.hxx>
 #  include <GeomLProp_SLProps.hxx>
 #  include <Geom_BoundedCurve.hxx>
 #  include <Geom_Plane.hxx>
-
-#  include <GCPnts_AbscissaPoint.hxx>
+#  include <IntCurvesFace_ShapeIntersector.hxx>
 #  include <ShapeAnalysis_Surface.hxx>
+#  include <TColStd_HSequenceOfTransient.hxx>
+#  include <TColStd_SequenceOfTransient.hxx>
+#  include <TColgp_HArray1OfPnt.hxx>
+#  include <gp_Lin.hxx>
+#  include <gp_Pnt.hxx>
+#  include <gp_Vec.hxx>
 
 #  include <algorithm>
 #  include <vector>

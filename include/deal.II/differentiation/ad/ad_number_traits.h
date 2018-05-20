@@ -17,6 +17,7 @@
 #define dealii_differentiation_ad_ad_number_traits_h
 
 #include <deal.II/base/exceptions.h>
+
 #include <deal.II/differentiation/ad/ad_number_types.h>
 
 #include <boost/type_traits.hpp>

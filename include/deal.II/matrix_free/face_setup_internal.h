@@ -18,8 +18,10 @@
 
 #include <deal.II/base/memory_consumption.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
+
 #include <deal.II/matrix_free/face_info.h>
 #include <deal.II/matrix_free/task_info.h>
 

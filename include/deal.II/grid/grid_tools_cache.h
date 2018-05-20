@@ -17,11 +17,13 @@
 #define dealii_grid_grid_tools_cache_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/subscriptor.h>
 
 #include <deal.II/fe/mapping_q1.h>
+
 #include <deal.II/grid/grid_tools_cache_update_flags.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>

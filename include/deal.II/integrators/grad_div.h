@@ -17,11 +17,15 @@
 #define dealii_integrators_grad_div_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/quadrature.h>
+
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping.h>
+
 #include <deal.II/lac/full_matrix.h>
+
 #include <deal.II/meshworker/dof_info.h>
 
 DEAL_II_NAMESPACE_OPEN

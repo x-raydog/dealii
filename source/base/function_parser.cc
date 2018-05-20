@@ -13,15 +13,17 @@
 //
 // ---------------------------------------------------------------------
 
-#include <cmath>
 #include <deal.II/base/function_parser.h>
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/lac/vector.h>
-#include <map>
 
 #include <boost/math/special_functions/erf.hpp>
 #include <boost/random.hpp>
+
+#include <cmath>
+#include <map>
 
 #ifdef DEAL_II_WITH_MUPARSER
 #  include <muParser.h>

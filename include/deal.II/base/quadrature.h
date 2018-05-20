@@ -16,10 +16,12 @@
 #ifndef dealii_quadrature_h
 #define dealii_quadrature_h
 
-#include <array>
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/point.h>
 #include <deal.II/base/subscriptor.h>
+
+#include <array>
 #include <memory>
 #include <vector>
 

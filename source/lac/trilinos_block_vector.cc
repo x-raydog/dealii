@@ -17,9 +17,8 @@
 
 #ifdef DEAL_II_WITH_TRILINOS
 
-#  include <deal.II/lac/trilinos_index_access.h>
-
 #  include <deal.II/lac/trilinos_block_sparse_matrix.h>
+#  include <deal.II/lac/trilinos_index_access.h>
 
 DEAL_II_NAMESPACE_OPEN
 

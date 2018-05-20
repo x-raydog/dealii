@@ -18,12 +18,12 @@
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/thread_management.h>
 
+#include <deal.II/distributed/shared_tria.h>
+#include <deal.II/distributed/tria.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
-
-#include <deal.II/distributed/shared_tria.h>
-#include <deal.II/distributed/tria.h>
 
 #include <deal.II/fe/fe_nothing.h>
 #include <deal.II/fe/fe_q.h>

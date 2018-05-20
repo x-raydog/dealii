@@ -24,7 +24,9 @@
 // -> use ProductType<T,U> type trait for the results
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/template_constraints.h>
+
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/lapack_full_matrix.h>
 #include <deal.II/lac/lapack_templates.h>

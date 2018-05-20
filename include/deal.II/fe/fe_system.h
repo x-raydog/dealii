@@ -19,7 +19,9 @@
 /*----------------------------   fe_system.h     ---------------------------*/
 
 #  include <deal.II/base/config.h>
+
 #  include <deal.II/base/thread_management.h>
+
 #  include <deal.II/fe/fe.h>
 #  include <deal.II/fe/fe_tools.h>
 

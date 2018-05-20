@@ -19,13 +19,13 @@
 /*----------------------------   tria-iterator.h     ---------------------------*/
 
 #  include <deal.II/base/config.h>
-#  include <deal.II/base/exceptions.h>
 
+#  include <deal.II/base/exceptions.h>
 #  include <deal.II/base/point.h>
+
 #  include <deal.II/grid/tria_iterator_base.h>
 
 #  include <iterator>
-
 #  include <ostream>
 
 DEAL_II_NAMESPACE_OPEN

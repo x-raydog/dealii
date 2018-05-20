@@ -21,9 +21,13 @@
 #include <deal.II/base/polynomials_piecewise.h>
 #include <deal.II/base/tensor_product_polynomials.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/distributed/tria.h>
+
 #include <deal.II/dofs/dof_accessor.h>
+
 #include <deal.II/fe/fe_poly.h>
+
 #include <deal.II/hp/q_collection.h>
 
 #include <deal.II/matrix_free/dof_info.templates.h>
@@ -34,6 +38,7 @@
 
 #ifdef DEAL_II_WITH_THREADS
 #  include <deal.II/base/parallel.h>
+
 #  include <tbb/concurrent_unordered_map.h>
 #endif
 

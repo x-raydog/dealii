@@ -17,17 +17,18 @@
 #include <deal.II/base/qprojector.h>
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/template_constraints.h>
 #include <deal.II/base/tensor_product_polynomials.h>
 #include <deal.II/base/tensor_product_polynomials_bubbles.h>
 #include <deal.II/base/tensor_product_polynomials_const.h>
+
 #include <deal.II/fe/fe_dgp.h>
 #include <deal.II/fe/fe_dgq.h>
 #include <deal.II/fe/fe_nothing.h>
 #include <deal.II/fe/fe_q_base.h>
 #include <deal.II/fe/fe_tools.h>
 
-#include <deal.II/base/std_cxx14/memory.h>
 #include <sstream>
 #include <vector>
 

@@ -17,8 +17,10 @@
 #define dealii_tria_objects_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/geometry_info.h>
+
 #include <deal.II/grid/tria_object.h>
 
 #include <vector>

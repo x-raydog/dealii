@@ -19,10 +19,11 @@
 #include <deal.II/base/config.h>
 
 #ifdef DEAL_II_TRILINOS_WITH_ROL
-#  include <ROL_Vector.hpp>
-
 #  include <deal.II/base/exceptions.h>
+
 #  include <deal.II/lac/vector.h>
+
+#  include <ROL_Vector.hpp>
 
 #  include <type_traits>
 

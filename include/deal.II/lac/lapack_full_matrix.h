@@ -17,9 +17,11 @@
 #define dealii_lapack_full_matrix_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/table.h>
 #include <deal.II/base/thread_management.h>
+
 #include <deal.II/lac/lapack_support.h>
 #include <deal.II/lac/vector_memory.h>
 

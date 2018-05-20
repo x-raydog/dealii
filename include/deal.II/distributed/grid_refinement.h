@@ -17,7 +17,9 @@
 #define dealii_distributed_grid_refinement_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
+
 #include <deal.II/distributed/tria.h>
 
 #include <limits>

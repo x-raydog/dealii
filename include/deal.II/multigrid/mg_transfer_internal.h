@@ -17,8 +17,11 @@
 #define dealii_mg_transfer_internal_h
 
 #include <deal.II/base/mg_level_object.h>
+
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/lac/la_parallel_vector.h>
+
 #include <deal.II/multigrid/mg_constrained_dofs.h>
 
 DEAL_II_NAMESPACE_OPEN

@@ -17,14 +17,19 @@
 #define dealii_dof_accessor_templates_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/types.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_faces.h>
 #include <deal.II/dofs/dof_levels.h>
+
 #include <deal.II/grid/tria_iterator.h>
 #include <deal.II/grid/tria_iterator.templates.h>
+
 #include <deal.II/hp/dof_faces.h>
 #include <deal.II/hp/dof_level.h>
+
 #include <deal.II/lac/constraint_matrix.h>
 #include <deal.II/lac/read_write_vector.h>
 

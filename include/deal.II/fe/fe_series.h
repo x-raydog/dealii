@@ -17,15 +17,19 @@
 #define dealii_fe_series_H
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/table.h>
 #include <deal.II/base/table_indices.h>
 #include <deal.II/base/tensor.h>
+
 #include <deal.II/hp/fe_collection.h>
 #include <deal.II/hp/q_collection.h>
+
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/vector.h>
+
 #include <deal.II/numerics/vector_tools.h>
 
 #include <memory>

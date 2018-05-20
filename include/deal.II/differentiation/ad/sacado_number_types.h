@@ -17,6 +17,7 @@
 #define dealii_differentiation_ad_sacado_number_types_h
 
 #include <deal.II/base/config.h>
+
 #include <type_traits>
 
 DEAL_II_NAMESPACE_OPEN

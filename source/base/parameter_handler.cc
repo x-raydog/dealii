@@ -19,11 +19,10 @@
 #include <deal.II/base/path_search.h>
 #include <deal.II/base/utilities.h>
 
+#include <boost/io/ios_state.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
-
-#include <boost/io/ios_state.hpp>
 
 #include <algorithm>
 #include <cctype>

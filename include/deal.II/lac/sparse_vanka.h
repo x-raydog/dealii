@@ -17,6 +17,7 @@
 #define dealii_sparse_vanka_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/multithread_info.h>
 #include <deal.II/base/smartpointer.h>
 

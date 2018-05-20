@@ -17,6 +17,7 @@
 #define dealii_eigen_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/lac/linear_operator.h>
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver.h>

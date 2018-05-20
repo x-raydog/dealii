@@ -17,6 +17,7 @@
 #define dealii_fe_base_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/geometry_info.h>
 #include <deal.II/base/point.h>
@@ -24,7 +25,9 @@
 #include <deal.II/base/table.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/vector_slice.h>
+
 #include <deal.II/fe/fe_update_flags.h>
+
 #include <deal.II/lac/block_indices.h>
 #include <deal.II/lac/full_matrix.h>
 

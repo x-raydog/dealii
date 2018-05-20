@@ -17,7 +17,9 @@
 #define dealii_fe_trace_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/tensor_product_polynomials.h>
+
 #include <deal.II/fe/fe_face.h>
 #include <deal.II/fe/fe_poly_face.h>
 #include <deal.II/fe/fe_q.h>

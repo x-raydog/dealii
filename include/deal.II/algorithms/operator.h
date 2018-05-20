@@ -16,8 +16,10 @@
 #ifndef dealii_operator_h
 #define dealii_operator_h
 
-#include <deal.II/algorithms/any_data.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/algorithms/any_data.h>
+
 #include <deal.II/base/event.h>
 
 #include <fstream>

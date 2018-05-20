@@ -17,10 +17,12 @@
 #define dealii_array_view_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/symmetric_tensor.h>
 #include <deal.II/base/table.h>
 #include <deal.II/base/tensor.h>
+
 #include <deal.II/lac/lapack_full_matrix.h>
 
 #include <type_traits>

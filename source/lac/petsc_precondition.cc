@@ -17,14 +17,17 @@
 
 #ifdef DEAL_II_WITH_PETSC
 
-#  include <cmath>
 #  include <deal.II/base/utilities.h>
+
 #  include <deal.II/lac/exceptions.h>
 #  include <deal.II/lac/petsc_compatibility.h>
 #  include <deal.II/lac/petsc_matrix_base.h>
 #  include <deal.II/lac/petsc_solver.h>
 #  include <deal.II/lac/petsc_vector_base.h>
+
 #  include <petscconf.h>
+
+#  include <cmath>
 
 DEAL_II_NAMESPACE_OPEN
 

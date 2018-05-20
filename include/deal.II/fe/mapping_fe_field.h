@@ -17,12 +17,16 @@
 #define dealii_mapping_fe_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/table.h>
 #include <deal.II/base/thread_management.h>
+
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping.h>
+
 #include <deal.II/lac/vector.h>
 
 #include <array>

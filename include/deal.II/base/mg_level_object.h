@@ -17,6 +17,7 @@
 #define dealii_mg_level_object_h
 
 #include <deal.II/base/subscriptor.h>
+
 #include <memory>
 #include <vector>
 

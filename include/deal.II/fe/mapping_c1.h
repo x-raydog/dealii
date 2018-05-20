@@ -17,6 +17,7 @@
 #define dealii_mapping_c1_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/fe/mapping_q.h>
 
 DEAL_II_NAMESPACE_OPEN

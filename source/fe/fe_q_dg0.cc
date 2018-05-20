@@ -16,12 +16,14 @@
 #include <deal.II/base/qprojector.h>
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/template_constraints.h>
+
 #include <deal.II/dofs/dof_accessor.h>
+
 #include <deal.II/fe/fe_nothing.h>
 #include <deal.II/fe/fe_q_dg0.h>
 
-#include <deal.II/base/std_cxx14/memory.h>
 #include <sstream>
 #include <vector>
 

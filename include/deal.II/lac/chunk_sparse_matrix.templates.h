@@ -18,6 +18,8 @@
 
 #include <deal.II/base/parallel.h>
 #include <deal.II/base/template_constraints.h>
+#include <deal.II/base/thread_management.h>
+
 #include <deal.II/lac/chunk_sparse_matrix.h>
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/vector.h>
@@ -26,12 +28,9 @@
 #include <cmath>
 #include <functional>
 #include <iomanip>
-#include <ostream>
-
 #include <numeric>
+#include <ostream>
 #include <vector>
-
-#include <deal.II/base/thread_management.h>
 
 DEAL_II_NAMESPACE_OPEN
 

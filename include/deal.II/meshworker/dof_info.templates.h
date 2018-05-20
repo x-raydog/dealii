@@ -17,6 +17,7 @@
 #define dealii_dof_info_templates_h
 
 #include <deal.II/base/quadrature_lib.h>
+
 #include <deal.II/meshworker/dof_info.h>
 
 DEAL_II_NAMESPACE_OPEN

@@ -17,11 +17,11 @@
 
 #ifdef DEAL_II_WITH_SCALAPACK
 
-#  include <deal.II/base/std_cxx14/memory.h>
-
 #  include <deal.II/base/array_view.h>
 #  include <deal.II/base/mpi.h>
 #  include <deal.II/base/mpi.templates.h>
+#  include <deal.II/base/std_cxx14/memory.h>
+
 #  include <deal.II/lac/scalapack.templates.h>
 
 #  ifdef DEAL_II_WITH_HDF5

@@ -13,12 +13,14 @@
 //
 // ---------------------------------------------------------------------
 
-#include <algorithm>
 #include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/std_cxx14/memory.h>
+
 #include <deal.II/fe/fe_rannacher_turek.h>
+
 #include <deal.II/lac/vector.h>
 
-#include <deal.II/base/std_cxx14/memory.h>
+#include <algorithm>
 #include <sstream>
 
 DEAL_II_NAMESPACE_OPEN

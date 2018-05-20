@@ -17,6 +17,7 @@
 #define dealii_path_search_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 
 #include <fstream>

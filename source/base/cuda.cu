@@ -14,8 +14,8 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/cuda.h>
-
 #include <deal.II/base/exceptions.h>
+
 #include <deal.II/lac/cuda_vector.h>
 #include <deal.II/lac/vector_memory.h>
 

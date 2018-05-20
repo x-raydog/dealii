@@ -17,6 +17,7 @@
 #define dealii_fe_collection_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/fe/component_mask.h>
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_values_extractors.h>

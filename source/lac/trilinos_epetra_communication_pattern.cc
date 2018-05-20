@@ -14,6 +14,7 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/std_cxx14/memory.h>
+
 #include <deal.II/lac/trilinos_epetra_communication_pattern.h>
 
 #ifdef DEAL_II_WITH_TRILINOS

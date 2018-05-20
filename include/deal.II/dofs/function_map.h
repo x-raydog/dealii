@@ -17,6 +17,7 @@
 #define dealii_function_map_h
 
 #include <deal.II/base/config.h>
+
 #include <map>
 
 DEAL_II_NAMESPACE_OPEN

@@ -33,7 +33,6 @@
 #      include <Epetra_SerialComm.h>
 #    endif
 #    include <Epetra_Map.h>
-
 #    include <Epetra_RowMatrix.h>
 #    include <Epetra_Vector.h>
 #    include <Teuchos_ParameterList.hpp>

@@ -16,11 +16,14 @@
 #ifndef dealii_matrix_block_h
 #define dealii_matrix_block_h
 
-#include <deal.II/algorithms/any_data.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/algorithms/any_data.h>
+
 #include <deal.II/base/memory_consumption.h>
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/lac/block_indices.h>
 #include <deal.II/lac/block_sparsity_pattern.h>
 #include <deal.II/lac/full_matrix.h>

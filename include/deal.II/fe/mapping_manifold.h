@@ -17,12 +17,16 @@
 #define dealii_mapping_manifold_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/derivative_form.h>
 #include <deal.II/base/qprojector.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/table.h>
+
 #include <deal.II/dofs/dof_accessor.h>
+
 #include <deal.II/fe/mapping.h>
+
 #include <deal.II/grid/tria_iterator.h>
 
 #include <cmath>

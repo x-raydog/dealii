@@ -17,11 +17,14 @@
 #ifndef dealii_graph_coloring_h
 #  define dealii_graph_coloring_h
 
+#  include <deal.II/base/config.h>
+
+#  include <deal.II/base/thread_management.h>
+
+#  include <deal.II/lac/sparsity_tools.h>
+
 #  include <boost/unordered_map.hpp>
 #  include <boost/unordered_set.hpp>
-#  include <deal.II/base/config.h>
-#  include <deal.II/base/thread_management.h>
-#  include <deal.II/lac/sparsity_tools.h>
 
 #  include <functional>
 #  include <set>

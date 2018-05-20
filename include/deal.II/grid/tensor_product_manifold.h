@@ -17,9 +17,11 @@
 #define dealii_tensor_product_manifold_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/point.h>
 #include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/grid/manifold.h>
 
 DEAL_II_NAMESPACE_OPEN

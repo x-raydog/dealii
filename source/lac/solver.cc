@@ -14,6 +14,8 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/lac/block_vector.h>
+#include <deal.II/lac/la_parallel_block_vector.h>
+#include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/la_vector.h>
 #include <deal.II/lac/petsc_parallel_block_vector.h>
 #include <deal.II/lac/petsc_parallel_vector.h>
@@ -22,9 +24,6 @@
 #include <deal.II/lac/trilinos_vector.h>
 #include <deal.II/lac/vector.h>
 #include <deal.II/lac/vector_memory.h>
-
-#include <deal.II/lac/la_parallel_block_vector.h>
-#include <deal.II/lac/la_parallel_vector.h>
 
 DEAL_II_NAMESPACE_OPEN
 

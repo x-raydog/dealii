@@ -17,6 +17,7 @@
 #define dealii_number_cache_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/index_set.h>
 
 #include <vector>

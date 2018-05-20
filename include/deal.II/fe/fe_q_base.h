@@ -17,7 +17,9 @@
 #define dealii_fe_q_base_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/thread_management.h>
+
 #include <deal.II/fe/fe_poly.h>
 
 DEAL_II_NAMESPACE_OPEN

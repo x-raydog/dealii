@@ -19,9 +19,8 @@
 #include <deal.II/lac/lapack_support.h>
 #include <deal.II/lac/lapack_templates.h>
 #include <deal.II/lac/sparse_matrix.h>
-#include <deal.II/lac/vector.h>
-
 #include <deal.II/lac/utilities.h>
+#include <deal.II/lac/vector.h>
 
 #include <iomanip>
 #include <iostream>

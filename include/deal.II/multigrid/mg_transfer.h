@@ -18,20 +18,20 @@
 
 #include <deal.II/base/config.h>
 
+#include <deal.II/base/mg_level_object.h>
+
+#include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/lac/block_sparsity_pattern.h>
 #include <deal.II/lac/block_vector.h>
 #include <deal.II/lac/constraint_matrix.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/sparse_matrix.h>
 #include <deal.II/lac/trilinos_sparse_matrix.h>
-
 #include <deal.II/lac/vector_memory.h>
 
-#include <deal.II/base/mg_level_object.h>
 #include <deal.II/multigrid/mg_base.h>
 #include <deal.II/multigrid/mg_constrained_dofs.h>
-
-#include <deal.II/dofs/dof_handler.h>
 
 #include <memory>
 

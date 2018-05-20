@@ -19,11 +19,13 @@
 // This file contains simple preconditioners.
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/parallel.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/template_constraints.h>
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/lac/diagonal_matrix.h>
 #include <deal.II/lac/solver_cg.h>
 #include <deal.II/lac/vector_memory.h>

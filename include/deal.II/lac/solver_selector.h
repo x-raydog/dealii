@@ -17,7 +17,9 @@
 #define dealii_solver_selector_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/lac/precondition.h>
 #include <deal.II/lac/solver.h>
 #include <deal.II/lac/solver_bicgstab.h>

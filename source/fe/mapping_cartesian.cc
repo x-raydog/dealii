@@ -20,11 +20,15 @@
 #include <deal.II/base/signaling_nan.h>
 #include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/tensor.h>
+
 #include <deal.II/dofs/dof_accessor.h>
+
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping_cartesian.h>
+
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/lac/full_matrix.h>
 
 #include <algorithm>

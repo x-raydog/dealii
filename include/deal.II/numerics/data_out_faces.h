@@ -17,6 +17,7 @@
 #define dealii_data_out_faces_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/numerics/data_out.h>
 
 #include <string>

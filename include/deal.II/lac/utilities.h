@@ -17,8 +17,10 @@
 #define dealii_lac_utilities_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/signaling_nan.h>
+
 #include <deal.II/lac/lapack_support.h>
 #include <deal.II/lac/lapack_templates.h>
 #include <deal.II/lac/vector_memory.h>

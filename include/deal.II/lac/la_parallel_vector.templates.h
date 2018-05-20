@@ -17,7 +17,9 @@
 #define dealii_la_parallel_vector_templates_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/std_cxx14/memory.h>
+
 #include <deal.II/lac/exceptions.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/petsc_parallel_vector.h>

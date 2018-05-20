@@ -17,7 +17,9 @@
 #define dealii_fe_dgp_monomial_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/polynomials_p.h>
+
 #include <deal.II/fe/fe_poly.h>
 
 DEAL_II_NAMESPACE_OPEN

@@ -16,21 +16,23 @@
 #ifndef dealii_matrix_free_fe_evaluation_h
 #define dealii_matrix_free_fe_evaluation_h
 
-#include <deal.II/base/array_view.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/base/array_view.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/symmetric_tensor.h>
 #include <deal.II/base/template_constraints.h>
 #include <deal.II/base/vectorization.h>
+
+#include <deal.II/lac/vector_operation.h>
+
 #include <deal.II/matrix_free/evaluation_kernels.h>
 #include <deal.II/matrix_free/evaluation_selector.h>
 #include <deal.II/matrix_free/mapping_data_on_the_fly.h>
 #include <deal.II/matrix_free/matrix_free.h>
 #include <deal.II/matrix_free/shape_info.h>
 #include <deal.II/matrix_free/tensor_product_kernels.h>
-
-#include <deal.II/lac/vector_operation.h>
 
 DEAL_II_NAMESPACE_OPEN
 

@@ -16,8 +16,9 @@
 #ifndef dealii_table_h
 #define dealii_table_h
 
-#include <deal.II/base/aligned_vector.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/base/aligned_vector.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/linear_index_iterator.h>
 #include <deal.II/base/memory_consumption.h>

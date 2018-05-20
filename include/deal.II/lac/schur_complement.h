@@ -17,7 +17,9 @@
 #define dealii_schur_complement_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
+
 #include <deal.II/lac/linear_operator.h>
 #include <deal.II/lac/packaged_operation.h>
 #include <deal.II/lac/vector_memory.h>

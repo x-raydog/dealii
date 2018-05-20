@@ -17,6 +17,7 @@
 #  define dealii_thread_management_h
 
 #  include <deal.II/base/config.h>
+
 #  include <deal.II/base/exceptions.h>
 #  include <deal.II/base/multithread_info.h>
 #  include <deal.II/base/template_constraints.h>

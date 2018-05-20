@@ -18,18 +18,23 @@
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/work_stream.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_tools.h>
 #include <deal.II/fe/fe_values.h>
+
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/intergrid_map.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/hp/fe_collection.h>
 #include <deal.II/hp/fe_values.h>
+
 #include <deal.II/lac/constraint_matrix.h>
 #include <deal.II/lac/vector.h>
 
@@ -37,9 +42,10 @@
 #  include <deal.II/lac/la_parallel_vector.h>
 #endif
 
+#include <deal.II/base/std_cxx14/memory.h>
+
 #include <algorithm>
 #include <array>
-#include <deal.II/base/std_cxx14/memory.h>
 #include <memory>
 #include <numeric>
 

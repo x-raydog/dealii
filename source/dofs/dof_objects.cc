@@ -15,8 +15,10 @@
 
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/memory_consumption.h>
+
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_objects.h>
+
 #include <deal.II/fe/fe.h>
 
 DEAL_II_NAMESPACE_OPEN

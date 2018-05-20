@@ -18,8 +18,9 @@
 #include <deal.II/base/table.h>
 #include <deal.II/base/tensor_product_polynomials.h>
 
-#include <array>
 #include <boost/container/small_vector.hpp>
+
+#include <array>
 
 DEAL_II_NAMESPACE_OPEN
 

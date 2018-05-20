@@ -23,16 +23,17 @@
 #  include <deal.II/base/mpi.h>
 #  include <deal.II/base/subscriptor.h>
 #  include <deal.II/base/utilities.h>
+
 #  include <deal.II/lac/exceptions.h>
 #  include <deal.II/lac/vector.h>
 #  include <deal.II/lac/vector_operation.h>
 #  include <deal.II/lac/vector_type_traits.h>
 
+#  include <Epetra_ConfigDefs.h>
+
 #  include <memory>
 #  include <utility>
 #  include <vector>
-
-#  include <Epetra_ConfigDefs.h>
 #  ifdef DEAL_II_WITH_MPI // only if MPI is installed
 #    include <Epetra_MpiComm.h>
 #    include <mpi.h>

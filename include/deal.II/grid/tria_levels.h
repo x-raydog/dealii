@@ -17,14 +17,16 @@
 #define dealii_tria_levels_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/point.h>
+
 #include <deal.II/grid/tria_object.h>
 #include <deal.II/grid/tria_objects.h>
-#include <vector>
 
 #include <boost/serialization/utility.hpp>
 
 #include <cstdint>
+#include <vector>
 
 DEAL_II_NAMESPACE_OPEN
 

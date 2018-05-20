@@ -17,6 +17,7 @@
 #define dealii_geometric_utilities_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/point.h>
 
 #include <array>

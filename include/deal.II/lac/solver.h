@@ -17,7 +17,9 @@
 #define dealii_solver_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/lac/solver_control.h>
 #include <deal.II/lac/vector_memory.h>
 

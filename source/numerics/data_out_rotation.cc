@@ -15,16 +15,22 @@
 
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/work_stream.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping_q1.h>
+
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/hp/fe_values.h>
+
 #include <deal.II/lac/block_vector.h>
 #include <deal.II/lac/vector.h>
+
 #include <deal.II/numerics/data_out_rotation.h>
 
 #include <cmath>

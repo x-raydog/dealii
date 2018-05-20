@@ -17,6 +17,7 @@
 #define dealii_matrix_lib_h
 
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/lac/solver_richardson.h>
 #include <deal.II/lac/vector_memory.h>
 

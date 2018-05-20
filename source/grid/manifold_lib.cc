@@ -13,16 +13,20 @@
 //
 // ---------------------------------------------------------------------
 
-#include <cmath>
 #include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/table.h>
 #include <deal.II/base/tensor.h>
+
 #include <deal.II/fe/mapping.h>
+
 #include <deal.II/grid/manifold_lib.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/lac/vector.h>
+
+#include <cmath>
 
 DEAL_II_NAMESPACE_OPEN
 

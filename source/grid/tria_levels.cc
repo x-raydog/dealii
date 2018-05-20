@@ -14,6 +14,7 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/memory_consumption.h>
+
 #include <deal.II/grid/tria_levels.h>
 
 DEAL_II_NAMESPACE_OPEN

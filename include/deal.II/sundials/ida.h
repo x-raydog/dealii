@@ -17,6 +17,7 @@
 #define dealii_sundials_ida_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/mpi.h>
 #ifdef DEAL_II_WITH_SUNDIALS
 
@@ -44,11 +45,12 @@
 #    include <ida/ida_spgmr.h>
 #    include <ida/ida_sptfqmr.h>
 #  endif
+#  include <boost/signals2.hpp>
+
 #  include <nvector/nvector_serial.h>
 #  include <sundials/sundials_math.h>
 #  include <sundials/sundials_types.h>
 
-#  include <boost/signals2.hpp>
 #  include <memory>
 
 DEAL_II_NAMESPACE_OPEN

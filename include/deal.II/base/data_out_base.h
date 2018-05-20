@@ -17,7 +17,9 @@
 #define dealii_data_out_base_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/geometry_info.h>
+#include <deal.II/base/mpi.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/table.h>
 
@@ -27,13 +29,12 @@
 #include <typeinfo>
 #include <vector>
 
-#include <deal.II/base/mpi.h>
-
 // Only include the Tecplot API header if the appropriate files
 // were detected by configure
 #ifdef DEAL_II_HAVE_TECPLOT
-#  include "TECIO.h"
 #  include <string.h>
+
+#  include "TECIO.h"
 #endif
 
 #include <ostream>

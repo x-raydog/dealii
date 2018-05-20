@@ -14,8 +14,10 @@
 // ---------------------------------------------------------------------
 
 #include "deal.II/base/polynomials_rt_bubbles.h"
+
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/thread_management.h>
+
 #include <iomanip>
 #include <iostream>
 

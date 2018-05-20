@@ -16,11 +16,13 @@
 #ifndef dealii_block_vector_templates_h
 #define dealii_block_vector_templates_h
 
-#include <algorithm>
-#include <cmath>
 #include <deal.II/base/config.h>
+
 #include <deal.II/lac/block_vector.h>
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
+
+#include <algorithm>
+#include <cmath>
 
 DEAL_II_NAMESPACE_OPEN
 

@@ -17,16 +17,19 @@
 #define dealii_dof_handler_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/index_set.h>
 #include <deal.II/base/iterator_range.h>
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/dofs/block_info.h>
 #include <deal.II/dofs/dof_faces.h>
 #include <deal.II/dofs/dof_iterator_selector.h>
 #include <deal.II/dofs/dof_levels.h>
 #include <deal.II/dofs/function_map.h>
 #include <deal.II/dofs/number_cache.h>
+
 #include <deal.II/hp/fe_collection.h>
 
 #include <boost/serialization/split_member.hpp>

@@ -17,7 +17,9 @@
 #define dealii_mg_tools_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/index_set.h>
+
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
 

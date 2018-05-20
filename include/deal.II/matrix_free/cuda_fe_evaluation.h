@@ -18,7 +18,9 @@
 
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/lac/cuda_vector.h>
+
 #include <deal.II/matrix_free/cuda_matrix_free.h>
 #include <deal.II/matrix_free/cuda_matrix_free.templates.h>
 #include <deal.II/matrix_free/cuda_tensor_product_kernels.h>

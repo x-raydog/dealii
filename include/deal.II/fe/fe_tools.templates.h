@@ -16,14 +16,17 @@
 #ifndef dealii_fe_tools_templates_H
 #define dealii_fe_tools_templates_H
 
+#include <deal.II/base/index_set.h>
 #include <deal.II/base/qprojector.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_abf.h>
 #include <deal.II/fe/fe_bdm.h>
@@ -49,15 +52,16 @@
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping_cartesian.h>
 #include <deal.II/fe/mapping_q1.h>
+
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/hp/dof_handler.h>
+
 #include <deal.II/lac/constraint_matrix.h>
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/householder.h>
-
-#include <deal.II/base/index_set.h>
 
 #include <cctype>
 #include <iostream>

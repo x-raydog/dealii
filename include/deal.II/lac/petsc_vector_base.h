@@ -20,16 +20,17 @@
 
 #  ifdef DEAL_II_WITH_PETSC
 
+#    include <deal.II/base/index_set.h>
 #    include <deal.II/base/subscriptor.h>
+
 #    include <deal.II/lac/exceptions.h>
 #    include <deal.II/lac/vector.h>
 #    include <deal.II/lac/vector_operation.h>
 
+#    include <petscvec.h>
+
 #    include <utility>
 #    include <vector>
-
-#    include <deal.II/base/index_set.h>
-#    include <petscvec.h>
 
 DEAL_II_NAMESPACE_OPEN
 

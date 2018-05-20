@@ -17,10 +17,12 @@
 #define dealii_sparse_matrix_templates_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/parallel.h>
 #include <deal.II/base/template_constraints.h>
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/lac/dynamic_sparsity_pattern.h>
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/sparse_matrix.h>

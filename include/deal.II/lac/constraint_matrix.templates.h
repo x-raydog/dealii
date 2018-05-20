@@ -16,20 +16,19 @@
 #ifndef dealii_constraint_matrix_templates_h
 #define dealii_constraint_matrix_templates_h
 
-#include <deal.II/lac/constraint_matrix.h>
-
 #include <deal.II/base/table.h>
 #include <deal.II/base/thread_local_storage.h>
+
 #include <deal.II/lac/block_sparse_matrix.h>
 #include <deal.II/lac/block_sparsity_pattern.h>
+#include <deal.II/lac/constraint_matrix.h>
 #include <deal.II/lac/full_matrix.h>
-#include <deal.II/lac/sparse_matrix.h>
-#include <deal.II/lac/sparsity_pattern.h>
-
 #include <deal.II/lac/la_parallel_block_vector.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/la_vector.h>
 #include <deal.II/lac/petsc_parallel_vector.h>
+#include <deal.II/lac/sparse_matrix.h>
+#include <deal.II/lac/sparsity_pattern.h>
 #include <deal.II/lac/trilinos_vector.h>
 
 #include <complex>

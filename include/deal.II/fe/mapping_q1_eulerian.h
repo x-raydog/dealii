@@ -17,8 +17,11 @@
 #define dealii_mapping_q1_eulerian_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/mapping_q1.h>
 
 #include <array>

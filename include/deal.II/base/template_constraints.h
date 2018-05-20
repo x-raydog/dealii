@@ -16,8 +16,9 @@
 #ifndef dealii_template_constraints_h
 #define dealii_template_constraints_h
 
-#include <deal.II/base/complex_overloads.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/base/complex_overloads.h>
 
 #include <complex>
 #include <utility>

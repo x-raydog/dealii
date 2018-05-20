@@ -14,6 +14,7 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/std_cxx14/memory.h>
+
 #include <deal.II/lac/trilinos_epetra_vector.h>
 
 #ifdef DEAL_II_WITH_TRILINOS
@@ -22,14 +23,15 @@
 
 #    include <deal.II/base/index_set.h>
 
-#    include <boost/io/ios_state.hpp>
-#    include <memory>
-
 #    include <deal.II/lac/read_write_vector.h>
+
+#    include <boost/io/ios_state.hpp>
 
 #    include <Epetra_Import.h>
 #    include <Epetra_Map.h>
 #    include <Epetra_MpiComm.h>
+
+#    include <memory>
 
 DEAL_II_NAMESPACE_OPEN
 

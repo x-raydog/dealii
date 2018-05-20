@@ -17,8 +17,10 @@
 #define dealii_solver_richardson_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/signaling_nan.h>
+
 #include <deal.II/lac/solver.h>
 #include <deal.II/lac/solver_control.h>
 

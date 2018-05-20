@@ -17,12 +17,17 @@
 #define dealii_dof_tools_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/index_set.h>
 #include <deal.II/base/point.h>
+
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/component_mask.h>
+
 #include <deal.II/hp/dof_handler.h>
+
 #include <deal.II/lac/constraint_matrix.h>
 
 #include <map>

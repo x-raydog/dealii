@@ -16,12 +16,14 @@
 #ifndef dealii_sparse_decomposition_templates_h
 #define dealii_sparse_decomposition_templates_h
 
-#include <algorithm>
-#include <cstring>
 #include <deal.II/base/memory_consumption.h>
 #include <deal.II/base/template_constraints.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/lac/sparse_decomposition.h>
+
+#include <algorithm>
+#include <cstring>
 
 DEAL_II_NAMESPACE_OPEN
 

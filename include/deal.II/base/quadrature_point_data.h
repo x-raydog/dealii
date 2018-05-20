@@ -20,11 +20,15 @@
 
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/distributed/tria.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_tools.h>
+
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
+
 #include <deal.II/lac/vector.h>
 
 #include <map>

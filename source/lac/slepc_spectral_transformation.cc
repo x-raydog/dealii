@@ -20,10 +20,10 @@
 #  include <deal.II/lac/petsc_matrix_base.h>
 #  include <deal.II/lac/slepc_solver.h>
 
+#  include <petscversion.h>
+
 #  include <cmath>
 #  include <vector>
-
-#  include <petscversion.h>
 
 DEAL_II_NAMESPACE_OPEN
 

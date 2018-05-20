@@ -17,15 +17,16 @@
 #define dealii_non_matching_coupling
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/quadrature.h>
 
-#include <deal.II/grid/grid_tools_cache.h>
+#include <deal.II/dofs/dof_handler.h>
 
 #include <deal.II/fe/component_mask.h>
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/mapping_q1.h>
 
-#include <deal.II/dofs/dof_handler.h>
+#include <deal.II/grid/grid_tools_cache.h>
 
 #include <deal.II/lac/constraint_matrix.h>
 

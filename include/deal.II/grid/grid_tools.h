@@ -16,17 +16,23 @@
 #ifndef dealii_grid_tools_h
 #  define dealii_grid_tools_h
 
-#  include <deal.II/base/bounding_box.h>
 #  include <deal.II/base/config.h>
+
+#  include <deal.II/base/bounding_box.h>
 #  include <deal.II/base/geometry_info.h>
+
 #  include <deal.II/dofs/dof_handler.h>
+
 #  include <deal.II/fe/mapping.h>
 #  include <deal.II/fe/mapping_q1.h>
+
 #  include <deal.II/grid/manifold.h>
 #  include <deal.II/grid/tria.h>
 #  include <deal.II/grid/tria_accessor.h>
 #  include <deal.II/grid/tria_iterator.h>
+
 #  include <deal.II/hp/dof_handler.h>
+
 #  include <deal.II/lac/sparsity_tools.h>
 
 #  include <boost/archive/binary_iarchive.hpp>

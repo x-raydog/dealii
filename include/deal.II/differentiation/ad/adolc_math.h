@@ -20,11 +20,10 @@
 
 #ifdef DEAL_II_WITH_ADOLC
 
-#  include <adolc/internal/adolc_settings.h>
-#  include <adolc/internal/adubfunc.h> // Taped double math functions
-
 #  include <adolc/adouble.h> // Taped double
 #  include <adolc/adtl.h>    // Tapeless double
+#  include <adolc/internal/adolc_settings.h>
+#  include <adolc/internal/adubfunc.h> // Taped double math functions
 
 #  ifndef DOXYGEN
 

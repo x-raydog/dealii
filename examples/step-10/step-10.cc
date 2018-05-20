@@ -21,10 +21,13 @@
 // need no further explanation.
 #include <deal.II/base/convergence_table.h>
 #include <deal.II/base/quadrature_lib.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/fe_nothing.h>
 #include <deal.II/fe/fe_values.h>
+
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/grid_out.h>
 #include <deal.II/grid/manifold_lib.h>

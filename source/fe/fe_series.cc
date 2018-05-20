@@ -13,13 +13,14 @@
 //
 // ---------------------------------------------------------------------
 
+#include <deal.II/base/config.h>
+
 #include <deal.II/base/numbers.h>
+
 #include <deal.II/fe/fe_series.h>
 
 #include <cctype>
 #include <iostream>
-
-#include <deal.II/base/config.h>
 #ifdef DEAL_II_WITH_GSL
 #  include <gsl/gsl_sf_legendre.h>
 #endif

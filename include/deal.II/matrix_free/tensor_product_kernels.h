@@ -16,8 +16,9 @@
 #ifndef dealii_matrix_free_tensor_product_kernels_h
 #define dealii_matrix_free_tensor_product_kernels_h
 
-#include <deal.II/base/aligned_vector.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/base/aligned_vector.h>
 #include <deal.II/base/utilities.h>
 
 DEAL_II_NAMESPACE_OPEN

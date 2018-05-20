@@ -17,6 +17,7 @@
 #define dealii_chunk_sparsity_pattern_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/vector_slice.h>

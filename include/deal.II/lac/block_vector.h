@@ -17,7 +17,9 @@
 #define dealii_block_vector_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
+
 #include <deal.II/lac/block_indices.h>
 #include <deal.II/lac/block_vector_base.h>
 #include <deal.II/lac/vector_operation.h>

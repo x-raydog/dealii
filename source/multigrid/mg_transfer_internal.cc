@@ -14,9 +14,13 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/distributed/tria.h>
+
 #include <deal.II/dofs/dof_tools.h>
+
 #include <deal.II/fe/fe_tools.h>
+
 #include <deal.II/matrix_free/shape_info.h>
+
 #include <deal.II/multigrid/mg_transfer_internal.h>
 
 DEAL_II_NAMESPACE_OPEN

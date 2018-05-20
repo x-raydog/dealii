@@ -21,6 +21,7 @@
 #ifdef DEAL_II_WITH_OPENCASCADE
 
 #  include <deal.II/grid/manifold.h>
+
 #  include <deal.II/opencascade/utilities.h>
 
 // opencascade needs "HAVE_CONFIG_H" to be exported...

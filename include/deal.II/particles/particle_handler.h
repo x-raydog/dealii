@@ -16,16 +16,18 @@
 #ifndef dealii_particles_particle_handler_h
 #define dealii_particles_particle_handler_h
 
-#include <deal.II/particles/particle.h>
-#include <deal.II/particles/particle_iterator.h>
-#include <deal.II/particles/property_pool.h>
-
 #include <deal.II/base/array_view.h>
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/distributed/tria.h>
+
 #include <deal.II/fe/mapping.h>
+
+#include <deal.II/particles/particle.h>
+#include <deal.II/particles/particle_iterator.h>
+#include <deal.II/particles/property_pool.h>
 
 #include <boost/range/iterator_range.hpp>
 #include <boost/serialization/map.hpp>

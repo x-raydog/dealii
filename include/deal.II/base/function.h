@@ -17,6 +17,7 @@
 #define dealii_function_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/function_time.h>
 #include <deal.II/base/point.h>

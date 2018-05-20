@@ -23,6 +23,7 @@
 // These include files are already known to you. They declare the classes
 // which handle triangulations and enumeration of degrees of freedom:
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/grid/tria.h>
 // And this is the file in which the functions are declared that create grids:
 #include <deal.II/grid/grid_generator.h>
@@ -32,6 +33,7 @@
 // been used before to get geometric information from cells; the last one is
 // new and provides information about the degrees of freedom local to a cell:
 #include <deal.II/dofs/dof_accessor.h>
+
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
 
@@ -46,11 +48,13 @@
 // The next two files are needed for assembling the matrix using quadrature on
 // each cell. The classes declared in them will be explained below:
 #include <deal.II/base/quadrature_lib.h>
+
 #include <deal.II/fe/fe_values.h>
 
 // The following three include files we need for the treatment of boundary
 // values:
 #include <deal.II/base/function.h>
+
 #include <deal.II/numerics/matrix_tools.h>
 #include <deal.II/numerics/vector_tools.h>
 
@@ -71,6 +75,7 @@
 
 // Finally, this is for output to a file and to the console:
 #include <deal.II/numerics/data_out.h>
+
 #include <fstream>
 #include <iostream>
 

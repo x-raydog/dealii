@@ -17,16 +17,17 @@
 #define dealii_solver_gmres_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/logstream.h>
+#include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/householder.h>
 #include <deal.II/lac/lapack_full_matrix.h>
 #include <deal.II/lac/solver.h>
 #include <deal.II/lac/solver_control.h>
 #include <deal.II/lac/vector.h>
-
-#include <deal.II/base/std_cxx14/memory.h>
 
 #include <algorithm>
 #include <cmath>

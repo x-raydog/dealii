@@ -17,8 +17,11 @@
 #define dealii_dof_accessor_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/grid/tria_accessor.h>
+
 #include <deal.II/hp/dof_handler.h>
 
 #include <vector>

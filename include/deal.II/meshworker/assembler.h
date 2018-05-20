@@ -17,12 +17,16 @@
 #define dealii_mesh_worker_assembler_h
 
 #include <deal.II/algorithms/any_data.h>
+
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/lac/block_vector.h>
+
 #include <deal.II/meshworker/dof_info.h>
 #include <deal.II/meshworker/functional.h>
 #include <deal.II/meshworker/simple.h>
+
 #include <deal.II/multigrid/mg_constrained_dofs.h>
 
 DEAL_II_NAMESPACE_OPEN

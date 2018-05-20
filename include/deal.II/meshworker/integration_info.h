@@ -17,9 +17,13 @@
 #define dealii_mesh_worker_integration_info_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/quadrature_lib.h>
+
 #include <deal.II/dofs/block_info.h>
+
 #include <deal.II/fe/fe_values.h>
+
 #include <deal.II/meshworker/dof_info.h>
 #include <deal.II/meshworker/local_results.h>
 #include <deal.II/meshworker/vector_selector.h>

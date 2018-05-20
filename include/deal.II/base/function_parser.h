@@ -16,12 +16,14 @@
 #ifndef dealii_function_parser_h
 #define dealii_function_parser_h
 
-#include <deal.II/base/auto_derivative_function.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/base/auto_derivative_function.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/thread_local_storage.h>
+
 #include <map>
 #include <memory>
 #include <vector>

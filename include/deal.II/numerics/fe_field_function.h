@@ -20,9 +20,12 @@
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
 #include <deal.II/base/thread_local_storage.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/mapping_q1.h>
+
 #include <deal.II/grid/grid_tools_cache.h>
 
 #include <deal.II/lac/vector.h>

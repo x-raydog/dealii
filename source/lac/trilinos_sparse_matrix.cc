@@ -19,6 +19,7 @@
 #ifdef DEAL_II_WITH_TRILINOS
 
 #  include <deal.II/base/utilities.h>
+
 #  include <deal.II/lac/dynamic_sparsity_pattern.h>
 #  include <deal.II/lac/la_parallel_vector.h>
 #  include <deal.II/lac/sparse_matrix.h>
@@ -28,12 +29,13 @@
 #  include <deal.II/lac/trilinos_precondition.h>
 #  include <deal.II/lac/trilinos_sparsity_pattern.h>
 
+#  include <boost/container/small_vector.hpp>
+
 #  include <Epetra_Export.h>
 #  include <Teuchos_RCP.hpp>
 #  include <ml_epetra_utils.h>
 #  include <ml_struct.h>
 
-#  include <boost/container/small_vector.hpp>
 #  include <memory>
 
 DEAL_II_NAMESPACE_OPEN

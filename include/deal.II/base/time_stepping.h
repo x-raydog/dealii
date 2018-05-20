@@ -17,6 +17,7 @@
 #define dealii_time_stepping_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/signaling_nan.h>
 
 #include <functional>

@@ -16,13 +16,16 @@
 #ifndef dealii_solver_minres_h
 #define dealii_solver_minres_h
 
-#include <cmath>
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/signaling_nan.h>
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/lac/solver.h>
 #include <deal.II/lac/solver_control.h>
+
+#include <cmath>
 
 DEAL_II_NAMESPACE_OPEN
 

@@ -15,6 +15,7 @@
 
 #include <deal.II/base/auto_derivative_function.h>
 #include <deal.II/base/point.h>
+
 #include <deal.II/lac/vector.h>
 
 #include <cmath>

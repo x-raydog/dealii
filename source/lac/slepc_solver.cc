@@ -21,11 +21,12 @@
 #  include <deal.II/lac/petsc_vector_base.h>
 #  include <deal.II/lac/slepc_spectral_transformation.h>
 
+#  include <petscversion.h>
+
+#  include <slepcversion.h>
+
 #  include <cmath>
 #  include <vector>
-
-#  include <petscversion.h>
-#  include <slepcversion.h>
 
 DEAL_II_NAMESPACE_OPEN
 

@@ -17,9 +17,11 @@
 #define dealii_mg_sparse_matrix_collection_h
 
 #include <deal.II/base/mg_level_object.h>
+
 #include <deal.II/lac/dynamic_sparsity_pattern.h>
 #include <deal.II/lac/sparse_matrix.h>
 #include <deal.II/lac/vector.h>
+
 #include <deal.II/multigrid/mg_base.h>
 #include <deal.II/multigrid/mg_tools.h>
 

@@ -17,13 +17,17 @@
 #define dealii_mapping_q_generic_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/derivative_form.h>
 #include <deal.II/base/quadrature_lib.h>
 #include <deal.II/base/table.h>
 #include <deal.II/base/vectorization.h>
+
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/mapping.h>
+
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/matrix_free/shape_info.h>
 
 #include <array>

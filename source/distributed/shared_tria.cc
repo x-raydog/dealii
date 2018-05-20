@@ -15,13 +15,16 @@
 
 #include <deal.II/base/mpi.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/distributed/shared_tria.h>
 #include <deal.II/distributed/tria.h>
+
 #include <deal.II/grid/filtered_iterator.h>
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/lac/sparsity_tools.h>
 
 DEAL_II_NAMESPACE_OPEN

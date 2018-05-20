@@ -16,8 +16,9 @@
 #ifndef dealii_vector_slice_h
 #define dealii_vector_slice_h
 
-#include <deal.II/base/array_view.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/base/array_view.h>
 #include <deal.II/base/exceptions.h>
 
 DEAL_II_NAMESPACE_OPEN

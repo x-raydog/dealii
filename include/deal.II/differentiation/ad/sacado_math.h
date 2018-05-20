@@ -21,6 +21,7 @@
 #ifdef DEAL_II_WITH_TRILINOS
 
 #  include <deal.II/base/numbers.h>
+
 #  include <deal.II/differentiation/ad/ad_number_traits.h>
 #  include <deal.II/differentiation/ad/sacado_number_types.h>
 

@@ -17,9 +17,12 @@
 #define dealii_dof_print_solver_step_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/logstream.h>
+
 #include <deal.II/lac/solver_control.h>
 #include <deal.II/lac/vector_memory.h>
+
 #include <deal.II/numerics/data_out.h>
 
 #include <fstream>

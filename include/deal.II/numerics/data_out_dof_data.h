@@ -17,15 +17,21 @@
 #define dealii_data_out_dof_data_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/data_out_base.h>
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/mapping.h>
+
 #include <deal.II/grid/tria.h>
+
 #include <deal.II/hp/fe_collection.h>
 #include <deal.II/hp/fe_values.h>
 #include <deal.II/hp/mapping_collection.h>
 #include <deal.II/hp/q_collection.h>
+
 #include <deal.II/numerics/data_component_interpretation.h>
 #include <deal.II/numerics/data_postprocessor.h>
 

@@ -13,12 +13,14 @@
 //
 // ---------------------------------------------------------------------
 
-#include <cmath>
 #include <deal.II/base/cuda_size.h>
 #include <deal.II/base/exceptions.h>
+
 #include <deal.II/lac/cuda_atomic.h>
 #include <deal.II/lac/cuda_vector.h>
 #include <deal.II/lac/read_write_vector.h>
+
+#include <cmath>
 
 #ifdef DEAL_II_WITH_CUDA
 

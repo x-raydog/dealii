@@ -17,9 +17,11 @@
 #define dealii_full_matrix_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/numbers.h>
 #include <deal.II/base/table.h>
 #include <deal.II/base/tensor.h>
+
 #include <deal.II/lac/exceptions.h>
 #include <deal.II/lac/identity_matrix.h>
 

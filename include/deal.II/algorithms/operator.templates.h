@@ -17,7 +17,9 @@
 #define dealii_operator_templates_h
 
 #include <deal.II/algorithms/operator.h>
+
 #include <deal.II/base/logstream.h>
+
 #include <deal.II/lac/vector_element_access.h>
 
 DEAL_II_NAMESPACE_OPEN

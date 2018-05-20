@@ -23,7 +23,9 @@
 #include <deal.II/base/tensor_product_polynomials.h>
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/dofs/dof_accessor.h>
+
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_system.h>
 #include <deal.II/fe/fe_tools.h>
@@ -31,7 +33,9 @@
 #include <deal.II/fe/mapping.h>
 #include <deal.II/fe/mapping_fe_field.h>
 #include <deal.II/fe/mapping_q1.h>
+
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/lac/block_vector.h>
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/la_vector.h>
@@ -42,6 +46,7 @@
 #include <deal.II/lac/trilinos_parallel_block_vector.h>
 #include <deal.II/lac/trilinos_vector.h>
 #include <deal.II/lac/vector.h>
+
 #include <deal.II/numerics/vector_tools.h>
 
 #include <fstream>

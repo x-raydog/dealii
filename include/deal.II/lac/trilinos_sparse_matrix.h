@@ -22,17 +22,13 @@
 
 #    include <deal.II/base/index_set.h>
 #    include <deal.II/base/subscriptor.h>
+
 #    include <deal.II/lac/exceptions.h>
 #    include <deal.II/lac/full_matrix.h>
 #    include <deal.II/lac/trilinos_epetra_vector.h>
 #    include <deal.II/lac/trilinos_vector.h>
 #    include <deal.II/lac/vector_memory.h>
 #    include <deal.II/lac/vector_operation.h>
-
-#    include <cmath>
-#    include <memory>
-#    include <type_traits>
-#    include <vector>
 
 #    include <Epetra_Comm.h>
 #    include <Epetra_CrsGraph.h>
@@ -41,6 +37,11 @@
 #    include <Epetra_Map.h>
 #    include <Epetra_MultiVector.h>
 #    include <Epetra_Operator.h>
+
+#    include <cmath>
+#    include <memory>
+#    include <type_traits>
+#    include <vector>
 #    ifdef DEAL_II_WITH_MPI
 #      include <Epetra_MpiComm.h>
 #      include <mpi.h>

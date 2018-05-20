@@ -26,9 +26,8 @@
 #  include <GCPnts_AbscissaPoint.hxx>
 #  include <ShapeAnalysis_Curve.hxx>
 #  include <ShapeAnalysis_Surface.hxx>
-#  include <TopoDS.hxx>
-
 #  include <Standard_Version.hxx>
+#  include <TopoDS.hxx>
 #  if(OCC_VERSION_MAJOR < 7)
 #    include <Handle_Adaptor3d_HCurve.hxx>
 #  endif

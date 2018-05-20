@@ -16,11 +16,12 @@
 #ifndef dealii_householder_h
 #define dealii_householder_h
 
-#include <cmath>
 #include <deal.II/base/config.h>
+
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/vector_memory.h>
 
+#include <cmath>
 #include <vector>
 
 DEAL_II_NAMESPACE_OPEN

@@ -17,7 +17,9 @@
 #define dealii_distributed_solution_transfer_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/distributed/tria.h>
+
 #include <deal.II/dofs/dof_handler.h>
 
 #include <vector>

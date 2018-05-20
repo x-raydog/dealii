@@ -17,11 +17,15 @@
 #define dealii_derivative_approximation_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/synchronous_iterator.h>
+
 #include <deal.II/fe/fe_update_flags.h>
 #include <deal.II/fe/mapping.h>
+
 #include <deal.II/grid/filtered_iterator.h>
+
 #include <deal.II/lac/vector.h>
 #ifdef _MSC_VER
 #  include <deal.II/dofs/dof_accessor.h>

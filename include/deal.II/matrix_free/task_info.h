@@ -23,6 +23,7 @@
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/vectorization.h>
+
 #include <deal.II/lac/dynamic_sparsity_pattern.h>
 
 DEAL_II_NAMESPACE_OPEN

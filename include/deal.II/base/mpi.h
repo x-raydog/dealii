@@ -16,8 +16,9 @@
 #ifndef dealii_mpi_h
 #define dealii_mpi_h
 
-#include <deal.II/base/array_view.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/base/array_view.h>
 
 #include <map>
 #include <vector>

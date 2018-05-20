@@ -17,9 +17,11 @@
 #define dealii_q_collection_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/memory_consumption.h>
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/fe/fe.h>
 
 #include <memory>

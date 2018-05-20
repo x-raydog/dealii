@@ -19,6 +19,7 @@
 #include <deal.II/base/numbers.h>
 #include <deal.II/base/symmetric_tensor.h>
 #include <deal.II/base/tensor.h>
+
 #include <deal.II/physics/elasticity/standard_tensors.h>
 
 DEAL_II_NAMESPACE_OPEN

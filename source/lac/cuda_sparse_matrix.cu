@@ -15,6 +15,7 @@
 
 #include <deal.II/base/cuda_size.h>
 #include <deal.II/base/exceptions.h>
+
 #include <deal.II/lac/cuda_atomic.h>
 #include <deal.II/lac/cuda_sparse_matrix.h>
 

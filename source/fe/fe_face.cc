@@ -14,13 +14,15 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/std_cxx14/memory.h>
+
 #include <deal.II/fe/fe_face.h>
 #include <deal.II/fe/fe_nothing.h>
 #include <deal.II/fe/fe_poly_face.templates.h>
 #include <deal.II/fe/fe_tools.h>
+
 #include <deal.II/lac/householder.h>
 
-#include <deal.II/base/std_cxx14/memory.h>
 #include <sstream>
 
 DEAL_II_NAMESPACE_OPEN

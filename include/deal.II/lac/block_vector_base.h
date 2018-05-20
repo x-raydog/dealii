@@ -17,10 +17,12 @@
 #define dealii_block_vector_base_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/memory_consumption.h>
 #include <deal.II/base/numbers.h>
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/lac/block_indices.h>
 #include <deal.II/lac/exceptions.h>
 #include <deal.II/lac/vector.h>

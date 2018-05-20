@@ -17,6 +17,7 @@
 #define dealii_fe_nothing_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/fe/fe.h>
 
 DEAL_II_NAMESPACE_OPEN

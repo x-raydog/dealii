@@ -19,6 +19,7 @@
 #include <deal.II/base/aligned_vector.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/quadrature_lib.h>
+
 #include <deal.II/fe/fe.h>
 
 DEAL_II_NAMESPACE_OPEN

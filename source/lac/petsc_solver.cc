@@ -15,11 +15,11 @@
 
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/std_cxx14/memory.h>
+
 #include <deal.II/lac/petsc_solver.h>
 
 #ifdef DEAL_II_WITH_PETSC
 
-#  include <cmath>
 #  include <deal.II/lac/exceptions.h>
 #  include <deal.II/lac/petsc_compatibility.h>
 #  include <deal.II/lac/petsc_matrix_base.h>
@@ -27,6 +27,8 @@
 #  include <deal.II/lac/petsc_vector_base.h>
 
 #  include <petscversion.h>
+
+#  include <cmath>
 
 DEAL_II_NAMESPACE_OPEN
 

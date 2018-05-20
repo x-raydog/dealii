@@ -14,15 +14,18 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/quadrature.h>
+#include <deal.II/base/std_cxx14/memory.h>
+
 #include <deal.II/dofs/dof_accessor.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_dgp_nonparametric.h>
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping.h>
+
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_iterator.h>
 
-#include <deal.II/base/std_cxx14/memory.h>
 #include <sstream>
 
 DEAL_II_NAMESPACE_OPEN

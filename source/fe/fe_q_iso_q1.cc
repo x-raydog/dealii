@@ -14,11 +14,13 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/std_cxx14/memory.h>
+
 #include <deal.II/fe/fe_nothing.h>
 #include <deal.II/fe/fe_q_iso_q1.h>
+
 #include <deal.II/lac/vector.h>
 
-#include <deal.II/base/std_cxx14/memory.h>
 #include <sstream>
 #include <vector>
 

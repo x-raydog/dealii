@@ -17,7 +17,9 @@
 #define dealii_partitioner_templates_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/partitioner.h>
+
 #include <deal.II/lac/la_parallel_vector.h>
 
 #include <type_traits>

@@ -19,15 +19,16 @@
 
 #  include <deal.II/base/mpi.h>
 #  include <deal.II/base/std_cxx14/memory.h>
+
 #  include <deal.II/lac/trilinos_index_access.h>
 #  include <deal.II/lac/trilinos_parallel_block_vector.h>
 #  include <deal.II/lac/trilinos_sparse_matrix.h>
 
+#  include <boost/io/ios_state.hpp>
+
 #  include <Epetra_Export.h>
 #  include <Epetra_Import.h>
 #  include <Epetra_Vector.h>
-
-#  include <boost/io/ios_state.hpp>
 
 #  include <cmath>
 

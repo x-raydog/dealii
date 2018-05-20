@@ -14,6 +14,7 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/memory_consumption.h>
+
 #include <deal.II/dofs/number_cache.h>
 
 #include <numeric>

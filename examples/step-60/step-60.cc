@@ -98,11 +98,11 @@
 // previously computed objects, or computing them on the fly (and then storing
 // them inside the class for later use), and making sure that whenever the
 // Triangulation is updated, also the relevant data structures are recomputed.
-#include <deal.II/grid/grid_tools_cache.h>
-
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_system.h>
+
+#include <deal.II/grid/grid_tools_cache.h>
 
 // In this example, we will be using a reference domain to describe an embedded
 // Triangulation, deformed through a finite element vector field.
@@ -118,10 +118,10 @@
 // Which one is used depends on how the user wants to specify the reference
 // domain, and/or the actual configuration. We'll provide both options, and
 // experiment a little in the results section of this tutorial program.
+#include <deal.II/dofs/dof_tools.h>
+
 #include <deal.II/fe/mapping_fe_field.h>
 #include <deal.II/fe/mapping_q_eulerian.h>
-
-#include <deal.II/dofs/dof_tools.h>
 
 // The parsed function class is another new entry. It allows one to create a
 // Function object, starting from a string in a parameter file which is parsed
@@ -139,8 +139,6 @@
 // the underlying mesh.
 //
 // We'll discuss its use in detail later on in the `setup_coupling` method.
-#include <deal.II/non_matching/coupling.h>
-
 #include <deal.II/lac/linear_operator.h>
 #include <deal.II/lac/linear_operator_tools.h>
 #include <deal.II/lac/precondition.h>
@@ -148,6 +146,8 @@
 #include <deal.II/lac/sparse_direct.h>
 #include <deal.II/lac/sparse_matrix.h>
 #include <deal.II/lac/vector.h>
+
+#include <deal.II/non_matching/coupling.h>
 
 #include <fstream>
 #include <iostream>

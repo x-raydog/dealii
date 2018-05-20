@@ -17,9 +17,12 @@
 #define dealii_data_out_stack_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/data_out_base.h>
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/lac/vector.h>
+
 #include <deal.II/numerics/data_out_dof_data.h>
 
 #include <string>

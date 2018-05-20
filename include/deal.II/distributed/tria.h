@@ -17,13 +17,15 @@
 #define dealii_distributed_tria_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/template_constraints.h>
-#include <deal.II/grid/tria.h>
 
 #include <deal.II/distributed/p4est_wrappers.h>
 #include <deal.II/distributed/tria_base.h>
+
+#include <deal.II/grid/tria.h>
 
 #include <functional>
 #include <list>
@@ -41,7 +43,6 @@
 #  include <p4est.h>
 #  include <p4est_connectivity.h>
 #  include <p4est_ghost.h>
-
 #  include <p8est.h>
 #  include <p8est_connectivity.h>
 #  include <p8est_ghost.h>

@@ -17,11 +17,13 @@
 #define dealii_block_matrix_base_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/memory_consumption.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/table.h>
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/lac/block_indices.h>
 #include <deal.II/lac/exceptions.h>
 #include <deal.II/lac/full_matrix.h>

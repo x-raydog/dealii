@@ -17,9 +17,12 @@
 #define dealii_mesh_worker_local_results_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/geometry_info.h>
+
 #include <deal.II/lac/block_vector.h>
 #include <deal.II/lac/matrix_block.h>
+
 #include <deal.II/meshworker/vector_selector.h>
 
 #include <functional>

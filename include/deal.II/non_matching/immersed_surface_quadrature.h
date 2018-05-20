@@ -17,6 +17,7 @@
 #define dealii_non_matching_immersed_surface_quadrature
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/point.h>
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/subscriptor.h>

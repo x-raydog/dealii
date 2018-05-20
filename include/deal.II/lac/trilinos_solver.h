@@ -25,12 +25,12 @@
 #    include <deal.II/lac/solver_control.h>
 #    include <deal.II/lac/vector.h>
 
-#    include <memory>
-
 #    include <Amesos.h>
 #    include <AztecOO.h>
 #    include <Epetra_LinearProblem.h>
 #    include <Epetra_Operator.h>
+
+#    include <memory>
 
 DEAL_II_NAMESPACE_OPEN
 

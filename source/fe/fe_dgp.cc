@@ -13,10 +13,11 @@
 //
 // ---------------------------------------------------------------------
 
+#include <deal.II/base/std_cxx14/memory.h>
+
 #include <deal.II/fe/fe_dgp.h>
 #include <deal.II/fe/fe_tools.h>
 
-#include <deal.II/base/std_cxx14/memory.h>
 #include <sstream>
 
 DEAL_II_NAMESPACE_OPEN

@@ -17,11 +17,13 @@
 #define dealii_any_data_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/subscriptor.h>
 
-#include <algorithm>
 #include <boost/any.hpp>
+
+#include <algorithm>
 #include <typeinfo>
 #include <vector>
 

@@ -17,7 +17,9 @@
 #define dealii_arpack_solver_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/lac/solver_control.h>
 
 #include <cstring>

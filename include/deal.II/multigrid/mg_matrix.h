@@ -17,9 +17,11 @@
 #define dealii_mg_matrix_h
 
 #include <deal.II/base/mg_level_object.h>
+
 #include <deal.II/lac/linear_operator.h>
 #include <deal.II/lac/sparse_matrix.h>
 #include <deal.II/lac/vector.h>
+
 #include <deal.II/multigrid/mg_base.h>
 
 #include <memory>

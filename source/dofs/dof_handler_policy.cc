@@ -19,12 +19,16 @@
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/work_stream.h>
+
 #include <deal.II/distributed/shared_tria.h>
 #include <deal.II/distributed/tria.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_handler_policy.h>
+
 #include <deal.II/fe/fe.h>
+
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_iterator.h>

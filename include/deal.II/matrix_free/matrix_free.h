@@ -22,26 +22,33 @@
 #include <deal.II/base/template_constraints.h>
 #include <deal.II/base/thread_local_storage.h>
 #include <deal.II/base/vectorization.h>
+
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/mapping.h>
 #include <deal.II/fe/mapping_q1.h>
+
 #include <deal.II/grid/grid_tools.h>
+
 #include <deal.II/hp/dof_handler.h>
 #include <deal.II/hp/q_collection.h>
+
 #include <deal.II/lac/block_vector_base.h>
 #include <deal.II/lac/constraint_matrix.h>
 #include <deal.II/lac/la_parallel_vector.h>
 #include <deal.II/lac/vector_operation.h>
+
 #include <deal.II/matrix_free/dof_info.h>
 #include <deal.II/matrix_free/mapping_info.h>
 #include <deal.II/matrix_free/shape_info.h>
 #include <deal.II/matrix_free/task_info.h>
 
+#include <stdlib.h>
+
 #include <limits>
 #include <list>
 #include <memory>
-#include <stdlib.h>
 
 DEAL_II_NAMESPACE_OPEN
 

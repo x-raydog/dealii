@@ -17,7 +17,9 @@
 #define dealii_precondition_selector_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/smartpointer.h>
+
 #include <string>
 
 DEAL_II_NAMESPACE_OPEN

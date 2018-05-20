@@ -33,6 +33,7 @@
 
 // Include files for FiniteElement classes and DoFHandler.
 #include <deal.II/dofs/dof_tools.h>
+
 #include <deal.II/fe/fe_dgp.h>
 #include <deal.II/fe/fe_dgq.h>
 #include <deal.II/fe/fe_q.h>
@@ -58,6 +59,7 @@
 // and additional tools.
 #include <deal.II/base/function_lib.h>
 #include <deal.II/base/quadrature_lib.h>
+
 #include <deal.II/numerics/data_out.h>
 #include <deal.II/numerics/vector_tools.h>
 

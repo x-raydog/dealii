@@ -17,6 +17,7 @@
 #define dealii_block_matrix_array_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/table.h>
 

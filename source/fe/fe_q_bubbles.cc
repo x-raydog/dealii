@@ -16,19 +16,21 @@
 #include <deal.II/base/qprojector.h>
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/quadrature_lib.h>
+#include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/template_constraints.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/fe_nothing.h>
 #include <deal.II/fe/fe_q_bubbles.h>
 #include <deal.II/fe/fe_tools.h>
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping_q1.h>
-#include <deal.II/grid/tria.h>
 
 #include <deal.II/grid/grid_generator.h>
+#include <deal.II/grid/tria.h>
 
-#include <deal.II/base/std_cxx14/memory.h>
 #include <memory>
 #include <sstream>
 #include <vector>

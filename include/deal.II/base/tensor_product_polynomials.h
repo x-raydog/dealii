@@ -17,6 +17,7 @@
 #define dealii_tensor_product_polynomials_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/polynomial.h>

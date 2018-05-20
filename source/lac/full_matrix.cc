@@ -14,6 +14,7 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/logstream.h>
+
 #include <deal.II/lac/full_matrix.templates.h>
 
 DEAL_II_NAMESPACE_OPEN

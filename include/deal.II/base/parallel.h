@@ -17,6 +17,7 @@
 #define dealii_parallel_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/synchronous_iterator.h>
 #include <deal.II/base/template_constraints.h>

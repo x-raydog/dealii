@@ -17,7 +17,9 @@
 #define dealii_mapping_collection_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/mapping_q1.h>
 

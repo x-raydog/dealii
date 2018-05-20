@@ -23,21 +23,28 @@
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/timer.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/distributed/tria.h>
+
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
+
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_values.h>
+
 #include <deal.II/grid/grid_generator.h>
 #include <deal.II/grid/tria.h>
+
 #include <deal.II/lac/constraint_matrix.h>
 #include <deal.II/lac/vector.h>
+
 #include <deal.II/numerics/data_out.h>
 #include <deal.II/numerics/vector_tools.h>
 
 // This includes the data structures for the efficient implementation of
 // matrix-free methods.
 #include <deal.II/lac/la_parallel_vector.h>
+
 #include <deal.II/matrix_free/fe_evaluation.h>
 #include <deal.II/matrix_free/matrix_free.h>
 

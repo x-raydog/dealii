@@ -17,6 +17,7 @@
 #define dealii_sundials_arkode_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/mpi.h>
 
 #ifdef DEAL_II_WITH_SUNDIALS
@@ -39,10 +40,11 @@
 #  ifdef DEAL_II_WITH_MPI
 #    include <nvector/nvector_parallel.h>
 #  endif
+#  include <boost/signals2.hpp>
+
 #  include <sundials/sundials_math.h>
 #  include <sundials/sundials_types.h>
 
-#  include <boost/signals2.hpp>
 #  include <memory>
 
 DEAL_II_NAMESPACE_OPEN

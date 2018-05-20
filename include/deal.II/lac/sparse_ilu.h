@@ -17,6 +17,7 @@
 #define dealii_sparse_ilu_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/lac/exceptions.h>
 #include <deal.II/lac/sparse_decomposition.h>
 #include <deal.II/lac/sparse_matrix.h>

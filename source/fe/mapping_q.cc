@@ -21,11 +21,15 @@
 #include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/tensor_product_polynomials.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/dofs/dof_accessor.h>
+
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping_q.h>
+
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/lac/full_matrix.h>
 
 #include <memory>

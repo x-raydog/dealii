@@ -17,13 +17,16 @@
 #define dealii_cuda_sparse_matrix_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/subscriptor.h>
 
 #ifdef DEAL_II_WITH_CUDA
-#  include <cusparse.h>
 #  include <deal.II/base/cuda.h>
+
 #  include <deal.II/lac/cuda_vector.h>
 #  include <deal.II/lac/sparse_matrix.h>
+
+#  include <cusparse.h>
 
 DEAL_II_NAMESPACE_OPEN
 

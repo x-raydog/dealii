@@ -21,7 +21,9 @@
 #  ifdef DEAL_II_WITH_OPENCASCADE
 
 #    include <deal.II/base/point.h>
+
 #    include <deal.II/fe/mapping_q1.h>
+
 #    include <deal.II/grid/tria.h>
 
 #    include <string>

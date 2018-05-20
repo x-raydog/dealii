@@ -17,6 +17,7 @@
 #define dealii_sparse_decomposition_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/lac/sparse_matrix.h>
 
 #include <cmath>

@@ -25,14 +25,13 @@
 #    include <deal.II/lac/vector.h>
 
 #    include <Epetra_MultiVector.h>
+#    include <MueLu.hpp>
+#    include <MueLu_EpetraOperator.hpp>
+#    include <MueLu_MLParameterListInterpreter.hpp>
 #    include <Teuchos_ParameterList.hpp>
 #    include <Teuchos_RCP.hpp>
 #    include <ml_MultiLevelPreconditioner.h>
 #    include <ml_include.h>
-
-#    include <MueLu.hpp>
-#    include <MueLu_EpetraOperator.hpp>
-#    include <MueLu_MLParameterListInterpreter.hpp>
 
 DEAL_II_NAMESPACE_OPEN
 

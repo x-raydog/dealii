@@ -17,8 +17,10 @@
 #define dealii_matrix_free_evaluation_kernels_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/utilities.h>
 #include <deal.II/base/vectorization.h>
+
 #include <deal.II/matrix_free/shape_info.h>
 #include <deal.II/matrix_free/tensor_product_kernels.h>
 

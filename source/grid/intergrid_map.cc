@@ -15,11 +15,15 @@
 
 #include <deal.II/base/memory_consumption.h>
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/distributed/shared_tria.h>
 #include <deal.II/distributed/tria.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/fe/fe.h>
+
 #include <deal.II/grid/intergrid_map.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>

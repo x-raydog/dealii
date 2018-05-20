@@ -17,8 +17,10 @@
 #define dealii_fe_q_iso_q1_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/polynomials_piecewise.h>
 #include <deal.II/base/tensor_product_polynomials.h>
+
 #include <deal.II/fe/fe_q_base.h>
 
 DEAL_II_NAMESPACE_OPEN

@@ -18,7 +18,9 @@
 
 #include <deal.II/algorithms/any_data.h>
 #include <deal.II/algorithms/operator.h>
+
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/lac/solver_control.h>
 
 DEAL_II_NAMESPACE_OPEN

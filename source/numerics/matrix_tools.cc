@@ -17,20 +17,26 @@
 #include <deal.II/base/geometry_info.h>
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/work_stream.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_tools.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping_q1.h>
+
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/hp/fe_values.h>
 #include <deal.II/hp/mapping_collection.h>
+
 #include <deal.II/lac/block_sparse_matrix.h>
 #include <deal.II/lac/block_vector.h>
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/sparse_matrix.h>
 #include <deal.II/lac/vector.h>
+
 #include <deal.II/numerics/matrix_tools.h>
 
 #ifdef DEAL_II_WITH_PETSC
@@ -46,8 +52,6 @@
 #  include <deal.II/lac/trilinos_sparse_matrix.h>
 #  include <deal.II/lac/trilinos_vector.h>
 #endif
-
-#include <algorithm>
 
 #include <algorithm>
 #include <cmath>

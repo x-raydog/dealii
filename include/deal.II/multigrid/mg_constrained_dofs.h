@@ -17,6 +17,7 @@
 #define dealii_mg_constrained_dofs_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/subscriptor.h>
 
 #include <deal.II/multigrid/mg_tools.h>

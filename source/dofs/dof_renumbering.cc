@@ -19,27 +19,28 @@
 #include <deal.II/base/types.h>
 #include <deal.II/base/utilities.h>
 
-#include <deal.II/lac/constraint_matrix.h>
-#include <deal.II/lac/dynamic_sparsity_pattern.h>
-#include <deal.II/lac/sparsity_pattern.h>
-#include <deal.II/lac/sparsity_tools.h>
+#include <deal.II/distributed/tria.h>
 
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_handler.h>
 #include <deal.II/dofs/dof_renumbering.h>
 #include <deal.II/dofs/dof_tools.h>
 
+#include <deal.II/fe/fe.h>
+
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_iterator.h>
 
-#include <deal.II/fe/fe.h>
 #include <deal.II/hp/dof_handler.h>
 #include <deal.II/hp/fe_collection.h>
 #include <deal.II/hp/fe_values.h>
 
-#include <deal.II/multigrid/mg_tools.h>
+#include <deal.II/lac/constraint_matrix.h>
+#include <deal.II/lac/dynamic_sparsity_pattern.h>
+#include <deal.II/lac/sparsity_pattern.h>
+#include <deal.II/lac/sparsity_tools.h>
 
-#include <deal.II/distributed/tria.h>
+#include <deal.II/multigrid/mg_tools.h>
 
 #include <boost/config.hpp>
 #include <boost/graph/adjacency_list.hpp>

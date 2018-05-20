@@ -25,6 +25,7 @@
 #  include <cusolverDn.h>
 #  include <cusolverSp.h>
 #  include <cusparse.h>
+
 #  include <vector>
 
 DEAL_II_NAMESPACE_OPEN

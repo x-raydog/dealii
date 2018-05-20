@@ -16,12 +16,14 @@
 #ifndef dealii_block_indices_h
 #define dealii_block_indices_h
 
-#include <cstddef>
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/logstream.h>
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/utilities.h>
+
+#include <cstddef>
 #include <vector>
 
 DEAL_II_NAMESPACE_OPEN

@@ -16,12 +16,16 @@
 #ifndef dealii_dof_output_operator_h
 #define dealii_dof_output_operator_h
 
+#include <deal.II/base/config.h>
+
 #include <deal.II/algorithms/any_data.h>
 #include <deal.II/algorithms/operator.h>
-#include <deal.II/base/config.h>
+
 #include <deal.II/base/event.h>
 #include <deal.II/base/parameter_handler.h>
+
 #include <deal.II/dofs/dof_handler.h>
+
 #include <deal.II/numerics/data_out.h>
 
 #include <fstream>

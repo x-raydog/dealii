@@ -17,6 +17,7 @@
 #define dealii_parpack_solver_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/index_set.h>
 #include <deal.II/base/memory_consumption.h>
 #include <deal.II/base/smartpointer.h>

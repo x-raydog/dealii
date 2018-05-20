@@ -24,8 +24,11 @@
 #  include <deal.II/base/logstream.h>
 #  include <deal.II/base/mpi.h>
 #  include <deal.II/base/parameter_handler.h>
+
 #  include <deal.II/lac/vector.h>
 #  include <deal.II/lac/vector_memory.h>
+
+#  include <boost/signals2.hpp>
 
 #  include <kinsol/kinsol.h>
 #  include <kinsol/kinsol_impl.h>
@@ -33,7 +36,6 @@
 #  include <sundials/sundials_math.h>
 #  include <sundials/sundials_types.h>
 
-#  include <boost/signals2.hpp>
 #  include <memory>
 
 DEAL_II_NAMESPACE_OPEN

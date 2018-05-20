@@ -22,9 +22,9 @@
 
 #  include <deal.II/base/point.h>
 
-#  include <memory>
-
 #  include <nanoflann.hpp>
+
+#  include <memory>
 
 DEAL_II_NAMESPACE_OPEN
 

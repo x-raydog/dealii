@@ -17,8 +17,10 @@
 #define dealii_hp_fe_values_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/fe/fe.h>
 #include <deal.II/fe/fe_values.h>
+
 #include <deal.II/hp/fe_collection.h>
 #include <deal.II/hp/mapping_collection.h>
 #include <deal.II/hp/q_collection.h>

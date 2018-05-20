@@ -17,6 +17,7 @@
 #define dealii_mesh_worker_local_integrator_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/subscriptor.h>
 
 #include <functional>

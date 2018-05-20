@@ -17,7 +17,9 @@
 #define dealii_solver_fire_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/logstream.h>
+
 #include <deal.II/lac/diagonal_matrix.h>
 #include <deal.II/lac/solver.h>
 

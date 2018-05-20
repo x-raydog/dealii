@@ -17,6 +17,7 @@
 #define dealii_communication_pattern_base_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/mpi.h>
 
 DEAL_II_NAMESPACE_OPEN

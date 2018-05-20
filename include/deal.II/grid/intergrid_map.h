@@ -17,8 +17,11 @@
 #define dealii_intergrid_map_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/dofs/dof_accessor.h>
+
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
 

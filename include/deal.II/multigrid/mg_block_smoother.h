@@ -17,12 +17,16 @@
 #define dealii_mg_block_smoother_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/mg_level_object.h>
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/lac/block_vector.h>
 #include <deal.II/lac/linear_operator.h>
 #include <deal.II/lac/vector_memory.h>
+
 #include <deal.II/multigrid/mg_smoother.h>
+
 #include <vector>
 
 DEAL_II_NAMESPACE_OPEN

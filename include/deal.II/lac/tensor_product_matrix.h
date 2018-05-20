@@ -16,10 +16,13 @@
 #ifndef dealii_tensor_product_matrix_h
 #define dealii_tensor_product_matrix_h
 
-#include <deal.II/base/array_view.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/base/array_view.h>
 #include <deal.II/base/thread_management.h>
+
 #include <deal.II/lac/lapack_full_matrix.h>
+
 #include <deal.II/matrix_free/tensor_product_kernels.h>
 
 DEAL_II_NAMESPACE_OPEN

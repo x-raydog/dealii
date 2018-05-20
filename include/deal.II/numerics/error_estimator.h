@@ -17,10 +17,14 @@
 #define dealii_error_estimator_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/function.h>
+
 #include <deal.II/dofs/function_map.h>
+
 #include <deal.II/fe/component_mask.h>
+
 #include <map>
 
 DEAL_II_NAMESPACE_OPEN

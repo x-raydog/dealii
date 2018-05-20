@@ -15,8 +15,10 @@
 
 #include <deal.II/base/geometry_info.h>
 #include <deal.II/base/quadrature.h>
+
 #include <deal.II/fe/fe_q.h>
 #include <deal.II/fe/mapping_q1.h>
+
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/manifold.h>
 #include <deal.II/grid/tria.h>

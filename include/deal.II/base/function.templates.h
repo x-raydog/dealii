@@ -17,10 +17,11 @@
 #define dealii_function_templates_h
 
 #include <deal.II/base/function.h>
-
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor_function.h>
+
 #include <deal.II/lac/vector.h>
+
 #include <vector>
 
 DEAL_II_NAMESPACE_OPEN

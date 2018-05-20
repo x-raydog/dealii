@@ -18,6 +18,7 @@
 
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/subscriptor.h>
+
 #include <deal.II/lac/precondition_block_base.h>
 #include <deal.II/lac/sparsity_pattern.h>
 #include <deal.II/lac/vector.h>

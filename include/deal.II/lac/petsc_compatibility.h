@@ -21,6 +21,7 @@
 #define dealii_petsc_compatibility_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/lac/exceptions.h>
 
 #ifdef DEAL_II_WITH_PETSC

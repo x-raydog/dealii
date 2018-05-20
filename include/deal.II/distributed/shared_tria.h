@@ -17,12 +17,14 @@
 #define dealii_distributed_shared_tria_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/template_constraints.h>
-#include <deal.II/grid/tria.h>
 
 #include <deal.II/distributed/tria_base.h>
+
+#include <deal.II/grid/tria.h>
 
 #include <functional>
 #include <list>

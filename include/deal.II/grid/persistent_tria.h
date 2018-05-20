@@ -17,8 +17,11 @@
 #define dealii_persistent_tria_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/smartpointer.h>
+
 #include <deal.II/grid/tria.h>
+
 #include <vector>
 
 DEAL_II_NAMESPACE_OPEN

@@ -15,11 +15,11 @@
 
 #include <deal.II/base/std_cxx14/memory.h>
 
+#include <deal.II/fe/mapping_c1.h>
+
 #include <deal.II/grid/manifold.h>
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
-
-#include <deal.II/fe/mapping_c1.h>
 
 #include <cmath>
 

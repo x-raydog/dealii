@@ -16,6 +16,7 @@
 // See documentation of BlockMatrixArray for documentation of this example
 
 #include <deal.II/base/logstream.h>
+
 #include <deal.II/lac/block_matrix_array.h>
 #include <deal.II/lac/block_vector.h>
 #include <deal.II/lac/full_matrix.h>

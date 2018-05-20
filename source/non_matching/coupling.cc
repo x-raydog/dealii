@@ -14,32 +14,29 @@
 // ---------------------------------------------------------------------
 
 #include <deal.II/base/exceptions.h>
-
-#include <deal.II/non_matching/coupling.h>
-
-#include <deal.II/lac/block_sparse_matrix.h>
-#include <deal.II/lac/block_sparsity_pattern.h>
-#include <deal.II/lac/sparse_matrix.h>
-#include <deal.II/lac/sparsity_pattern.h>
-
-#include <deal.II/lac/trilinos_block_sparse_matrix.h>
-#include <deal.II/lac/trilinos_sparse_matrix.h>
-#include <deal.II/lac/trilinos_sparsity_pattern.h>
-
-#include <deal.II/lac/petsc_parallel_block_sparse_matrix.h>
-#include <deal.II/lac/petsc_parallel_sparse_matrix.h>
-#include <deal.II/lac/petsc_sparse_matrix.h>
-
-#include <deal.II/fe/fe_values.h>
-
 #include <deal.II/base/point.h>
 #include <deal.II/base/tensor.h>
+
+#include <deal.II/distributed/shared_tria.h>
+#include <deal.II/distributed/tria.h>
+
+#include <deal.II/fe/fe_values.h>
 
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/grid_tools_cache.h>
 
-#include <deal.II/distributed/shared_tria.h>
-#include <deal.II/distributed/tria.h>
+#include <deal.II/lac/block_sparse_matrix.h>
+#include <deal.II/lac/block_sparsity_pattern.h>
+#include <deal.II/lac/petsc_parallel_block_sparse_matrix.h>
+#include <deal.II/lac/petsc_parallel_sparse_matrix.h>
+#include <deal.II/lac/petsc_sparse_matrix.h>
+#include <deal.II/lac/sparse_matrix.h>
+#include <deal.II/lac/sparsity_pattern.h>
+#include <deal.II/lac/trilinos_block_sparse_matrix.h>
+#include <deal.II/lac/trilinos_sparse_matrix.h>
+#include <deal.II/lac/trilinos_sparsity_pattern.h>
+
+#include <deal.II/non_matching/coupling.h>
 
 DEAL_II_NAMESPACE_OPEN
 namespace NonMatching

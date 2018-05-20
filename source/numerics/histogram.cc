@@ -13,11 +13,14 @@
 //
 // ---------------------------------------------------------------------
 
+#include <deal.II/base/memory_consumption.h>
+
+#include <deal.II/lac/vector.h>
+
+#include <deal.II/numerics/histogram.h>
+
 #include <algorithm>
 #include <cmath>
-#include <deal.II/base/memory_consumption.h>
-#include <deal.II/lac/vector.h>
-#include <deal.II/numerics/histogram.h>
 
 DEAL_II_NAMESPACE_OPEN
 

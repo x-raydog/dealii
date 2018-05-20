@@ -16,10 +16,10 @@
 #include <deal.II/base/config.h>
 
 // Required for instantiation of template functions
+#include <deal.II/base/tensor.h>
+
 #include <deal.II/differentiation/ad/adolc_product_types.h>
 #include <deal.II/differentiation/ad/sacado_product_types.h>
-
-#include <deal.II/base/tensor.h>
 
 DEAL_II_NAMESPACE_OPEN
 

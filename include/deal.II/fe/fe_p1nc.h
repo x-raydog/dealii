@@ -17,8 +17,10 @@
 #define dealii_fe_p1nc_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/qprojector.h>
 #include <deal.II/base/quadrature.h>
+
 #include <deal.II/fe/fe.h>
 
 DEAL_II_NAMESPACE_OPEN

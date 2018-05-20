@@ -17,11 +17,14 @@
 #include <deal.II/base/parallel.h>
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
+
 #include <deal.II/grid/grid_refinement.h>
 #include <deal.II/grid/tria.h>
 #include <deal.II/grid/tria_accessor.h>
 #include <deal.II/grid/tria_iterator.h>
+
 #include <deal.II/lac/vector.h>
+
 #include <deal.II/numerics/time_dependent.h>
 
 #include <algorithm>

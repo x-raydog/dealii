@@ -16,13 +16,16 @@
 #ifndef dealii_filtered_matrix_h
 #  define dealii_filtered_matrix_h
 
-#  include <algorithm>
 #  include <deal.II/base/config.h>
+
 #  include <deal.II/base/memory_consumption.h>
 #  include <deal.II/base/smartpointer.h>
 #  include <deal.II/base/thread_management.h>
+
 #  include <deal.II/lac/pointer_matrix.h>
 #  include <deal.II/lac/vector_memory.h>
+
+#  include <algorithm>
 #  include <vector>
 
 DEAL_II_NAMESPACE_OPEN

@@ -38,7 +38,6 @@
 
 #include <fstream>
 #include <iostream>
-
 #include <map>
 
 using namespace dealii;

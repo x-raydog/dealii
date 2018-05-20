@@ -21,9 +21,11 @@
 #include <deal.II/base/polynomials_raviart_thomas.h>
 #include <deal.II/base/polynomials_rt_bubbles.h>
 #include <deal.II/base/qprojector.h>
+
 #include <deal.II/fe/fe_poly_tensor.h>
 #include <deal.II/fe/fe_values.h>
 #include <deal.II/fe/mapping_cartesian.h>
+
 #include <deal.II/grid/tria.h>
 
 DEAL_II_NAMESPACE_OPEN

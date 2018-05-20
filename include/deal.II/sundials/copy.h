@@ -23,10 +23,10 @@
 #  ifdef DEAL_II_WITH_MPI
 #    include <nvector/nvector_parallel.h>
 #  endif
-#  include <nvector/nvector_serial.h>
-
 #  include <deal.II/lac/block_vector.h>
 #  include <deal.II/lac/vector.h>
+
+#  include <nvector/nvector_serial.h>
 
 #  ifdef DEAL_II_WITH_TRILINOS
 #    include <deal.II/lac/trilinos_parallel_block_vector.h>

@@ -17,6 +17,7 @@
 #define dealii_parameter_handler_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/patterns.h>
 #include <deal.II/base/subscriptor.h>

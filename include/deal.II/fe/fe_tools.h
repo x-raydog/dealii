@@ -17,14 +17,18 @@
 #define dealii_fe_tools_H
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/geometry_info.h>
 #include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/subscriptor.h>
 #include <deal.II/base/symmetric_tensor.h>
 #include <deal.II/base/tensor.h>
+
 #include <deal.II/distributed/tria.h>
+
 #include <deal.II/fe/component_mask.h>
+
 #include <deal.II/lac/parallel_vector.h>
 
 #include <string>

@@ -17,6 +17,7 @@
 #define dealii_signaling_nan_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/derivative_form.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/symmetric_tensor.h>

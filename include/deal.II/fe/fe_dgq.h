@@ -17,8 +17,10 @@
 #define dealii_fe_dgq_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/tensor_product_polynomials.h>
 #include <deal.II/base/thread_management.h>
+
 #include <deal.II/fe/fe_poly.h>
 
 DEAL_II_NAMESPACE_OPEN

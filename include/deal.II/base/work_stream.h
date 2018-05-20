@@ -17,6 +17,7 @@
 #  define dealii_work_stream_h
 
 #  include <deal.II/base/config.h>
+
 #  include <deal.II/base/graph_coloring.h>
 #  include <deal.II/base/multithread_info.h>
 #  include <deal.II/base/parallel.h>
@@ -26,6 +27,7 @@
 
 #  ifdef DEAL_II_WITH_THREADS
 #    include <deal.II/base/thread_management.h>
+
 #    include <tbb/pipeline.h>
 #  endif
 

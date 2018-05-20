@@ -17,6 +17,7 @@
 #define dealii_particles_particle_iterator_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/particles/particle_accessor.h>
 
 DEAL_II_NAMESPACE_OPEN

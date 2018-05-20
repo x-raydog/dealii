@@ -17,6 +17,7 @@
 #define dealii_numbers_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/types.h>
 
 #include <cmath>
@@ -43,8 +44,9 @@ DEAL_II_NAMESPACE_CLOSE
 // Declare / Import auto-differentiable math functions in(to) standard
 // namespace before numbers::NumberTraits is defined
 #ifdef DEAL_II_WITH_ADOLC
-#  include <adolc/adouble.h> // Taped double
 #  include <deal.II/differentiation/ad/adolc_math.h>
+
+#  include <adolc/adouble.h> // Taped double
 #endif
 // Ideally we'd like to #include <deal.II/differentiation/ad/sacado_math.h>
 // but header indirectly references numbers.h. We therefore simply

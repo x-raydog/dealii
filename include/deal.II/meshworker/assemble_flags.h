@@ -17,6 +17,7 @@
 #define dealii_mesh_worker_assemble_flags_h
 
 #include <deal.II/base/config.h>
+
 #include <vector>
 
 DEAL_II_NAMESPACE_OPEN

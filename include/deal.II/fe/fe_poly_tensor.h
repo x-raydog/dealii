@@ -17,11 +17,14 @@
 #define dealii_fe_poly_tensor_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/derivative_form.h>
 #include <deal.II/base/quadrature.h>
 #include <deal.II/base/std_cxx14/memory.h>
 #include <deal.II/base/thread_management.h>
+
 #include <deal.II/fe/fe.h>
+
 #include <deal.II/lac/full_matrix.h>
 
 DEAL_II_NAMESPACE_OPEN

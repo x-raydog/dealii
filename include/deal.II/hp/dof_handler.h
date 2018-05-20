@@ -17,14 +17,17 @@
 #define dealii_hp_dof_handler_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/iterator_range.h>
 #include <deal.II/base/smartpointer.h>
 #include <deal.II/base/template_constraints.h>
+
 #include <deal.II/dofs/dof_accessor.h>
 #include <deal.II/dofs/dof_iterator_selector.h>
 #include <deal.II/dofs/function_map.h>
 #include <deal.II/dofs/number_cache.h>
+
 #include <deal.II/hp/dof_faces.h>
 #include <deal.II/hp/dof_level.h>
 #include <deal.II/hp/fe_collection.h>

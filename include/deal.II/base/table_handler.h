@@ -17,20 +17,20 @@
 #define dealii_table_handler_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
-
-#include <fstream>
-#include <map>
-#include <string>
-#include <vector>
-
-#include <ostream>
 
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/split_member.hpp>
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/variant.hpp>
+
+#include <fstream>
+#include <map>
+#include <ostream>
+#include <string>
+#include <vector>
 
 DEAL_II_NAMESPACE_OPEN
 

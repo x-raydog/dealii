@@ -22,14 +22,15 @@
 
 #    include <deal.II/base/index_set.h>
 #    include <deal.II/base/subscriptor.h>
+
 #    include <deal.II/lac/exceptions.h>
+
+#    include <Epetra_FECrsGraph.h>
+#    include <Epetra_Map.h>
 
 #    include <cmath>
 #    include <memory>
 #    include <vector>
-
-#    include <Epetra_FECrsGraph.h>
-#    include <Epetra_Map.h>
 #    ifdef DEAL_II_WITH_MPI
 #      include <Epetra_MpiComm.h>
 #      include <mpi.h>

@@ -16,11 +16,11 @@
 #ifndef dealii_particles_particle_h
 #define dealii_particles_particle_h
 
-#include <deal.II/particles/property_pool.h>
-
 #include <deal.II/base/array_view.h>
 #include <deal.II/base/point.h>
 #include <deal.II/base/types.h>
+
+#include <deal.II/particles/property_pool.h>
 
 DEAL_II_NAMESPACE_OPEN
 

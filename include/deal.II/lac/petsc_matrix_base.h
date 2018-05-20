@@ -21,6 +21,7 @@
 #  ifdef DEAL_II_WITH_PETSC
 
 #    include <deal.II/base/subscriptor.h>
+
 #    include <deal.II/lac/exceptions.h>
 #    include <deal.II/lac/full_matrix.h>
 #    include <deal.II/lac/petsc_compatibility.h>

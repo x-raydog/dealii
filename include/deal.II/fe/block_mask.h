@@ -17,6 +17,7 @@
 #define dealii_fe_block_mask_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/memory_consumption.h>
 

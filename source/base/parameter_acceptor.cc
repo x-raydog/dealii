@@ -13,10 +13,12 @@
 //
 //-----------------------------------------------------------
 
-#include <boost/core/demangle.hpp>
 #include <deal.II/base/parameter_acceptor.h>
 #include <deal.II/base/path_search.h>
 #include <deal.II/base/utilities.h>
+
+#include <boost/core/demangle.hpp>
+
 #include <fstream>
 
 DEAL_II_NAMESPACE_OPEN

@@ -17,7 +17,9 @@
 #define dealii_block_sparse_matrix_templates_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/memory_consumption.h>
+
 #include <deal.II/lac/block_sparse_matrix.h>
 
 DEAL_II_NAMESPACE_OPEN

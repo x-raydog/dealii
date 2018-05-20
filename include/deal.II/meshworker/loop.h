@@ -17,10 +17,13 @@
 #define dealii_mesh_worker_loop_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/template_constraints.h>
 #include <deal.II/base/work_stream.h>
+
 #include <deal.II/grid/filtered_iterator.h>
 #include <deal.II/grid/tria.h>
+
 #include <deal.II/meshworker/dof_info.h>
 #include <deal.II/meshworker/integration_info.h>
 #include <deal.II/meshworker/local_integrator.h>

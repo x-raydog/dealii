@@ -16,12 +16,15 @@
 #ifndef dealii_index_set_h
 #define dealii_index_set_h
 
-#include <algorithm>
-#include <boost/serialization/vector.hpp>
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/thread_management.h>
 #include <deal.II/base/utilities.h>
+
+#include <boost/serialization/vector.hpp>
+
+#include <algorithm>
 #include <iterator>
 #include <vector>
 

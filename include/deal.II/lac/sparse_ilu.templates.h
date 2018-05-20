@@ -17,6 +17,7 @@
 #  define dealii_sparse_ilu_templates_h
 
 #  include <deal.II/base/config.h>
+
 #  include <deal.II/lac/sparse_ilu.h>
 #  include <deal.II/lac/vector.h>
 

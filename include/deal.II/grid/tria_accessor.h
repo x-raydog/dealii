@@ -16,11 +16,13 @@
 #ifndef dealii_tria_accessor_h
 #define dealii_tria_accessor_h
 
-#include <deal.II/base/bounding_box.h>
 #include <deal.II/base/config.h>
+
+#include <deal.II/base/bounding_box.h>
 #include <deal.II/base/exceptions.h>
 #include <deal.II/base/geometry_info.h>
 #include <deal.II/base/point.h>
+
 #include <deal.II/grid/cell_id.h>
 #include <deal.II/grid/tria_iterator_base.h>
 #include <deal.II/grid/tria_iterator_selector.h>

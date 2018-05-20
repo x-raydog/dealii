@@ -19,6 +19,7 @@
 #include <deal.II/base/table.h>
 
 #include <deal.II/fe/mapping_q1.h>
+
 #include <deal.II/grid/grid_tools.h>
 #include <deal.II/grid/magic_numbers.h>
 #include <deal.II/grid/manifold.h>
@@ -27,6 +28,7 @@
 #include <deal.II/grid/tria_faces.h>
 #include <deal.II/grid/tria_iterator.h>
 #include <deal.II/grid/tria_levels.h>
+
 #include <deal.II/lac/full_matrix.h>
 #include <deal.II/lac/vector.h>
 

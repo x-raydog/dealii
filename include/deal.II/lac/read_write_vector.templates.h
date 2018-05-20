@@ -17,6 +17,7 @@
 #define dealii_parallel_vector_templates_h
 
 #include <deal.II/base/config.h>
+
 #include <deal.II/base/partitioner.h>
 
 #include <deal.II/lac/exceptions.h>
@@ -31,15 +32,17 @@
 #endif
 
 #ifdef DEAL_II_WITH_TRILINOS
-#  include <Epetra_Import.h>
 #  include <deal.II/lac/trilinos_epetra_communication_pattern.h>
 #  include <deal.II/lac/trilinos_epetra_vector.h>
 #  include <deal.II/lac/trilinos_vector.h>
+
+#  include <Epetra_Import.h>
 #endif
 
 #ifdef DEAL_II_WITH_CUDA
-#  include <cuda_runtime_api.h>
 #  include <deal.II/lac/cuda_vector.h>
+
+#  include <cuda_runtime_api.h>
 #endif
 
 DEAL_II_NAMESPACE_OPEN

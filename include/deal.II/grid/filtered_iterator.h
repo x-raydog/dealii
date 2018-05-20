@@ -17,9 +17,11 @@
 #  define dealii_filtered_iterator_h
 
 #  include <deal.II/base/config.h>
+
 #  include <deal.II/base/exceptions.h>
 #  include <deal.II/base/iterator_range.h>
 #  include <deal.II/base/std_cxx14/memory.h>
+
 #  include <deal.II/grid/tria_iterator_base.h>
 
 #  include <set>
