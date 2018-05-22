@@ -949,11 +949,11 @@ inline TriaRawIterator<Accessor>::TriaRawIterator(
 template <typename Accessor>
 inline const Accessor& TriaRawIterator<Accessor>::operator*() const
 {
-  Assert(Accessor::structure_dimension != Accessor::dimension
-           || state() == IteratorState::valid,
+  Assert(Accessor::structure_dimension != Accessor::dimension ||
+           state() == IteratorState::valid,
          ExcDereferenceInvalidCell(accessor));
-  Assert(Accessor::structure_dimension == Accessor::dimension
-           || state() == IteratorState::valid,
+  Assert(Accessor::structure_dimension == Accessor::dimension ||
+           state() == IteratorState::valid,
          ExcDereferenceInvalidObject(accessor));
 
   return accessor;
@@ -962,11 +962,11 @@ inline const Accessor& TriaRawIterator<Accessor>::operator*() const
 template <typename Accessor>
 inline Accessor& TriaRawIterator<Accessor>::operator*()
 {
-  Assert(Accessor::structure_dimension != Accessor::dimension
-           || state() == IteratorState::valid,
+  Assert(Accessor::structure_dimension != Accessor::dimension ||
+           state() == IteratorState::valid,
          ExcDereferenceInvalidCell(accessor));
-  Assert(Accessor::structure_dimension == Accessor::dimension
-           || state() == IteratorState::valid,
+  Assert(Accessor::structure_dimension == Accessor::dimension ||
+           state() == IteratorState::valid,
          ExcDereferenceInvalidObject(accessor));
 
   return accessor;

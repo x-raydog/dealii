@@ -120,8 +120,8 @@ namespace LinearAlgebra
       import(
         const ReadWriteVector<double>&                  V,
         VectorOperation::values                         operation,
-        std::shared_ptr<const CommunicationPatternBase> communication_pattern
-        = std::shared_ptr<const CommunicationPatternBase>()) override;
+        std::shared_ptr<const CommunicationPatternBase> communication_pattern =
+          std::shared_ptr<const CommunicationPatternBase>()) override;
 
       /**
        * Multiply the entire vector by a fixed factor.

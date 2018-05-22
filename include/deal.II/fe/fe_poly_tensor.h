@@ -250,10 +250,10 @@ protected:
         data->shape_grads.reinit(this->dofs_per_cell, n_q_points);
         data->transformed_shape_grads.resize(n_q_points);
 
-        if((mapping_type == mapping_raviart_thomas)
-           || (mapping_type == mapping_piola)
-           || (mapping_type == mapping_nedelec)
-           || (mapping_type == mapping_contravariant))
+        if((mapping_type == mapping_raviart_thomas) ||
+           (mapping_type == mapping_piola) ||
+           (mapping_type == mapping_nedelec) ||
+           (mapping_type == mapping_contravariant))
           data->untransformed_shape_grads.resize(n_q_points);
       }
 
@@ -323,8 +323,8 @@ protected:
                   {
                     Tensor<3, dim> add_grad_grads;
                     for(unsigned int j = 0; j < this->dofs_per_cell; ++j)
-                      add_grad_grads
-                        += inverse_node_matrix(j, i) * grad_grads[j];
+                      add_grad_grads +=
+                        inverse_node_matrix(j, i) * grad_grads[j];
                     data->shape_grad_grads[i][k] = add_grad_grads;
                   }
             }

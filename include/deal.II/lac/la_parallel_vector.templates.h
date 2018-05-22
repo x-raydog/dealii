@@ -73,8 +73,8 @@ namespace LinearAlgebra
           values.reset();
           allocated_size = 0;
         }
-      thread_loop_partitioner
-        = std::make_shared<::dealii::parallel::internal::TBBPartitioner>();
+      thread_loop_partitioner =
+        std::make_shared<::dealii::parallel::internal::TBBPartitioner>();
     }
 
     template <typename Number>
@@ -116,8 +116,8 @@ namespace LinearAlgebra
       if(partitioner.get() != v.partitioner.get())
         {
           partitioner = v.partitioner;
-          const size_type new_allocated_size
-            = partitioner->local_size() + partitioner->n_ghost_indices();
+          const size_type new_allocated_size =
+            partitioner->local_size() + partitioner->n_ghost_indices();
           resize_val(new_allocated_size);
         }
 
@@ -168,8 +168,8 @@ namespace LinearAlgebra
       partitioner = partitioner_in;
 
       // set vector size and allocate memory
-      const size_type new_allocated_size
-        = partitioner->local_size() + partitioner->n_ghost_indices();
+      const size_type new_allocated_size =
+        partitioner->local_size() + partitioner->n_ghost_indices();
       resize_val(new_allocated_size);
 
       // initialize to zero
@@ -295,24 +295,24 @@ namespace LinearAlgebra
           // local ranges are also the same if both partitioners are empty
           // (even if they happen to define the empty range as [0,0) or [c,c)
           // for some c!=0 in a different way).
-          int local_ranges_are_identical
-            = (partitioner->local_range() == c.partitioner->local_range()
-               || (partitioner->local_range().second
-                     == partitioner->local_range().first
-                   && c.partitioner->local_range().second
-                        == c.partitioner->local_range().first));
-          if((c.partitioner->n_mpi_processes() > 1
-              && Utilities::MPI::min(local_ranges_are_identical,
-                                     c.partitioner->get_mpi_communicator())
-                   == 0)
-             || !local_ranges_are_identical)
+          int local_ranges_are_identical =
+            (partitioner->local_range() == c.partitioner->local_range() ||
+             (partitioner->local_range().second ==
+                partitioner->local_range().first &&
+              c.partitioner->local_range().second ==
+                c.partitioner->local_range().first));
+          if((c.partitioner->n_mpi_processes() > 1 &&
+              Utilities::MPI::min(local_ranges_are_identical,
+                                  c.partitioner->get_mpi_communicator()) ==
+                0) ||
+             !local_ranges_are_identical)
             reinit(c, true);
           else
             must_update_ghost_values |= vector_is_ghosted;
 
-          must_update_ghost_values
-            |= (c.partitioner->ghost_indices_initialized() == false
-                && partitioner->ghost_indices_initialized() == true);
+          must_update_ghost_values |=
+            (c.partitioner->ghost_indices_initialized() == false &&
+             partitioner->ghost_indices_initialized() == true);
         }
       else
         must_update_ghost_values |= vector_is_ghosted;
@@ -396,8 +396,8 @@ namespace LinearAlgebra
 
       // get a representation of the vector and copy it
       PetscScalar*   start_ptr;
-      PetscErrorCode ierr
-        = VecGetArray(static_cast<const Vec&>(petsc_vec), &start_ptr);
+      PetscErrorCode ierr =
+        VecGetArray(static_cast<const Vec&>(petsc_vec), &start_ptr);
       AssertThrow(ierr == 0, ExcPETScError(ierr));
 
       const size_type vec_size = local_size();
@@ -486,8 +486,8 @@ namespace LinearAlgebra
 
       // allocate import_data in case it is not set up yet
       if(import_data == nullptr && partitioner->n_import_indices() > 0)
-        import_data
-          = std_cxx14::make_unique<Number[]>(partitioner->n_import_indices());
+        import_data =
+          std_cxx14::make_unique<Number[]>(partitioner->n_import_indices());
 
       partitioner->import_from_ghosted_array_start(
         operation,
@@ -534,8 +534,8 @@ namespace LinearAlgebra
     {
 #ifdef DEAL_II_WITH_MPI
       // nothing to do when we neither have import nor ghost indices.
-      if(partitioner->n_ghost_indices() == 0
-         && partitioner->n_import_indices() == 0)
+      if(partitioner->n_ghost_indices() == 0 &&
+         partitioner->n_import_indices() == 0)
         return;
 
       // make this function thread safe
@@ -543,8 +543,8 @@ namespace LinearAlgebra
 
       // allocate import_data in case it is not set up yet
       if(import_data == nullptr && partitioner->n_import_indices() > 0)
-        import_data
-          = std_cxx14::make_unique<Number[]>(partitioner->n_import_indices());
+        import_data =
+          std_cxx14::make_unique<Number[]>(partitioner->n_import_indices());
 
       partitioner->export_to_ghosted_array_start(
         counter,
@@ -566,8 +566,8 @@ namespace LinearAlgebra
 #ifdef DEAL_II_WITH_MPI
       // wait for both sends and receives to complete, even though only
       // receives are really necessary. this gives (much) better performance
-      AssertDimension(partitioner->ghost_targets().size()
-                        + partitioner->import_targets().size(),
+      AssertDimension(partitioner->ghost_targets().size() +
+                        partitioner->import_targets().size(),
                       update_ghost_values_requests.size());
       if(update_ghost_values_requests.size() > 0)
         {
@@ -607,8 +607,8 @@ namespace LinearAlgebra
         }
       else
         {
-          comm_pattern
-            = std::dynamic_pointer_cast<const Utilities::MPI::Partitioner>(
+          comm_pattern =
+            std::dynamic_pointer_cast<const Utilities::MPI::Partitioner>(
               communication_pattern);
           AssertThrow(comm_pattern != nullptr,
                       ExcMessage("The communication pattern is not of type "
@@ -631,8 +631,7 @@ namespace LinearAlgebra
       for(size_type i = 0; i < tmp_index_set.n_elements(); ++i)
         {
           values[locally_owned_elem.index_within_set(
-            tmp_index_set.nth_index_in_set(i))]
-            = tmp_vector.local_element(i);
+            tmp_index_set.nth_index_in_set(i))] = tmp_vector.local_element(i);
         }
     }
 
@@ -1115,10 +1114,10 @@ namespace LinearAlgebra
     {
       Number local_result = mean_value_local();
       if(partitioner->n_mpi_processes() > 1)
-        return Utilities::MPI::sum(local_result
-                                     * (real_type) partitioner->local_size(),
-                                   partitioner->get_mpi_communicator())
-               / (real_type) partitioner->size();
+        return Utilities::MPI::sum(local_result *
+                                     (real_type) partitioner->local_size(),
+                                   partitioner->get_mpi_communicator()) /
+               (real_type) partitioner->size();
       else
         return local_result;
     }
@@ -1285,11 +1284,11 @@ namespace LinearAlgebra
       // fraction of that memory, since we're not actually using more memory
       // for it.
       if(partitioner.use_count() > 0)
-        memory
-          += partitioner->memory_consumption() / partitioner.use_count() + 1;
+        memory +=
+          partitioner->memory_consumption() / partitioner.use_count() + 1;
       if(import_data != nullptr)
-        memory += (static_cast<std::size_t>(partitioner->n_import_indices())
-                   * sizeof(Number));
+        memory += (static_cast<std::size_t>(partitioner->n_import_indices()) *
+                   sizeof(Number));
       return memory;
     }
 

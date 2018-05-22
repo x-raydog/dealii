@@ -89,10 +89,10 @@ namespace Gmsh
    */
   template <int spacedim>
   void
-  create_triangulation_from_boundary_curve(const TopoDS_Edge&          boundary,
-                                           Triangulation<2, spacedim>& tria,
-                                           const AdditionalParameters& prm
-                                           = AdditionalParameters());
+  create_triangulation_from_boundary_curve(
+    const TopoDS_Edge&          boundary,
+    Triangulation<2, spacedim>& tria,
+    const AdditionalParameters& prm = AdditionalParameters());
 #  endif
 } // namespace Gmsh
 

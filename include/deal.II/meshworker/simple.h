@@ -549,9 +549,9 @@ namespace MeshWorker
           VectorType* v = residuals.entry<VectorType*>(k);
           for(unsigned int i = 0; i != info.vector(k).n_blocks(); ++i)
             {
-              const std::vector<types::global_dof_index>& ldi
-                = info.vector(k).n_blocks() == 1 ? info.indices :
-                                                   info.indices_by_block[i];
+              const std::vector<types::global_dof_index>& ldi =
+                info.vector(k).n_blocks() == 1 ? info.indices :
+                                                 info.indices_by_block[i];
 
               if(constraints != nullptr)
                 constraints->distribute_local_to_global(
@@ -714,8 +714,8 @@ namespace MeshWorker
             for(unsigned int k = 0; k < n * n; ++k)
               {
                 const unsigned int row = info1.matrix(k + m * n * n, false).row;
-                const unsigned int column
-                  = info1.matrix(k + m * n * n, false).column;
+                const unsigned int column =
+                  info1.matrix(k + m * n * n, false).column;
 
                 assemble(info1.matrix(k + m * n * n, false).matrix,
                          m,
@@ -860,15 +860,15 @@ namespace MeshWorker
                 // eliminate these rows and columns. The corresponding
                 // matrix entries are entered by assemble_in() and
                 // assemble_out().
-                if(mg_constrained_dofs->at_refinement_edge(level, i1[j])
-                   || mg_constrained_dofs->at_refinement_edge(level, i2[k]))
+                if(mg_constrained_dofs->at_refinement_edge(level, i1[j]) ||
+                   mg_constrained_dofs->at_refinement_edge(level, i2[k]))
                   continue;
 
                 // At the boundary, only enter the term on the
                 // diagonal, but not the coupling terms
-                if((mg_constrained_dofs->is_boundary_index(level, i1[j])
-                    || mg_constrained_dofs->is_boundary_index(level, i2[k]))
-                   && (i1[j] != i2[k]))
+                if((mg_constrained_dofs->is_boundary_index(level, i1[j]) ||
+                    mg_constrained_dofs->is_boundary_index(level, i2[k])) &&
+                   (i1[j] != i2[k]))
                   continue;
 
                 G.add(i1[j], i2[k], M(j, k));
@@ -961,14 +961,14 @@ namespace MeshWorker
             // constrained by hanging node constraints (actually,
             // the whole refinement edge), but not if it is
             // constrained by a boundary constraint.
-            if(mg_constrained_dofs->at_refinement_edge(level, i1[j])
-               && !mg_constrained_dofs->at_refinement_edge(level, i2[k]))
+            if(mg_constrained_dofs->at_refinement_edge(level, i1[j]) &&
+               !mg_constrained_dofs->at_refinement_edge(level, i2[k]))
               {
-                if((!mg_constrained_dofs->is_boundary_index(level, i1[j])
-                    && !mg_constrained_dofs->is_boundary_index(level, i2[k]))
-                   || (mg_constrained_dofs->is_boundary_index(level, i1[j])
-                       && mg_constrained_dofs->is_boundary_index(level, i2[k])
-                       && i1[j] == i2[k]))
+                if((!mg_constrained_dofs->is_boundary_index(level, i1[j]) &&
+                    !mg_constrained_dofs->is_boundary_index(level, i2[k])) ||
+                   (mg_constrained_dofs->is_boundary_index(level, i1[j]) &&
+                    mg_constrained_dofs->is_boundary_index(level, i2[k]) &&
+                    i1[j] == i2[k]))
                   G.add(i1[j], i2[k], M(j, k));
               }
     }
@@ -989,14 +989,14 @@ namespace MeshWorker
       for(unsigned int j = 0; j < i1.size(); ++j)
         for(unsigned int k = 0; k < i2.size(); ++k)
           if(std::fabs(M(k, j)) >= threshold)
-            if(mg_constrained_dofs->at_refinement_edge(level, i1[j])
-               && !mg_constrained_dofs->at_refinement_edge(level, i2[k]))
+            if(mg_constrained_dofs->at_refinement_edge(level, i1[j]) &&
+               !mg_constrained_dofs->at_refinement_edge(level, i2[k]))
               {
-                if((!mg_constrained_dofs->is_boundary_index(level, i1[j])
-                    && !mg_constrained_dofs->is_boundary_index(level, i2[k]))
-                   || (mg_constrained_dofs->is_boundary_index(level, i1[j])
-                       && mg_constrained_dofs->is_boundary_index(level, i2[k])
-                       && i1[j] == i2[k]))
+                if((!mg_constrained_dofs->is_boundary_index(level, i1[j]) &&
+                    !mg_constrained_dofs->is_boundary_index(level, i2[k])) ||
+                   (mg_constrained_dofs->is_boundary_index(level, i1[j]) &&
+                    mg_constrained_dofs->is_boundary_index(level, i2[k]) &&
+                    i1[j] == i2[k]))
                   G.add(i1[j], i2[k], M(k, j));
               }
     }
@@ -1309,8 +1309,8 @@ namespace MeshWorker
             for(unsigned int k = 0; k < n * n; ++k)
               {
                 const unsigned int row = info.matrix(k + m * n * n, false).row;
-                const unsigned int column
-                  = info.matrix(k + m * n * n, false).column;
+                const unsigned int column =
+                  info.matrix(k + m * n * n, false).column;
 
                 if(row == column)
                   assemble(info.matrix(k + m * n * n, false).matrix,
@@ -1372,8 +1372,8 @@ namespace MeshWorker
             for(unsigned int k = 0; k < n * n; ++k)
               {
                 const unsigned int row = info1.matrix(k + m * n * n, false).row;
-                const unsigned int column
-                  = info1.matrix(k + m * n * n, false).column;
+                const unsigned int column =
+                  info1.matrix(k + m * n * n, false).column;
 
                 if(row == column)
                   {

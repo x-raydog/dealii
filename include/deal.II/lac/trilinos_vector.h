@@ -1625,8 +1625,8 @@ namespace TrilinosWrappers
             {
               // use pre-allocated vector for non-local entries if it exists for
               // addition operation
-              const TrilinosWrappers::types::int_type my_row
-                = nonlocal_vector->Map().LID(
+              const TrilinosWrappers::types::int_type my_row =
+                nonlocal_vector->Map().LID(
                   static_cast<TrilinosWrappers::types::int_type>(row));
               Assert(
                 my_row != -1,
@@ -1643,11 +1643,11 @@ namespace TrilinosWrappers
     Vector::size() const
     {
 #    ifndef DEAL_II_WITH_64BIT_INDICES
-      return (size_type)(vector->Map().MaxAllGID() + 1
-                         - vector->Map().MinAllGID());
+      return (size_type)(vector->Map().MaxAllGID() + 1 -
+                         vector->Map().MinAllGID());
 #    else
-      return (size_type)(vector->Map().MaxAllGID64() + 1
-                         - vector->Map().MinAllGID64());
+      return (size_type)(vector->Map().MaxAllGID64() + 1 -
+                         vector->Map().MinAllGID64());
 #    endif
     }
 
@@ -1662,13 +1662,13 @@ namespace TrilinosWrappers
     {
 #    ifndef DEAL_II_WITH_64BIT_INDICES
       const TrilinosWrappers::types::int_type begin = vector->Map().MinMyGID();
-      const TrilinosWrappers::types::int_type end
-        = vector->Map().MaxMyGID() + 1;
+      const TrilinosWrappers::types::int_type end =
+        vector->Map().MaxMyGID() + 1;
 #    else
-      const TrilinosWrappers::types::int_type begin
-        = vector->Map().MinMyGID64();
-      const TrilinosWrappers::types::int_type end
-        = vector->Map().MaxMyGID64() + 1;
+      const TrilinosWrappers::types::int_type begin =
+        vector->Map().MinMyGID64();
+      const TrilinosWrappers::types::int_type end =
+        vector->Map().MaxMyGID64() + 1;
 #    endif
 
       Assert(
@@ -2025,8 +2025,8 @@ namespace TrilinosWrappers
 
 #    ifdef DEAL_II_WITH_MPI
 
-      const Epetra_MpiComm* mpi_comm
-        = dynamic_cast<const Epetra_MpiComm*>(&vector->Map().Comm());
+      const Epetra_MpiComm* mpi_comm =
+        dynamic_cast<const Epetra_MpiComm*>(&vector->Map().Comm());
       comm = mpi_comm->Comm();
 
 #    else
@@ -2043,8 +2043,8 @@ namespace TrilinosWrappers
                    const dealii::Vector<number>& v,
                    const MPI_Comm&               communicator)
     {
-      *this
-        = Vector(parallel_partitioner.make_trilinos_map(communicator, true), v);
+      *this =
+        Vector(parallel_partitioner.make_trilinos_map(communicator, true), v);
       owned_elements = parallel_partitioner;
     }
 

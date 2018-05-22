@@ -195,8 +195,8 @@ SolverFIRE<VectorType>::AdditionalData::AdditionalData(
     maximum_timestep(maximum_timestep),
     maximum_linfty_norm(maximum_linfty_norm)
 {
-  AssertThrow(initial_timestep > 0. && maximum_timestep > 0.
-                && maximum_linfty_norm > 0.,
+  AssertThrow(initial_timestep > 0. && maximum_timestep > 0. &&
+                maximum_linfty_norm > 0.,
               ExcMessage("Expected positive values for initial_timestep, "
                          "maximum_timestep and maximum_linfty_norm but one "
                          "or more of the these values are not positive."));
@@ -296,9 +296,8 @@ SolverFIRE<VectorType>::solve(
           Assert(gradient_norm_squared > 0., ExcInternalError());
 
           // beta = - alpha |V|/|G|
-          const real_type beta
-            = -alpha
-              * std::sqrt(velocities_norm_squared / gradient_norm_squared);
+          const real_type beta =
+            -alpha * std::sqrt(velocities_norm_squared / gradient_norm_squared);
 
           // V = (1-alpha) V + beta G.
           velocities.sadd(1. - alpha, beta, gradients);
@@ -324,8 +323,8 @@ SolverFIRE<VectorType>::solve(
       // Change timestep if any dof would move more than maximum_linfty_norm.
       if(vmax > 0.)
         {
-          const double minimal_timestep
-            = additional_data.maximum_linfty_norm / vmax;
+          const double minimal_timestep =
+            additional_data.maximum_linfty_norm / vmax;
           if(minimal_timestep < timestep)
             timestep = minimal_timestep;
         }
@@ -348,8 +347,8 @@ SolverFIRE<VectorType>::solve(const MatrixType&         A,
                               const VectorType&         b,
                               const PreconditionerType& preconditioner)
 {
-  std::function<double(VectorType&, const VectorType&)> compute_func
-    = [&](VectorType& g, const VectorType& x) -> double {
+  std::function<double(VectorType&, const VectorType&)> compute_func =
+    [&](VectorType& g, const VectorType& x) -> double {
     // Residual of the quadratic form $ \frac{1}{2} xAx - xb $.
     // G = b - Ax
     A.residual(g, x, b);

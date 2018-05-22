@@ -484,11 +484,11 @@ public:
    * The tolerance argument is used in debug mode to actually check that the
    * two functions are one the inverse of the other.
    */
-  FunctionManifold(const Function<chartdim>&  push_forward_function,
-                   const Function<spacedim>&  pull_back_function,
-                   const Tensor<1, chartdim>& periodicity
-                   = Tensor<1, chartdim>(),
-                   const double tolerance = 1e-10);
+  FunctionManifold(
+    const Function<chartdim>&  push_forward_function,
+    const Function<spacedim>&  pull_back_function,
+    const Tensor<1, chartdim>& periodicity = Tensor<1, chartdim>(),
+    const double               tolerance   = 1e-10);
 
   /**
    * Expressions constructor. Takes the expressions of the push_forward
@@ -504,18 +504,18 @@ public:
    * The tolerance argument is used in debug mode to actually check that the
    * two functions are one the inverse of the other.
    */
-  FunctionManifold(const std::string          push_forward_expression,
-                   const std::string          pull_back_expression,
-                   const Tensor<1, chartdim>& periodicity
-                   = Tensor<1, chartdim>(),
-                   const typename FunctionParser<spacedim>::ConstMap
-                   = typename FunctionParser<spacedim>::ConstMap(),
-                   const std::string chart_vars
-                   = FunctionParser<chartdim>::default_variable_names(),
-                   const std::string space_vars
-                   = FunctionParser<spacedim>::default_variable_names(),
-                   const double tolerance = 1e-10,
-                   const double h         = 1e-8);
+  FunctionManifold(
+    const std::string          push_forward_expression,
+    const std::string          pull_back_expression,
+    const Tensor<1, chartdim>& periodicity = Tensor<1, chartdim>(),
+    const typename FunctionParser<spacedim>::ConstMap =
+      typename FunctionParser<spacedim>::ConstMap(),
+    const std::string chart_vars =
+      FunctionParser<chartdim>::default_variable_names(),
+    const std::string space_vars =
+      FunctionParser<spacedim>::default_variable_names(),
+    const double tolerance = 1e-10,
+    const double h         = 1e-8);
 
   /**
    * If needed, we delete the pointers we own.

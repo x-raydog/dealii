@@ -78,8 +78,8 @@ TriaAccessorBase<structdim, dim, spacedim>::copy_from(
 
   if(structdim != dim)
     {
-      Assert((present_level == 0) || (present_level == -1)
-               || (present_level == -2),
+      Assert((present_level == 0) || (present_level == -1) ||
+               (present_level == -2),
              ExcInternalError());
     }
 }
@@ -95,8 +95,8 @@ operator=(const TriaAccessorBase<structdim, dim, spacedim>& a)
 
   if(structdim != dim)
     {
-      Assert((present_level == 0) || (present_level == -1)
-               || (present_level == -2),
+      Assert((present_level == 0) || (present_level == -1) ||
+               (present_level == -2),
              ExcInternalError());
     }
   return *this;
@@ -109,8 +109,8 @@ operator==(const TriaAccessorBase<structdim, dim, spacedim>& a) const
 {
   Assert(tria == a.tria || tria == nullptr || a.tria == nullptr,
          TriaAccessorExceptions::ExcCantCompareIterators());
-  return ((tria == a.tria) && (present_level == a.present_level)
-          && (present_index == a.present_index));
+  return ((tria == a.tria) && (present_level == a.present_level) &&
+          (present_index == a.present_index));
 }
 
 template <int structdim, int dim, int spacedim>
@@ -120,8 +120,8 @@ operator!=(const TriaAccessorBase<structdim, dim, spacedim>& a) const
 {
   Assert(tria == a.tria || tria == nullptr || a.tria == nullptr,
          TriaAccessorExceptions::ExcCantCompareIterators());
-  return ((tria != a.tria) || (present_level != a.present_level)
-          || (present_index != a.present_index));
+  return ((tria != a.tria) || (present_level != a.present_level) ||
+          (present_index != a.present_index));
 }
 
 template <int structdim, int dim, int spacedim>
@@ -192,9 +192,9 @@ TriaAccessorBase<structdim, dim, spacedim>::operator++()
     }
   else
     {
-      while(this->present_index
-            >= static_cast<int>(
-                 this->tria->levels[this->present_level]->cells.cells.size()))
+      while(this->present_index >=
+            static_cast<int>(
+              this->tria->levels[this->present_level]->cells.cells.size()))
         {
           // no -> go one level up until we find
           // one with more than zero cells
@@ -237,8 +237,8 @@ TriaAccessorBase<structdim, dim, spacedim>::operator--()
               return;
             }
           // else
-          this->present_index
-            = this->tria->levels[this->present_level]->cells.cells.size() - 1;
+          this->present_index =
+            this->tria->levels[this->present_level]->cells.cells.size() - 1;
         }
     }
 }
@@ -553,21 +553,21 @@ namespace internal
         // quad to take it, b) which line
         // therein it is if the face is
         // oriented correctly
-        static const unsigned int lookup_table[12][2]
-          = {{4, 0}, // take first four lines from bottom face
-             {4, 1},
-             {4, 2},
-             {4, 3},
+        static const unsigned int lookup_table[12][2] = {
+          {4, 0}, // take first four lines from bottom face
+          {4, 1},
+          {4, 2},
+          {4, 3},
 
-             {5, 0}, // second four lines from top face
-             {5, 1},
-             {5, 2},
-             {5, 3},
+          {5, 0}, // second four lines from top face
+          {5, 1},
+          {5, 2},
+          {5, 3},
 
-             {0, 0}, // the rest randomly
-             {1, 0},
-             {0, 1},
-             {1, 1}};
+          {0, 0}, // the rest randomly
+          {1, 0},
+          {0, 1},
+          {1, 1}};
 
         // respect non-standard faces by calling the
         // reordering function from GeometryInfo
@@ -575,8 +575,8 @@ namespace internal
         const unsigned int quad_index     = lookup_table[i][0];
         const unsigned int std_line_index = lookup_table[i][1];
 
-        const unsigned int line_index
-          = GeometryInfo<dim>::standard_to_real_face_line(
+        const unsigned int line_index =
+          GeometryInfo<dim>::standard_to_real_face_line(
             std_line_index,
             accessor.face_orientation(quad_index),
             accessor.face_flip(quad_index),
@@ -668,9 +668,9 @@ namespace internal
       {
         Assert(face < GeometryInfo<3>::faces_per_cell,
                ExcIndexRange(face, 0, GeometryInfo<3>::faces_per_cell));
-        Assert(accessor.present_index * GeometryInfo<3>::faces_per_cell + face
-                 < accessor.tria->levels[accessor.present_level]
-                     ->cells.face_flips.size(),
+        Assert(accessor.present_index * GeometryInfo<3>::faces_per_cell + face <
+                 accessor.tria->levels[accessor.present_level]
+                   ->cells.face_flips.size(),
                ExcInternalError());
 
         return (
@@ -702,9 +702,9 @@ namespace internal
       {
         Assert(face < GeometryInfo<3>::faces_per_cell,
                ExcIndexRange(face, 0, GeometryInfo<3>::faces_per_cell));
-        Assert(accessor.present_index * GeometryInfo<3>::faces_per_cell + face
-                 < accessor.tria->levels[accessor.present_level]
-                     ->cells.face_rotations.size(),
+        Assert(accessor.present_index * GeometryInfo<3>::faces_per_cell + face <
+                 accessor.tria->levels[accessor.present_level]
+                   ->cells.face_rotations.size(),
                ExcInternalError());
 
         return (
@@ -760,27 +760,27 @@ namespace internal
         // quad to take it, b) which line
         // therein it is if the face is
         // oriented correctly
-        static const unsigned int lookup_table[12][2]
-          = {{4, 0}, // take first four lines from bottom face
-             {4, 1},
-             {4, 2},
-             {4, 3},
+        static const unsigned int lookup_table[12][2] = {
+          {4, 0}, // take first four lines from bottom face
+          {4, 1},
+          {4, 2},
+          {4, 3},
 
-             {5, 0}, // second four lines from top face
-             {5, 1},
-             {5, 2},
-             {5, 3},
+          {5, 0}, // second four lines from top face
+          {5, 1},
+          {5, 2},
+          {5, 3},
 
-             {0, 0}, // the rest randomly
-             {1, 0},
-             {0, 1},
-             {1, 1}};
+          {0, 0}, // the rest randomly
+          {1, 0},
+          {0, 1},
+          {1, 1}};
 
         const unsigned int quad_index     = lookup_table[line][0];
         const unsigned int std_line_index = lookup_table[line][1];
 
-        const unsigned int line_index
-          = GeometryInfo<dim>::standard_to_real_face_line(
+        const unsigned int line_index =
+          GeometryInfo<dim>::standard_to_real_face_line(
             std_line_index,
             accessor.face_orientation(quad_index),
             accessor.face_flip(quad_index),
@@ -823,10 +823,10 @@ namespace internal
             {false, false}},
            {{true, false}, {false, true}}}};
 
-        return (accessor.quad(quad_index)->line_orientation(line_index)
-                == bool_table[std_line_index / 2][accessor.face_orientation(
-                     quad_index)][accessor.face_flip(quad_index)]
-                             [accessor.face_rotation(quad_index)]);
+        return (accessor.quad(quad_index)->line_orientation(line_index) ==
+                bool_table[std_line_index / 2][accessor.face_orientation(
+                  quad_index)][accessor.face_flip(quad_index)]
+                          [accessor.face_rotation(quad_index)]);
       }
 
       /**
@@ -850,13 +850,13 @@ namespace internal
         Assert(accessor.used(), TriaAccessorExceptions::ExcCellNotUsed());
         Assert(face < GeometryInfo<3>::faces_per_cell,
                ExcIndexRange(face, 0, GeometryInfo<3>::faces_per_cell));
-        Assert(accessor.present_index * GeometryInfo<3>::faces_per_cell + face
-                 < accessor.tria->levels[accessor.present_level]
-                     ->cells.face_orientations.size(),
+        Assert(accessor.present_index * GeometryInfo<3>::faces_per_cell + face <
+                 accessor.tria->levels[accessor.present_level]
+                   ->cells.face_orientations.size(),
                ExcInternalError());
         accessor.tria->levels[accessor.present_level]->cells.face_orientations
-          [accessor.present_index * GeometryInfo<3>::faces_per_cell + face]
-          = value;
+          [accessor.present_index * GeometryInfo<3>::faces_per_cell + face] =
+          value;
       }
 
       /**
@@ -879,14 +879,14 @@ namespace internal
       {
         Assert(face < GeometryInfo<3>::faces_per_cell,
                ExcIndexRange(face, 0, GeometryInfo<3>::faces_per_cell));
-        Assert(accessor.present_index * GeometryInfo<3>::faces_per_cell + face
-                 < accessor.tria->levels[accessor.present_level]
-                     ->cells.face_flips.size(),
+        Assert(accessor.present_index * GeometryInfo<3>::faces_per_cell + face <
+                 accessor.tria->levels[accessor.present_level]
+                   ->cells.face_flips.size(),
                ExcInternalError());
 
         accessor.tria->levels[accessor.present_level]->cells.face_flips
-          [accessor.present_index * GeometryInfo<3>::faces_per_cell + face]
-          = value;
+          [accessor.present_index * GeometryInfo<3>::faces_per_cell + face] =
+          value;
       }
 
       /**
@@ -909,14 +909,14 @@ namespace internal
       {
         Assert(face < GeometryInfo<3>::faces_per_cell,
                ExcIndexRange(face, 0, GeometryInfo<3>::faces_per_cell));
-        Assert(accessor.present_index * GeometryInfo<3>::faces_per_cell + face
-                 < accessor.tria->levels[accessor.present_level]
-                     ->cells.face_rotations.size(),
+        Assert(accessor.present_index * GeometryInfo<3>::faces_per_cell + face <
+                 accessor.tria->levels[accessor.present_level]
+                   ->cells.face_rotations.size(),
                ExcInternalError());
 
         accessor.tria->levels[accessor.present_level]->cells.face_rotations
-          [accessor.present_index * GeometryInfo<3>::faces_per_cell + face]
-          = value;
+          [accessor.present_index * GeometryInfo<3>::faces_per_cell + face] =
+          value;
       }
 
       /**
@@ -951,15 +951,15 @@ namespace internal
         Assert(accessor.used(), TriaAccessorExceptions::ExcCellNotUsed());
         Assert(line < GeometryInfo<3>::lines_per_face,
                ExcIndexRange(line, 0, GeometryInfo<3>::lines_per_face));
-        Assert(accessor.present_index * GeometryInfo<3>::lines_per_face + line
-                 < accessor.tria->faces->quads.line_orientations.size(),
+        Assert(accessor.present_index * GeometryInfo<3>::lines_per_face + line <
+                 accessor.tria->faces->quads.line_orientations.size(),
                ExcInternalError());
         // quads as part of 3d hexes
         // can have non-standard
         // orientation
         accessor.tria->faces->quads.line_orientations
-          [accessor.present_index * GeometryInfo<3>::lines_per_face + line]
-          = value;
+          [accessor.present_index * GeometryInfo<3>::lines_per_face + line] =
+          value;
       }
 
       template <int dim, int spacedim>
@@ -1241,10 +1241,10 @@ TriaAccessor<structdim, dim, spacedim>::child_index(const unsigned int i) const
   // each set of two children are stored
   // consecutively, so we only have to find
   // the location of the set of children
-  const unsigned int n_sets_of_two
-    = GeometryInfo<structdim>::max_children_per_cell / 2;
-  return this->objects().children[n_sets_of_two * this->present_index + i / 2]
-         + i % 2;
+  const unsigned int n_sets_of_two =
+    GeometryInfo<structdim>::max_children_per_cell / 2;
+  return this->objects().children[n_sets_of_two * this->present_index + i / 2] +
+         i % 2;
 }
 
 template <int structdim, int dim, int spacedim>
@@ -1269,13 +1269,11 @@ TriaAccessor<structdim, dim, spacedim>::isotropic_child_index(
 
           if(this_refinement_case == RefinementCase<2>::cut_xy)
             return child_index(i);
-          else if((this_refinement_case == RefinementCase<2>::cut_x)
-                  && (child(i % 2)->refinement_case()
-                      == RefinementCase<2>::cut_y))
+          else if((this_refinement_case == RefinementCase<2>::cut_x) &&
+                  (child(i % 2)->refinement_case() == RefinementCase<2>::cut_y))
             return child(i % 2)->child_index(i / 2);
-          else if((this_refinement_case == RefinementCase<2>::cut_y)
-                  && (child(i / 2)->refinement_case()
-                      == RefinementCase<2>::cut_x))
+          else if((this_refinement_case == RefinementCase<2>::cut_y) &&
+                  (child(i / 2)->refinement_case() == RefinementCase<2>::cut_x))
             return child(i / 2)->child_index(i % 2);
           else
             Assert(
@@ -1319,8 +1317,8 @@ TriaAccessor<structdim, dim, spacedim>::refinement_case() const
             static_cast<std::uint8_t>(RefinementCase<1>::no_refinement)));
 
       default:
-        Assert(static_cast<unsigned int>(this->present_index)
-                 < this->objects().refinement_cases.size(),
+        Assert(static_cast<unsigned int>(this->present_index) <
+                 this->objects().refinement_cases.size(),
                ExcIndexRange(this->present_index,
                              0,
                              this->objects().refinement_cases.size()));
@@ -1368,13 +1366,11 @@ TriaAccessor<structdim, dim, spacedim>::isotropic_child(
 
           if(this_refinement_case == RefinementCase<2>::cut_xy)
             return child(i);
-          else if((this_refinement_case == RefinementCase<2>::cut_x)
-                  && (child(i % 2)->refinement_case()
-                      == RefinementCase<2>::cut_y))
+          else if((this_refinement_case == RefinementCase<2>::cut_x) &&
+                  (child(i % 2)->refinement_case() == RefinementCase<2>::cut_y))
             return child(i % 2)->child(i / 2);
-          else if((this_refinement_case == RefinementCase<2>::cut_y)
-                  && (child(i / 2)->refinement_case()
-                      == RefinementCase<2>::cut_x))
+          else if((this_refinement_case == RefinementCase<2>::cut_y) &&
+                  (child(i / 2)->refinement_case() == RefinementCase<2>::cut_x))
             return child(i / 2)->child(i % 2);
           else
             Assert(
@@ -1403,8 +1399,8 @@ TriaAccessor<structdim, dim, spacedim>::has_children() const
   // each set of two children are stored
   // consecutively, so we only have to find
   // the location of the set of children
-  const unsigned int n_sets_of_two
-    = GeometryInfo<structdim>::max_children_per_cell / 2;
+  const unsigned int n_sets_of_two =
+    GeometryInfo<structdim>::max_children_per_cell / 2;
   return (this->objects().children[n_sets_of_two * this->present_index] != -1);
 }
 
@@ -1423,8 +1419,8 @@ TriaAccessor<structdim, dim, spacedim>::set_refinement_case(
   Assert(
     this->state() == IteratorState::valid,
     TriaAccessorExceptions::ExcDereferenceInvalidObject<TriaAccessor>(*this));
-  Assert(static_cast<unsigned int>(this->present_index)
-           < this->objects().refinement_cases.size(),
+  Assert(static_cast<unsigned int>(this->present_index) <
+           this->objects().refinement_cases.size(),
          ExcIndexRange(
            this->present_index, 0, this->objects().refinement_cases.size()));
 
@@ -1438,13 +1434,13 @@ TriaAccessor<structdim, dim, spacedim>::clear_refinement_case() const
   Assert(
     this->state() == IteratorState::valid,
     TriaAccessorExceptions::ExcDereferenceInvalidObject<TriaAccessor>(*this));
-  Assert(static_cast<unsigned int>(this->present_index)
-           < this->objects().refinement_cases.size(),
+  Assert(static_cast<unsigned int>(this->present_index) <
+           this->objects().refinement_cases.size(),
          ExcIndexRange(
            this->present_index, 0, this->objects().refinement_cases.size()));
 
-  this->objects().refinement_cases[this->present_index]
-    = RefinementCase<structdim>::no_refinement;
+  this->objects().refinement_cases[this->present_index] =
+    RefinementCase<structdim>::no_refinement;
 }
 
 template <int structdim, int dim, int spacedim>
@@ -1458,8 +1454,8 @@ TriaAccessor<structdim, dim, spacedim>::set_children(const unsigned int i,
   // each set of two children are stored
   // consecutively, so we only have to find
   // the location of the set of children
-  const unsigned int n_sets_of_two
-    = GeometryInfo<structdim>::max_children_per_cell / 2;
+  const unsigned int n_sets_of_two =
+    GeometryInfo<structdim>::max_children_per_cell / 2;
 
   Assert(
     // clearing the child index for a cell
@@ -1470,9 +1466,9 @@ TriaAccessor<structdim, dim, spacedim>::set_children(const unsigned int i,
       // if setting the child index for the i'th child (with i>0),
       // then the previously stored index must be the invalid
       // index
-      (i > 0 && this->has_children() && (index >= 0)
-       && this->objects().children[n_sets_of_two * this->present_index + i / 2]
-            == -1),
+      (i > 0 && this->has_children() && (index >= 0) &&
+       this->objects().children[n_sets_of_two * this->present_index + i / 2] ==
+         -1),
     TriaAccessorExceptions::ExcCantSetChildren(index));
 
   this->objects().children[n_sets_of_two * this->present_index + i / 2] = index;
@@ -1485,8 +1481,8 @@ TriaAccessor<structdim, dim, spacedim>::clear_children() const
   // each set of two children are stored
   // consecutively, so we only have to find
   // the location of the set of children
-  const unsigned int n_sets_of_two
-    = GeometryInfo<structdim>::max_children_per_cell / 2;
+  const unsigned int n_sets_of_two =
+    GeometryInfo<structdim>::max_children_per_cell / 2;
 
   for(unsigned int i = 0; i < n_sets_of_two; ++i)
     set_children(2 * i, -1);
@@ -1696,8 +1692,8 @@ TriaAccessor<structdim, dim, spacedim>::set_boundary_id(
     ExcMessage(
       "You are trying to set the boundary_id of an internal object, which is illegal!"));
 
-  this->objects().boundary_or_material_id[this->present_index].boundary_id
-    = boundary_ind;
+  this->objects().boundary_or_material_id[this->present_index].boundary_id =
+    boundary_ind;
 }
 
 template <int structdim, int dim, int spacedim>
@@ -1708,8 +1704,8 @@ TriaAccessor<structdim, dim, spacedim>::set_boundary_id_internal(
   Assert(structdim < dim, ExcImpossibleInDim(dim));
   Assert(this->used(), TriaAccessorExceptions::ExcCellNotUsed());
 
-  this->objects().boundary_or_material_id[this->present_index].boundary_id
-    = boundary_ind;
+  this->objects().boundary_or_material_id[this->present_index].boundary_id =
+    boundary_ind;
 }
 
 template <int structdim, int dim, int spacedim>
@@ -1790,10 +1786,10 @@ TriaAccessor<structdim, dim, spacedim>::set_all_manifold_ids(
       case 1:
         if(dim == 1)
           {
-            (*this->tria->vertex_to_manifold_id_map_1d)[vertex_index(0)]
-              = manifold_ind;
-            (*this->tria->vertex_to_manifold_id_map_1d)[vertex_index(1)]
-              = manifold_ind;
+            (*this->tria->vertex_to_manifold_id_map_1d)[vertex_index(0)] =
+              manifold_ind;
+            (*this->tria->vertex_to_manifold_id_map_1d)[vertex_index(1)] =
+              manifold_ind;
           }
         break;
 
@@ -1886,10 +1882,10 @@ TriaAccessor<structdim, dim, spacedim>::enclosing_ball() const
           const Point<spacedim>     p61(this->vertex(6) - this->vertex(1));
           const Point<spacedim>     p25(this->vertex(2) - this->vertex(5));
           const Point<spacedim>     p34(this->vertex(3) - this->vertex(4));
-          const std::vector<double> diagonals
-            = {p70.norm(), p61.norm(), p25.norm(), p34.norm()};
-          const std::vector<double>::const_iterator it
-            = std::max_element(diagonals.begin(), diagonals.end());
+          const std::vector<double> diagonals = {
+            p70.norm(), p61.norm(), p25.norm(), p34.norm()};
+          const std::vector<double>::const_iterator it =
+            std::max_element(diagonals.begin(), diagonals.end());
           if(it == diagonals.begin())
             {
               center                     = this->vertex(0) + 0.5 * p70;
@@ -1948,8 +1944,8 @@ TriaAccessor<structdim, dim, spacedim>::enclosing_ball() const
   // Set all_vertices_within_ball false if any of the vertices of the object
   // are geometrically outside the ball
   for(unsigned int v = 0; v < GeometryInfo<structdim>::vertices_per_cell; ++v)
-    if(center.distance(this->vertex(v))
-       > radius + 100. * std::numeric_limits<double>::epsilon())
+    if(center.distance(this->vertex(v)) >
+       radius + 100. * std::numeric_limits<double>::epsilon())
       {
         all_vertices_within_ball = false;
         break;
@@ -1979,8 +1975,8 @@ TriaAccessor<structdim, dim, spacedim>::minimum_vertex_distance() const
                 j < GeometryInfo<structdim>::vertices_per_cell;
                 ++j)
               min = std::min(min,
-                             (this->vertex(i) - this->vertex(j))
-                               * (this->vertex(i) - this->vertex(j)));
+                             (this->vertex(i) - this->vertex(j)) *
+                               (this->vertex(i) - this->vertex(j)));
           return std::sqrt(min);
         }
       default:
@@ -2014,8 +2010,8 @@ TriaAccessor<structdim, dim, spacedim>::is_translation_of(
   const double              tol_square     = 1e-24 * dist.norm_square();
   for(unsigned int i = 1; i < GeometryInfo<structdim>::vertices_per_cell; ++i)
     {
-      const Tensor<1, spacedim> dist_new
-        = (o->vertex(i) - this->vertex(i)) - dist;
+      const Tensor<1, spacedim> dist_new =
+        (o->vertex(i) - this->vertex(i)) - dist;
       if(dist_new.norm_square() > tol_square)
         {
           is_translation = false;
@@ -2119,8 +2115,8 @@ template <int dim, int spacedim>
 inline bool
 TriaAccessor<0, dim, spacedim>::operator==(const TriaAccessor& t) const
 {
-  const bool result
-    = ((tria == t.tria) && (global_vertex_index == t.global_vertex_index));
+  const bool result =
+    ((tria == t.tria) && (global_vertex_index == t.global_vertex_index));
 
   return result;
 }
@@ -2408,8 +2404,8 @@ template <int spacedim>
 inline bool
 TriaAccessor<0, 1, spacedim>::operator==(const TriaAccessor& t) const
 {
-  const bool result
-    = ((tria == t.tria) && (global_vertex_index == t.global_vertex_index));
+  const bool result =
+    ((tria == t.tria) && (global_vertex_index == t.global_vertex_index));
   // if we point to the same vertex,
   // make sure we know the same about
   // it
@@ -2502,9 +2498,10 @@ TriaAccessor<0, 1, spacedim>::boundary_id() const
       case left_vertex:
       case right_vertex:
         {
-          Assert(tria->vertex_to_boundary_id_map_1d->find(this->vertex_index())
-                   != tria->vertex_to_boundary_id_map_1d->end(),
-                 ExcInternalError());
+          Assert(
+            tria->vertex_to_boundary_id_map_1d->find(this->vertex_index()) !=
+              tria->vertex_to_boundary_id_map_1d->end(),
+            ExcInternalError());
 
           return (*tria->vertex_to_boundary_id_map_1d)[this->vertex_index()];
         }
@@ -2525,8 +2522,8 @@ template <int spacedim>
 inline types::manifold_id
 TriaAccessor<0, 1, spacedim>::manifold_id() const
 {
-  if(tria->vertex_to_manifold_id_map_1d->find(this->vertex_index())
-     != tria->vertex_to_manifold_id_map_1d->end())
+  if(tria->vertex_to_manifold_id_map_1d->find(this->vertex_index()) !=
+     tria->vertex_to_manifold_id_map_1d->end())
     return (*tria->vertex_to_manifold_id_map_1d)[this->vertex_index()];
   else
     return numbers::invalid_manifold_id;
@@ -2627,8 +2624,8 @@ template <int spacedim>
 inline void
 TriaAccessor<0, 1, spacedim>::set_boundary_id(const types::boundary_id b)
 {
-  Assert(tria->vertex_to_boundary_id_map_1d->find(this->vertex_index())
-           != tria->vertex_to_boundary_id_map_1d->end(),
+  Assert(tria->vertex_to_boundary_id_map_1d->find(this->vertex_index()) !=
+           tria->vertex_to_boundary_id_map_1d->end(),
          ExcInternalError());
 
   (*tria->vertex_to_boundary_id_map_1d)[this->vertex_index()] = b;
@@ -2777,9 +2774,8 @@ CellAccessor<dim, spacedim>::refine_flag_set() const
   // but activity may change when refinement is
   // executed and for some reason the refine
   // flag is not cleared).
-  Assert(this->active()
-           || !this->tria->levels[this->present_level]
-                 ->refine_flags[this->present_index],
+  Assert(this->active() || !this->tria->levels[this->present_level]
+                              ->refine_flags[this->present_index],
          ExcRefineCellNotActive());
   return RefinementCase<dim>(
     this->tria->levels[this->present_level]->refine_flags[this->present_index]);
@@ -2793,8 +2789,8 @@ CellAccessor<dim, spacedim>::set_refine_flag(
   Assert(this->used() && this->active(), ExcRefineCellNotActive());
   Assert(!coarsen_flag_set(), ExcCellFlaggedForCoarsening());
 
-  this->tria->levels[this->present_level]->refine_flags[this->present_index]
-    = refinement_case;
+  this->tria->levels[this->present_level]->refine_flags[this->present_index] =
+    refinement_case;
 }
 
 template <int dim, int spacedim>
@@ -2802,8 +2798,8 @@ inline void
 CellAccessor<dim, spacedim>::clear_refine_flag() const
 {
   Assert(this->used() && this->active(), ExcRefineCellNotActive());
-  this->tria->levels[this->present_level]->refine_flags[this->present_index]
-    = RefinementCase<dim>::no_refinement;
+  this->tria->levels[this->present_level]->refine_flags[this->present_index] =
+    RefinementCase<dim>::no_refinement;
 }
 
 template <int dim, int spacedim>
@@ -2825,14 +2821,14 @@ CellAccessor<dim, spacedim>::flag_for_face_refinement(
   // face refinement and the already existing
   // flagged refinement case
   RefinementCase<dim> old_ref_case = refine_flag_set();
-  RefinementCase<dim> new_ref_case
-    = (old_ref_case
-       | GeometryInfo<dim>::min_cell_refinement_case_for_face_refinement(
-           face_refinement_case,
-           face_no,
-           this->face_orientation(face_no),
-           this->face_flip(face_no),
-           this->face_rotation(face_no)));
+  RefinementCase<dim> new_ref_case =
+    (old_ref_case |
+     GeometryInfo<dim>::min_cell_refinement_case_for_face_refinement(
+       face_refinement_case,
+       face_no,
+       this->face_orientation(face_no),
+       this->face_flip(face_no),
+       this->face_rotation(face_no)));
   set_refine_flag(new_ref_case);
   // return, whether we had to change the
   // refinement flag
@@ -2852,12 +2848,11 @@ CellAccessor<dim, spacedim>::flag_for_line_refinement(
   // of the minimum required one for the given
   // line refinement and the already existing
   // flagged refinement case
-  RefinementCase<dim> old_ref_case
-    = refine_flag_set(),
-    new_ref_case
-    = old_ref_case
-      | GeometryInfo<dim>::min_cell_refinement_case_for_line_refinement(
-          line_no);
+  RefinementCase<dim>
+    old_ref_case = refine_flag_set(),
+    new_ref_case =
+      old_ref_case |
+      GeometryInfo<dim>::min_cell_refinement_case_for_line_refinement(line_no);
   set_refine_flag(new_ref_case);
   // return, whether we had to change the
   // refinement flag
@@ -2923,13 +2918,13 @@ CellAccessor<3>::subface_case(const unsigned int face_no) const
       case RefinementCase<3>::cut_x:
         if(face(face_no)->child(0)->has_children())
           {
-            Assert(face(face_no)->child(0)->refinement_case()
-                     == RefinementCase<2>::cut_y,
+            Assert(face(face_no)->child(0)->refinement_case() ==
+                     RefinementCase<2>::cut_y,
                    ExcInternalError());
             if(face(face_no)->child(1)->has_children())
               {
-                Assert(face(face_no)->child(1)->refinement_case()
-                         == RefinementCase<2>::cut_y,
+                Assert(face(face_no)->child(1)->refinement_case() ==
+                         RefinementCase<2>::cut_y,
                        ExcInternalError());
                 return dealii::internal::SubfaceCase<3>::case_x1y2y;
               }
@@ -2940,8 +2935,8 @@ CellAccessor<3>::subface_case(const unsigned int face_no) const
           {
             if(face(face_no)->child(1)->has_children())
               {
-                Assert(face(face_no)->child(1)->refinement_case()
-                         == RefinementCase<2>::cut_y,
+                Assert(face(face_no)->child(1)->refinement_case() ==
+                         RefinementCase<2>::cut_y,
                        ExcInternalError());
                 return dealii::internal::SubfaceCase<3>::case_x2y;
               }
@@ -2951,13 +2946,13 @@ CellAccessor<3>::subface_case(const unsigned int face_no) const
       case RefinementCase<3>::cut_y:
         if(face(face_no)->child(0)->has_children())
           {
-            Assert(face(face_no)->child(0)->refinement_case()
-                     == RefinementCase<2>::cut_x,
+            Assert(face(face_no)->child(0)->refinement_case() ==
+                     RefinementCase<2>::cut_x,
                    ExcInternalError());
             if(face(face_no)->child(1)->has_children())
               {
-                Assert(face(face_no)->child(1)->refinement_case()
-                         == RefinementCase<2>::cut_x,
+                Assert(face(face_no)->child(1)->refinement_case() ==
+                         RefinementCase<2>::cut_x,
                        ExcInternalError());
                 return dealii::internal::SubfaceCase<3>::case_y1x2x;
               }
@@ -2968,8 +2963,8 @@ CellAccessor<3>::subface_case(const unsigned int face_no) const
           {
             if(face(face_no)->child(1)->has_children())
               {
-                Assert(face(face_no)->child(1)->refinement_case()
-                         == RefinementCase<2>::cut_x,
+                Assert(face(face_no)->child(1)->refinement_case() ==
+                         RefinementCase<2>::cut_x,
                        ExcInternalError());
                 return dealii::internal::SubfaceCase<3>::case_y2x;
               }
@@ -2995,9 +2990,8 @@ CellAccessor<dim, spacedim>::coarsen_flag_set() const
   // but activity may change when refinement is
   // executed and for some reason the refine
   // flag is not cleared).
-  Assert(this->active()
-           || !this->tria->levels[this->present_level]
-                 ->coarsen_flags[this->present_index],
+  Assert(this->active() || !this->tria->levels[this->present_level]
+                              ->coarsen_flags[this->present_index],
          ExcRefineCellNotActive());
   return this->tria->levels[this->present_level]
     ->coarsen_flags[this->present_index];
@@ -3010,8 +3004,8 @@ CellAccessor<dim, spacedim>::set_coarsen_flag() const
   Assert(this->used() && this->active(), ExcRefineCellNotActive());
   Assert(!refine_flag_set(), ExcCellFlaggedForRefinement());
 
-  this->tria->levels[this->present_level]->coarsen_flags[this->present_index]
-    = true;
+  this->tria->levels[this->present_level]->coarsen_flags[this->present_index] =
+    true;
 }
 
 template <int dim, int spacedim>
@@ -3019,8 +3013,8 @@ inline void
 CellAccessor<dim, spacedim>::clear_coarsen_flag() const
 {
   Assert(this->used() && this->active(), ExcRefineCellNotActive());
-  this->tria->levels[this->present_level]->coarsen_flags[this->present_index]
-    = false;
+  this->tria->levels[this->present_level]->coarsen_flags[this->present_index] =
+    false;
 }
 
 template <int dim, int spacedim>
@@ -3068,8 +3062,8 @@ CellAccessor<dim, spacedim>::is_locally_owned() const
   if(is_artificial())
     return false;
 
-  const parallel::Triangulation<dim, spacedim>* pt
-    = dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(this->tria);
+  const parallel::Triangulation<dim, spacedim>* pt =
+    dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(this->tria);
 
   if(pt == nullptr)
     return true;
@@ -3087,8 +3081,8 @@ CellAccessor<dim, spacedim>::is_locally_owned_on_level() const
   return true;
 #else
 
-  const parallel::Triangulation<dim, spacedim>* pt
-    = dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(this->tria);
+  const parallel::Triangulation<dim, spacedim>* pt =
+    dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(this->tria);
 
   if(pt == nullptr)
     return true;
@@ -3111,8 +3105,8 @@ CellAccessor<dim, spacedim>::is_ghost() const
   return false;
 #else
 
-  const parallel::Triangulation<dim, spacedim>* pt
-    = dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(this->tria);
+  const parallel::Triangulation<dim, spacedim>* pt =
+    dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(this->tria);
 
   if(pt == nullptr)
     return false;
@@ -3132,8 +3126,8 @@ CellAccessor<dim, spacedim>::is_artificial() const
   return false;
 #else
 
-  const parallel::Triangulation<dim, spacedim>* pt
-    = dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(this->tria);
+  const parallel::Triangulation<dim, spacedim>* pt =
+    dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(this->tria);
 
   if(pt == nullptr)
     return false;

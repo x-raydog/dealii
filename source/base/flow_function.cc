@@ -213,8 +213,8 @@ namespace Functions
         for(unsigned int d = 1; d < dim; ++d)
           values[d][k] = 0.;
         // pressure
-        values[dim][k] = -2 * (dim - 1) * stretch * stretch * p(0) / Reynolds
-                         + this->mean_pressure;
+        values[dim][k] = -2 * (dim - 1) * stretch * stretch * p(0) / Reynolds +
+                         this->mean_pressure;
       }
   }
 
@@ -433,10 +433,10 @@ namespace Functions
 
         if(dim == 2)
           {
-            values[0][k] += -viscosity * pi2 * (1. + 2. * c2x) * s2y
-                            - numbers::PI / 4. * c2x * s2y;
-            values[1][k] += viscosity * pi2 * s2x * (1. + 2. * c2y)
-                            - numbers::PI / 4. * s2x * c2y;
+            values[0][k] += -viscosity * pi2 * (1. + 2. * c2x) * s2y -
+                            numbers::PI / 4. * c2x * s2y;
+            values[1][k] += viscosity * pi2 * s2x * (1. + 2. * c2y) -
+                            numbers::PI / 4. * s2x * c2y;
             values[2][k] = 0.;
           }
         else if(dim == 3)
@@ -445,12 +445,14 @@ namespace Functions
             const double c2z = cos(2 * z);
             const double s2z = sin(2 * z);
 
-            values[0][k] += -.5 * viscosity * pi2 * (1. + 2. * c2x) * s2y * s2z
-                            - numbers::PI / 8. * c2x * s2y * s2z;
-            values[1][k] += .5 * viscosity * pi2 * s2x * (1. + 2. * c2y) * s2z
-                            - numbers::PI / 8. * s2x * c2y * s2z;
-            values[2][k] += -.5 * viscosity * pi2 * s2x * s2y * (1. + 2. * c2z)
-                            - numbers::PI / 8. * s2x * s2y * c2z;
+            values[0][k] +=
+              -.5 * viscosity * pi2 * (1. + 2. * c2x) * s2y * s2z -
+              numbers::PI / 8. * c2x * s2y * s2z;
+            values[1][k] += .5 * viscosity * pi2 * s2x * (1. + 2. * c2y) * s2z -
+                            numbers::PI / 8. * s2x * c2y * s2z;
+            values[2][k] +=
+              -.5 * viscosity * pi2 * s2x * s2y * (1. + 2. * c2z) -
+              numbers::PI / 8. * s2x * s2y * c2z;
             values[3][k] = 0.;
           }
         else
@@ -474,37 +476,38 @@ namespace Functions
   inline double
   StokesLSingularity::Psi(double phi) const
   {
-    return coslo * (sin(lp * phi) / lp - sin(lm * phi) / lm) - cos(lp * phi)
-           + cos(lm * phi);
+    return coslo * (sin(lp * phi) / lp - sin(lm * phi) / lm) - cos(lp * phi) +
+           cos(lm * phi);
   }
 
   inline double
   StokesLSingularity::Psi_1(double phi) const
   {
-    return coslo * (cos(lp * phi) - cos(lm * phi)) + lp * sin(lp * phi)
-           - lm * sin(lm * phi);
+    return coslo * (cos(lp * phi) - cos(lm * phi)) + lp * sin(lp * phi) -
+           lm * sin(lm * phi);
   }
 
   inline double
   StokesLSingularity::Psi_2(double phi) const
   {
-    return coslo * (lm * sin(lm * phi) - lp * sin(lp * phi))
-           + lp * lp * cos(lp * phi) - lm * lm * cos(lm * phi);
+    return coslo * (lm * sin(lm * phi) - lp * sin(lp * phi)) +
+           lp * lp * cos(lp * phi) - lm * lm * cos(lm * phi);
   }
 
   inline double
   StokesLSingularity::Psi_3(double phi) const
   {
-    return coslo * (lm * lm * cos(lm * phi) - lp * lp * cos(lp * phi))
-           + lm * lm * lm * sin(lm * phi) - lp * lp * lp * sin(lp * phi);
+    return coslo * (lm * lm * cos(lm * phi) - lp * lp * cos(lp * phi)) +
+           lm * lm * lm * sin(lm * phi) - lp * lp * lp * sin(lp * phi);
   }
 
   inline double
   StokesLSingularity::Psi_4(double phi) const
   {
-    return coslo * (lp * lp * lp * sin(lp * phi) - lm * lm * lm * sin(lm * phi))
-           + lm * lm * lm * lm * cos(lm * phi)
-           - lp * lp * lp * lp * cos(lp * phi);
+    return coslo *
+             (lp * lp * lp * sin(lp * phi) - lm * lm * lm * sin(lm * phi)) +
+           lm * lm * lm * lm * cos(lm * phi) -
+           lp * lp * lp * lp * cos(lp * phi);
   }
 
   void
@@ -530,12 +533,12 @@ namespace Functions
             const double r2  = x * x + y * y;
             const double rl  = pow(r2, lambda / 2.);
             const double rl1 = pow(r2, lambda / 2. - .5);
-            values[0][k]
-              = rl * (lp * sin(phi) * Psi(phi) + cos(phi) * Psi_1(phi));
-            values[1][k]
-              = rl * (lp * cos(phi) * Psi(phi) - sin(phi) * Psi_1(phi));
-            values[2][k] = -rl1 * (lp * lp * Psi_1(phi) + Psi_3(phi)) / lm
-                           + this->mean_pressure;
+            values[0][k] =
+              rl * (lp * sin(phi) * Psi(phi) + cos(phi) * Psi_1(phi));
+            values[1][k] =
+              rl * (lp * cos(phi) * Psi(phi) - sin(phi) * Psi_1(phi));
+            values[2][k] = -rl1 * (lp * lp * Psi_1(phi) + Psi_3(phi)) / lm +
+                           this->mean_pressure;
           }
         else
           {
@@ -578,17 +581,15 @@ namespace Functions
 
             // Derivatives of u with respect to r, phi
             const double udr = lambda * rl1 * (lp * sinp * psi + cosp * psi1);
-            const double udp = rl
-                               * (lp * cosp * psi + lp * sinp * psi1
-                                  - sinp * psi1 + cosp * psi2);
+            const double udp = rl * (lp * cosp * psi + lp * sinp * psi1 -
+                                     sinp * psi1 + cosp * psi2);
             // Derivatives of v with respect to r, phi
             const double vdr = lambda * rl1 * (lp * cosp * psi - sinp * psi1);
-            const double vdp
-              = rl
-                * (lp * (cosp * psi1 - sinp * psi) - cosp * psi1 - sinp * psi2);
+            const double vdp = rl * (lp * (cosp * psi1 - sinp * psi) -
+                                     cosp * psi1 - sinp * psi2);
             // Derivatives of p with respect to r, phi
-            const double pdr
-              = -(lambda - 1.) * rl2 * (lp * lp * psi1 + Psi_3(phi)) / lm;
+            const double pdr =
+              -(lambda - 1.) * rl2 * (lp * lp * psi1 + Psi_3(phi)) / lm;
             const double pdp = -rl1 * (lp * lp * psi2 + Psi_4(phi)) / lm;
             values[0][k][0]  = cosp * udr - sinp / r * udp;
             values[0][k][1]  = -sinp * udr - cosp / r * udp;

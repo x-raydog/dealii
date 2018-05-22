@@ -53,8 +53,8 @@ namespace LinearAlgebra
     if(new_alloc_size == 0)
       {
         values.reset();
-        thread_loop_partitioner
-          = std::make_shared<parallel::internal::TBBPartitioner>();
+        thread_loop_partitioner =
+          std::make_shared<parallel::internal::TBBPartitioner>();
       }
     else
       {
@@ -63,11 +63,10 @@ namespace LinearAlgebra
           (void**) &new_values, 64, sizeof(Number) * new_alloc_size);
         values.reset(new_values);
 
-        if(new_alloc_size >= 4
-                               * dealii::internal::VectorImplementation::
+        if(new_alloc_size >= 4 * dealii::internal::VectorImplementation::
                                    minimum_parallel_grain_size)
-          thread_loop_partitioner
-            = std::make_shared<parallel::internal::TBBPartitioner>();
+          thread_loop_partitioner =
+            std::make_shared<parallel::internal::TBBPartitioner>();
       }
   }
 
@@ -243,8 +242,8 @@ namespace LinearAlgebra
       }
     else
       {
-        comm_pattern
-          = std::dynamic_pointer_cast<const Utilities::MPI::Partitioner>(
+        comm_pattern =
+          std::dynamic_pointer_cast<const Utilities::MPI::Partitioner>(
             communication_pattern);
         AssertThrow(comm_pattern != nullptr,
                     ExcMessage("The communication pattern is not of type "
@@ -309,8 +308,8 @@ namespace LinearAlgebra
 
     // get a representation of the vector and copy it
     PetscScalar*   start_ptr;
-    PetscErrorCode ierr
-      = VecGetArray(static_cast<const Vec&>(petsc_vec), &start_ptr);
+    PetscErrorCode ierr =
+      VecGetArray(static_cast<const Vec&>(petsc_vec), &start_ptr);
     AssertThrow(ierr == 0, ExcPETScError(ierr));
 
     const size_type vec_size = petsc_vec.local_size();
@@ -343,29 +342,30 @@ namespace LinearAlgebra
         // The first time import is called, we create a communication pattern.
         // Check if the communication pattern already exists and if it can be
         // reused.
-        if((source_elements.size() == source_stored_elements.size())
-           && (source_elements == source_stored_elements))
+        if((source_elements.size() == source_stored_elements.size()) &&
+           (source_elements == source_stored_elements))
           {
             epetra_comm_pattern = std::dynamic_pointer_cast<
               const EpetraWrappers::CommunicationPattern>(comm_pattern);
             if(epetra_comm_pattern == nullptr)
-              epetra_comm_pattern
-                = std::make_shared<const EpetraWrappers::CommunicationPattern>(
+              epetra_comm_pattern =
+                std::make_shared<const EpetraWrappers::CommunicationPattern>(
                   create_epetra_comm_pattern(source_elements, mpi_comm));
           }
         else
-          epetra_comm_pattern
-            = std::make_shared<const EpetraWrappers::CommunicationPattern>(
+          epetra_comm_pattern =
+            std::make_shared<const EpetraWrappers::CommunicationPattern>(
               create_epetra_comm_pattern(source_elements, mpi_comm));
       }
     else
       {
-        epetra_comm_pattern = std::dynamic_pointer_cast<
-          const EpetraWrappers::CommunicationPattern>(communication_pattern);
+        epetra_comm_pattern =
+          std::dynamic_pointer_cast<const EpetraWrappers::CommunicationPattern>(
+            communication_pattern);
         AssertThrow(
           epetra_comm_pattern != nullptr,
-          ExcMessage(std::string("The communication pattern is not of type ")
-                     + "LinearAlgebra::EpetraWrappers::CommunicationPattern."));
+          ExcMessage(std::string("The communication pattern is not of type ") +
+                     "LinearAlgebra::EpetraWrappers::CommunicationPattern."));
       }
 
     Epetra_Import import(epetra_comm_pattern->get_epetra_import());
@@ -376,8 +376,8 @@ namespace LinearAlgebra
       {
         const int err = target_vector.Import(multivector, import, Insert);
         AssertThrow(err == 0,
-                    ExcMessage("Epetra Import() failed with error code: "
-                               + Utilities::to_string(err)));
+                    ExcMessage("Epetra Import() failed with error code: " +
+                               Utilities::to_string(err)));
 
         const double* new_values = target_vector.Values();
         const int     size       = target_vector.MyLength();
@@ -391,8 +391,8 @@ namespace LinearAlgebra
       {
         const int err = target_vector.Import(multivector, import, Add);
         AssertThrow(err == 0,
-                    ExcMessage("Epetra Import() failed with error code: "
-                               + Utilities::to_string(err)));
+                    ExcMessage("Epetra Import() failed with error code: " +
+                               Utilities::to_string(err)));
 
         const double* new_values = target_vector.Values();
         const int     size       = target_vector.MyLength();

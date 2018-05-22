@@ -49,8 +49,7 @@ namespace parallel
     Triangulation(
       MPI_Comm mpi_communicator,
       const typename dealii::Triangulation<dim, spacedim>::MeshSmoothing
-        smooth_grid
-      = (dealii::Triangulation<dim, spacedim>::none),
+                 smooth_grid = (dealii::Triangulation<dim, spacedim>::none),
       const bool check_for_distorted_cells = false);
 
     /**

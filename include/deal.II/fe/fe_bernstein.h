@@ -91,8 +91,8 @@ public:
   virtual const FullMatrix<double>&
   get_restriction_matrix(
     const unsigned int         child,
-    const RefinementCase<dim>& refinement_case
-    = RefinementCase<dim>::isotropic_refinement) const override;
+    const RefinementCase<dim>& refinement_case =
+      RefinementCase<dim>::isotropic_refinement) const override;
 
   /**
    * FE_Bernstein is not interpolatory in the element interior, which prevents
@@ -104,8 +104,8 @@ public:
   virtual const FullMatrix<double>&
   get_prolongation_matrix(
     const unsigned int         child,
-    const RefinementCase<dim>& refinement_case
-    = RefinementCase<dim>::isotropic_refinement) const override;
+    const RefinementCase<dim>& refinement_case =
+      RefinementCase<dim>::isotropic_refinement) const override;
 
   /**
    * Return the matrix interpolating from a face of one element to the face of

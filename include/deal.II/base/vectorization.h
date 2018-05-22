@@ -848,14 +848,14 @@ vectorized_load_and_transpose(const unsigned int       n_entries,
           __m256d t1 = _mm256_permute2f128_pd(u1, u3, 0x20);
           __m256d t2 = _mm256_permute2f128_pd(u0, u2, 0x31);
           __m256d t3 = _mm256_permute2f128_pd(u1, u3, 0x31);
-          *(__m256d*) ((double*) (&out[4 * i + 0].data) + outer)
-            = _mm256_unpacklo_pd(t0, t1);
-          *(__m256d*) ((double*) (&out[4 * i + 1].data) + outer)
-            = _mm256_unpackhi_pd(t0, t1);
-          *(__m256d*) ((double*) (&out[4 * i + 2].data) + outer)
-            = _mm256_unpacklo_pd(t2, t3);
-          *(__m256d*) ((double*) (&out[4 * i + 3].data) + outer)
-            = _mm256_unpackhi_pd(t2, t3);
+          *(__m256d*) ((double*) (&out[4 * i + 0].data) + outer) =
+            _mm256_unpacklo_pd(t0, t1);
+          *(__m256d*) ((double*) (&out[4 * i + 1].data) + outer) =
+            _mm256_unpackhi_pd(t0, t1);
+          *(__m256d*) ((double*) (&out[4 * i + 2].data) + outer) =
+            _mm256_unpacklo_pd(t2, t3);
+          *(__m256d*) ((double*) (&out[4 * i + 3].data) + outer) =
+            _mm256_unpackhi_pd(t2, t3);
         }
       for(unsigned int i = 4 * n_chunks; i < n_entries; ++i)
         for(unsigned int v = 0; v < 4; ++v)
@@ -886,14 +886,14 @@ vectorized_transpose_and_store(const bool                     add_into,
       double* out3 = out + offsets[3 + outer];
       for(unsigned int i = 0; i < n_chunks; ++i)
         {
-          __m256d u0
-            = *(const __m256d*) ((const double*) (&in[4 * i + 0].data) + outer);
-          __m256d u1
-            = *(const __m256d*) ((const double*) (&in[4 * i + 1].data) + outer);
-          __m256d u2
-            = *(const __m256d*) ((const double*) (&in[4 * i + 2].data) + outer);
-          __m256d u3
-            = *(const __m256d*) ((const double*) (&in[4 * i + 3].data) + outer);
+          __m256d u0 =
+            *(const __m256d*) ((const double*) (&in[4 * i + 0].data) + outer);
+          __m256d u1 =
+            *(const __m256d*) ((const double*) (&in[4 * i + 1].data) + outer);
+          __m256d u2 =
+            *(const __m256d*) ((const double*) (&in[4 * i + 2].data) + outer);
+          __m256d u3 =
+            *(const __m256d*) ((const double*) (&in[4 * i + 3].data) + outer);
           __m256d t0   = _mm256_permute2f128_pd(u0, u2, 0x20);
           __m256d t1   = _mm256_permute2f128_pd(u1, u3, 0x20);
           __m256d t2   = _mm256_permute2f128_pd(u0, u2, 0x31);
@@ -1254,14 +1254,14 @@ vectorized_load_and_transpose(const unsigned int      n_entries,
           __m256 v1 = _mm256_shuffle_ps(t0, t1, 0xee);
           __m256 v2 = _mm256_shuffle_ps(t2, t3, 0x44);
           __m256 v3 = _mm256_shuffle_ps(t2, t3, 0xee);
-          *(__m256*) ((float*) (&out[4 * i + 0].data) + outer)
-            = _mm256_shuffle_ps(v0, v2, 0x88);
-          *(__m256*) ((float*) (&out[4 * i + 1].data) + outer)
-            = _mm256_shuffle_ps(v0, v2, 0xdd);
-          *(__m256*) ((float*) (&out[4 * i + 2].data) + outer)
-            = _mm256_shuffle_ps(v1, v3, 0x88);
-          *(__m256*) ((float*) (&out[4 * i + 3].data) + outer)
-            = _mm256_shuffle_ps(v1, v3, 0xdd);
+          *(__m256*) ((float*) (&out[4 * i + 0].data) + outer) =
+            _mm256_shuffle_ps(v0, v2, 0x88);
+          *(__m256*) ((float*) (&out[4 * i + 1].data) + outer) =
+            _mm256_shuffle_ps(v0, v2, 0xdd);
+          *(__m256*) ((float*) (&out[4 * i + 2].data) + outer) =
+            _mm256_shuffle_ps(v1, v3, 0x88);
+          *(__m256*) ((float*) (&out[4 * i + 3].data) + outer) =
+            _mm256_shuffle_ps(v1, v3, 0xdd);
         }
       for(unsigned int i = 4 * n_chunks; i < n_entries; ++i)
         for(unsigned int v = 0; v < 8; ++v)
@@ -1285,14 +1285,14 @@ vectorized_transpose_and_store(const bool                    add_into,
     {
       for(unsigned int i = 0; i < n_chunks; ++i)
         {
-          __m256 u0
-            = *(const __m256*) ((const float*) (&in[4 * i + 0].data) + outer);
-          __m256 u1
-            = *(const __m256*) ((const float*) (&in[4 * i + 1].data) + outer);
-          __m256 u2
-            = *(const __m256*) ((const float*) (&in[4 * i + 2].data) + outer);
-          __m256 u3
-            = *(const __m256*) ((const float*) (&in[4 * i + 3].data) + outer);
+          __m256 u0 =
+            *(const __m256*) ((const float*) (&in[4 * i + 0].data) + outer);
+          __m256 u1 =
+            *(const __m256*) ((const float*) (&in[4 * i + 1].data) + outer);
+          __m256 u2 =
+            *(const __m256*) ((const float*) (&in[4 * i + 2].data) + outer);
+          __m256 u3 =
+            *(const __m256*) ((const float*) (&in[4 * i + 3].data) + outer);
           __m256 t0   = _mm256_shuffle_ps(u0, u1, 0x44);
           __m256 t1   = _mm256_shuffle_ps(u0, u1, 0xee);
           __m256 t2   = _mm256_shuffle_ps(u2, u3, 0x44);

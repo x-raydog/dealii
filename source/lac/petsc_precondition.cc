@@ -76,8 +76,8 @@ namespace PETScWrappers
     // this ugly cast is necessary because the
     // type Mat and PETScObject are
     // unrelated.
-    PetscErrorCode ierr
-      = PetscObjectGetComm(reinterpret_cast<PetscObject>(matrix), &comm);
+    PetscErrorCode ierr =
+      PetscObjectGetComm(reinterpret_cast<PetscObject>(matrix), &comm);
     AssertThrow(ierr == 0, ExcPETScError(ierr));
 
     ierr = PCCreate(comm, &pc);
@@ -548,8 +548,8 @@ namespace PETScWrappers
         set_option_value("-pc_hypre_parasails_logging", "1");
       }
 
-    Assert((additional_data.symmetric == 0 || additional_data.symmetric == 1
-            || additional_data.symmetric == 2),
+    Assert((additional_data.symmetric == 0 || additional_data.symmetric == 1 ||
+            additional_data.symmetric == 2),
            ExcMessage(
              "ParaSails parameter symmetric can only be equal to 0, 1, 2!"));
 

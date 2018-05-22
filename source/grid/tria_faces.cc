@@ -37,8 +37,8 @@ namespace internal
     std::size_t
     TriaFaces<3>::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(quads)
-              + MemoryConsumption::memory_consumption(lines));
+      return (MemoryConsumption::memory_consumption(quads) +
+              MemoryConsumption::memory_consumption(lines));
     }
   } // namespace TriangulationImplementation
 } // namespace internal

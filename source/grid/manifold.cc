@@ -67,8 +67,8 @@ Manifold<dim, spacedim>::get_new_point(
     n_points == weights.size(),
     ExcMessage("There should be as many surrounding points as weights given."));
 
-  Assert(std::abs(std::accumulate(weights.begin(), weights.end(), 0.0) - 1.0)
-           < tol,
+  Assert(std::abs(std::accumulate(weights.begin(), weights.end(), 0.0) - 1.0) <
+           tol,
          ExcMessage("The weights for the individual points should sum to 1!"));
 
   // First sort points in the order of their weights. This is done to
@@ -129,11 +129,10 @@ Manifold<2, 2>::normal_vector(const Triangulation<2, 2>::face_iterator& face,
 
   // get the tangent vector from the point 'p' in the direction of the further
   // one of the two vertices that make up the face of this 2d cell
-  const Tensor<1, spacedim> tangent
-    = ((p - face->vertex(0)).norm_square()
-           > (p - face->vertex(1)).norm_square() ?
-         -get_tangent_vector(p, face->vertex(0)) :
-         get_tangent_vector(p, face->vertex(1)));
+  const Tensor<1, spacedim> tangent =
+    ((p - face->vertex(0)).norm_square() > (p - face->vertex(1)).norm_square() ?
+       -get_tangent_vector(p, face->vertex(0)) :
+       get_tangent_vector(p, face->vertex(1)));
 
   // then rotate it by 90 degrees
   const Tensor<1, spacedim> normal = cross_product_2d(tangent);
@@ -170,8 +169,8 @@ Manifold<3, 3>::normal_vector(const Triangulation<3, 3>::face_iterator& face,
       for(unsigned int j = i + 1; j < 4; ++j)
         if(distances[j] > 1e-8 * max_distance)
           {
-            const double new_angle = (p - vertices[i]) * (p - vertices[j])
-                                     / (distances[i] * distances[j]);
+            const double new_angle = (p - vertices[i]) * (p - vertices[j]) /
+                                     (distances[i] * distances[j]);
             // multiply by factor 0.999 to bias the search in a way that
             // avoids trouble with roundoff
             if(std::abs(new_angle) < 0.999 * abs_cos_angle)
@@ -190,8 +189,8 @@ Manifold<3, 3>::normal_vector(const Triangulation<3, 3>::face_iterator& face,
   Tensor<1, spacedim> normal = cross_product_3d(t1, t2);
 
   Assert(
-    normal.norm_square() > 1e4 * std::numeric_limits<double>::epsilon()
-                             * t1.norm_square() * t2.norm_square(),
+    normal.norm_square() > 1e4 * std::numeric_limits<double>::epsilon() *
+                             t1.norm_square() * t2.norm_square(),
     ExcMessage(
       "Manifold::normal_vector was unable to find a suitable combination "
       "of vertices to compute a normal on this face. We chose the secants "
@@ -228,8 +227,8 @@ Manifold<2, 2>::get_normals_at_vertices(
   FaceVertexNormals&                        n) const
 {
   n[0] = cross_product_2d(get_tangent_vector(face->vertex(0), face->vertex(1)));
-  n[1]
-    = -cross_product_2d(get_tangent_vector(face->vertex(1), face->vertex(0)));
+  n[1] =
+    -cross_product_2d(get_tangent_vector(face->vertex(1), face->vertex(0)));
 
   for(unsigned int i = 0; i < 2; ++i)
     {
@@ -426,9 +425,9 @@ Manifold<dim, spacedim>::get_tangent_vector(const Point<spacedim>& x1,
 
   const std::array<Point<spacedim>, 2> points{{x1, x2}};
   const std::array<double, 2>          weights{{epsilon, 1.0 - epsilon}};
-  const Point<spacedim>                neighbor_point
-    = get_new_point(make_array_view(points.begin(), points.end()),
-                    make_array_view(weights.begin(), weights.end()));
+  const Point<spacedim>                neighbor_point =
+    get_new_point(make_array_view(points.begin(), points.end()),
+                  make_array_view(weights.begin(), weights.end()));
   return (neighbor_point - x1) / epsilon;
 }
 
@@ -479,8 +478,8 @@ FlatManifold<dim, spacedim>::get_new_point(
   const ArrayView<const Point<spacedim>>& surrounding_points,
   const ArrayView<const double>&          weights) const
 {
-  Assert(std::abs(std::accumulate(weights.begin(), weights.end(), 0.0) - 1.0)
-           < 1e-10,
+  Assert(std::abs(std::accumulate(weights.begin(), weights.end(), 0.0) - 1.0) <
+           1e-10,
          ExcMessage("The weights for the individual points should sum to 1!"));
 
   Point<spacedim> p;
@@ -501,9 +500,9 @@ FlatManifold<dim, spacedim>::get_new_point(
             {
               minP[d] = std::min(minP[d], surrounding_points[i][d]);
               Assert(
-                (surrounding_points[i][d]
-                 < periodicity[d] + tolerance * periodicity[d])
-                  || (surrounding_points[i][d] >= -tolerance * periodicity[d]),
+                (surrounding_points[i][d] <
+                 periodicity[d] + tolerance * periodicity[d]) ||
+                  (surrounding_points[i][d] >= -tolerance * periodicity[d]),
                 ExcPeriodicBox(d, surrounding_points[i], periodicity[d]));
             }
 
@@ -513,10 +512,10 @@ FlatManifold<dim, spacedim>::get_new_point(
           Point<spacedim> dp;
           for(unsigned int d = 0; d < spacedim; ++d)
             if(periodicity[d] > 0)
-              dp[d]
-                = ((surrounding_points[i][d] - minP[d]) > periodicity[d] / 2.0 ?
-                     -periodicity[d] :
-                     0.0);
+              dp[d] =
+                ((surrounding_points[i][d] - minP[d]) > periodicity[d] / 2.0 ?
+                   -periodicity[d] :
+                   0.0);
 
           p += (surrounding_points[i] + dp) * weights[i];
         }
@@ -550,9 +549,9 @@ FlatManifold<dim, spacedim>::get_new_points(
       for(unsigned int i = 0; i < n_points; ++i)
         {
           minP[d] = std::min(minP[d], surrounding_points[i][d]);
-          Assert((surrounding_points[i][d]
-                  < periodicity[d] + tolerance * periodicity[d])
-                   || (surrounding_points[i][d] >= -tolerance * periodicity[d]),
+          Assert((surrounding_points[i][d] <
+                  periodicity[d] + tolerance * periodicity[d]) ||
+                   (surrounding_points[i][d] >= -tolerance * periodicity[d]),
                  ExcPeriodicBox(d, surrounding_points[i], periodicity[i]));
         }
 
@@ -589,9 +588,8 @@ FlatManifold<dim, spacedim>::get_new_points(
     {
       Assert(
         std::abs(
-          std::accumulate(&weights(row, 0), &weights(row, 0) + n_points, 0.0)
-          - 1.0)
-          < 1e-10,
+          std::accumulate(&weights(row, 0), &weights(row, 0) + n_points, 0.0) -
+          1.0) < 1e-10,
         ExcMessage("The weights for the individual points should sum to 1!"));
       Point<spacedim> new_point;
       for(unsigned int p = 0; p < n_points; ++p)
@@ -707,8 +705,8 @@ FlatManifold<3>::get_normals_at_vertices(
 {
   const unsigned int vertices_per_face = GeometryInfo<3>::vertices_per_face;
 
-  static const unsigned int neighboring_vertices[4][2]
-    = {{1, 2}, {3, 0}, {0, 3}, {2, 1}};
+  static const unsigned int neighboring_vertices[4][2] = {
+    {1, 2}, {3, 0}, {0, 3}, {2, 1}};
   for(unsigned int vertex = 0; vertex < vertices_per_face; ++vertex)
     {
       // first define the two tangent vectors at the vertex by using the
@@ -810,18 +808,17 @@ FlatManifold<dim, spacedim>::normal_vector(
     {
       Point<spacedim> F;
       for(unsigned int v = 0; v < GeometryInfo<facedim>::vertices_per_cell; ++v)
-        F += face->vertex(v)
-             * GeometryInfo<facedim>::d_linear_shape_function(xi, v);
+        F += face->vertex(v) *
+             GeometryInfo<facedim>::d_linear_shape_function(xi, v);
 
       for(unsigned int i = 0; i < facedim; ++i)
         {
           grad_F[i] = 0;
           for(unsigned int v = 0; v < GeometryInfo<facedim>::vertices_per_cell;
               ++v)
-            grad_F[i]
-              += face->vertex(v)
-                 * GeometryInfo<facedim>::d_linear_shape_function_gradient(
-                     xi, v)[i];
+            grad_F[i] +=
+              face->vertex(v) *
+              GeometryInfo<facedim>::d_linear_shape_function_gradient(xi, v)[i];
         }
 
       Tensor<1, facedim> J;
@@ -940,8 +937,8 @@ ChartManifold<dim, spacedim, chartdim>::get_tangent_vector(
   const Point<spacedim>& x1,
   const Point<spacedim>& x2) const
 {
-  const DerivativeForm<1, chartdim, spacedim> F_prime
-    = push_forward_gradient(pull_back(x1));
+  const DerivativeForm<1, chartdim, spacedim> F_prime =
+    push_forward_gradient(pull_back(x1));
 
   // ensure that the chart is not singular by asserting that its
   // derivative has a positive determinant. we need to make this
@@ -950,12 +947,12 @@ ChartManifold<dim, spacedim, chartdim>::get_tangent_vector(
   // chartdim-th root of it in comparing against the size of the
   // derivative
   Assert(
-    std::pow(std::abs(F_prime.determinant()), 1. / chartdim)
-      >= 1e-12 * F_prime.norm(),
+    std::pow(std::abs(F_prime.determinant()), 1. / chartdim) >=
+      1e-12 * F_prime.norm(),
     ExcMessage("The derivative of a chart function must not be singular."));
 
-  const Tensor<1, chartdim> delta
-    = sub_manifold.get_tangent_vector(pull_back(x1), pull_back(x2));
+  const Tensor<1, chartdim> delta =
+    sub_manifold.get_tangent_vector(pull_back(x1), pull_back(x2));
 
   Tensor<1, spacedim> result;
   for(unsigned int i = 0; i < spacedim; ++i)

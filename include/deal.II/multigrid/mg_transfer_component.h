@@ -219,12 +219,12 @@ public:
     const DoFHandler<dim, spacedim>& mg_dof,
     unsigned int                     selected,
     unsigned int                     mg_selected,
-    const std::vector<unsigned int>& target_component
-    = std::vector<unsigned int>(),
-    const std::vector<unsigned int>& mg_target_component
-    = std::vector<unsigned int>(),
-    const std::vector<std::set<types::global_dof_index>>& boundary_indices
-    = std::vector<std::set<types::global_dof_index>>());
+    const std::vector<unsigned int>& target_component =
+      std::vector<unsigned int>(),
+    const std::vector<unsigned int>& mg_target_component =
+      std::vector<unsigned int>(),
+    const std::vector<std::set<types::global_dof_index>>& boundary_indices =
+      std::vector<std::set<types::global_dof_index>>());
 
   /**
    * Change selected component. Handle with care!
@@ -377,10 +377,9 @@ inline void
 MGTransferSelect<number>::select(const unsigned int component,
                                  const unsigned int mg_component)
 {
-  selected_component    = component;
-  mg_selected_component = (mg_component == numbers::invalid_unsigned_int) ?
-                            component :
-                            mg_component;
+  selected_component = component;
+  mg_selected_component =
+    (mg_component == numbers::invalid_unsigned_int) ? component : mg_component;
 }
 
 DEAL_II_NAMESPACE_CLOSE

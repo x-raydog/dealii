@@ -475,9 +475,9 @@ public:
     typename = typename enable_if_all<
       (std::is_same<typename std::decay<FEPairs>::type,
                     std::pair<std::unique_ptr<FiniteElement<dim, spacedim>>,
-                              unsigned int>>::value
-       || std::is_base_of<FiniteElement<dim, spacedim>,
-                          typename std::decay<FEPairs>::type>::value)...>::type>
+                              unsigned int>>::value ||
+       std::is_base_of<FiniteElement<dim, spacedim>,
+                       typename std::decay<FEPairs>::type>::value)...>::type>
   FESystem(FEPairs&&... fe_pairs);
 
   /**
@@ -744,8 +744,8 @@ public:
   virtual const FullMatrix<double>&
   get_restriction_matrix(
     const unsigned int         child,
-    const RefinementCase<dim>& refinement_case
-    = RefinementCase<dim>::isotropic_refinement) const override;
+    const RefinementCase<dim>& refinement_case =
+      RefinementCase<dim>::isotropic_refinement) const override;
 
   /**
    * Embedding matrix between grids. Overrides the respective method in
@@ -777,8 +777,8 @@ public:
   virtual const FullMatrix<double>&
   get_prolongation_matrix(
     const unsigned int         child,
-    const RefinementCase<dim>& refinement_case
-    = RefinementCase<dim>::isotropic_refinement) const override;
+    const RefinementCase<dim>& refinement_case =
+      RefinementCase<dim>::isotropic_refinement) const override;
 
   /**
    * Given an index in the natural ordering of indices on a face, return the
@@ -1274,13 +1274,13 @@ FESystem<dim, spacedim>::FESystem(
   std::vector<const FiniteElement<dim, spacedim>*> fes;
   std::vector<unsigned int>                        multiplicities;
 
-  const auto extract
-    = [&fes, &multiplicities](
-        const std::pair<std::unique_ptr<FiniteElement<dim, spacedim>>,
-                        unsigned int>& fe_system) {
-        fes.push_back(fe_system.first.get());
-        multiplicities.push_back(fe_system.second);
-      };
+  const auto extract =
+    [&fes, &multiplicities](
+      const std::pair<std::unique_ptr<FiniteElement<dim, spacedim>>,
+                      unsigned int>& fe_system) {
+      fes.push_back(fe_system.first.get());
+      multiplicities.push_back(fe_system.second);
+    };
 
   for(const auto& p : fe_systems)
     extract(p);

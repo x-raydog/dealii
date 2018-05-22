@@ -96,25 +96,25 @@ FiniteElementDomination::Domination
 FE_Q_iso_Q1<dim, spacedim>::compare_for_face_domination(
   const FiniteElement<dim, spacedim>& fe_other) const
 {
-  if(const FE_Q_iso_Q1<dim, spacedim>* fe_q_iso_q1_other
-     = dynamic_cast<const FE_Q_iso_Q1<dim, spacedim>*>(&fe_other))
+  if(const FE_Q_iso_Q1<dim, spacedim>* fe_q_iso_q1_other =
+       dynamic_cast<const FE_Q_iso_Q1<dim, spacedim>*>(&fe_other))
     {
       // different behavior as in FE_Q: as FE_Q_iso_Q1(2) is not a subspace of
       // FE_Q_iso_Q1(3), need that the element degrees are multiples of each
       // other
-      if(this->degree < fe_q_iso_q1_other->degree
-         && fe_q_iso_q1_other->degree % this->degree == 0)
+      if(this->degree < fe_q_iso_q1_other->degree &&
+         fe_q_iso_q1_other->degree % this->degree == 0)
         return FiniteElementDomination::this_element_dominates;
       else if(this->degree == fe_q_iso_q1_other->degree)
         return FiniteElementDomination::either_element_can_dominate;
-      else if(this->degree > fe_q_iso_q1_other->degree
-              && this->degree % fe_q_iso_q1_other->degree == 0)
+      else if(this->degree > fe_q_iso_q1_other->degree &&
+              this->degree % fe_q_iso_q1_other->degree == 0)
         return FiniteElementDomination::other_element_dominates;
       else
         return FiniteElementDomination::neither_element_dominates;
     }
-  else if(const FE_Nothing<dim>* fe_nothing
-          = dynamic_cast<const FE_Nothing<dim>*>(&fe_other))
+  else if(const FE_Nothing<dim>* fe_nothing =
+            dynamic_cast<const FE_Nothing<dim>*>(&fe_other))
     {
       if(fe_nothing->is_dominating())
         {

@@ -1349,8 +1349,8 @@ namespace TrilinosWrappers
                      const unsigned int n_cycles              = 1,
                      const bool         w_cyle                = false,
                      const double       aggregation_threshold = 1e-4,
-                     const std::vector<std::vector<bool>>& constant_modes
-                     = std::vector<std::vector<bool>>(0),
+                     const std::vector<std::vector<bool>>& constant_modes =
+                       std::vector<std::vector<bool>>(0),
                      const unsigned int smoother_sweeps  = 2,
                      const unsigned int smoother_overlap = 0,
                      const bool         output_details   = false,
@@ -1629,8 +1629,8 @@ namespace TrilinosWrappers
                      const unsigned int n_cycles              = 1,
                      const bool         w_cyle                = false,
                      const double       aggregation_threshold = 1e-4,
-                     const std::vector<std::vector<bool>>& constant_modes
-                     = std::vector<std::vector<bool>>(0),
+                     const std::vector<std::vector<bool>>& constant_modes =
+                       std::vector<std::vector<bool>>(0),
                      const unsigned int smoother_sweeps  = 2,
                      const unsigned int smoother_overlap = 0,
                      const bool         output_details   = false,

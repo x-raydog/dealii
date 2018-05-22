@@ -203,8 +203,8 @@ namespace mg
     template <typename MatrixType2>
     void
     initialize(const MGLevelObject<MatrixType2>&              matrices,
-               const typename RelaxationType::AdditionalData& additional_data
-               = typename RelaxationType::AdditionalData());
+               const typename RelaxationType::AdditionalData& additional_data =
+                 typename RelaxationType::AdditionalData());
 
     /**
      * Initialize matrices and additional data for each level.
@@ -314,8 +314,8 @@ public:
   template <typename MatrixType2>
   void
   initialize(const MGLevelObject<MatrixType2>&              matrices,
-             const typename RelaxationType::AdditionalData& additional_data
-             = typename RelaxationType::AdditionalData());
+             const typename RelaxationType::AdditionalData& additional_data =
+               typename RelaxationType::AdditionalData());
 
   /**
    * Initialize for matrices. This function stores pointers to the level
@@ -463,9 +463,9 @@ public:
    */
   template <typename MatrixType2>
   void
-  initialize(const MGLevelObject<MatrixType2>&                  matrices,
-             const typename PreconditionerType::AdditionalData& additional_data
-             = typename PreconditionerType::AdditionalData());
+  initialize(const MGLevelObject<MatrixType2>& matrices,
+             const typename PreconditionerType::AdditionalData&
+               additional_data = typename PreconditionerType::AdditionalData());
 
   /**
    * Initialize for matrices. This function stores pointers to the level
@@ -756,9 +756,9 @@ namespace mg
   inline std::size_t
   SmootherRelaxation<RelaxationType, VectorType>::memory_consumption() const
   {
-    return sizeof(*this) - sizeof(MGLevelObject<RelaxationType>)
-           + MGLevelObject<RelaxationType>::memory_consumption()
-           + this->vector_memory.memory_consumption();
+    return sizeof(*this) - sizeof(MGLevelObject<RelaxationType>) +
+           MGLevelObject<RelaxationType>::memory_consumption() +
+           this->vector_memory.memory_consumption();
   }
 } // namespace mg
 
@@ -802,8 +802,8 @@ MGSmootherRelaxation<MatrixType, RelaxationType, VectorType>::initialize(
       // Workaround: Unfortunately, not every "m[i]" object has a rich
       // enough interface to populate reinit_(domain|range)_vector. Thus,
       // apply an empty LinearOperator exemplar.
-      matrices[i]
-        = linear_operator<VectorType>(LinearOperator<VectorType>(), m[i]);
+      matrices[i] =
+        linear_operator<VectorType>(LinearOperator<VectorType>(), m[i]);
       smoothers[i].initialize(m[i], data);
     }
 }
@@ -829,8 +829,8 @@ MGSmootherRelaxation<MatrixType, RelaxationType, VectorType>::initialize(
       // Workaround: Unfortunately, not every "m[i]" object has a rich
       // enough interface to populate reinit_(domain|range)_vector. Thus,
       // apply an empty LinearOperator exemplar.
-      matrices[i]
-        = linear_operator<VectorType>(LinearOperator<VectorType>(), m[i]);
+      matrices[i] =
+        linear_operator<VectorType>(LinearOperator<VectorType>(), m[i]);
       smoothers[i].initialize(m[i], data[i]);
     }
 }
@@ -961,9 +961,9 @@ inline std::size_t
 MGSmootherRelaxation<MatrixType, RelaxationType, VectorType>::
   memory_consumption() const
 {
-  return sizeof(*this) + matrices.memory_consumption()
-         + smoothers.memory_consumption()
-         + this->vector_memory.memory_consumption();
+  return sizeof(*this) + matrices.memory_consumption() +
+         smoothers.memory_consumption() +
+         this->vector_memory.memory_consumption();
 }
 
 //----------------------------------------------------------------------//
@@ -1006,8 +1006,8 @@ MGSmootherPrecondition<MatrixType, PreconditionerType, VectorType>::initialize(
       // Workaround: Unfortunately, not every "m[i]" object has a rich
       // enough interface to populate reinit_(domain|range)_vector. Thus,
       // apply an empty LinearOperator exemplar.
-      matrices[i]
-        = linear_operator<VectorType>(LinearOperator<VectorType>(), m[i]);
+      matrices[i] =
+        linear_operator<VectorType>(LinearOperator<VectorType>(), m[i]);
       smoothers[i].initialize(m[i], data);
     }
 }
@@ -1033,8 +1033,8 @@ MGSmootherPrecondition<MatrixType, PreconditionerType, VectorType>::initialize(
       // Workaround: Unfortunately, not every "m[i]" object has a rich
       // enough interface to populate reinit_(domain|range)_vector. Thus,
       // apply an empty LinearOperator exemplar.
-      matrices[i]
-        = linear_operator<VectorType>(LinearOperator<VectorType>(), m[i]);
+      matrices[i] =
+        linear_operator<VectorType>(LinearOperator<VectorType>(), m[i]);
       smoothers[i].initialize(m[i], data[i]);
     }
 }
@@ -1226,9 +1226,9 @@ inline std::size_t
 MGSmootherPrecondition<MatrixType, PreconditionerType, VectorType>::
   memory_consumption() const
 {
-  return sizeof(*this) + matrices.memory_consumption()
-         + smoothers.memory_consumption()
-         + this->vector_memory.memory_consumption();
+  return sizeof(*this) + matrices.memory_consumption() +
+         smoothers.memory_consumption() +
+         this->vector_memory.memory_consumption();
 }
 
 #endif // DOXYGEN

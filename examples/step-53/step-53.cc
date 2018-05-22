@@ -281,15 +281,13 @@ namespace Step53
     const double theta = phi_theta_d[1];
     const double d     = phi_theta_d[2];
 
-    const double R_bar = R
-                         / std::sqrt(1
-                                     - (ellipticity * ellipticity
-                                        * std::sin(theta) * std::sin(theta)));
+    const double R_bar = R / std::sqrt(1 - (ellipticity * ellipticity *
+                                            std::sin(theta) * std::sin(theta)));
 
     return Point<3>((R_bar + d) * std::cos(phi) * std::cos(theta),
                     (R_bar + d) * std::sin(phi) * std::cos(theta),
-                    ((1 - ellipticity * ellipticity) * R_bar + d)
-                      * std::sin(theta));
+                    ((1 - ellipticity * ellipticity) * R_bar + d) *
+                      std::sin(theta));
   }
 
   Point<3>
@@ -303,10 +301,9 @@ namespace Step53
     const double theta = std::atan2(
       x(2) + ep * ep * b * std::pow(std::sin(th), 3),
       (p - (ellipticity * ellipticity * R * std::pow(std::cos(th), 3))));
-    const double R_bar
-      = R
-        / (std::sqrt(
-            1 - ellipticity * ellipticity * std::sin(theta) * std::sin(theta)));
+    const double R_bar =
+      R / (std::sqrt(1 - ellipticity * ellipticity * std::sin(theta) *
+                           std::sin(theta)));
     const double R_plus_d = p / std::cos(theta);
 
     Point<3> phi_theta_d;
@@ -378,9 +375,9 @@ namespace Step53
     Triangulation<3> triangulation;
 
     {
-      const Point<3> corner_points[2]
-        = {Point<3>(26 * numbers::PI / 180, -10 * numbers::PI / 180, -500000),
-           Point<3>(35 * numbers::PI / 180, 5 * numbers::PI / 180, 0)};
+      const Point<3> corner_points[2] = {
+        Point<3>(26 * numbers::PI / 180, -10 * numbers::PI / 180, -500000),
+        Point<3>(35 * numbers::PI / 180, 5 * numbers::PI / 180, 0)};
       std::vector<unsigned int> subdivisions(3);
       subdivisions[0] = 1;
       subdivisions[1] = 2;
@@ -404,8 +401,8 @@ namespace Step53
     // mother to children, this also happens after several recursive
     // refinement steps.
     triangulation.set_manifold(0, geometry);
-    for(Triangulation<3>::active_cell_iterator cell
-        = triangulation.begin_active();
+    for(Triangulation<3>::active_cell_iterator cell =
+          triangulation.begin_active();
         cell != triangulation.end();
         ++cell)
       cell->set_all_manifold_ids(0);
@@ -422,8 +419,8 @@ namespace Step53
     // "color" the boundaries by assigning each boundary a unique boundary indicator).
     for(unsigned int i = 0; i < 6; ++i)
       {
-        for(Triangulation<3>::active_cell_iterator cell
-            = triangulation.begin_active();
+        for(Triangulation<3>::active_cell_iterator cell =
+              triangulation.begin_active();
             cell != triangulation.end();
             ++cell)
           for(unsigned int f = 0; f < GeometryInfo<3>::faces_per_cell; ++f)

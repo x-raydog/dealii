@@ -359,8 +359,8 @@ EigenInverse<VectorType>::solve(double&           value,
       if(iter == goal)
         {
           const auto&  relaxation = additional_data.relaxation;
-          const double new_shift
-            = relaxation * (-value) + (1. - relaxation) * current_shift;
+          const double new_shift =
+            relaxation * (-value) + (1. - relaxation) * current_shift;
 
           A_s           = A_op + new_shift * identity_operator(A_op);
           current_shift = new_shift;

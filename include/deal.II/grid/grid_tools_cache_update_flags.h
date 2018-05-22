@@ -47,8 +47,8 @@ namespace GridTools
      * Update vertex_to_cell_centers_directions, as returned by
      * GridTools::vertex_to_cell_centers_directions()
      */
-    update_vertex_to_cell_centers_directions
-    = update_vertex_to_cell_map | 0x0002,
+    update_vertex_to_cell_centers_directions =
+      update_vertex_to_cell_map | 0x0002,
 
     /**
      * Update a KDTree object, initialized with the vertices of the Triangulation.
@@ -99,8 +99,8 @@ namespace GridTools
   inline CacheUpdateFlags
   operator|(const CacheUpdateFlags f1, const CacheUpdateFlags f2)
   {
-    return static_cast<CacheUpdateFlags>(static_cast<unsigned int>(f1)
-                                         | static_cast<unsigned int>(f2));
+    return static_cast<CacheUpdateFlags>(static_cast<unsigned int>(f1) |
+                                         static_cast<unsigned int>(f2));
   }
 
   /**
@@ -115,8 +115,8 @@ namespace GridTools
   inline CacheUpdateFlags
   operator~(const CacheUpdateFlags f1)
   {
-    return static_cast<CacheUpdateFlags>(
-      static_cast<unsigned int>(f1) ^ static_cast<unsigned int>(update_all));
+    return static_cast<CacheUpdateFlags>(static_cast<unsigned int>(f1) ^
+                                         static_cast<unsigned int>(update_all));
   }
 
   /**
@@ -144,8 +144,8 @@ namespace GridTools
   inline CacheUpdateFlags operator&(const CacheUpdateFlags f1,
                                     const CacheUpdateFlags f2)
   {
-    return static_cast<CacheUpdateFlags>(static_cast<unsigned int>(f1)
-                                         & static_cast<unsigned int>(f2));
+    return static_cast<CacheUpdateFlags>(static_cast<unsigned int>(f1) &
+                                         static_cast<unsigned int>(f2));
   }
 
   /**

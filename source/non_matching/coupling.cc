@@ -88,16 +88,15 @@ namespace NonMatching
     static_assert(dim1 <= dim0, "This function can only work if dim1 <= dim0");
     Assert((dynamic_cast<
               const parallel::distributed::Triangulation<dim1, spacedim>*>(
-              &immersed_dh.get_triangulation())
-            == nullptr),
+              &immersed_dh.get_triangulation()) == nullptr),
            ExcNotImplemented());
 
     const auto& space_fe    = space_dh.get_fe();
     const auto& immersed_fe = immersed_dh.get_fe();
 
     // Now we run on ech cell, get a quadrature formula
-    typename DoFHandler<dim1, spacedim>::active_cell_iterator cell
-      = immersed_dh.begin_active(),
+    typename DoFHandler<dim1, spacedim>::active_cell_iterator
+      cell = immersed_dh.begin_active(),
       endc = immersed_dh.end();
 
     // Dof indices
@@ -108,15 +107,14 @@ namespace NonMatching
       immersed_mapping, immersed_fe, quad, update_quadrature_points);
 
     // Take care of components
-    const ComponentMask space_c
-      = (space_comps.size() == 0 ?
-           ComponentMask(space_fe.n_components(), true) :
-           space_comps);
+    const ComponentMask space_c =
+      (space_comps.size() == 0 ? ComponentMask(space_fe.n_components(), true) :
+                                 space_comps);
 
-    const ComponentMask immersed_c
-      = (immersed_comps.size() == 0 ?
-           ComponentMask(immersed_fe.n_components(), true) :
-           immersed_comps);
+    const ComponentMask immersed_c =
+      (immersed_comps.size() == 0 ?
+         ComponentMask(immersed_fe.n_components(), true) :
+         immersed_comps);
 
     AssertDimension(space_c.size(), space_fe.n_components());
     AssertDimension(immersed_c.size(), immersed_fe.n_components());
@@ -159,8 +157,8 @@ namespace NonMatching
         fe_v.reinit(cell);
         cell->get_dof_indices(dofs);
 
-        const std::vector<Point<spacedim>>& Xpoints
-          = fe_v.get_quadrature_points();
+        const std::vector<Point<spacedim>>& Xpoints =
+          fe_v.get_quadrature_points();
 
         // Get a list of outer cells, qpoints and maps.
         const auto  cpm   = GridTools::compute_point_locations(cache, Xpoints);
@@ -227,8 +225,7 @@ namespace NonMatching
     static_assert(dim1 <= dim0, "This function can only work if dim1 <= dim0");
     Assert((dynamic_cast<
               const parallel::distributed::Triangulation<dim1, spacedim>*>(
-              &immersed_dh.get_triangulation())
-            == nullptr),
+              &immersed_dh.get_triangulation()) == nullptr),
            ExcNotImplemented());
 
     const auto& space_fe    = space_dh.get_fe();
@@ -239,15 +236,14 @@ namespace NonMatching
     std::vector<types::global_dof_index> odofs(space_fe.dofs_per_cell);
 
     // Take care of components
-    const ComponentMask space_c
-      = (space_comps.size() == 0 ?
-           ComponentMask(space_fe.n_components(), true) :
-           space_comps);
+    const ComponentMask space_c =
+      (space_comps.size() == 0 ? ComponentMask(space_fe.n_components(), true) :
+                                 space_comps);
 
-    const ComponentMask immersed_c
-      = (immersed_comps.size() == 0 ?
-           ComponentMask(immersed_fe.n_components(), true) :
-           immersed_comps);
+    const ComponentMask immersed_c =
+      (immersed_comps.size() == 0 ?
+         ComponentMask(immersed_fe.n_components(), true) :
+         immersed_comps);
 
     AssertDimension(space_c.size(), space_fe.n_components());
     AssertDimension(immersed_c.size(), immersed_fe.n_components());
@@ -271,12 +267,12 @@ namespace NonMatching
     FEValues<dim1, spacedim> fe_v(immersed_mapping,
                                   immersed_dh.get_fe(),
                                   quad,
-                                  update_JxW_values | update_quadrature_points
-                                    | update_values);
+                                  update_JxW_values | update_quadrature_points |
+                                    update_values);
 
     // Now we run on ech cell, get a quadrature formula
-    typename DoFHandler<dim1, spacedim>::active_cell_iterator cell
-      = immersed_dh.begin_active(),
+    typename DoFHandler<dim1, spacedim>::active_cell_iterator
+      cell = immersed_dh.begin_active(),
       endc = immersed_dh.end();
 
     for(; cell != endc; ++cell)
@@ -285,8 +281,8 @@ namespace NonMatching
         fe_v.reinit(cell);
         cell->get_dof_indices(dofs);
 
-        const std::vector<Point<spacedim>>& Xpoints
-          = fe_v.get_quadrature_points();
+        const std::vector<Point<spacedim>>& Xpoints =
+          fe_v.get_quadrature_points();
 
         // Get a list of outer cells, qpoints and maps.
         const auto  cpm   = GridTools::compute_point_locations(cache, Xpoints);
@@ -316,8 +312,8 @@ namespace NonMatching
                 for(unsigned int i = 0; i < space_dh.get_fe().dofs_per_cell;
                     ++i)
                   {
-                    const auto comp_i
-                      = space_dh.get_fe().system_to_component_index(i).first;
+                    const auto comp_i =
+                      space_dh.get_fe().system_to_component_index(i).first;
                     if(space_gtl[comp_i] != numbers::invalid_unsigned_int)
                       for(unsigned int j = 0;
                           j < immersed_dh.get_fe().dofs_per_cell;
@@ -334,10 +330,9 @@ namespace NonMatching
                                 // Get the corresponding q point
                                 const unsigned int q = ids[oq];
 
-                                cell_matrix(i, j)
-                                  += (fe_v.shape_value(j, q)
-                                      * o_fe_v.shape_value(i, oq)
-                                      * fe_v.JxW(q));
+                                cell_matrix(i, j) +=
+                                  (fe_v.shape_value(j, q) *
+                                   o_fe_v.shape_value(i, oq) * fe_v.JxW(q));
                               }
                         }
                   }

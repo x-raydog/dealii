@@ -65,8 +65,8 @@ FE_RT_Bubbles<dim>::FE_RT_Bubbles(const unsigned int deg)
       ref_case < RefinementCase<dim>::isotropic_refinement + 1;
       ++ref_case)
     {
-      const unsigned int nc
-        = GeometryInfo<dim>::n_children(RefinementCase<dim>(ref_case));
+      const unsigned int nc =
+        GeometryInfo<dim>::n_children(RefinementCase<dim>(ref_case));
 
       for(unsigned int i = 0; i < nc; ++i)
         this->prolongation[ref_case - 1][i].reinit(n_dofs, n_dofs);
@@ -133,14 +133,13 @@ FE_RT_Bubbles<dim>::initialize_support_points(const unsigned int deg)
       Assert(face_points.size() == this->dofs_per_face, ExcInternalError());
       for(unsigned int k = 0; k < this->dofs_per_face; ++k)
         this->generalized_face_support_points[k] = face_points.point(k);
-      Quadrature<dim> faces
-        = QProjector<dim>::project_to_all_faces(face_points);
+      Quadrature<dim> faces =
+        QProjector<dim>::project_to_all_faces(face_points);
       for(unsigned int k = 0;
           k < this->dofs_per_face * GeometryInfo<dim>::faces_per_cell;
           ++k)
-        this->generalized_support_points[k]
-          = faces.point(k
-                        + QProjector<dim>::DataSetDescriptor::face(
+        this->generalized_support_points[k] =
+          faces.point(k + QProjector<dim>::DataSetDescriptor::face(
                             0, true, false, false, this->dofs_per_face));
 
       current = this->dofs_per_face * GeometryInfo<dim>::faces_per_cell;
@@ -218,8 +217,8 @@ template <int dim>
 std::vector<bool>
 FE_RT_Bubbles<dim>::get_ria_vector(const unsigned int deg)
 {
-  const unsigned int dofs_per_cell
-    = PolynomialsRT_Bubbles<dim>::compute_n_pols(deg);
+  const unsigned int dofs_per_cell =
+    PolynomialsRT_Bubbles<dim>::compute_n_pols(deg);
   unsigned int dofs_per_face = deg + 1;
   for(unsigned int d = 2; d < dim; ++d)
     dofs_per_face *= deg + 1;

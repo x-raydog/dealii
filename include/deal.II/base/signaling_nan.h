@@ -112,8 +112,8 @@ namespace numbers
 
           // recursively initialize sub-tensors with invalid elements
           for(unsigned int i = 0; i < dim; ++i)
-            nan_tensor[i]
-              = NaNInitializer<Tensor<rank - 1, dim, T>>::invalid_element();
+            nan_tensor[i] =
+              NaNInitializer<Tensor<rank - 1, dim, T>>::invalid_element();
 
           return nan_tensor;
         }

@@ -219,8 +219,8 @@ namespace Step24
     for(double detector_angle = 2 * numbers::PI; detector_angle >= 0;
         detector_angle -= detector_step_angle / 360 * 2 * numbers::PI)
       detector_locations.push_back(
-        Point<dim>(std::cos(detector_angle), std::sin(detector_angle))
-        * detector_radius);
+        Point<dim>(std::cos(detector_angle), std::sin(detector_angle)) *
+        detector_radius);
   }
 
   // @sect4{TATForwardProblem::setup_system}
@@ -267,8 +267,8 @@ namespace Step24
     GridGenerator::hyper_ball(triangulation, center, 1.);
     triangulation.refine_global(7);
 
-    time_step = GridTools::minimal_cell_diameter(triangulation) / wave_speed
-                / std::sqrt(1. * dim);
+    time_step = GridTools::minimal_cell_diameter(triangulation) / wave_speed /
+                std::sqrt(1. * dim);
 
     std::cout << "Number of active cells: " << triangulation.n_active_cells()
               << std::endl;
@@ -344,9 +344,9 @@ namespace Step24
 
       std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
-      typename DoFHandler<dim>::active_cell_iterator cell
-        = dof_handler.begin_active(),
-        endc = dof_handler.end();
+      typename DoFHandler<dim>::active_cell_iterator cell = dof_handler
+                                                              .begin_active(),
+                                                     endc = dof_handler.end();
       for(; cell != endc; ++cell)
         for(unsigned int f = 0; f < GeometryInfo<dim>::faces_per_cell; ++f)
           if(cell->at_boundary(f))
@@ -358,9 +358,9 @@ namespace Step24
               for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
                 for(unsigned int i = 0; i < dofs_per_cell; ++i)
                   for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                    cell_matrix(i, j) += (fe_values.shape_value(i, q_point)
-                                          * fe_values.shape_value(j, q_point)
-                                          * fe_values.JxW(q_point));
+                    cell_matrix(i, j) += (fe_values.shape_value(i, q_point) *
+                                          fe_values.shape_value(j, q_point) *
+                                          fe_values.JxW(q_point));
 
               cell->get_dof_indices(local_dof_indices);
               for(unsigned int i = 0; i < dofs_per_cell; ++i)
@@ -372,8 +372,8 @@ namespace Step24
     }
 
     system_matrix.copy_from(mass_matrix);
-    system_matrix.add(time_step * time_step * theta * theta * wave_speed
-                        * wave_speed,
+    system_matrix.add(time_step * time_step * theta * theta * wave_speed *
+                        wave_speed,
                       laplace_matrix);
     system_matrix.add(wave_speed * theta * time_step, boundary_matrix);
 
@@ -435,8 +435,8 @@ namespace Step24
 
     data_out.build_patches();
 
-    const std::string filename
-      = "solution-" + Utilities::int_to_string(timestep_number, 3) + ".gnuplot";
+    const std::string filename =
+      "solution-" + Utilities::int_to_string(timestep_number, 3) + ".gnuplot";
     std::ofstream output(filename);
     data_out.write_gnuplot(output);
   }

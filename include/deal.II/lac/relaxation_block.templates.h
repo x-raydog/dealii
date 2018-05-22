@@ -46,8 +46,8 @@ inline std::size_t
 RelaxationBlock<MatrixType, InverseNumberType, VectorType>::AdditionalData::
   memory_consumption() const
 {
-  std::size_t result
-    = sizeof(*this) + block_list.memory_consumption() - sizeof(block_list);
+  std::size_t result =
+    sizeof(*this) + block_list.memory_consumption() - sizeof(block_list);
   for(unsigned int i = 0; i < order.size(); ++i)
     result += MemoryConsumption::memory_consumption(order[i]);
   return result;
@@ -124,18 +124,18 @@ RelaxationBlock<MatrixType, InverseNumberType, VectorType>::block_kernel(
       M_cell.reinit(bs, bs);
 
       // Copy rows for this block into the matrix for the diagonal block
-      SparsityPattern::iterator row
-        = this->additional_data->block_list.begin(block);
+      SparsityPattern::iterator row =
+        this->additional_data->block_list.begin(block);
       for(size_type row_cell = 0; row_cell < bs; ++row_cell, ++row)
         {
-          for(typename MatrixType::const_iterator entry
-              = M.begin(row->column());
+          for(typename MatrixType::const_iterator entry =
+                M.begin(row->column());
               entry != M.end(row->column());
               ++entry)
             {
               const size_type column = entry->column();
-              const size_type col_cell
-                = this->additional_data->block_list.row_position(block, column);
+              const size_type col_cell =
+                this->additional_data->block_list.row_position(block, column);
               if(col_cell != numbers::invalid_size_type)
                 M_cell(row_cell, col_cell) = entry->value();
             }
@@ -222,15 +222,15 @@ RelaxationBlock<MatrixType, InverseNumberType, VectorType>::do_step(
 {
   Assert(additional_data->invert_diagonal, ExcNotImplemented());
 
-  const VectorType& ghosted_prev
-    = internal::prepare_ghost_vector(prev, additional_data->temp_ghost_vector);
+  const VectorType& ghosted_prev =
+    internal::prepare_ghost_vector(prev, additional_data->temp_ghost_vector);
 
   const MatrixType&                       M = *this->A;
   Vector<typename VectorType::value_type> b_cell, x_cell;
 
   const bool         permutation_empty = additional_data->order.size() == 0;
-  const unsigned int n_permutations
-    = (permutation_empty) ? 1U : additional_data->order.size();
+  const unsigned int n_permutations =
+    (permutation_empty) ? 1U : additional_data->order.size();
   const size_type n_blocks = additional_data->block_list.n_rows();
 
   if(!permutation_empty)
@@ -242,29 +242,29 @@ RelaxationBlock<MatrixType, InverseNumberType, VectorType>::do_step(
       for(unsigned int bi = 0; bi < n_blocks; ++bi)
         {
           const unsigned int raw_block = backward ? (n_blocks - bi - 1) : bi;
-          const unsigned int block
-            = permutation_empty ?
-                raw_block :
-                (backward ? (additional_data
-                               ->order[n_permutations - 1 - perm][raw_block]) :
-                            (additional_data->order[perm][raw_block]));
+          const unsigned int block =
+            permutation_empty ?
+              raw_block :
+              (backward ? (additional_data
+                             ->order[n_permutations - 1 - perm][raw_block]) :
+                          (additional_data->order[perm][raw_block]));
 
           const size_type bs = additional_data->block_list.row_length(block);
 
           b_cell.reinit(bs);
           x_cell.reinit(bs);
           // Collect off-diagonal parts
-          SparsityPattern::iterator row
-            = additional_data->block_list.begin(block);
+          SparsityPattern::iterator row =
+            additional_data->block_list.begin(block);
           for(size_type row_cell = 0; row_cell < bs; ++row_cell, ++row)
             {
               b_cell(row_cell) = src(row->column());
-              for(typename MatrixType::const_iterator entry
-                  = M.begin(row->column());
+              for(typename MatrixType::const_iterator entry =
+                    M.begin(row->column());
                   entry != M.end(row->column());
                   ++entry)
-                b_cell(row_cell)
-                  -= entry->value() * ghosted_prev(entry->column());
+                b_cell(row_cell) -=
+                  entry->value() * ghosted_prev(entry->column());
             }
           // Apply inverse diagonal
           this->inverse_vmult(block, x_cell, b_cell);
@@ -277,8 +277,8 @@ RelaxationBlock<MatrixType, InverseNumberType, VectorType>::do_step(
           // Store in result vector
           row = additional_data->block_list.begin(block);
           for(size_type row_cell = 0; row_cell < bs; ++row_cell, ++row)
-            dst(row->column())
-              += additional_data->relaxation * x_cell(row_cell);
+            dst(row->column()) +=
+              additional_data->relaxation * x_cell(row_cell);
         }
     }
   dst.compress(dealii::VectorOperation::add);

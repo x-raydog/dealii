@@ -77,8 +77,8 @@ void make_grid(Triangulation<2>& triangulation)
       for(auto cell : triangulation.active_cell_iterators())
         for(unsigned int v = 0; v < GeometryInfo<2>::vertices_per_cell; ++v)
           {
-            const double distance_from_center
-              = center.distance(cell->vertex(v));
+            const double distance_from_center =
+              center.distance(cell->vertex(v));
 
             if(std::fabs(distance_from_center - inner_radius) < 1e-10)
               {

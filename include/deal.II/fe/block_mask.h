@@ -150,8 +150,8 @@ public:
    * be omitted and the result of size() is taken.
    */
   unsigned int
-  n_selected_blocks(const unsigned int overall_number_of_blocks
-                    = numbers::invalid_unsigned_int) const;
+  n_selected_blocks(const unsigned int overall_number_of_blocks =
+                      numbers::invalid_unsigned_int) const;
 
   /**
    * Return the index of the first selected block. The argument is there for
@@ -160,8 +160,8 @@ public:
    * The function throws an exception if no block is selected at all.
    */
   unsigned int
-  first_selected_block(const unsigned int overall_number_of_blocks
-                       = numbers::invalid_unsigned_int) const;
+  first_selected_block(const unsigned int overall_number_of_blocks =
+                         numbers::invalid_unsigned_int) const;
 
   /**
    * Return true if this mask represents a default constructed mask that

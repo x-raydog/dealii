@@ -80,10 +80,10 @@ namespace CUDAWrappers
     typedef typename MatrixFree<dim, Number>::Data data_type;
     static constexpr unsigned int                  dimension    = dim;
     static constexpr unsigned int                  n_components = n_components_;
-    static constexpr unsigned int                  n_q_points
-      = Utilities::pow(n_q_points_1d, dim);
-    static constexpr unsigned int tensor_dofs_per_cell
-      = Utilities::pow(fe_degree + 1, dim);
+    static constexpr unsigned int                  n_q_points =
+      Utilities::pow(n_q_points_1d, dim);
+    static constexpr unsigned int tensor_dofs_per_cell =
+      Utilities::pow(fe_degree + 1, dim);
 
     /**
      * Constructor.
@@ -219,10 +219,10 @@ namespace CUDAWrappers
   {
     static_assert(n_components_ == 1, "This function only supports FE with one \
                   components");
-    const unsigned int idx
-      = (threadIdx.x % n_q_points_1d)
-        + (dim > 1 ? threadIdx.y : 0) * n_q_points_1d
-        + (dim > 2 ? threadIdx.z : 0) * n_q_points_1d * n_q_points_1d;
+    const unsigned int idx =
+      (threadIdx.x % n_q_points_1d) +
+      (dim > 1 ? threadIdx.y : 0) * n_q_points_1d +
+      (dim > 2 ? threadIdx.z : 0) * n_q_points_1d * n_q_points_1d;
 
     const unsigned int src_idx = local_to_global[idx];
     // Use the read-only data cache.
@@ -250,10 +250,10 @@ namespace CUDAWrappers
       internal::resolve_hanging_nodes_shmem<dim, fe_degree, true>(
         values, constraint_mask);
 
-    const unsigned int idx
-      = (threadIdx.x % n_q_points_1d)
-        + (dim > 1 ? threadIdx.y : 0) * n_q_points_1d
-        + (dim > 2 ? threadIdx.z : 0) * n_q_points_1d * n_q_points_1d;
+    const unsigned int idx =
+      (threadIdx.x % n_q_points_1d) +
+      (dim > 1 ? threadIdx.y : 0) * n_q_points_1d +
+      (dim > 2 ? threadIdx.z : 0) * n_q_points_1d * n_q_points_1d;
     const unsigned int destination_idx = local_to_global[idx];
 
     dst[destination_idx] += values[idx];
@@ -376,8 +376,8 @@ namespace CUDAWrappers
       {
         Number tmp = 0.;
         for(int d_2 = 0; d_2 < dim; ++d_2)
-          tmp += inv_jacobian[padding_length * n_cells * (dim * d_2 + d_1)]
-                 * gradients[d_2][q_point];
+          tmp += inv_jacobian[padding_length * n_cells * (dim * d_2 + d_1)] *
+                 gradients[d_2][q_point];
         grad[d_1] = tmp;
       }
 
@@ -399,8 +399,8 @@ namespace CUDAWrappers
       {
         Number tmp = 0.;
         for(int d_2 = 0; d_2 < dim; ++d_2)
-          tmp += inv_jacobian[n_cells * padding_length * (dim * d_1 + d_2)]
-                 * grad_in[d_2];
+          tmp += inv_jacobian[n_cells * padding_length * (dim * d_1 + d_2)] *
+                 grad_in[d_2];
         gradients[d_1][q_point] = tmp * JxW[q_point];
       }
   }
@@ -415,13 +415,13 @@ namespace CUDAWrappers
   FEEvaluation<dim, fe_degree, n_q_points_1d, n_components_, Number>::
     apply_quad_point_operations(const functor& func)
   {
-    const unsigned int q_point
-      = (dim == 1 ?
-           threadIdx.x % n_q_points_1d :
-           dim == 2 ?
-           threadIdx.x % n_q_points_1d + n_q_points_1d * threadIdx.y :
-           threadIdx.x % n_q_points_1d
-               + n_q_points_1d * (threadIdx.y + n_q_points_1d * threadIdx.z));
+    const unsigned int q_point =
+      (dim == 1 ?
+         threadIdx.x % n_q_points_1d :
+         dim == 2 ?
+         threadIdx.x % n_q_points_1d + n_q_points_1d * threadIdx.y :
+         threadIdx.x % n_q_points_1d +
+             n_q_points_1d * (threadIdx.y + n_q_points_1d * threadIdx.z));
     func(this, q_point);
 
     __syncthreads();

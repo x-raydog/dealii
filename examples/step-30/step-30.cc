@@ -219,11 +219,11 @@ namespace Step30
       for(unsigned int i = 0; i < fe_v.dofs_per_cell; ++i)
         {
           for(unsigned int j = 0; j < fe_v.dofs_per_cell; ++j)
-            ui_vi_matrix(i, j) -= beta[point] * fe_v.shape_grad(i, point)
-                                  * fe_v.shape_value(j, point) * JxW[point];
+            ui_vi_matrix(i, j) -= beta[point] * fe_v.shape_grad(i, point) *
+                                  fe_v.shape_value(j, point) * JxW[point];
 
-          cell_vector(i)
-            += rhs[point] * fe_v.shape_value(i, point) * JxW[point];
+          cell_vector(i) +=
+            rhs[point] * fe_v.shape_value(i, point) * JxW[point];
         }
   }
 
@@ -249,12 +249,12 @@ namespace Step30
         if(beta_n > 0)
           for(unsigned int i = 0; i < fe_v.dofs_per_cell; ++i)
             for(unsigned int j = 0; j < fe_v.dofs_per_cell; ++j)
-              ui_vi_matrix(i, j) += beta_n * fe_v.shape_value(j, point)
-                                    * fe_v.shape_value(i, point) * JxW[point];
+              ui_vi_matrix(i, j) += beta_n * fe_v.shape_value(j, point) *
+                                    fe_v.shape_value(i, point) * JxW[point];
         else
           for(unsigned int i = 0; i < fe_v.dofs_per_cell; ++i)
-            cell_vector(i)
-              -= beta_n * g[point] * fe_v.shape_value(i, point) * JxW[point];
+            cell_vector(i) -=
+              beta_n * g[point] * fe_v.shape_value(i, point) * JxW[point];
       }
   }
 
@@ -282,28 +282,28 @@ namespace Step30
           {
             for(unsigned int i = 0; i < fe_v.dofs_per_cell; ++i)
               for(unsigned int j = 0; j < fe_v.dofs_per_cell; ++j)
-                ui_vi_matrix(i, j) += beta_n * fe_v.shape_value(j, point)
-                                      * fe_v.shape_value(i, point) * JxW[point];
+                ui_vi_matrix(i, j) += beta_n * fe_v.shape_value(j, point) *
+                                      fe_v.shape_value(i, point) * JxW[point];
 
             for(unsigned int k = 0; k < fe_v_neighbor.dofs_per_cell; ++k)
               for(unsigned int j = 0; j < fe_v.dofs_per_cell; ++j)
-                ui_ve_matrix(k, j) -= beta_n * fe_v.shape_value(j, point)
-                                      * fe_v_neighbor.shape_value(k, point)
-                                      * JxW[point];
+                ui_ve_matrix(k, j) -= beta_n * fe_v.shape_value(j, point) *
+                                      fe_v_neighbor.shape_value(k, point) *
+                                      JxW[point];
           }
         else
           {
             for(unsigned int i = 0; i < fe_v.dofs_per_cell; ++i)
               for(unsigned int l = 0; l < fe_v_neighbor.dofs_per_cell; ++l)
-                ue_vi_matrix(i, l) += beta_n
-                                      * fe_v_neighbor.shape_value(l, point)
-                                      * fe_v.shape_value(i, point) * JxW[point];
+                ue_vi_matrix(i, l) += beta_n *
+                                      fe_v_neighbor.shape_value(l, point) *
+                                      fe_v.shape_value(i, point) * JxW[point];
 
             for(unsigned int k = 0; k < fe_v_neighbor.dofs_per_cell; ++k)
               for(unsigned int l = 0; l < fe_v_neighbor.dofs_per_cell; ++l)
-                ue_ve_matrix(k, l)
-                  -= beta_n * fe_v_neighbor.shape_value(l, point)
-                     * fe_v_neighbor.shape_value(k, point) * JxW[point];
+                ue_ve_matrix(k, l) -=
+                  beta_n * fe_v_neighbor.shape_value(l, point) *
+                  fe_v_neighbor.shape_value(k, point) * JxW[point];
           }
       }
   }
@@ -402,10 +402,10 @@ namespace Step30
     dof_handler.distribute_dofs(fe);
     sparsity_pattern.reinit(dof_handler.n_dofs(),
                             dof_handler.n_dofs(),
-                            (GeometryInfo<dim>::faces_per_cell
-                               * GeometryInfo<dim>::max_children_per_face
-                             + 1)
-                              * fe.dofs_per_cell);
+                            (GeometryInfo<dim>::faces_per_cell *
+                               GeometryInfo<dim>::max_children_per_face +
+                             1) *
+                              fe.dofs_per_cell);
 
     DoFTools::make_flux_sparsity_pattern(dof_handler, sparsity_pattern);
 
@@ -435,13 +435,13 @@ namespace Step30
     std::vector<types::global_dof_index> dofs(dofs_per_cell);
     std::vector<types::global_dof_index> dofs_neighbor(dofs_per_cell);
 
-    const UpdateFlags update_flags = update_values | update_gradients
-                                     | update_quadrature_points
-                                     | update_JxW_values;
+    const UpdateFlags update_flags = update_values | update_gradients |
+                                     update_quadrature_points |
+                                     update_JxW_values;
 
-    const UpdateFlags face_update_flags
-      = update_values | update_quadrature_points | update_JxW_values
-        | update_normal_vectors;
+    const UpdateFlags face_update_flags =
+      update_values | update_quadrature_points | update_JxW_values |
+      update_normal_vectors;
 
     const UpdateFlags neighbor_face_update_flags = update_values;
 
@@ -461,9 +461,9 @@ namespace Step30
 
     Vector<double> cell_vector(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         ui_vi_matrix = 0;
@@ -492,8 +492,8 @@ namespace Step30
               {
                 Assert(cell->neighbor(face_no).state() == IteratorState::valid,
                        ExcInternalError());
-                typename DoFHandler<dim>::cell_iterator neighbor
-                  = cell->neighbor(face_no);
+                typename DoFHandler<dim>::cell_iterator neighbor =
+                  cell->neighbor(face_no);
                 // Case b), we decide that there are finer cells as neighbors
                 // by asking the face, whether it has children. if so, then
                 // there must also be finer cells which are children or
@@ -504,8 +504,8 @@ namespace Step30
                     // the direction of our cell. Using the @p
                     // neighbor_face_no function we get this information for
                     // both coarser and non-coarser neighbors.
-                    const unsigned int neighbor2
-                      = cell->neighbor_face_no(face_no);
+                    const unsigned int neighbor2 =
+                      cell->neighbor_face_no(face_no);
 
                     // Now we loop over all subfaces, i.e. the children and
                     // possibly grandchildren of the current face.
@@ -517,9 +517,8 @@ namespace Step30
                         // use the @p neighbor_child_on_subface function. it
                         // takes care of all the complicated situations of
                         // anisotropic refinement and non-standard faces.
-                        typename DoFHandler<dim>::cell_iterator neighbor_child
-                          = cell->neighbor_child_on_subface(face_no,
-                                                            subface_no);
+                        typename DoFHandler<dim>::cell_iterator neighbor_child =
+                          cell->neighbor_child_on_subface(face_no, subface_no);
                         Assert(!neighbor_child->has_children(),
                                ExcInternalError());
 
@@ -565,17 +564,17 @@ namespace Step30
                     // cell with the lower index does the work. In the rare
                     // case that both cells have the same index, the cell with
                     // lower level is selected.
-                    if(!cell->neighbor_is_coarser(face_no)
-                       && (neighbor->index() > cell->index()
-                           || (neighbor->level() < cell->level()
-                               && neighbor->index() == cell->index())))
+                    if(!cell->neighbor_is_coarser(face_no) &&
+                       (neighbor->index() > cell->index() ||
+                        (neighbor->level() < cell->level() &&
+                         neighbor->index() == cell->index())))
                       {
                         // Here we know, that the neighbor is not coarser so we
                         // can use the usual @p neighbor_of_neighbor
                         // function. However, we could also use the more
                         // general @p neighbor_face_no function.
-                        const unsigned int neighbor2
-                          = cell->neighbor_of_neighbor(face_no);
+                        const unsigned int neighbor2 =
+                          cell->neighbor_of_neighbor(face_no);
 
                         ue_vi_matrix = 0;
                         ui_ve_matrix = 0;
@@ -654,12 +653,12 @@ namespace Step30
       mapping, dof_handler, solution2, gradient_indicator);
 
     // and scale it to obtain an error indicator.
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(unsigned int cell_no = 0; cell != endc; ++cell, ++cell_no)
-      gradient_indicator(cell_no)
-        *= std::pow(cell->diameter(), 1 + 1.0 * dim / 2);
+      gradient_indicator(cell_no) *=
+        std::pow(cell->diameter(), 1 + 1.0 * dim / 2);
     // Then we use this indicator to flag the 30 percent of the cells with
     // highest error indicator to be refined.
     GridRefinement::refine_and_coarsen_fixed_number(
@@ -688,8 +687,8 @@ namespace Step30
   {
     // We want to evaluate the jump over faces of the flagged cells, so we
     // need some objects to evaluate values of the solution on faces.
-    UpdateFlags face_update_flags
-      = UpdateFlags(update_values | update_JxW_values);
+    UpdateFlags face_update_flags =
+      UpdateFlags(update_values | update_JxW_values);
 
     FEFaceValues<dim> fe_v_face(
       mapping, fe, face_quadrature, face_update_flags);
@@ -699,9 +698,9 @@ namespace Step30
       mapping, fe, face_quadrature, update_values);
 
     // Now we need to loop over all active cells.
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
 
     for(; cell != endc; ++cell)
       // We only need to consider cells which are flagged for refinement.
@@ -714,16 +713,16 @@ namespace Step30
               face_no < GeometryInfo<dim>::faces_per_cell;
               ++face_no)
             {
-              typename DoFHandler<dim>::face_iterator face
-                = cell->face(face_no);
+              typename DoFHandler<dim>::face_iterator face =
+                cell->face(face_no);
 
               if(!face->at_boundary())
                 {
-                  Assert(cell->neighbor(face_no).state()
-                           == IteratorState::valid,
+                  Assert(cell->neighbor(face_no).state() ==
+                           IteratorState::valid,
                          ExcInternalError());
-                  typename DoFHandler<dim>::cell_iterator neighbor
-                    = cell->neighbor(face_no);
+                  typename DoFHandler<dim>::cell_iterator neighbor =
+                    cell->neighbor(face_no);
 
                   std::vector<double> u(fe_v_face.n_quadrature_points);
                   std::vector<double> u_neighbor(fe_v_face.n_quadrature_points);
@@ -745,9 +744,9 @@ namespace Step30
                         {
                           // get an iterator pointing to the cell behind the
                           // present subface...
-                          typename DoFHandler<dim>::cell_iterator neighbor_child
-                            = cell->neighbor_child_on_subface(face_no,
-                                                              subface_no);
+                          typename DoFHandler<dim>::cell_iterator
+                            neighbor_child = cell->neighbor_child_on_subface(
+                              face_no, subface_no);
                           Assert(!neighbor_child->has_children(),
                                  ExcInternalError());
                           // ... and reinit the respective FEFaceValues and
@@ -760,8 +759,8 @@ namespace Step30
                                                                  u_neighbor);
                           // as well as the quadrature weights, multiplied by
                           // the Jacobian determinant.
-                          const std::vector<double>& JxW
-                            = fe_v_subface.get_JxW_values();
+                          const std::vector<double>& JxW =
+                            fe_v_subface.get_JxW_values();
                           // Now we loop over all quadrature points
                           for(unsigned int x = 0;
                               x < fe_v_subface.n_quadrature_points;
@@ -778,8 +777,8 @@ namespace Step30
                               // second coordinate direction and so on, so we
                               // accumulate these values into vectors with
                               // <code>dim</code> components.
-                              jump[face_no / 2]
-                                += std::fabs(u[x] - u_neighbor[x]) * JxW[x];
+                              jump[face_no / 2] +=
+                                std::fabs(u[x] - u_neighbor[x]) * JxW[x];
                               // We also sum up the scaled weights to obtain
                               // the measure of the face.
                               area[face_no / 2] += JxW[x];
@@ -795,8 +794,8 @@ namespace Step30
                           // consideration. Apart from that, we do much the
                           // same as with one of the subcells in the above
                           // case.
-                          unsigned int neighbor2
-                            = cell->neighbor_of_neighbor(face_no);
+                          unsigned int neighbor2 =
+                            cell->neighbor_of_neighbor(face_no);
 
                           fe_v_face.reinit(cell, face_no);
                           fe_v_face_neighbor.reinit(neighbor, neighbor2);
@@ -805,15 +804,15 @@ namespace Step30
                           fe_v_face_neighbor.get_function_values(solution2,
                                                                  u_neighbor);
 
-                          const std::vector<double>& JxW
-                            = fe_v_face.get_JxW_values();
+                          const std::vector<double>& JxW =
+                            fe_v_face.get_JxW_values();
 
                           for(unsigned int x = 0;
                               x < fe_v_face.n_quadrature_points;
                               ++x)
                             {
-                              jump[face_no / 2]
-                                += std::fabs(u[x] - u_neighbor[x]) * JxW[x];
+                              jump[face_no / 2] +=
+                                std::fabs(u[x] - u_neighbor[x]) * JxW[x];
                               area[face_no / 2] += JxW[x];
                             }
                         }
@@ -827,19 +826,18 @@ namespace Step30
                           // again takes care of anisotropic refinement and
                           // non-standard face orientation by itself.
                           std::pair<unsigned int, unsigned int>
-                            neighbor_face_subface
-                            = cell->neighbor_of_coarser_neighbor(face_no);
-                          Assert(neighbor_face_subface.first
-                                   < GeometryInfo<dim>::faces_per_cell,
+                            neighbor_face_subface =
+                              cell->neighbor_of_coarser_neighbor(face_no);
+                          Assert(neighbor_face_subface.first <
+                                   GeometryInfo<dim>::faces_per_cell,
                                  ExcInternalError());
-                          Assert(neighbor_face_subface.second
-                                   < neighbor->face(neighbor_face_subface.first)
-                                       ->number_of_children(),
+                          Assert(neighbor_face_subface.second <
+                                   neighbor->face(neighbor_face_subface.first)
+                                     ->number_of_children(),
                                  ExcInternalError());
                           Assert(neighbor->neighbor_child_on_subface(
                                    neighbor_face_subface.first,
-                                   neighbor_face_subface.second)
-                                   == cell,
+                                   neighbor_face_subface.second) == cell,
                                  ExcInternalError());
 
                           fe_v_face.reinit(cell, face_no);
@@ -851,15 +849,15 @@ namespace Step30
                           fe_v_subface.get_function_values(solution2,
                                                            u_neighbor);
 
-                          const std::vector<double>& JxW
-                            = fe_v_face.get_JxW_values();
+                          const std::vector<double>& JxW =
+                            fe_v_face.get_JxW_values();
 
                           for(unsigned int x = 0;
                               x < fe_v_face.n_quadrature_points;
                               ++x)
                             {
-                              jump[face_no / 2]
-                                += std::fabs(u[x] - u_neighbor[x]) * JxW[x];
+                              jump[face_no / 2] +=
+                                std::fabs(u[x] - u_neighbor[x]) * JxW[x];
                               area[face_no / 2] += JxW[x];
                             }
                         }
@@ -884,8 +882,8 @@ namespace Step30
           // axis. Otherwise we leave the refinement flag unchanged, resulting
           // in isotropic refinement.
           for(unsigned int i = 0; i < dim; ++i)
-            if(average_jumps[i] > anisotropic_threshold_ratio
-                                    * (sum_of_average_jumps - average_jumps[i]))
+            if(average_jumps[i] > anisotropic_threshold_ratio *
+                                    (sum_of_average_jumps - average_jumps[i]))
               cell->set_refine_flag(RefinementCase<dim>::cut_axis(i));
         }
   }

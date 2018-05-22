@@ -164,8 +164,8 @@ public:
     /**
      * Value for non-existing diagonal.
      */
-    static const unsigned short invalid_diagonal
-      = static_cast<unsigned short>(-1);
+    static const unsigned short invalid_diagonal =
+      static_cast<unsigned short>(-1);
   };
 
 public:
@@ -669,8 +669,8 @@ public:
   precondition_SSOR(Vector<somenumber>&             dst,
                     const Vector<somenumber>&       src,
                     const number                    om = 1.,
-                    const std::vector<std::size_t>& pos_right_of_diagonal
-                    = std::vector<std::size_t>()) const;
+                    const std::vector<std::size_t>& pos_right_of_diagonal =
+                      std::vector<std::size_t>()) const;
 
   /**
    * Apply SOR preconditioning matrix to @p src. The result of this method is
@@ -991,8 +991,8 @@ inline SparseMatrixEZ<number>::const_iterator::const_iterator(
       // empty, iterate until a
       // non-empty row is found or we
       // hit the end of the matrix.
-      while(accessor.a_row < accessor.matrix->m()
-            && accessor.matrix->row_info[accessor.a_row].length == 0);
+      while(accessor.a_row < accessor.matrix->m() &&
+            accessor.matrix->row_info[accessor.a_row].length == 0);
     }
 }
 
@@ -1016,8 +1016,8 @@ SparseMatrixEZ<number>::const_iterator::operator++()
         {
           ++accessor.a_row;
         }
-      while(accessor.a_row < accessor.matrix->m()
-            && accessor.matrix->row_info[accessor.a_row].length == 0);
+      while(accessor.a_row < accessor.matrix->m() &&
+            accessor.matrix->row_info[accessor.a_row].length == 0);
     }
   return *this;
 }
@@ -1041,8 +1041,8 @@ inline bool
 SparseMatrixEZ<number>::const_iterator::
 operator==(const const_iterator& other) const
 {
-  return (accessor.row() == other.accessor.row()
-          && accessor.index() == other.accessor.index());
+  return (accessor.row() == other.accessor.row() &&
+          accessor.index() == other.accessor.index());
 }
 
 template <typename number>
@@ -1058,9 +1058,9 @@ inline bool
 SparseMatrixEZ<number>::const_iterator::
 operator<(const const_iterator& other) const
 {
-  return (accessor.row() < other.accessor.row()
-          || (accessor.row() == other.accessor.row()
-              && accessor.index() < other.accessor.index()));
+  return (accessor.row() < other.accessor.row() ||
+          (accessor.row() == other.accessor.row() &&
+           accessor.index() < other.accessor.index()));
 }
 
 //---------------------------------------------------------------------------
@@ -1484,10 +1484,10 @@ SparseMatrixEZ<number>::conjugate_add(const MatrixTypeA& A,
           // nonzero entry in column
           // ai->row()
           b1 = B.begin(minrow[ai->row()]);
-          const typename MatrixTypeB::const_iterator be1
-            = B.end(maxrow[ai->row()]);
-          const typename MatrixTypeB::const_iterator be2
-            = B.end(maxrow[ai->column()]);
+          const typename MatrixTypeB::const_iterator be1 =
+            B.end(maxrow[ai->row()]);
+          const typename MatrixTypeB::const_iterator be2 =
+            B.end(maxrow[ai->column()]);
 
           while(b1 != be1)
             {
@@ -1500,8 +1500,8 @@ SparseMatrixEZ<number>::conjugate_add(const MatrixTypeA& A,
                 {
                   const size_type i = b1->row();
 
-                  typename MatrixTypeB::const_iterator b2
-                    = B.begin(minrow[ai->column()]);
+                  typename MatrixTypeB::const_iterator b2 =
+                    B.begin(minrow[ai->column()]);
                   while(b2 != be2)
                     {
                       if(b2->column() == ai->column())

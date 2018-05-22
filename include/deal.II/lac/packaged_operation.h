@@ -147,8 +147,7 @@ public:
    * Default copy assignment operator.
    */
   PackagedOperation<Range>&
-  operator=(const PackagedOperation<Range>&)
-    = default;
+  operator=(const PackagedOperation<Range>&) = default;
 
   /**
    * Copy assignment operator that creates a PackagedOperation object from a

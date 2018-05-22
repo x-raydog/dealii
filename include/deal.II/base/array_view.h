@@ -302,8 +302,8 @@ inline bool
 ArrayView<ElementType>::
 operator==(const ArrayView<const value_type>& other_view) const
 {
-  return (other_view.data() == starting_element)
-         && (other_view.size() == n_elements);
+  return (other_view.data() == starting_element) &&
+         (other_view.size() == n_elements);
 }
 
 template <typename ElementType>
@@ -311,8 +311,8 @@ inline bool
 ArrayView<ElementType>::operator==(
   const ArrayView<typename std::remove_cv<value_type>::type>& other_view) const
 {
-  return (other_view.data() == starting_element)
-         && (other_view.size() == n_elements);
+  return (other_view.data() == starting_element) &&
+         (other_view.size() == n_elements);
 }
 
 template <typename ElementType>
@@ -401,8 +401,8 @@ namespace internal
     {
       const auto n = std::distance(first, last);
       for(typename std::decay<decltype(n)>::type i = 0; i < n; ++i)
-        if(std::addressof(*(std::next(first, i)))
-           != std::next(std::addressof(*first), i))
+        if(std::addressof(*(std::next(first, i))) !=
+           std::next(std::addressof(*first), i))
           return false;
       return true;
     }

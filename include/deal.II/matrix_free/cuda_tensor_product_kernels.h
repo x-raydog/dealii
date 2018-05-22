@@ -64,10 +64,10 @@ namespace CUDAWrappers
                                   n_q_points_1d,
                                   Number>
     {
-      static constexpr unsigned int dofs_per_cell
-        = Utilities::pow(fe_degree + 1, dim);
-      static constexpr unsigned int n_q_points
-        = Utilities::pow(n_q_points_1d, dim);
+      static constexpr unsigned int dofs_per_cell =
+        Utilities::pow(fe_degree + 1, dim);
+      static constexpr unsigned int n_q_points =
+        Utilities::pow(n_q_points_1d, dim);
 
       __device__
       EvaluatorTensorProduct();
@@ -181,25 +181,25 @@ namespace CUDAWrappers
       Number t = 0;
       for(int k = 0; k < n_q_points_1d; ++k)
         {
-          const unsigned int shape_idx
-            = dof_to_quad ? (q + k * n_q_points_1d) : (k + q * n_q_points_1d);
-          const unsigned int source_idx
-            = (direction == 0) ? (k + n_q_points_1d * (i + n_q_points_1d * j)) :
-                                 (direction == 1) ?
-                                 (i + n_q_points_1d * (k + n_q_points_1d * j)) :
+          const unsigned int shape_idx =
+            dof_to_quad ? (q + k * n_q_points_1d) : (k + q * n_q_points_1d);
+          const unsigned int source_idx =
+            (direction == 0) ?
+              (k + n_q_points_1d * (i + n_q_points_1d * j)) :
+              (direction == 1) ? (i + n_q_points_1d * (k + n_q_points_1d * j)) :
                                  (i + n_q_points_1d * (j + n_q_points_1d * k));
-          t += shape_data[shape_idx]
-               * (in_place ? out[source_idx] : in[source_idx]);
+          t += shape_data[shape_idx] *
+               (in_place ? out[source_idx] : in[source_idx]);
         }
 
       if(in_place)
         __syncthreads();
 
-      const unsigned int destination_idx
-        = (direction == 0) ?
-            (q + n_q_points_1d * (i + n_q_points_1d * j)) :
-            (direction == 1) ? (i + n_q_points_1d * (q + n_q_points_1d * j)) :
-                               (i + n_q_points_1d * (j + n_q_points_1d * q));
+      const unsigned int destination_idx =
+        (direction == 0) ?
+          (q + n_q_points_1d * (i + n_q_points_1d * j)) :
+          (direction == 1) ? (i + n_q_points_1d * (q + n_q_points_1d * j)) :
+                             (i + n_q_points_1d * (j + n_q_points_1d * q));
 
       if(add)
         out[destination_idx] += t;

@@ -92,9 +92,8 @@ MGTransferSelect<number>::copy_from_mg(
       //and copy dst to the right component,
       //apply the constraints then and copy
       //the block back to dst.
-      const unsigned int n_blocks
-        = *std::max_element(target_component.begin(), target_component.end())
-          + 1;
+      const unsigned int n_blocks =
+        *std::max_element(target_component.begin(), target_component.end()) + 1;
       std::vector<types::global_dof_index> dofs_per_block(n_blocks);
       DoFTools::count_dofs_per_block(
         mg_dof_handler, dofs_per_block, target_component);
@@ -139,10 +138,10 @@ MGTransferSelect<number>::do_copy_from_mg(
   OutVector&                           dst,
   const MGLevelObject<Vector<number>>& src) const
 {
-  typename DoFHandler<dim, spacedim>::active_cell_iterator level_cell
-    = mg_dof_handler.begin_active();
-  const typename DoFHandler<dim, spacedim>::active_cell_iterator endc
-    = mg_dof_handler.end();
+  typename DoFHandler<dim, spacedim>::active_cell_iterator level_cell =
+    mg_dof_handler.begin_active();
+  const typename DoFHandler<dim, spacedim>::active_cell_iterator endc =
+    mg_dof_handler.end();
 
   // traverse all cells and copy the
   // data appropriately to the output
@@ -170,10 +169,10 @@ MGTransferSelect<number>::do_copy_from_mg_add(
   OutVector&                           dst,
   const MGLevelObject<Vector<number>>& src) const
 {
-  typename DoFHandler<dim, spacedim>::active_cell_iterator level_cell
-    = mg_dof_handler.begin_active();
-  const typename DoFHandler<dim, spacedim>::active_cell_iterator endc
-    = mg_dof_handler.end();
+  typename DoFHandler<dim, spacedim>::active_cell_iterator level_cell =
+    mg_dof_handler.begin_active();
+  const typename DoFHandler<dim, spacedim>::active_cell_iterator endc =
+    mg_dof_handler.end();
 
   // traverse all cells and copy the
   // data appropriately to the output

@@ -1649,8 +1649,8 @@ namespace Threads
     {
       // create a task descriptor and tell it to queue itself up with
       // the scheduling system
-      task_descriptor
-        = std::make_shared<internal::TaskDescriptor<RT>>(function_object);
+      task_descriptor =
+        std::make_shared<internal::TaskDescriptor<RT>>(function_object);
       task_descriptor->queue_task();
     }
 
@@ -1706,8 +1706,8 @@ namespace Threads
     bool
     joinable() const
     {
-      return (task_descriptor
-              != std::shared_ptr<internal::TaskDescriptor<RT>>());
+      return (task_descriptor !=
+              std::shared_ptr<internal::TaskDescriptor<RT>>());
     }
 
     /**

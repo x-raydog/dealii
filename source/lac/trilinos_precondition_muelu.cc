@@ -128,8 +128,8 @@ namespace TrilinosWrappers
 
     const Epetra_Map& domain_map = matrix.OperatorDomainMap();
 
-    const size_type constant_modes_dimension
-      = additional_data.constant_modes.size();
+    const size_type constant_modes_dimension =
+      additional_data.constant_modes.size();
     Epetra_MultiVector distributed_constant_modes(
       domain_map, constant_modes_dimension > 0 ? constant_modes_dimension : 1);
     std::vector<double> dummy(constant_modes_dimension);
@@ -137,19 +137,17 @@ namespace TrilinosWrappers
     if(constant_modes_dimension > 0)
       {
         const size_type n_rows = TrilinosWrappers::n_global_rows(matrix);
-        const bool      constant_modes_are_global
-          = additional_data.constant_modes[0].size() == n_rows;
-        const size_type n_relevant_rows
-          = constant_modes_are_global ?
-              n_rows :
-              additional_data.constant_modes[0].size();
+        const bool      constant_modes_are_global =
+          additional_data.constant_modes[0].size() == n_rows;
+        const size_type n_relevant_rows =
+          constant_modes_are_global ? n_rows :
+                                      additional_data.constant_modes[0].size();
         const size_type my_size = domain_map.NumMyElements();
         if(constant_modes_are_global == false)
           Assert(n_relevant_rows == my_size,
                  ExcDimensionMismatch(n_relevant_rows, my_size));
-        Assert(n_rows
-                 == static_cast<size_type>(TrilinosWrappers::global_length(
-                      distributed_constant_modes)),
+        Assert(n_rows == static_cast<size_type>(TrilinosWrappers::global_length(
+                           distributed_constant_modes)),
                ExcDimensionMismatch(
                  n_rows,
                  TrilinosWrappers::global_length(distributed_constant_modes)));
@@ -162,12 +160,12 @@ namespace TrilinosWrappers
         for(size_type d = 0; d < constant_modes_dimension; ++d)
           for(size_type row = 0; row < my_size; ++row)
             {
-              TrilinosWrappers::types::int_type global_row_id
-                = constant_modes_are_global ?
-                    TrilinosWrappers::global_index(domain_map, row) :
-                    row;
-              distributed_constant_modes[d][row]
-                = additional_data.constant_modes[d][global_row_id];
+              TrilinosWrappers::types::int_type global_row_id =
+                constant_modes_are_global ?
+                  TrilinosWrappers::global_index(domain_map, row) :
+                  row;
+              distributed_constant_modes[d][row] =
+                additional_data.constant_modes[d][global_row_id];
             }
 
         parameter_list.set("null space: type", "pre-computed");
@@ -206,12 +204,12 @@ namespace TrilinosWrappers
 
     // Cast matrix into a MueLu::Matrix. The constness needs to be cast away.
     // MueLu uses Teuchos::RCP which are Trilinos version of std::shared_ptr.
-    Teuchos::RCP<Epetra_CrsMatrix> rcp_matrix
-      = Teuchos::rcpFromRef(*(const_cast<Epetra_CrsMatrix*>(&matrix)));
-    Teuchos::RCP<Xpetra::CrsMatrix<double, int, int, node>> muelu_crs_matrix
-      = Teuchos::rcp(new Xpetra::EpetraCrsMatrix(rcp_matrix));
-    Teuchos::RCP<Xpetra::Matrix<double, int, int, node>> muelu_matrix
-      = Teuchos::rcp(
+    Teuchos::RCP<Epetra_CrsMatrix> rcp_matrix =
+      Teuchos::rcpFromRef(*(const_cast<Epetra_CrsMatrix*>(&matrix)));
+    Teuchos::RCP<Xpetra::CrsMatrix<double, int, int, node>> muelu_crs_matrix =
+      Teuchos::rcp(new Xpetra::EpetraCrsMatrix(rcp_matrix));
+    Teuchos::RCP<Xpetra::Matrix<double, int, int, node>> muelu_matrix =
+      Teuchos::rcp(
         new Xpetra::CrsMatrixWrap<double, int, int, node>(muelu_crs_matrix));
 
     // Create the multigrid hierarchy using ML parameters.
@@ -220,8 +218,8 @@ namespace TrilinosWrappers
     hierarchy_factory = Teuchos::rcp(
       new MueLu::MLParameterListInterpreter<double, int, int, node>(
         muelu_parameters));
-    Teuchos::RCP<MueLu::Hierarchy<double, int, int, node>> hierarchy
-      = hierarchy_factory->CreateHierarchy();
+    Teuchos::RCP<MueLu::Hierarchy<double, int, int, node>> hierarchy =
+      hierarchy_factory->CreateHierarchy();
     hierarchy->GetLevel(0)->Set("A", muelu_matrix);
     hierarchy_factory->SetupHierarchy(*hierarchy);
 

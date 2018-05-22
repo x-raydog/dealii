@@ -49,11 +49,11 @@ namespace MGTools
    */
   template <int dim, int spacedim>
   void
-  compute_row_length_vector(const DoFHandler<dim, spacedim>& dofs,
-                            const unsigned int               level,
-                            std::vector<unsigned int>&       row_lengths,
-                            const DoFTools::Coupling         flux_couplings
-                            = DoFTools::none);
+  compute_row_length_vector(
+    const DoFHandler<dim, spacedim>& dofs,
+    const unsigned int               level,
+    std::vector<unsigned int>&       row_lengths,
+    const DoFTools::Coupling         flux_couplings = DoFTools::none);
 
   /**
    * Compute row length vector for multilevel methods with optimization for

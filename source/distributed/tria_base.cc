@@ -67,9 +67,9 @@ namespace parallel
 #else
     dealii::Triangulation<dim, spacedim>::copy_triangulation(other_tria);
 
-    if(const dealii::parallel::Triangulation<dim, spacedim>* other_tria_x
-       = dynamic_cast<const dealii::parallel::Triangulation<dim, spacedim>*>(
-         &other_tria))
+    if(const dealii::parallel::Triangulation<dim, spacedim>* other_tria_x =
+         dynamic_cast<const dealii::parallel::Triangulation<dim, spacedim>*>(
+           &other_tria))
       {
         mpi_communicator = other_tria_x->get_communicator();
 
@@ -85,15 +85,15 @@ namespace parallel
   std::size_t
   Triangulation<dim, spacedim>::memory_consumption() const
   {
-    std::size_t mem
-      = this->dealii::Triangulation<dim, spacedim>::memory_consumption()
-        + MemoryConsumption::memory_consumption(mpi_communicator)
-        + MemoryConsumption::memory_consumption(my_subdomain)
-        + MemoryConsumption::memory_consumption(
-            number_cache.n_locally_owned_active_cells)
-        + MemoryConsumption::memory_consumption(
-            number_cache.n_global_active_cells)
-        + MemoryConsumption::memory_consumption(number_cache.n_global_levels);
+    std::size_t mem =
+      this->dealii::Triangulation<dim, spacedim>::memory_consumption() +
+      MemoryConsumption::memory_consumption(mpi_communicator) +
+      MemoryConsumption::memory_consumption(my_subdomain) +
+      MemoryConsumption::memory_consumption(
+        number_cache.n_locally_owned_active_cells) +
+      MemoryConsumption::memory_consumption(
+        number_cache.n_global_active_cells) +
+      MemoryConsumption::memory_consumption(number_cache.n_global_levels);
     return mem;
   }
 
@@ -152,8 +152,8 @@ namespace parallel
   void
   Triangulation<dim, spacedim>::update_number_cache()
   {
-    Assert(number_cache.n_locally_owned_active_cells.size()
-             == Utilities::MPI::n_mpi_processes(this->mpi_communicator),
+    Assert(number_cache.n_locally_owned_active_cells.size() ==
+             Utilities::MPI::n_mpi_processes(this->mpi_communicator),
            ExcInternalError());
 
     std::fill(number_cache.n_locally_owned_active_cells.begin(),
@@ -177,45 +177,45 @@ namespace parallel
 
     {
       // find ghost owners
-      for(typename Triangulation<dim, spacedim>::active_cell_iterator cell
-          = this->begin_active();
+      for(typename Triangulation<dim, spacedim>::active_cell_iterator cell =
+            this->begin_active();
           cell != this->end();
           ++cell)
         if(cell->is_ghost())
           number_cache.ghost_owners.insert(cell->subdomain_id());
 
-      Assert(number_cache.ghost_owners.size()
-               < Utilities::MPI::n_mpi_processes(mpi_communicator),
+      Assert(number_cache.ghost_owners.size() <
+               Utilities::MPI::n_mpi_processes(mpi_communicator),
              ExcInternalError());
     }
 
     if(this->n_levels() > 0)
-      for(typename Triangulation<dim, spacedim>::active_cell_iterator cell
-          = this->begin_active();
+      for(typename Triangulation<dim, spacedim>::active_cell_iterator cell =
+            this->begin_active();
           cell != this->end();
           ++cell)
         if(cell->subdomain_id() == my_subdomain)
           ++number_cache.n_locally_owned_active_cells[my_subdomain];
 
-    unsigned int send_value
-      = number_cache.n_locally_owned_active_cells[my_subdomain];
-    const int ierr
-      = MPI_Allgather(&send_value,
-                      1,
-                      MPI_UNSIGNED,
-                      number_cache.n_locally_owned_active_cells.data(),
-                      1,
-                      MPI_UNSIGNED,
-                      this->mpi_communicator);
+    unsigned int send_value =
+      number_cache.n_locally_owned_active_cells[my_subdomain];
+    const int ierr =
+      MPI_Allgather(&send_value,
+                    1,
+                    MPI_UNSIGNED,
+                    number_cache.n_locally_owned_active_cells.data(),
+                    1,
+                    MPI_UNSIGNED,
+                    this->mpi_communicator);
     AssertThrowMPI(ierr);
 
-    number_cache.n_global_active_cells
-      = std::accumulate(number_cache.n_locally_owned_active_cells.begin(),
-                        number_cache.n_locally_owned_active_cells.end(),
-                        /* ensure sum is computed with correct data type:*/
-                        static_cast<types::global_dof_index>(0));
-    number_cache.n_global_levels
-      = Utilities::MPI::max(this->n_levels(), this->mpi_communicator);
+    number_cache.n_global_active_cells =
+      std::accumulate(number_cache.n_locally_owned_active_cells.begin(),
+                      number_cache.n_locally_owned_active_cells.end(),
+                      /* ensure sum is computed with correct data type:*/
+                      static_cast<types::global_dof_index>(0));
+    number_cache.n_global_levels =
+      Utilities::MPI::max(this->n_levels(), this->mpi_communicator);
   }
 
   template <int dim, int spacedim>
@@ -229,12 +229,12 @@ namespace parallel
       return;
 
     // find level ghost owners
-    for(typename Triangulation<dim, spacedim>::cell_iterator cell
-        = this->begin();
+    for(typename Triangulation<dim, spacedim>::cell_iterator cell =
+          this->begin();
         cell != this->end();
         ++cell)
-      if(cell->level_subdomain_id() != numbers::artificial_subdomain_id
-         && cell->level_subdomain_id() != this->locally_owned_subdomain())
+      if(cell->level_subdomain_id() != numbers::artificial_subdomain_id &&
+         cell->level_subdomain_id() != this->locally_owned_subdomain())
         this->number_cache.level_ghost_owners.insert(
           cell->level_subdomain_id());
 
@@ -250,8 +250,8 @@ namespace parallel
       unsigned int dummy       = 0;
       unsigned int req_counter = 0;
 
-      for(std::set<types::subdomain_id>::iterator it
-          = this->number_cache.level_ghost_owners.begin();
+      for(std::set<types::subdomain_id>::iterator it =
+            this->number_cache.level_ghost_owners.begin();
           it != this->number_cache.level_ghost_owners.end();
           ++it, ++req_counter)
         {
@@ -265,8 +265,8 @@ namespace parallel
           AssertThrowMPI(ierr);
         }
 
-      for(std::set<types::subdomain_id>::iterator it
-          = this->number_cache.level_ghost_owners.begin();
+      for(std::set<types::subdomain_id>::iterator it =
+            this->number_cache.level_ghost_owners.begin();
           it != this->number_cache.level_ghost_owners.end();
           ++it)
         {
@@ -283,8 +283,8 @@ namespace parallel
 
       if(requests.size() > 0)
         {
-          ierr = MPI_Waitall(
-            requests.size(), requests.data(), MPI_STATUSES_IGNORE);
+          ierr =
+            MPI_Waitall(requests.size(), requests.data(), MPI_STATUSES_IGNORE);
           AssertThrowMPI(ierr);
         }
 
@@ -293,8 +293,8 @@ namespace parallel
     }
 #  endif
 
-    Assert(this->number_cache.level_ghost_owners.size()
-             < Utilities::MPI::n_mpi_processes(this->mpi_communicator),
+    Assert(this->number_cache.level_ghost_owners.size() <
+             Utilities::MPI::n_mpi_processes(this->mpi_communicator),
            ExcInternalError());
   }
 

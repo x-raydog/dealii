@@ -667,8 +667,8 @@ MatrixBlock<MatrixType>::add(const size_type                       gi,
   Assert(column_indices.size() != 0, ExcNotInitialized());
 
   const std::pair<unsigned int, size_type> bi = row_indices.global_to_local(gi);
-  const std::pair<unsigned int, size_type> bj
-    = column_indices.global_to_local(gj);
+  const std::pair<unsigned int, size_type> bj =
+    column_indices.global_to_local(gj);
 
   Assert(bi.first == row, ExcBlockIndexMismatch(bi.first, row));
   Assert(bj.first == column, ExcBlockIndexMismatch(bj.first, column));
@@ -711,8 +711,8 @@ MatrixBlock<MatrixType>::add(const size_type  b_row,
   Assert(row_indices.size() != 0, ExcNotInitialized());
   Assert(column_indices.size() != 0, ExcNotInitialized());
 
-  const std::pair<unsigned int, size_type> bi
-    = row_indices.global_to_local(b_row);
+  const std::pair<unsigned int, size_type> bi =
+    row_indices.global_to_local(b_row);
 
   // In debug mode, we check whether
   // all indices are in the correct
@@ -727,8 +727,8 @@ MatrixBlock<MatrixType>::add(const size_type  b_row,
 
   for(size_type j = 0; j < n_cols; ++j)
     {
-      const std::pair<unsigned int, size_type> bj
-        = column_indices.global_to_local(col_indices[j]);
+      const std::pair<unsigned int, size_type> bj =
+        column_indices.global_to_local(col_indices[j]);
       Assert(bj.first == column, ExcBlockIndexMismatch(bj.first, column));
 
       matrix.add(bi.second, bj.second, values[j]);
@@ -812,8 +812,8 @@ template <typename MatrixType>
 inline std::size_t
 MatrixBlock<MatrixType>::memory_consumption() const
 {
-  return (sizeof(*this) + MemoryConsumption::memory_consumption(matrix)
-          - sizeof(matrix));
+  return (sizeof(*this) + MemoryConsumption::memory_consumption(matrix) -
+          sizeof(matrix));
 }
 
 //----------------------------------------------------------------------//
@@ -1059,8 +1059,8 @@ MGMatrixBlockVector<MatrixType>::clear_object(AnyData& mo)
 {
   for(size_type i = 0; i < mo.size(); ++i)
     {
-      MGLevelObject<MatrixBlock<MatrixType>>& o
-        = mo.entry<MGLevelObject<MatrixType>*>(i);
+      MGLevelObject<MatrixBlock<MatrixType>>& o =
+        mo.entry<MGLevelObject<MatrixType>*>(i);
       for(size_type level = o.min_level(); level <= o.max_level(); ++level)
         o[level].matrix.clear();
     }

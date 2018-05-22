@@ -227,10 +227,10 @@ public:
      * vectors if the problem is symmetric) to 15. Set the solver to find the
      * eigenvalues of largest magnitude for a non-symmetric problem).
      */
-    explicit AdditionalData(const unsigned int number_of_arnoldi_vectors = 15,
-                            const WhichEigenvalues eigenvalue_of_interest
-                            = largest_magnitude,
-                            const bool symmetric = false);
+    explicit AdditionalData(
+      const unsigned int     number_of_arnoldi_vectors = 15,
+      const WhichEigenvalues eigenvalue_of_interest    = largest_magnitude,
+      const bool             symmetric                 = false);
 
     /**
      * Number of Arnoldi/Lanczos vectors. This number should be less than the
@@ -520,8 +520,8 @@ ArpackSolver::solve(const MatrixType1& /*system_matrix*/,
   unsigned int n = eigenvectors[0].size();
 
   // Number of eigenvalues
-  const unsigned int nev_const
-    = (n_eigenvalues == 0) ? eigenvalues.size() : n_eigenvalues;
+  const unsigned int nev_const =
+    (n_eigenvalues == 0) ? eigenvalues.size() : n_eigenvalues;
   // nev for arpack, which might change by plus one during dneupd
   unsigned int nev = nev_const;
 
@@ -627,8 +627,8 @@ ArpackSolver::solve(const MatrixType1& /*system_matrix*/,
 
   // work arrays for ARPACK
   std::vector<double> workd(3 * n, 0.);
-  int                 lworkl
-    = additional_data.symmetric ? ncv * ncv + 8 * ncv : 3 * ncv * ncv + 6 * ncv;
+  int                 lworkl =
+    additional_data.symmetric ? ncv * ncv + 8 * ncv : 3 * ncv * ncv + 6 * ncv;
   std::vector<double> workl(lworkl, 0.);
 
   //information out of the iteration
@@ -855,8 +855,8 @@ ArpackSolver::solve(const MatrixType1& /*system_matrix*/,
           eigenvectors[i](j) = v[i * n + j];
 
       for(unsigned int i = 0; i < nev_const; ++i)
-        eigenvalues[i]
-          = std::complex<double>(eigenvalues_real[i], eigenvalues_im[i]);
+        eigenvalues[i] =
+          std::complex<double>(eigenvalues_real[i], eigenvalues_im[i]);
     }
 }
 

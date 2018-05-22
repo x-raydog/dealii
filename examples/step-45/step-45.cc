@@ -500,8 +500,8 @@ namespace Step45
     FEValues<dim> fe_values(mapping,
                             fe,
                             quadrature_formula,
-                            update_values | update_quadrature_points
-                              | update_JxW_values | update_gradients);
+                            update_values | update_quadrature_points |
+                              update_JxW_values | update_gradients);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
 
@@ -522,9 +522,9 @@ namespace Step45
     std::vector<double>                  div_phi_u(dofs_per_cell);
     std::vector<double>                  phi_p(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       if(cell->is_locally_owned())
         {
@@ -539,8 +539,8 @@ namespace Step45
             {
               for(unsigned int k = 0; k < dofs_per_cell; ++k)
                 {
-                  symgrad_phi_u[k]
-                    = fe_values[velocities].symmetric_gradient(k, q);
+                  symgrad_phi_u[k] =
+                    fe_values[velocities].symmetric_gradient(k, q);
                   div_phi_u[k] = fe_values[velocities].divergence(k, q);
                   phi_p[k]     = fe_values[pressure].value(k, q);
                 }
@@ -549,18 +549,17 @@ namespace Step45
                 {
                   for(unsigned int j = 0; j <= i; ++j)
                     {
-                      local_matrix(i, j)
-                        += (symgrad_phi_u[i] * symgrad_phi_u[j]
-                            - div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j]
-                            + phi_p[i] * phi_p[j])
-                           * fe_values.JxW(q);
+                      local_matrix(i, j) +=
+                        (symgrad_phi_u[i] * symgrad_phi_u[j] -
+                         div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j] +
+                         phi_p[i] * phi_p[j]) *
+                        fe_values.JxW(q);
                     }
 
-                  const unsigned int component_i
-                    = fe.system_to_component_index(i).first;
-                  local_rhs(i) += fe_values.shape_value(i, q)
-                                  * rhs_values[q](component_i)
-                                  * fe_values.JxW(q);
+                  const unsigned int component_i =
+                    fe.system_to_component_index(i).first;
+                  local_rhs(i) += fe_values.shape_value(i, q) *
+                                  rhs_values[q](component_i) * fe_values.JxW(q);
                 }
             }
 
@@ -667,9 +666,9 @@ namespace Step45
     data_out.build_patches(mapping, degree + 1);
 
     std::ofstream output(
-      "solution-" + Utilities::int_to_string(refinement_cycle, 2) + "."
-      + Utilities::int_to_string(triangulation.locally_owned_subdomain(), 2)
-      + ".vtu");
+      "solution-" + Utilities::int_to_string(refinement_cycle, 2) + "." +
+      Utilities::int_to_string(triangulation.locally_owned_subdomain(), 2) +
+      ".vtu");
     data_out.write_vtu(output);
 
     if(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
@@ -678,12 +677,12 @@ namespace Step45
         for(unsigned int i = 0;
             i < Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
             ++i)
-          filenames.push_back(std::string("solution-")
-                              + Utilities::int_to_string(refinement_cycle, 2)
-                              + "." + Utilities::int_to_string(i, 2) + ".vtu");
-        const std::string pvtu_master_filename
-          = ("solution-" + Utilities::int_to_string(refinement_cycle, 2)
-             + ".pvtu");
+          filenames.push_back(std::string("solution-") +
+                              Utilities::int_to_string(refinement_cycle, 2) +
+                              "." + Utilities::int_to_string(i, 2) + ".vtu");
+        const std::string pvtu_master_filename =
+          ("solution-" + Utilities::int_to_string(refinement_cycle, 2) +
+           ".pvtu");
         std::ofstream pvtu_master(pvtu_master_filename);
         data_out.write_pvtu_record(pvtu_master, filenames);
       }

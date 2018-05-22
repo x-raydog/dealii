@@ -288,8 +288,8 @@ namespace Step59
     const MatrixFree<dim, number>&                    data,
     const LinearAlgebra::distributed::Vector<number>& vec)
   {
-    if(vec.get_partitioner().get()
-       == data.get_dof_info(0).vector_partitioner.get())
+    if(vec.get_partitioner().get() ==
+       data.get_dof_info(0).vector_partitioner.get())
       return;
 
     LinearAlgebra::distributed::Vector<number> copy_vec(vec);
@@ -574,14 +574,13 @@ namespace Step59
         // `data.get_face_info(face).exterior_face_no`. Finally, we must also
         // take the absolute value of these factors as the normal could point
         // into either positive or negative direction.
-        const VectorizedArray<number> inverse_length_normal_to_face
-          = 0.5
-            * (std::abs((phi_inner.get_normal_vector(0)
-                         * phi_inner.inverse_jacobian(0))[dim - 1])
-               + std::abs((phi_outer.get_normal_vector(0)
-                           * phi_outer.inverse_jacobian(0))[dim - 1]));
-        const VectorizedArray<number> sigma
-          = inverse_length_normal_to_face * get_penalty_factor();
+        const VectorizedArray<number> inverse_length_normal_to_face =
+          0.5 * (std::abs((phi_inner.get_normal_vector(0) *
+                           phi_inner.inverse_jacobian(0))[dim - 1]) +
+                 std::abs((phi_outer.get_normal_vector(0) *
+                           phi_outer.inverse_jacobian(0))[dim - 1]));
+        const VectorizedArray<number> sigma =
+          inverse_length_normal_to_face * get_penalty_factor();
 
         // In the loop over the quadrature points, we eventually compute all
         // contributions to the interior penalty scheme. According to the
@@ -599,14 +598,14 @@ namespace Step59
         // slot.
         for(unsigned int q = 0; q < phi_inner.n_q_points; ++q)
           {
-            const VectorizedArray<number> solution_jump
-              = (phi_inner.get_value(q) - phi_outer.get_value(q));
-            const VectorizedArray<number> average_normal_derivative
-              = (phi_inner.get_normal_derivative(q)
-                 + phi_outer.get_normal_derivative(q))
-                * number(0.5);
-            const VectorizedArray<number> test_by_value
-              = solution_jump * sigma - average_normal_derivative;
+            const VectorizedArray<number> solution_jump =
+              (phi_inner.get_value(q) - phi_outer.get_value(q));
+            const VectorizedArray<number> average_normal_derivative =
+              (phi_inner.get_normal_derivative(q) +
+               phi_outer.get_normal_derivative(q)) *
+              number(0.5);
+            const VectorizedArray<number> test_by_value =
+              solution_jump * sigma - average_normal_derivative;
 
             phi_inner.submit_value(test_by_value, q);
             phi_outer.submit_value(-test_by_value, q);
@@ -670,30 +669,28 @@ namespace Step59
         phi_inner.reinit(face);
         phi_inner.gather_evaluate(src, true, true);
 
-        const VectorizedArray<number> inverse_length_normal_to_face
-          = std::abs((phi_inner.get_normal_vector(0)
-                      * phi_inner.inverse_jacobian(0))[dim - 1]);
-        const VectorizedArray<number> sigma
-          = inverse_length_normal_to_face * get_penalty_factor();
+        const VectorizedArray<number> inverse_length_normal_to_face =
+          std::abs((phi_inner.get_normal_vector(0) *
+                    phi_inner.inverse_jacobian(0))[dim - 1]);
+        const VectorizedArray<number> sigma =
+          inverse_length_normal_to_face * get_penalty_factor();
 
         const bool is_dirichlet = (data.get_boundary_id(face) == 0);
 
         for(unsigned int q = 0; q < phi_inner.n_q_points; ++q)
           {
             const VectorizedArray<number> u_inner = phi_inner.get_value(q);
-            const VectorizedArray<number> u_outer
-              = is_dirichlet ? -u_inner : u_inner;
-            const VectorizedArray<number> normal_derivative_inner
-              = phi_inner.get_normal_derivative(q);
-            const VectorizedArray<number> normal_derivative_outer
-              = is_dirichlet ? normal_derivative_inner :
-                               -normal_derivative_inner;
+            const VectorizedArray<number> u_outer =
+              is_dirichlet ? -u_inner : u_inner;
+            const VectorizedArray<number> normal_derivative_inner =
+              phi_inner.get_normal_derivative(q);
+            const VectorizedArray<number> normal_derivative_outer =
+              is_dirichlet ? normal_derivative_inner : -normal_derivative_inner;
             const VectorizedArray<number> solution_jump = (u_inner - u_outer);
-            const VectorizedArray<number> average_normal_derivative
-              = (normal_derivative_inner + normal_derivative_outer)
-                * number(0.5);
-            const VectorizedArray<number> test_by_value
-              = solution_jump * sigma - average_normal_derivative;
+            const VectorizedArray<number> average_normal_derivative =
+              (normal_derivative_inner + normal_derivative_outer) * number(0.5);
+            const VectorizedArray<number> test_by_value =
+              solution_jump * sigma - average_normal_derivative;
             phi_inner.submit_normal_derivative(-solution_jump * number(0.5), q);
             phi_inner.submit_value(test_by_value, q);
           }
@@ -749,12 +746,12 @@ namespace Step59
           double sum_mass = 0, sum_laplace = 0;
           for(unsigned int q = 0; q < quadrature.size(); ++q)
             {
-              sum_mass += (fe_1d->shape_value(i, quadrature.point(q))
-                           * fe_1d->shape_value(j, quadrature.point(q)))
-                          * quadrature.weight(q);
-              sum_laplace += (fe_1d->shape_grad(i, quadrature.point(q))[0]
-                              * fe_1d->shape_grad(j, quadrature.point(q))[0])
-                             * quadrature.weight(q);
+              sum_mass += (fe_1d->shape_value(i, quadrature.point(q)) *
+                           fe_1d->shape_value(j, quadrature.point(q))) *
+                          quadrature.weight(q);
+              sum_laplace += (fe_1d->shape_grad(i, quadrature.point(q))[0] *
+                              fe_1d->shape_grad(j, quadrature.point(q))[0]) *
+                             quadrature.weight(q);
             }
           for(unsigned int d = 0; d < dim; ++d)
             mass_matrices[d](i, j) = sum_mass;
@@ -763,21 +760,21 @@ namespace Step59
           // statements appear to have somewhat arbitrary signs, but those are
           // correct as can be verified by looking at step-39 and inserting
           // the value -1 and 1 for the normal vector in the 1D case.
-          sum_laplace
-            += (1. * fe_1d->shape_value(i, Point<1>())
-                  * fe_1d->shape_value(j, Point<1>()) * op.get_penalty_factor()
-                + 0.5 * fe_1d->shape_grad(i, Point<1>())[0]
-                    * fe_1d->shape_value(j, Point<1>())
-                + 0.5 * fe_1d->shape_grad(j, Point<1>())[0]
-                    * fe_1d->shape_value(i, Point<1>()));
+          sum_laplace +=
+            (1. * fe_1d->shape_value(i, Point<1>()) *
+               fe_1d->shape_value(j, Point<1>()) * op.get_penalty_factor() +
+             0.5 * fe_1d->shape_grad(i, Point<1>())[0] *
+               fe_1d->shape_value(j, Point<1>()) +
+             0.5 * fe_1d->shape_grad(j, Point<1>())[0] *
+               fe_1d->shape_value(i, Point<1>()));
 
-          sum_laplace += (1. * fe_1d->shape_value(i, Point<1>(1.0))
-                            * fe_1d->shape_value(j, Point<1>(1.0))
-                            * op.get_penalty_factor()
-                          - 0.5 * fe_1d->shape_grad(i, Point<1>(1.0))[0]
-                              * fe_1d->shape_value(j, Point<1>(1.0))
-                          - 0.5 * fe_1d->shape_grad(j, Point<1>(1.0))[0]
-                              * fe_1d->shape_value(i, Point<1>(1.0)));
+          sum_laplace +=
+            (1. * fe_1d->shape_value(i, Point<1>(1.0)) *
+               fe_1d->shape_value(j, Point<1>(1.0)) * op.get_penalty_factor() -
+             0.5 * fe_1d->shape_grad(i, Point<1>(1.0))[0] *
+               fe_1d->shape_value(j, Point<1>(1.0)) -
+             0.5 * fe_1d->shape_grad(j, Point<1>(1.0))[0] *
+               fe_1d->shape_value(i, Point<1>(1.0)));
 
           laplace_unscaled(i, j) = sum_laplace;
         }
@@ -812,8 +809,8 @@ namespace Step59
         if(phi.get_mapping_data_index_offset() == old_mapping_data_index)
           continue;
 
-        Tensor<2, dim, VectorizedArray<number>> inverse_jacobian
-          = phi.inverse_jacobian(0);
+        Tensor<2, dim, VectorizedArray<number>> inverse_jacobian =
+          phi.inverse_jacobian(0);
 
         for(unsigned int d = 0; d < dim; ++d)
           for(unsigned int e = 0; e < dim; ++e)
@@ -831,9 +828,9 @@ namespace Step59
 
         for(unsigned int d = 0; d < dim; ++d)
           {
-            const VectorizedArray<number> scaling_factor
-              = inverse_jacobian[d][d] * inverse_jacobian[d][d]
-                * jacobian_determinant;
+            const VectorizedArray<number> scaling_factor =
+              inverse_jacobian[d][d] * inverse_jacobian[d][d] *
+              jacobian_determinant;
 
             // Once we know the factor by which we should scale the Laplace
             // matrix, we apply this weight to the unscaled DG Laplace matrix
@@ -843,8 +840,8 @@ namespace Step59
 
             for(unsigned int i = 0; i < N; ++i)
               for(unsigned int j = 0; j < N; ++j)
-                laplace_matrices[d](i, j)
-                  = scaling_factor * laplace_unscaled(i, j);
+                laplace_matrices[d](i, j) =
+                  scaling_factor * laplace_unscaled(i, j);
           }
         if(cell_matrices.size() <= phi.get_mapping_data_index_offset())
           cell_matrices.resize(phi.get_mapping_data_index_offset() + 1);
@@ -953,8 +950,8 @@ namespace Step59
       setup_time(0.),
       pcout(std::cout, Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0),
       time_details(std::cout,
-                   false
-                     && Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
+                   false &&
+                     Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
   {}
 
   // The setup function differs in two aspects from step-37. The first is that
@@ -998,15 +995,15 @@ namespace Step59
 
     {
       typename MatrixFree<dim, double>::AdditionalData additional_data;
-      additional_data.tasks_parallel_scheme
-        = MatrixFree<dim, double>::AdditionalData::none;
-      additional_data.mapping_update_flags
-        = (update_gradients | update_JxW_values | update_quadrature_points);
-      additional_data.mapping_update_flags_inner_faces
-        = (update_gradients | update_JxW_values | update_normal_vectors);
-      additional_data.mapping_update_flags_boundary_faces
-        = (update_gradients | update_JxW_values | update_normal_vectors
-           | update_quadrature_points);
+      additional_data.tasks_parallel_scheme =
+        MatrixFree<dim, double>::AdditionalData::none;
+      additional_data.mapping_update_flags =
+        (update_gradients | update_JxW_values | update_quadrature_points);
+      additional_data.mapping_update_flags_inner_faces =
+        (update_gradients | update_JxW_values | update_normal_vectors);
+      additional_data.mapping_update_flags_boundary_faces =
+        (update_gradients | update_JxW_values | update_normal_vectors |
+         update_quadrature_points);
       std::shared_ptr<MatrixFree<dim, double>> system_mf_storage(
         new MatrixFree<dim, double>());
       system_mf_storage->reinit(
@@ -1028,14 +1025,14 @@ namespace Step59
     for(unsigned int level = 0; level < nlevels; ++level)
       {
         typename MatrixFree<dim, float>::AdditionalData additional_data;
-        additional_data.tasks_parallel_scheme
-          = MatrixFree<dim, float>::AdditionalData::none;
-        additional_data.mapping_update_flags
-          = (update_gradients | update_JxW_values);
-        additional_data.mapping_update_flags_inner_faces
-          = (update_gradients | update_JxW_values);
-        additional_data.mapping_update_flags_boundary_faces
-          = (update_gradients | update_JxW_values);
+        additional_data.tasks_parallel_scheme =
+          MatrixFree<dim, float>::AdditionalData::none;
+        additional_data.mapping_update_flags =
+          (update_gradients | update_JxW_values);
+        additional_data.mapping_update_flags_inner_faces =
+          (update_gradients | update_JxW_values);
+        additional_data.mapping_update_flags_boundary_faces =
+          (update_gradients | update_JxW_values);
         additional_data.level_mg_handler = level;
         std::shared_ptr<MatrixFree<dim, float>> mg_mf_storage_level(
           new MatrixFree<dim, float>());
@@ -1074,8 +1071,8 @@ namespace Step59
         for(unsigned int q = 0; q < phi.n_q_points; ++q)
           {
             VectorizedArray<double> rhs_val = VectorizedArray<double>();
-            Point<dim, VectorizedArray<double>> point_batch
-              = phi.quadrature_point(q);
+            Point<dim, VectorizedArray<double>> point_batch =
+              phi.quadrature_point(q);
             for(unsigned int v = 0;
                 v < VectorizedArray<double>::n_array_elements;
                 ++v)
@@ -1121,19 +1118,19 @@ namespace Step59
       {
         phi_face.reinit(face);
 
-        const VectorizedArray<double> inverse_length_normal_to_face
-          = std::abs((phi_face.get_normal_vector(0)
-                      * phi_face.inverse_jacobian(0))[dim - 1]);
-        const VectorizedArray<double> sigma
-          = inverse_length_normal_to_face * system_matrix.get_penalty_factor();
+        const VectorizedArray<double> inverse_length_normal_to_face =
+          std::abs((phi_face.get_normal_vector(0) *
+                    phi_face.inverse_jacobian(0))[dim - 1]);
+        const VectorizedArray<double> sigma =
+          inverse_length_normal_to_face * system_matrix.get_penalty_factor();
 
         for(unsigned int q = 0; q < phi_face.n_q_points; ++q)
           {
             VectorizedArray<double> test_value = VectorizedArray<double>(),
-                                    test_normal_derivative
-                                    = VectorizedArray<double>();
-            Point<dim, VectorizedArray<double>> point_batch
-              = phi_face.quadrature_point(q);
+                                    test_normal_derivative =
+                                      VectorizedArray<double>();
+            Point<dim, VectorizedArray<double>> point_batch =
+              phi_face.quadrature_point(q);
 
             for(unsigned int v = 0;
                 v < VectorizedArray<double>::n_array_elements;
@@ -1159,8 +1156,8 @@ namespace Step59
                     Tensor<1, dim> normal;
                     for(unsigned int d = 0; d < dim; ++d)
                       normal[d] = phi_face.get_normal_vector(q)[d][v];
-                    test_normal_derivative[v]
-                      = -normal * exact_solution.gradient(single_point);
+                    test_normal_derivative[v] =
+                      -normal * exact_solution.gradient(single_point);
                   }
               }
             phi_face.submit_value(test_value * sigma - test_normal_derivative,
@@ -1299,8 +1296,8 @@ namespace Step59
   void
   LaplaceProblem<dim, fe_degree>::run()
   {
-    const unsigned int n_ranks
-      = Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
+    const unsigned int n_ranks =
+      Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
     pcout << "Running with " << n_ranks << " MPI process"
           << (n_ranks > 1 ? "es" : "") << ", element " << fe.get_name()
           << std::endl

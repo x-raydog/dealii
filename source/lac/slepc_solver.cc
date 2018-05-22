@@ -97,9 +97,9 @@ namespace SLEPcWrappers
     // From 3.8.0 SLEPc insists that when looking for smallest eigenvalues with shift-and-invert
     // users should (a) set target (b) use EPS_TARGET_MAGNITUDE
     // The former, however, needs to be applied to eps object and not spectral transformation.
-    if(SLEPcWrappers::TransformationShiftInvert* sinv
-       = dynamic_cast<SLEPcWrappers::TransformationShiftInvert*>(
-         &transformation))
+    if(SLEPcWrappers::TransformationShiftInvert* sinv =
+         dynamic_cast<SLEPcWrappers::TransformationShiftInvert*>(
+           &transformation))
       {
         ierr = EPSSetTarget(eps, sinv->additional_data.shift_parameter);
         AssertThrow(ierr == 0, SolverBase::ExcSLEPcError(ierr));
@@ -149,8 +149,8 @@ namespace SLEPcWrappers
   SolverBase::solve(const unsigned int n_eigenpairs, unsigned int* n_converged)
   {
     // set number of eigenvectors to compute
-    PetscErrorCode ierr
-      = EPSSetDimensions(eps, n_eigenpairs, PETSC_DECIDE, PETSC_DECIDE);
+    PetscErrorCode ierr =
+      EPSSetDimensions(eps, n_eigenpairs, PETSC_DECIDE, PETSC_DECIDE);
     AssertThrow(ierr == 0, ExcSLEPcError(ierr));
 
     // set the solve options to the eigenvalue problem solver context
@@ -222,8 +222,8 @@ namespace SLEPcWrappers
         }
 
       // check the solver state
-      const SolverControl::State state
-        = solver_control.check(n_iterations, residual_norm);
+      const SolverControl::State state =
+        solver_control.check(n_iterations, residual_norm);
 
       // get the solver state according to SLEPc
       get_solver_state(state);
@@ -243,8 +243,8 @@ namespace SLEPcWrappers
                             PETScWrappers::VectorBase& eigenvectors)
   {
     // get converged eigenpair
-    const PetscErrorCode ierr = EPSGetEigenpair(
-      eps, index, &eigenvalues, nullptr, eigenvectors, nullptr);
+    const PetscErrorCode ierr =
+      EPSGetEigenpair(eps, index, &eigenvalues, nullptr, eigenvectors, nullptr);
     AssertThrow(ierr == 0, ExcSLEPcError(ierr));
   }
 
@@ -335,8 +335,8 @@ namespace SLEPcWrappers
                                        const AdditionalData& data)
     : SolverBase(cn, mpi_communicator), additional_data(data)
   {
-    const PetscErrorCode ierr
-      = EPSSetType(eps, const_cast<char*>(EPSKRYLOVSCHUR));
+    const PetscErrorCode ierr =
+      EPSSetType(eps, const_cast<char*>(EPSKRYLOVSCHUR));
     AssertThrow(ierr == 0, ExcSLEPcError(ierr));
   }
 

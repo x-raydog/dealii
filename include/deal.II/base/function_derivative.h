@@ -77,8 +77,8 @@ public:
    * a symmetric fourth order formula (<tt>FourthOrder</tt>).
    */
   void
-  set_formula(typename AutoDerivativeFunction<dim>::DifferenceFormula formula
-              = AutoDerivativeFunction<dim>::Euler);
+  set_formula(typename AutoDerivativeFunction<dim>::DifferenceFormula formula =
+                AutoDerivativeFunction<dim>::Euler);
   /**
    * Change the base step size of the difference formula
    */

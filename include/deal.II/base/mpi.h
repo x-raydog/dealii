@@ -522,10 +522,10 @@ namespace Utilities
        * create an object of this type is also at or close to the top of
        * <code>main()</code>.
        */
-      MPI_InitFinalize(int&               argc,
-                       char**&            argv,
-                       const unsigned int max_num_threads
-                       = numbers::invalid_unsigned_int);
+      MPI_InitFinalize(
+        int&               argc,
+        char**&            argv,
+        const unsigned int max_num_threads = numbers::invalid_unsigned_int);
 
       /**
        * Destructor. Calls <tt>MPI_Finalize()</tt> in case this class owns the
@@ -663,8 +663,8 @@ namespace Utilities
       (void) comm;
       Assert(objects_to_send.size() == 0,
              ExcMessage("Cannot send to more than one processor."));
-      Assert(objects_to_send.find(0) != objects_to_send.end()
-               || objects_to_send.size() == 0,
+      Assert(objects_to_send.find(0) != objects_to_send.end() ||
+               objects_to_send.size() == 0,
              ExcMessage("Can only send to myself or to nobody."));
       return objects_to_send;
 #  else
@@ -677,9 +677,9 @@ namespace Utilities
       }
       AssertDimension(send_to.size(), objects_to_send.size());
 
-      const auto receive_from
-        = Utilities::MPI::compute_point_to_point_communication_pattern(comm,
-                                                                       send_to);
+      const auto receive_from =
+        Utilities::MPI::compute_point_to_point_communication_pattern(comm,
+                                                                     send_to);
 
       // Sending buffers
       std::vector<std::vector<char>> buffers_to_send(send_to.size());
@@ -772,8 +772,8 @@ namespace Utilities
         rdispls[i] = rdispls[i - 1] + size_all_data[i - 1];
 
       // Step 3: exchange the buffer:
-      std::vector<char> received_unrolled_buffer(rdispls.back()
-                                                 + size_all_data.back());
+      std::vector<char> received_unrolled_buffer(rdispls.back() +
+                                                 size_all_data.back());
 
       MPI_Allgatherv(buffer.data(),
                      n_local_data,
@@ -869,8 +869,8 @@ namespace Utilities
             {
               const std::vector<char> local_buffer(
                 received_unrolled_buffer.begin() + rdispls[i],
-                received_unrolled_buffer.begin() + rdispls[i]
-                  + size_all_data[i]);
+                received_unrolled_buffer.begin() + rdispls[i] +
+                  size_all_data[i]);
               received_objects[i] = Utilities::unpack<T>(local_buffer);
             }
         }

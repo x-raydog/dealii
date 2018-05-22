@@ -74,8 +74,8 @@ namespace Utilities
     inline void
     malloc(T*& pointer, const unsigned int n_elements)
     {
-      cudaError_t cuda_error_code
-        = cudaMalloc(&pointer, n_elements * sizeof(T));
+      cudaError_t cuda_error_code =
+        cudaMalloc(&pointer, n_elements * sizeof(T));
       AssertCuda(cuda_error_code);
     }
 

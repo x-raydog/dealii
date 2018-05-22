@@ -575,8 +575,8 @@ namespace DoFRenumbering
   Cuthill_McKee(DoFHandlerType& dof_handler,
                 const bool      reversed_numbering = false,
                 const bool      use_constraints    = false,
-                const std::vector<types::global_dof_index>& starting_indices
-                = std::vector<types::global_dof_index>());
+                const std::vector<types::global_dof_index>& starting_indices =
+                  std::vector<types::global_dof_index>());
 
   /**
    * Compute the renumbering vector needed by the Cuthill_McKee() function.
@@ -592,8 +592,8 @@ namespace DoFRenumbering
     const DoFHandlerType&,
     const bool                                  reversed_numbering = false,
     const bool                                  use_constraints    = false,
-    const std::vector<types::global_dof_index>& starting_indices
-    = std::vector<types::global_dof_index>());
+    const std::vector<types::global_dof_index>& starting_indices =
+      std::vector<types::global_dof_index>());
 
   /**
    * Renumber the degrees of freedom according to the Cuthill-McKee method,
@@ -613,8 +613,8 @@ namespace DoFRenumbering
   Cuthill_McKee(DoFHandlerType&    dof_handler,
                 const unsigned int level,
                 const bool         reversed_numbering = false,
-                const std::vector<types::global_dof_index>& starting_indices
-                = std::vector<types::global_dof_index>());
+                const std::vector<types::global_dof_index>& starting_indices =
+                  std::vector<types::global_dof_index>());
 
   /**
    * @name Component-wise numberings
@@ -650,8 +650,8 @@ namespace DoFRenumbering
   template <typename DoFHandlerType>
   void
   component_wise(DoFHandlerType&                  dof_handler,
-                 const std::vector<unsigned int>& target_component
-                 = std::vector<unsigned int>());
+                 const std::vector<unsigned int>& target_component =
+                   std::vector<unsigned int>());
 
   /**
    * Sort the degrees of freedom by component. It does the same thing as the
@@ -663,8 +663,8 @@ namespace DoFRenumbering
   void
   component_wise(DoFHandlerType&                  dof_handler,
                  const unsigned int               level,
-                 const std::vector<unsigned int>& target_component
-                 = std::vector<unsigned int>());
+                 const std::vector<unsigned int>& target_component =
+                   std::vector<unsigned int>());
 
   /**
    * Compute the renumbering vector needed by the component_wise() functions.

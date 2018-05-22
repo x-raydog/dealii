@@ -3950,16 +3950,16 @@ namespace FEValuesViews
              "update_values")));
 
     // same as for the scalar case except that we have one more index
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
     if(snc == -2)
       return value_type();
     else if(snc != -1)
       {
         value_type return_value;
         return_value[shape_function_data[shape_function]
-                       .single_nonzero_component_index]
-          = fe_values->finite_element_output.shape_values(snc, q_point);
+                       .single_nonzero_component_index] =
+          fe_values->finite_element_output.shape_values(snc, q_point);
         return return_value;
       }
     else
@@ -3987,16 +3987,16 @@ namespace FEValuesViews
              "update_gradients")));
 
     // same as for the scalar case except that we have one more index
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
     if(snc == -2)
       return gradient_type();
     else if(snc != -1)
       {
         gradient_type return_value;
         return_value[shape_function_data[shape_function]
-                       .single_nonzero_component_index]
-          = fe_values->finite_element_output.shape_gradients[snc][q_point];
+                       .single_nonzero_component_index] =
+          fe_values->finite_element_output.shape_gradients[snc][q_point];
         return return_value;
       }
     else
@@ -4005,9 +4005,9 @@ namespace FEValuesViews
         for(unsigned int d = 0; d < dim; ++d)
           if(shape_function_data[shape_function]
                .is_nonzero_shape_function_component[d])
-            return_value[d]
-              = fe_values->finite_element_output.shape_gradients
-                  [shape_function_data[shape_function].row_index[d]][q_point];
+            return_value[d] =
+              fe_values->finite_element_output.shape_gradients
+                [shape_function_data[shape_function].row_index[d]][q_point];
 
         return return_value;
       }
@@ -4026,8 +4026,8 @@ namespace FEValuesViews
              "update_gradients")));
 
     // same as for the scalar case except that we have one more index
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
     if(snc == -2)
       return divergence_type();
     else if(snc != -1)
@@ -4040,10 +4040,9 @@ namespace FEValuesViews
         for(unsigned int d = 0; d < dim; ++d)
           if(shape_function_data[shape_function]
                .is_nonzero_shape_function_component[d])
-            return_value
-              += fe_values->finite_element_output
-                   .shape_gradients[shape_function_data[shape_function]
-                                      .row_index[d]][q_point][d];
+            return_value +=
+              fe_values->finite_element_output.shape_gradients
+                [shape_function_data[shape_function].row_index[d]][q_point][d];
 
         return return_value;
       }
@@ -4062,8 +4061,8 @@ namespace FEValuesViews
            (typename FEValuesBase<dim, spacedim>::ExcAccessToUninitializedField(
              "update_gradients")));
     // same as for the scalar case except that we have one more index
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
 
     if(snc == -2)
       return curl_type();
@@ -4087,11 +4086,10 @@ namespace FEValuesViews
 
                   // the single nonzero component can only be zero or one in 2d
                   if(shape_function_data[shape_function]
-                       .single_nonzero_component_index
-                     == 0)
-                    return_value[0] = -1.0
-                                      * fe_values->finite_element_output
-                                          .shape_gradients[snc][q_point][1];
+                       .single_nonzero_component_index == 0)
+                    return_value[0] =
+                      -1.0 * fe_values->finite_element_output
+                               .shape_gradients[snc][q_point][1];
                   else
                     return_value[0] = fe_values->finite_element_output
                                         .shape_gradients[snc][q_point][0];
@@ -4107,17 +4105,17 @@ namespace FEValuesViews
 
                   if(shape_function_data[shape_function]
                        .is_nonzero_shape_function_component[0])
-                    return_value[0]
-                      -= fe_values->finite_element_output
-                           .shape_gradients[shape_function_data[shape_function]
-                                              .row_index[0]][q_point][1];
+                    return_value[0] -=
+                      fe_values->finite_element_output
+                        .shape_gradients[shape_function_data[shape_function]
+                                           .row_index[0]][q_point][1];
 
                   if(shape_function_data[shape_function]
                        .is_nonzero_shape_function_component[1])
-                    return_value[0]
-                      += fe_values->finite_element_output
-                           .shape_gradients[shape_function_data[shape_function]
-                                              .row_index[1]][q_point][0];
+                    return_value[0] +=
+                      fe_values->finite_element_output
+                        .shape_gradients[shape_function_data[shape_function]
+                                           .row_index[1]][q_point][0];
 
                   return return_value;
                 }
@@ -4137,19 +4135,17 @@ namespace FEValuesViews
                           return_value[0] = 0;
                           return_value[1] = fe_values->finite_element_output
                                               .shape_gradients[snc][q_point][2];
-                          return_value[2]
-                            = -1.0
-                              * fe_values->finite_element_output
-                                  .shape_gradients[snc][q_point][1];
+                          return_value[2] =
+                            -1.0 * fe_values->finite_element_output
+                                     .shape_gradients[snc][q_point][1];
                           return return_value;
                         }
 
                       case 1:
                         {
-                          return_value[0]
-                            = -1.0
-                              * fe_values->finite_element_output
-                                  .shape_gradients[snc][q_point][2];
+                          return_value[0] =
+                            -1.0 * fe_values->finite_element_output
+                                     .shape_gradients[snc][q_point][2];
                           return_value[1] = 0;
                           return_value[2] = fe_values->finite_element_output
                                               .shape_gradients[snc][q_point][0];
@@ -4160,10 +4156,9 @@ namespace FEValuesViews
                         {
                           return_value[0] = fe_values->finite_element_output
                                               .shape_gradients[snc][q_point][1];
-                          return_value[1]
-                            = -1.0
-                              * fe_values->finite_element_output
-                                  .shape_gradients[snc][q_point][0];
+                          return_value[1] =
+                            -1.0 * fe_values->finite_element_output
+                                     .shape_gradients[snc][q_point][0];
                           return_value[2] = 0;
                           return return_value;
                         }
@@ -4180,40 +4175,40 @@ namespace FEValuesViews
                   if(shape_function_data[shape_function]
                        .is_nonzero_shape_function_component[0])
                     {
-                      return_value[1]
-                        += fe_values->finite_element_output.shape_gradients
-                             [shape_function_data[shape_function].row_index[0]]
-                             [q_point][2];
-                      return_value[2]
-                        -= fe_values->finite_element_output.shape_gradients
-                             [shape_function_data[shape_function].row_index[0]]
-                             [q_point][1];
+                      return_value[1] +=
+                        fe_values->finite_element_output
+                          .shape_gradients[shape_function_data[shape_function]
+                                             .row_index[0]][q_point][2];
+                      return_value[2] -=
+                        fe_values->finite_element_output
+                          .shape_gradients[shape_function_data[shape_function]
+                                             .row_index[0]][q_point][1];
                     }
 
                   if(shape_function_data[shape_function]
                        .is_nonzero_shape_function_component[1])
                     {
-                      return_value[0]
-                        -= fe_values->finite_element_output.shape_gradients
-                             [shape_function_data[shape_function].row_index[1]]
-                             [q_point][2];
-                      return_value[2]
-                        += fe_values->finite_element_output.shape_gradients
-                             [shape_function_data[shape_function].row_index[1]]
-                             [q_point][0];
+                      return_value[0] -=
+                        fe_values->finite_element_output
+                          .shape_gradients[shape_function_data[shape_function]
+                                             .row_index[1]][q_point][2];
+                      return_value[2] +=
+                        fe_values->finite_element_output
+                          .shape_gradients[shape_function_data[shape_function]
+                                             .row_index[1]][q_point][0];
                     }
 
                   if(shape_function_data[shape_function]
                        .is_nonzero_shape_function_component[2])
                     {
-                      return_value[0]
-                        += fe_values->finite_element_output.shape_gradients
-                             [shape_function_data[shape_function].row_index[2]]
-                             [q_point][1];
-                      return_value[1]
-                        -= fe_values->finite_element_output.shape_gradients
-                             [shape_function_data[shape_function].row_index[2]]
-                             [q_point][0];
+                      return_value[0] +=
+                        fe_values->finite_element_output
+                          .shape_gradients[shape_function_data[shape_function]
+                                             .row_index[2]][q_point][1];
+                      return_value[1] -=
+                        fe_values->finite_element_output
+                          .shape_gradients[shape_function_data[shape_function]
+                                             .row_index[2]][q_point][0];
                     }
 
                   return return_value;
@@ -4238,16 +4233,16 @@ namespace FEValuesViews
              "update_hessians")));
 
     // same as for the scalar case except that we have one more index
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
     if(snc == -2)
       return hessian_type();
     else if(snc != -1)
       {
         hessian_type return_value;
         return_value[shape_function_data[shape_function]
-                       .single_nonzero_component_index]
-          = fe_values->finite_element_output.shape_hessians[snc][q_point];
+                       .single_nonzero_component_index] =
+          fe_values->finite_element_output.shape_hessians[snc][q_point];
         return return_value;
       }
     else
@@ -4256,9 +4251,9 @@ namespace FEValuesViews
         for(unsigned int d = 0; d < dim; ++d)
           if(shape_function_data[shape_function]
                .is_nonzero_shape_function_component[d])
-            return_value[d]
-              = fe_values->finite_element_output.shape_hessians
-                  [shape_function_data[shape_function].row_index[d]][q_point];
+            return_value[d] =
+              fe_values->finite_element_output.shape_hessians
+                [shape_function_data[shape_function].row_index[d]][q_point];
 
         return return_value;
       }
@@ -4277,17 +4272,16 @@ namespace FEValuesViews
              "update_3rd_derivatives")));
 
     // same as for the scalar case except that we have one more index
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
     if(snc == -2)
       return third_derivative_type();
     else if(snc != -1)
       {
         third_derivative_type return_value;
         return_value[shape_function_data[shape_function]
-                       .single_nonzero_component_index]
-          = fe_values->finite_element_output
-              .shape_3rd_derivatives[snc][q_point];
+                       .single_nonzero_component_index] =
+          fe_values->finite_element_output.shape_3rd_derivatives[snc][q_point];
         return return_value;
       }
     else
@@ -4296,9 +4290,9 @@ namespace FEValuesViews
         for(unsigned int d = 0; d < dim; ++d)
           if(shape_function_data[shape_function]
                .is_nonzero_shape_function_component[d])
-            return_value[d]
-              = fe_values->finite_element_output.shape_3rd_derivatives
-                  [shape_function_data[shape_function].row_index[d]][q_point];
+            return_value[d] =
+              fe_values->finite_element_output.shape_3rd_derivatives
+                [shape_function_data[shape_function].row_index[d]][q_point];
 
         return return_value;
       }
@@ -4384,8 +4378,8 @@ namespace FEValuesViews
              "update_gradients")));
 
     // same as for the scalar case except that we have one more index
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
     if(snc == -2)
       return symmetric_gradient_type();
     else if(snc != -1)
@@ -4398,9 +4392,9 @@ namespace FEValuesViews
         for(unsigned int d = 0; d < dim; ++d)
           if(shape_function_data[shape_function]
                .is_nonzero_shape_function_component[d])
-            return_value[d]
-              = fe_values->finite_element_output.shape_gradients
-                  [shape_function_data[shape_function].row_index[d]][q_point];
+            return_value[d] =
+              fe_values->finite_element_output.shape_gradients
+                [shape_function_data[shape_function].row_index[d]][q_point];
 
         return symmetrize(return_value);
       }
@@ -4419,8 +4413,8 @@ namespace FEValuesViews
 
     // similar to the vector case where we have more then one index and we need
     // to convert between unrolled and component indexing for tensors
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
 
     if(snc == -2)
       {
@@ -4430,10 +4424,10 @@ namespace FEValuesViews
     else if(snc != -1)
       {
         value_type         return_value;
-        const unsigned int comp
-          = shape_function_data[shape_function].single_nonzero_component_index;
-        return_value[value_type::unrolled_to_component_indices(comp)]
-          = fe_values->finite_element_output.shape_values(snc, q_point);
+        const unsigned int comp =
+          shape_function_data[shape_function].single_nonzero_component_index;
+        return_value[value_type::unrolled_to_component_indices(comp)] =
+          fe_values->finite_element_output.shape_values(snc, q_point);
         return return_value;
       }
     else
@@ -4442,8 +4436,8 @@ namespace FEValuesViews
         for(unsigned int d = 0; d < value_type::n_independent_components; ++d)
           if(shape_function_data[shape_function]
                .is_nonzero_shape_function_component[d])
-            return_value[value_type::unrolled_to_component_indices(d)]
-              = fe_values->finite_element_output.shape_values(
+            return_value[value_type::unrolled_to_component_indices(d)] =
+              fe_values->finite_element_output.shape_values(
                 shape_function_data[shape_function].row_index[d], q_point);
         return return_value;
       }
@@ -4461,8 +4455,8 @@ namespace FEValuesViews
            (typename FEValuesBase<dim, spacedim>::ExcAccessToUninitializedField(
              "update_gradients")));
 
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
 
     if(snc == -2)
       {
@@ -4490,12 +4484,12 @@ namespace FEValuesViews
         //
         // Now, we know the nonzero component in unrolled form: it is indicated
         // by 'snc'. we can figure out which tensor components belong to this:
-        const unsigned int comp
-          = shape_function_data[shape_function].single_nonzero_component_index;
-        const unsigned int ii
-          = value_type::unrolled_to_component_indices(comp)[0];
-        const unsigned int jj
-          = value_type::unrolled_to_component_indices(comp)[1];
+        const unsigned int comp =
+          shape_function_data[shape_function].single_nonzero_component_index;
+        const unsigned int ii =
+          value_type::unrolled_to_component_indices(comp)[0];
+        const unsigned int jj =
+          value_type::unrolled_to_component_indices(comp)[1];
 
         // given the form of the divergence above, if ii=jj there is only a
         // single nonzero component of the full tensor and the gradient
@@ -4508,8 +4502,8 @@ namespace FEValuesViews
         // b_ii := \dfrac{\partial phi_{ii,jj}}{\partial x_ii}.
         // b_jj := \dfrac{\partial phi_{ii,jj}}{\partial x_jj}.
         // again, all other entries of 'b' are zero
-        const dealii::Tensor<1, spacedim>& phi_grad
-          = fe_values->finite_element_output.shape_gradients[snc][q_point];
+        const dealii::Tensor<1, spacedim>& phi_grad =
+          fe_values->finite_element_output.shape_gradients[snc][q_point];
 
         divergence_type return_value;
         return_value[ii] = phi_grad[jj];
@@ -4540,8 +4534,8 @@ namespace FEValuesViews
 
     // similar to the vector case where we have more then one index and we need
     // to convert between unrolled and component indexing for tensors
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
 
     if(snc == -2)
       {
@@ -4551,12 +4545,12 @@ namespace FEValuesViews
     else if(snc != -1)
       {
         value_type         return_value;
-        const unsigned int comp
-          = shape_function_data[shape_function].single_nonzero_component_index;
-        const TableIndices<2> indices
-          = dealii::Tensor<2, spacedim>::unrolled_to_component_indices(comp);
-        return_value[indices]
-          = fe_values->finite_element_output.shape_values(snc, q_point);
+        const unsigned int comp =
+          shape_function_data[shape_function].single_nonzero_component_index;
+        const TableIndices<2> indices =
+          dealii::Tensor<2, spacedim>::unrolled_to_component_indices(comp);
+        return_value[indices] =
+          fe_values->finite_element_output.shape_values(snc, q_point);
         return return_value;
       }
     else
@@ -4566,10 +4560,10 @@ namespace FEValuesViews
           if(shape_function_data[shape_function]
                .is_nonzero_shape_function_component[d])
             {
-              const TableIndices<2> indices
-                = dealii::Tensor<2, spacedim>::unrolled_to_component_indices(d);
-              return_value[indices]
-                = fe_values->finite_element_output.shape_values(
+              const TableIndices<2> indices =
+                dealii::Tensor<2, spacedim>::unrolled_to_component_indices(d);
+              return_value[indices] =
+                fe_values->finite_element_output.shape_values(
                   shape_function_data[shape_function].row_index[d], q_point);
             }
         return return_value;
@@ -4587,8 +4581,8 @@ namespace FEValuesViews
            (typename FEValuesBase<dim, spacedim>::ExcAccessToUninitializedField(
              "update_gradients")));
 
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
 
     if(snc == -2)
       {
@@ -4607,15 +4601,15 @@ namespace FEValuesViews
         //
         // Now, we know the nonzero component in unrolled form: it is indicated
         // by 'snc'. we can figure out which tensor components belong to this:
-        const unsigned int comp
-          = shape_function_data[shape_function].single_nonzero_component_index;
-        const TableIndices<2> indices
-          = dealii::Tensor<2, spacedim>::unrolled_to_component_indices(comp);
+        const unsigned int comp =
+          shape_function_data[shape_function].single_nonzero_component_index;
+        const TableIndices<2> indices =
+          dealii::Tensor<2, spacedim>::unrolled_to_component_indices(comp);
         const unsigned int ii = indices[0];
         const unsigned int jj = indices[1];
 
-        const dealii::Tensor<1, spacedim>& phi_grad
-          = fe_values->finite_element_output.shape_gradients[snc][q_point];
+        const dealii::Tensor<1, spacedim>& phi_grad =
+          fe_values->finite_element_output.shape_gradients[snc][q_point];
 
         divergence_type return_value;
         // note that we contract \nabla from the right
@@ -4642,8 +4636,8 @@ namespace FEValuesViews
            (typename FEValuesBase<dim, spacedim>::ExcAccessToUninitializedField(
              "update_gradients")));
 
-    const int snc
-      = shape_function_data[shape_function].single_nonzero_component;
+    const int snc =
+      shape_function_data[shape_function].single_nonzero_component;
 
     if(snc == -2)
       {
@@ -4662,15 +4656,15 @@ namespace FEValuesViews
         //
         // Now, we know the nonzero component in unrolled form: it is indicated
         // by 'snc'. we can figure out which tensor components belong to this:
-        const unsigned int comp
-          = shape_function_data[shape_function].single_nonzero_component_index;
-        const TableIndices<2> indices
-          = dealii::Tensor<2, spacedim>::unrolled_to_component_indices(comp);
+        const unsigned int comp =
+          shape_function_data[shape_function].single_nonzero_component_index;
+        const TableIndices<2> indices =
+          dealii::Tensor<2, spacedim>::unrolled_to_component_indices(comp);
         const unsigned int ii = indices[0];
         const unsigned int jj = indices[1];
 
-        const dealii::Tensor<1, spacedim>& phi_grad
-          = fe_values->finite_element_output.shape_gradients[snc][q_point];
+        const dealii::Tensor<1, spacedim>& phi_grad =
+          fe_values->finite_element_output.shape_gradients[snc][q_point];
 
         gradient_type return_value;
         return_value[ii][jj] = phi_grad;
@@ -4718,8 +4712,8 @@ inline const FEValuesViews::SymmetricTensor<2, dim, spacedim>&
   operator[](const FEValuesExtractors::SymmetricTensor<2>& tensor) const
 {
   Assert(
-    tensor.first_tensor_component
-      < fe_values_views_cache.symmetric_second_order_tensors.size(),
+    tensor.first_tensor_component <
+      fe_values_views_cache.symmetric_second_order_tensors.size(),
     ExcIndexRange(tensor.first_tensor_component,
                   0,
                   fe_values_views_cache.symmetric_second_order_tensors.size()));
@@ -4733,8 +4727,8 @@ inline const FEValuesViews::Tensor<2, dim, spacedim>&
   FEValuesBase<dim, spacedim>::
   operator[](const FEValuesExtractors::Tensor<2>& tensor) const
 {
-  Assert(tensor.first_tensor_component
-           < fe_values_views_cache.second_order_tensors.size(),
+  Assert(tensor.first_tensor_component <
+           fe_values_views_cache.second_order_tensors.size(),
          ExcIndexRange(tensor.first_tensor_component,
                        0,
                        fe_values_views_cache.second_order_tensors.size()));
@@ -4768,9 +4762,10 @@ FEValuesBase<dim, spacedim>::shape_value(const unsigned int i,
       // shape function is primitive,
       // so we can call
       // system_to_component_index
-      const unsigned int row
-        = this->finite_element_output.shape_function_to_row_table
-            [i * fe->n_components() + fe->system_to_component_index(i).first];
+      const unsigned int row =
+        this->finite_element_output
+          .shape_function_to_row_table[i * fe->n_components() +
+                                       fe->system_to_component_index(i).first];
       return this->finite_element_output.shape_values(row, j);
     }
 }
@@ -4799,9 +4794,9 @@ FEValuesBase<dim, spacedim>::shape_value_component(
   // look up the right row in the
   // table and take the data from
   // there
-  const unsigned int row
-    = this->finite_element_output
-        .shape_function_to_row_table[i * fe->n_components() + component];
+  const unsigned int row =
+    this->finite_element_output
+      .shape_function_to_row_table[i * fe->n_components() + component];
   return this->finite_element_output.shape_values(row, j);
 }
 
@@ -4830,9 +4825,10 @@ FEValuesBase<dim, spacedim>::shape_grad(const unsigned int i,
       // shape function is primitive,
       // so we can call
       // system_to_component_index
-      const unsigned int row
-        = this->finite_element_output.shape_function_to_row_table
-            [i * fe->n_components() + fe->system_to_component_index(i).first];
+      const unsigned int row =
+        this->finite_element_output
+          .shape_function_to_row_table[i * fe->n_components() +
+                                       fe->system_to_component_index(i).first];
       return this->finite_element_output.shape_gradients[row][j];
     }
 }
@@ -4860,9 +4856,9 @@ FEValuesBase<dim, spacedim>::shape_grad_component(
   // look up the right row in the
   // table and take the data from
   // there
-  const unsigned int row
-    = this->finite_element_output
-        .shape_function_to_row_table[i * fe->n_components() + component];
+  const unsigned int row =
+    this->finite_element_output
+      .shape_function_to_row_table[i * fe->n_components() + component];
   return this->finite_element_output.shape_gradients[row][j];
 }
 
@@ -4891,9 +4887,10 @@ FEValuesBase<dim, spacedim>::shape_hessian(const unsigned int i,
       // shape function is primitive,
       // so we can call
       // system_to_component_index
-      const unsigned int row
-        = this->finite_element_output.shape_function_to_row_table
-            [i * fe->n_components() + fe->system_to_component_index(i).first];
+      const unsigned int row =
+        this->finite_element_output
+          .shape_function_to_row_table[i * fe->n_components() +
+                                       fe->system_to_component_index(i).first];
       return this->finite_element_output.shape_hessians[row][j];
     }
 }
@@ -4921,9 +4918,9 @@ FEValuesBase<dim, spacedim>::shape_hessian_component(
   // look up the right row in the
   // table and take the data from
   // there
-  const unsigned int row
-    = this->finite_element_output
-        .shape_function_to_row_table[i * fe->n_components() + component];
+  const unsigned int row =
+    this->finite_element_output
+      .shape_function_to_row_table[i * fe->n_components() + component];
   return this->finite_element_output.shape_hessians[row][j];
 }
 
@@ -4952,9 +4949,10 @@ FEValuesBase<dim, spacedim>::shape_3rd_derivative(const unsigned int i,
       // shape function is primitive,
       // so we can call
       // system_to_component_index
-      const unsigned int row
-        = this->finite_element_output.shape_function_to_row_table
-            [i * fe->n_components() + fe->system_to_component_index(i).first];
+      const unsigned int row =
+        this->finite_element_output
+          .shape_function_to_row_table[i * fe->n_components() +
+                                       fe->system_to_component_index(i).first];
       return this->finite_element_output.shape_3rd_derivatives[row][j];
     }
 }
@@ -4982,9 +4980,9 @@ FEValuesBase<dim, spacedim>::shape_3rd_derivative_component(
   // look up the right row in the
   // table and take the data from
   // there
-  const unsigned int row
-    = this->finite_element_output
-        .shape_function_to_row_table[i * fe->n_components() + component];
+  const unsigned int row =
+    this->finite_element_output
+      .shape_function_to_row_table[i * fe->n_components() + component];
   return this->finite_element_output.shape_3rd_derivatives[row][j];
 }
 

@@ -136,8 +136,8 @@ namespace TrilinosWrappers
 
     const Epetra_Map& domain_map = matrix.OperatorDomainMap();
 
-    const size_type constant_modes_dimension
-      = additional_data.constant_modes.size();
+    const size_type constant_modes_dimension =
+      additional_data.constant_modes.size();
     Epetra_MultiVector distributed_constant_modes(
       domain_map, constant_modes_dimension > 0 ? constant_modes_dimension : 1);
     std::vector<double> dummy(constant_modes_dimension);
@@ -147,20 +147,20 @@ namespace TrilinosWrappers
         const size_type global_size = TrilinosWrappers::n_global_rows(matrix);
         (void)
           global_length; // work around compiler warning about unused function in release mode
-        Assert(global_size
-                 == static_cast<size_type>(TrilinosWrappers::global_length(
-                      distributed_constant_modes)),
+        Assert(global_size ==
+                 static_cast<size_type>(
+                   TrilinosWrappers::global_length(distributed_constant_modes)),
                ExcDimensionMismatch(
                  global_size,
                  TrilinosWrappers::global_length(distributed_constant_modes)));
-        const bool constant_modes_are_global
-          = additional_data.constant_modes[0].size() == global_size;
+        const bool constant_modes_are_global =
+          additional_data.constant_modes[0].size() == global_size;
         const size_type my_size = domain_map.NumMyElements();
 
         // Reshape null space as a contiguous vector of doubles so that
         // Trilinos can read from it.
-        const size_type expected_mode_size
-          = constant_modes_are_global ? global_size : my_size;
+        const size_type expected_mode_size =
+          constant_modes_are_global ? global_size : my_size;
         for(size_type d = 0; d < constant_modes_dimension; ++d)
           {
             Assert(
@@ -169,12 +169,12 @@ namespace TrilinosWrappers
                                    expected_mode_size));
             for(size_type row = 0; row < my_size; ++row)
               {
-                const TrilinosWrappers::types::int_type mode_index
-                  = constant_modes_are_global ?
-                      TrilinosWrappers::global_index(domain_map, row) :
-                      row;
-                distributed_constant_modes[d][row]
-                  = additional_data.constant_modes[d][mode_index];
+                const TrilinosWrappers::types::int_type mode_index =
+                  constant_modes_are_global ?
+                    TrilinosWrappers::global_index(domain_map, row) :
+                    row;
+                distributed_constant_modes[d][row] =
+                  additional_data.constant_modes[d][mode_index];
               }
           }
         (void) expected_mode_size;
@@ -195,8 +195,8 @@ namespace TrilinosWrappers
 
     if(additional_data.output_details)
       {
-        ML_Epetra::MultiLevelPreconditioner* multilevel_operator
-          = dynamic_cast<ML_Epetra::MultiLevelPreconditioner*>(
+        ML_Epetra::MultiLevelPreconditioner* multilevel_operator =
+          dynamic_cast<ML_Epetra::MultiLevelPreconditioner*>(
             preconditioner.get());
         Assert(multilevel_operator != nullptr,
                ExcMessage("Preconditioner setup failed."));
@@ -254,9 +254,8 @@ namespace TrilinosWrappers
   void
   PreconditionAMG::reinit()
   {
-    ML_Epetra::MultiLevelPreconditioner* multilevel_operator
-      = dynamic_cast<ML_Epetra::MultiLevelPreconditioner*>(
-        preconditioner.get());
+    ML_Epetra::MultiLevelPreconditioner* multilevel_operator =
+      dynamic_cast<ML_Epetra::MultiLevelPreconditioner*>(preconditioner.get());
     multilevel_operator->ReComputePreconditioner();
   }
 

@@ -325,11 +325,11 @@ public:
     const WhichEigenvalues eigenvalue_of_interest;
     const bool             symmetric;
     const int              mode;
-    AdditionalData(const unsigned int     number_of_arnoldi_vectors = 15,
-                   const WhichEigenvalues eigenvalue_of_interest
-                   = largest_magnitude,
-                   const bool symmetric = false,
-                   const int  mode      = 3);
+    AdditionalData(
+      const unsigned int     number_of_arnoldi_vectors = 15,
+      const WhichEigenvalues eigenvalue_of_interest    = largest_magnitude,
+      const bool             symmetric                 = false,
+      const int              mode                      = 3);
   };
 
   /**
@@ -632,13 +632,13 @@ template <typename VectorType>
 std::size_t
 PArpackSolver<VectorType>::memory_consumption() const
 {
-  return MemoryConsumption::memory_consumption(double())
-           * (workl.size() + workd.size() + v.size() + resid.size() + z.size()
-              + workev.size())
-         + src.memory_consumption() + dst.memory_consumption()
-         + tmp.memory_consumption()
-         + MemoryConsumption::memory_consumption(types::global_dof_index())
-             * local_indices.size();
+  return MemoryConsumption::memory_consumption(double()) *
+           (workl.size() + workd.size() + v.size() + resid.size() + z.size() +
+            workev.size()) +
+         src.memory_consumption() + dst.memory_consumption() +
+         tmp.memory_consumption() +
+         MemoryConsumption::memory_consumption(types::global_dof_index()) *
+           local_indices.size();
 }
 
 template <typename VectorType>
@@ -736,8 +736,8 @@ PArpackSolver<VectorType>::internal_reinit(const IndexSet& locally_owned_dofs)
   // work arrays for ARPACK
   workd.resize(3 * nloc, 0.0);
 
-  lworkl
-    = additional_data.symmetric ? ncv * ncv + 8 * ncv : 3 * ncv * ncv + 6 * ncv;
+  lworkl =
+    additional_data.symmetric ? ncv * ncv + 8 * ncv : 3 * ncv * ncv + 6 * ncv;
   workl.resize(lworkl, 0.);
 
   ldz = nloc;
@@ -1152,8 +1152,8 @@ PArpackSolver<VectorType>::solve(const MatrixType1& system_matrix,
     }
 
   for(size_type i = 0; i < n_eigenvalues; ++i)
-    eigenvalues[i]
-      = std::complex<double>(eigenvalues_real[i], eigenvalues_im[i]);
+    eigenvalues[i] =
+      std::complex<double>(eigenvalues_real[i], eigenvalues_im[i]);
 
   // Throw an error if the solver did not converge.
   AssertThrow(iparam[4] >= (int) n_eigenvalues,

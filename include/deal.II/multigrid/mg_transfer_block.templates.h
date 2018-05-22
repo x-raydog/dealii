@@ -127,8 +127,8 @@ MGTransferBlock<number>::copy_from_mg(
         for(IT i = copy_indices[block][level].begin();
             i != copy_indices[block][level].end();
             ++i)
-          dst.block(block)(i->first)
-            = src[level].block(mg_block[block])(i->second);
+          dst.block(block)(i->first) =
+            src[level].block(mg_block[block])(i->second);
 }
 
 template <typename number>
@@ -147,8 +147,8 @@ MGTransferBlock<number>::copy_from_mg_add(
         for(IT i = copy_indices[block][level].begin();
             i != copy_indices[block][level].end();
             ++i)
-          dst.block(block)(i->first)
-            += src[level].block(mg_block[block])(i->second);
+          dst.block(block)(i->first) +=
+            src[level].block(mg_block[block])(i->second);
 }
 
 DEAL_II_NAMESPACE_CLOSE

@@ -76,8 +76,8 @@ namespace internal
   {
     // Extract local indices in the vector.
     Epetra_FEVector                   vector = V.trilinos_vector();
-    TrilinosWrappers::types::int_type trilinos_i
-      = vector.Map().LID(static_cast<TrilinosWrappers::types::int_type>(i));
+    TrilinosWrappers::types::int_type trilinos_i =
+      vector.Map().LID(static_cast<TrilinosWrappers::types::int_type>(i));
 
     vector[0][trilinos_i] += value;
   }
@@ -91,8 +91,8 @@ namespace internal
   {
     // Extract local indices in the vector.
     Epetra_FEVector                   vector = V.trilinos_vector();
-    TrilinosWrappers::types::int_type trilinos_i
-      = vector.Map().LID(static_cast<TrilinosWrappers::types::int_type>(i));
+    TrilinosWrappers::types::int_type trilinos_i =
+      vector.Map().LID(static_cast<TrilinosWrappers::types::int_type>(i));
 
     vector[0][trilinos_i] = value;
   }
@@ -105,8 +105,8 @@ namespace internal
   {
     // Extract local indices in the vector.
     Epetra_FEVector                   vector = V.trilinos_vector();
-    TrilinosWrappers::types::int_type trilinos_i
-      = vector.Map().LID(static_cast<TrilinosWrappers::types::int_type>(i));
+    TrilinosWrappers::types::int_type trilinos_i =
+      vector.Map().LID(static_cast<TrilinosWrappers::types::int_type>(i));
 
     return vector[0][trilinos_i];
   }

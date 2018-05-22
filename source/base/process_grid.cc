@@ -56,8 +56,8 @@ namespace
 
     // Get the total number of cores we can occupy in a rectangular dense matrix
     // with rectangular blocks when every core owns only a single block:
-    const int n_processes_heuristic = int(std::ceil((1. * m) / block_size_m))
-                                      * int(std::ceil((1. * n) / block_size_n));
+    const int n_processes_heuristic = int(std::ceil((1. * m) / block_size_m)) *
+                                      int(std::ceil((1. * n) / block_size_n));
     const int Np = std::min(n_processes_heuristic, n_processes);
 
     // Now we need to split Np into  Pr x Pc. Assume we know the shape/ratio
@@ -78,12 +78,13 @@ namespace
     // finally, get the rows:
     int n_process_rows = Np / n_process_columns;
 
-    Assert(n_process_columns >= 1 && n_process_rows >= 1
-             && n_processes >= n_process_rows * n_process_columns,
-           ExcMessage("error in process grid: " + std::to_string(n_process_rows)
-                      + "x" + std::to_string(n_process_columns) + "="
-                      + std::to_string(n_process_rows * n_process_columns)
-                      + " out of " + std::to_string(n_processes)));
+    Assert(
+      n_process_columns >= 1 && n_process_rows >= 1 &&
+        n_processes >= n_process_rows * n_process_columns,
+      ExcMessage("error in process grid: " + std::to_string(n_process_rows) +
+                 "x" + std::to_string(n_process_columns) + "=" +
+                 std::to_string(n_process_rows * n_process_columns) +
+                 " out of " + std::to_string(n_processes)));
 
     return std::make_pair(n_process_rows, n_process_columns);
 
@@ -149,10 +150,10 @@ namespace Utilities
 
       // Create an auxiliary communicator which has root and all inactive cores.
       // Assume that inactive cores start with id=n_process_rows*n_process_columns
-      const unsigned int n_active_mpi_processes
-        = n_process_rows * n_process_columns;
-      Assert(mpi_process_is_active
-               || this_mpi_process >= n_active_mpi_processes,
+      const unsigned int n_active_mpi_processes =
+        n_process_rows * n_process_columns;
+      Assert(mpi_process_is_active ||
+               this_mpi_process >= n_active_mpi_processes,
              ExcInternalError());
 
       std::vector<int> inactive_with_root_ranks;
@@ -192,10 +193,9 @@ namespace Utilities
 
       // Double check that the process with rank 0 in subgroup is active:
 #  ifdef DEBUG
-      if(mpi_communicator_inactive_with_root != MPI_COMM_NULL
-         && Utilities::MPI::this_mpi_process(
-              mpi_communicator_inactive_with_root)
-              == 0)
+      if(mpi_communicator_inactive_with_root != MPI_COMM_NULL &&
+         Utilities::MPI::this_mpi_process(
+           mpi_communicator_inactive_with_root) == 0)
         Assert(mpi_process_is_active, ExcInternalError());
 #  endif
     }
@@ -235,12 +235,12 @@ namespace Utilities
       Assert(count > 0, ExcInternalError());
       if(mpi_communicator_inactive_with_root != MPI_COMM_NULL)
         {
-          const int ierr
-            = MPI_Bcast(value,
-                        count,
-                        Utilities::MPI::internal::mpi_type_id(value),
-                        0 /*from root*/,
-                        mpi_communicator_inactive_with_root);
+          const int ierr =
+            MPI_Bcast(value,
+                      count,
+                      Utilities::MPI::internal::mpi_type_id(value),
+                      0 /*from root*/,
+                      mpi_communicator_inactive_with_root);
           AssertThrowMPI(ierr);
         }
     }

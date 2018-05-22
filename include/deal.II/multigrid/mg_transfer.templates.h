@@ -77,8 +77,8 @@ namespace
       }
     Assert(target_component.size() == n_blocks,
            ExcDimensionMismatch(target_component.size(), n_blocks));
-    const unsigned int max_block
-      = *std::max_element(target_component.begin(), target_component.end());
+    const unsigned int max_block =
+      *std::max_element(target_component.begin(), target_component.end());
     const unsigned int n_target_blocks = max_block + 1;
 
     std::vector<std::vector<types::global_dof_index>> ndofs(
@@ -106,15 +106,15 @@ namespace
                 const std::vector<unsigned int>&,
                 MGLevelObject<LinearAlgebra::distributed::Vector<number>>& v)
   {
-    const parallel::Triangulation<dim, spacedim>* tria
-      = (dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
+    const parallel::Triangulation<dim, spacedim>* tria =
+      (dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
         &mg_dof.get_triangulation()));
 
     for(unsigned int level = v.min_level(); level <= v.max_level(); ++level)
       {
-        if(v[level].size() != mg_dof.locally_owned_mg_dofs(level).size()
-           || v[level].local_size()
-                != mg_dof.locally_owned_mg_dofs(level).n_elements())
+        if(v[level].size() != mg_dof.locally_owned_mg_dofs(level).size() ||
+           v[level].local_size() !=
+             mg_dof.locally_owned_mg_dofs(level).n_elements())
           v[level].reinit(mg_dof.locally_owned_mg_dofs(level),
                           tria != nullptr ? tria->get_communicator() :
                                             MPI_COMM_SELF);
@@ -135,8 +135,8 @@ namespace
                 const std::vector<unsigned int>&,
                 MGLevelObject<TrilinosWrappers::MPI::Vector>& v)
   {
-    const dealii::parallel::Triangulation<dim, spacedim>* tria
-      = (dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
+    const dealii::parallel::Triangulation<dim, spacedim>* tria =
+      (dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
         &mg_dof.get_triangulation()));
     AssertThrow(
       tria != nullptr,
@@ -169,8 +169,8 @@ namespace internal
     // we should have i->second == i->first, therefore we can use the same
     // function for both copying to mg as well as copying from mg
     for(std::vector<std::pair<types::global_dof_index,
-                              types::global_dof_index>>::const_iterator i
-        = copy_indices.begin();
+                              types::global_dof_index>>::const_iterator i =
+          copy_indices.begin();
         i != copy_indices.end();
         ++i)
       dst(i->first) = src(i->first);
@@ -390,15 +390,14 @@ MGLevelGlobalTransfer<LinearAlgebra::distributed::Vector<Number>>::copy_to_mg(
   const LinearAlgebra::distributed::Vector<Number2>&         src,
   const bool solution_transfer) const
 {
-  LinearAlgebra::distributed::Vector<Number>& this_ghosted_global_vector
-    = solution_transfer ? solution_ghosted_global_vector :
-                          ghosted_global_vector;
+  LinearAlgebra::distributed::Vector<Number>& this_ghosted_global_vector =
+    solution_transfer ? solution_ghosted_global_vector : ghosted_global_vector;
   const std::vector<std::vector<std::pair<unsigned int, unsigned int>>>&
-    this_copy_indices
-    = solution_transfer ? solution_copy_indices : copy_indices;
+    this_copy_indices =
+      solution_transfer ? solution_copy_indices : copy_indices;
   const std::vector<std::vector<std::pair<unsigned int, unsigned int>>>&
-    this_copy_indices_level_mine
-    = solution_transfer ? solution_copy_indices_level_mine :
+    this_copy_indices_level_mine =
+      solution_transfer ? solution_copy_indices_level_mine :
                           copy_indices_level_mine;
 
   AssertIndexRange(dst.max_level(),
@@ -416,8 +415,8 @@ MGLevelGlobalTransfer<LinearAlgebra::distributed::Vector<Number>>::copy_to_mg(
   else if(perform_renumbered_plain_copy)
     {
       Assert(copy_indices_level_mine.back().empty(), ExcInternalError());
-      LinearAlgebra::distributed::Vector<Number>& dst_level
-        = dst[dst.max_level()];
+      LinearAlgebra::distributed::Vector<Number>& dst_level =
+        dst[dst.max_level()];
       for(std::pair<unsigned int, unsigned int> i : this_copy_indices.back())
         dst_level.local_element(i.second) = src.local_element(i.first);
       return;
@@ -444,16 +443,16 @@ MGLevelGlobalTransfer<LinearAlgebra::distributed::Vector<Number>>::copy_to_mg(
       for(dof_pair_iterator i = this_copy_indices[level].begin();
           i != this_copy_indices[level].end();
           ++i)
-        dst_level.local_element(i->second)
-          = this_ghosted_global_vector.local_element(i->first);
+        dst_level.local_element(i->second) =
+          this_ghosted_global_vector.local_element(i->first);
 
       // Do the same for the indices where the level index is local, but the
       // global index is not
       for(dof_pair_iterator i = this_copy_indices_level_mine[level].begin();
           i != this_copy_indices_level_mine[level].end();
           ++i)
-        dst_level.local_element(i->second)
-          = this_ghosted_global_vector.local_element(i->first);
+        dst_level.local_element(i->second) =
+          this_ghosted_global_vector.local_element(i->first);
 
       dst_level.compress(VectorOperation::insert);
     }
@@ -484,8 +483,8 @@ MGLevelGlobalTransfer<LinearAlgebra::distributed::Vector<Number>>::copy_from_mg(
   else if(perform_renumbered_plain_copy)
     {
       Assert(copy_indices_global_mine.back().empty(), ExcInternalError());
-      const LinearAlgebra::distributed::Vector<Number>& src_level
-        = src[src.max_level()];
+      const LinearAlgebra::distributed::Vector<Number>& src_level =
+        src[src.max_level()];
       dst.zero_out_ghosts();
       for(std::pair<unsigned int, unsigned int> i : copy_indices.back())
         dst.local_element(i.first) = src_level.local_element(i.second);
@@ -509,8 +508,8 @@ MGLevelGlobalTransfer<LinearAlgebra::distributed::Vector<Number>>::copy_from_mg(
 
       // the first time around, we copy the source vector to the temporary
       // vector that we hold for the purpose of data exchange
-      LinearAlgebra::distributed::Vector<Number>& ghosted_vector
-        = ghosted_level_vector[level];
+      LinearAlgebra::distributed::Vector<Number>& ghosted_vector =
+        ghosted_level_vector[level];
       ghosted_vector = src[level];
       ghosted_vector.update_ghost_values();
 
@@ -556,8 +555,8 @@ MGLevelGlobalTransfer<LinearAlgebra::distributed::Vector<Number>>::
 
       // the first time around, we copy the source vector to the temporary
       // vector that we hold for the purpose of data exchange
-      LinearAlgebra::distributed::Vector<Number>& ghosted_vector
-        = ghosted_level_vector[level];
+      LinearAlgebra::distributed::Vector<Number>& ghosted_vector =
+        ghosted_level_vector[level];
       ghosted_vector = src[level];
       ghosted_vector.update_ghost_values();
 

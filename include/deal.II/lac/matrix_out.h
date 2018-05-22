@@ -290,8 +290,8 @@ MatrixOut::get_gridpoint_value(const Matrix&   matrix,
   double    average    = 0;
   size_type n_elements = 0;
   for(size_type row = i * options.block_size;
-      row < std::min(size_type(matrix.m()),
-                     size_type((i + 1) * options.block_size));
+      row <
+      std::min(size_type(matrix.m()), size_type((i + 1) * options.block_size));
       ++row)
     for(size_type col = j * options.block_size;
         col < std::min(size_type(matrix.m()),
@@ -301,8 +301,8 @@ MatrixOut::get_gridpoint_value(const Matrix&   matrix,
         average += std::fabs(
           internal::MatrixOutImplementation::get_element(matrix, row, col));
       else
-        average
-          += internal::MatrixOutImplementation::get_element(matrix, row, col);
+        average +=
+          internal::MatrixOutImplementation::get_element(matrix, row, col);
   average /= n_elements;
   return average;
 }
@@ -313,10 +313,10 @@ MatrixOut::build_patches(const Matrix&      matrix,
                          const std::string& name,
                          const Options      options)
 {
-  size_type gridpoints_x = (matrix.n() / options.block_size
-                            + (matrix.n() % options.block_size != 0 ? 1 : 0)),
-            gridpoints_y = (matrix.m() / options.block_size
-                            + (matrix.m() % options.block_size != 0 ? 1 : 0));
+  size_type gridpoints_x = (matrix.n() / options.block_size +
+                            (matrix.n() % options.block_size != 0 ? 1 : 0)),
+            gridpoints_y = (matrix.m() / options.block_size +
+                            (matrix.m() % options.block_size != 0 ? 1 : 0));
 
   // If continuous, the number of
   // plotted patches is matrix size-1
@@ -376,25 +376,25 @@ MatrixOut::build_patches(const Matrix&      matrix,
         patches[index].data.reinit(1, 4);
         if(options.discontinuous)
           {
-            patches[index].data(0, 0)
-              = get_gridpoint_value(matrix, i, j, options);
-            patches[index].data(0, 1)
-              = get_gridpoint_value(matrix, i, j, options);
-            patches[index].data(0, 2)
-              = get_gridpoint_value(matrix, i, j, options);
-            patches[index].data(0, 3)
-              = get_gridpoint_value(matrix, i, j, options);
+            patches[index].data(0, 0) =
+              get_gridpoint_value(matrix, i, j, options);
+            patches[index].data(0, 1) =
+              get_gridpoint_value(matrix, i, j, options);
+            patches[index].data(0, 2) =
+              get_gridpoint_value(matrix, i, j, options);
+            patches[index].data(0, 3) =
+              get_gridpoint_value(matrix, i, j, options);
           }
         else
           {
-            patches[index].data(0, 0)
-              = get_gridpoint_value(matrix, i, j, options);
-            patches[index].data(0, 1)
-              = get_gridpoint_value(matrix, i + 1, j, options);
-            patches[index].data(0, 2)
-              = get_gridpoint_value(matrix, i, j + 1, options);
-            patches[index].data(0, 3)
-              = get_gridpoint_value(matrix, i + 1, j + 1, options);
+            patches[index].data(0, 0) =
+              get_gridpoint_value(matrix, i, j, options);
+            patches[index].data(0, 1) =
+              get_gridpoint_value(matrix, i + 1, j, options);
+            patches[index].data(0, 2) =
+              get_gridpoint_value(matrix, i, j + 1, options);
+            patches[index].data(0, 3) =
+              get_gridpoint_value(matrix, i + 1, j + 1, options);
           }
       };
 

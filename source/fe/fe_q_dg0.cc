@@ -94,15 +94,15 @@ FE_Q_DG0<dim, spacedim>::get_name() const
   const unsigned int             n_points = this->degree + 1;
   std::vector<double>            points(n_points);
   const unsigned int             dofs_per_cell = this->dofs_per_cell;
-  const std::vector<Point<dim>>& unit_support_points
-    = this->unit_support_points;
+  const std::vector<Point<dim>>& unit_support_points =
+    this->unit_support_points;
   unsigned int index = 0;
 
   // Decode the support points in one coordinate direction.
   for(unsigned int j = 0; j < dofs_per_cell; j++)
     {
-      if((dim > 1) ? (unit_support_points[j](1) == 0
-                      && ((dim > 2) ? unit_support_points[j](2) == 0 : true)) :
+      if((dim > 1) ? (unit_support_points[j](1) == 0 &&
+                      ((dim > 2) ? unit_support_points[j](2) == 0 : true)) :
                      true)
         {
           if(index == 0)
@@ -182,8 +182,8 @@ FE_Q_DG0<dim, spacedim>::convert_generalized_support_point_values_to_dof_values(
 
   for(unsigned int i = 0; i < this->dofs_per_cell - 1; ++i)
     {
-      const std::pair<unsigned int, unsigned int> index
-        = this->system_to_component_index(i);
+      const std::pair<unsigned int, unsigned int> index =
+        this->system_to_component_index(i);
       nodal_dofs[i] = support_point_values[i](index.first);
     }
 
@@ -201,8 +201,8 @@ FE_Q_DG0<dim, spacedim>::get_interpolation_matrix(
   typedef FE_Q_DG0<dim, spacedim> FEQDG0;
 
   AssertThrow(
-    (x_source_fe.get_name().find("FE_Q_DG0<") == 0)
-      || (dynamic_cast<const FEQDG0*>(&x_source_fe) != nullptr),
+    (x_source_fe.get_name().find("FE_Q_DG0<") == 0) ||
+      (dynamic_cast<const FEQDG0*>(&x_source_fe) != nullptr),
     (typename FiniteElement<dim, spacedim>::ExcInterpolationNotImplemented()));
 
   Assert(interpolation_matrix.m() == this->dofs_per_cell,

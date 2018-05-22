@@ -83,8 +83,8 @@ namespace SUNDIALS
     int
     t_kinsol_setup_jacobian(KINMem kinsol_mem)
     {
-      KINSOL<VectorType>& solver
-        = *static_cast<KINSOL<VectorType>*>(kinsol_mem->kin_user_data);
+      KINSOL<VectorType>& solver =
+        *static_cast<KINSOL<VectorType>*>(kinsol_mem->kin_user_data);
       GrowingVectorMemory<VectorType> mem;
 
       typename VectorMemory<VectorType>::Pointer src_ycur(mem);
@@ -108,8 +108,8 @@ namespace SUNDIALS
                             realtype* sJpnorm,
                             realtype* sFdotJp)
     {
-      KINSOL<VectorType>& solver
-        = *static_cast<KINSOL<VectorType>*>(kinsol_mem->kin_user_data);
+      KINSOL<VectorType>& solver =
+        *static_cast<KINSOL<VectorType>*>(kinsol_mem->kin_user_data);
       GrowingVectorMemory<VectorType> mem;
 
       typename VectorMemory<VectorType>::Pointer src_ycur(mem);
@@ -186,8 +186,8 @@ namespace SUNDIALS
         const IndexSet is = initial_guess_and_solution.locally_owned_elements();
         const unsigned int local_system_size = is.n_elements();
 
-        solution
-          = N_VNew_Parallel(communicator, local_system_size, system_size);
+        solution =
+          N_VNew_Parallel(communicator, local_system_size, system_size);
 
         u_scale = N_VNew_Parallel(communicator, local_system_size, system_size);
         N_VConst_Parallel(1.e0, u_scale);
@@ -284,17 +284,17 @@ namespace SUNDIALS
         AssertKINSOL(status);
       }
 
-    if(data.strategy == AdditionalData::newton
-       || data.strategy == AdditionalData::linesearch)
+    if(data.strategy == AdditionalData::newton ||
+       data.strategy == AdditionalData::linesearch)
       Assert(residual, ExcFunctionNotProvided("residual"));
 
-    if(data.strategy == AdditionalData::fixed_point
-       || data.strategy == AdditionalData::picard)
+    if(data.strategy == AdditionalData::fixed_point ||
+       data.strategy == AdditionalData::picard)
       Assert(iteration_function, ExcFunctionNotProvided("iteration_function"));
 
     // call to KINSol
-    status
-      = KINSol(kinsol_mem, solution, (int) data.strategy, u_scale, f_scale);
+    status =
+      KINSol(kinsol_mem, solution, (int) data.strategy, u_scale, f_scale);
     AssertKINSOL(status);
 
     copy(initial_guess_and_solution, solution);

@@ -138,8 +138,8 @@ namespace PETScWrappers
 
       int k_global, k = ((size() != n) || (local_size() != local_sz));
       {
-        const int ierr
-          = MPI_Allreduce(&k, &k_global, 1, MPI_INT, MPI_LOR, communicator);
+        const int ierr =
+          MPI_Allreduce(&k, &k_global, 1, MPI_INT, MPI_LOR, communicator);
         AssertThrowMPI(ierr);
       }
 
@@ -220,8 +220,8 @@ namespace PETScWrappers
       Assert(local_size <= n, ExcIndexRange(local_size, 0, n));
       ghosted = false;
 
-      const PetscErrorCode ierr
-        = VecCreateMPI(communicator, local_size, PETSC_DETERMINE, &vector);
+      const PetscErrorCode ierr =
+        VecCreateMPI(communicator, local_size, PETSC_DETERMINE, &vector);
       AssertThrow(ierr == 0, ExcPETScError(ierr));
 
       Assert(size() == n, ExcDimensionMismatch(size(), n));
@@ -240,9 +240,9 @@ namespace PETScWrappers
       std::vector<size_type> ghostindices;
       ghostnodes.fill_index_vector(ghostindices);
 
-      const PetscInt* ptr
-        = (ghostindices.size() > 0 ? (const PetscInt*) (&(ghostindices[0])) :
-                                     nullptr);
+      const PetscInt* ptr =
+        (ghostindices.size() > 0 ? (const PetscInt*) (&(ghostindices[0])) :
+                                   nullptr);
 
       PetscErrorCode ierr = VecCreateGhost(communicator,
                                            local_size,

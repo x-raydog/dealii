@@ -52,14 +52,14 @@ namespace Manifolds
     // Note that in C++11 a constexpr function can only have a return
     // statement, so we cannot alias the structure dimension
     return GeometryInfo<MeshIteratorType::AccessorType::structure_dimension>::
-             vertices_per_cell
-           + GeometryInfo<MeshIteratorType::AccessorType::structure_dimension>::
-               lines_per_cell
-           + GeometryInfo<MeshIteratorType::AccessorType::structure_dimension>::
-               quads_per_cell
-           + GeometryInfo<MeshIteratorType::AccessorType::structure_dimension>::
-               hexes_per_cell
-           - 1; // don't count the cell itself, just the bounding objects
+             vertices_per_cell +
+           GeometryInfo<MeshIteratorType::AccessorType::structure_dimension>::
+             lines_per_cell +
+           GeometryInfo<MeshIteratorType::AccessorType::structure_dimension>::
+             quads_per_cell +
+           GeometryInfo<MeshIteratorType::AccessorType::structure_dimension>::
+             hexes_per_cell -
+           1; // don't count the cell itself, just the bounding objects
   }
 
   /**
@@ -1167,8 +1167,8 @@ namespace Manifolds
   get_default_quadrature(const MeshIteratorType& iterator,
                          const bool              with_interpolation)
   {
-    const auto points_and_weights
-      = get_default_points_and_weights(iterator, with_interpolation);
+    const auto points_and_weights =
+      get_default_points_and_weights(iterator, with_interpolation);
     static const int spacedim = MeshIteratorType::AccessorType::space_dimension;
     return Quadrature<spacedim>(
       std::vector<Point<spacedim>>(points_and_weights.first.begin(),
@@ -1186,8 +1186,8 @@ namespace Manifolds
   {
     const int dim      = MeshIteratorType::AccessorType::structure_dimension;
     const int spacedim = MeshIteratorType::AccessorType::space_dimension;
-    constexpr std::size_t points_per_cell
-      = n_default_points_per_cell<MeshIteratorType>();
+    constexpr std::size_t points_per_cell =
+      n_default_points_per_cell<MeshIteratorType>();
 
     std::pair<std::array<Point<spacedim>, points_per_cell>,
               std::array<double, points_per_cell>>
@@ -1214,11 +1214,11 @@ namespace Manifolds
           for(unsigned int i = 0; i < 4; ++i)
             {
               points_weights.first[i] = iterator->vertex(i);
-              points_weights.first[4 + i]
-                = (iterator->line(i)->has_children() ?
-                     iterator->line(i)->child(0)->vertex(1) :
-                     iterator->line(i)->get_manifold().get_new_point_on_line(
-                       iterator->line(i)));
+              points_weights.first[4 + i] =
+                (iterator->line(i)->has_children() ?
+                   iterator->line(i)->child(0)->vertex(1) :
+                   iterator->line(i)->get_manifold().get_new_point_on_line(
+                     iterator->line(i)));
             }
 
           if(with_interpolation)
@@ -1237,11 +1237,11 @@ namespace Manifolds
           break;
         case 3:
           {
-            TriaIterator<TriaAccessor<3, 3, 3>> hex
-              = static_cast<TriaIterator<TriaAccessor<3, 3, 3>>>(iterator);
-            const unsigned int np = GeometryInfo<dim>::vertices_per_cell
-                                    + GeometryInfo<dim>::lines_per_cell
-                                    + GeometryInfo<dim>::faces_per_cell;
+            TriaIterator<TriaAccessor<3, 3, 3>> hex =
+              static_cast<TriaIterator<TriaAccessor<3, 3, 3>>>(iterator);
+            const unsigned int np = GeometryInfo<dim>::vertices_per_cell +
+                                    GeometryInfo<dim>::lines_per_cell +
+                                    GeometryInfo<dim>::faces_per_cell;
             Assert(points_weights.first.size() == np, ExcInternalError());
             Assert(points_weights.second.size() == np, ExcInternalError());
             auto* sp3 = reinterpret_cast<
@@ -1268,21 +1268,21 @@ namespace Manifolds
                 for(unsigned int i = 0; i < GeometryInfo<dim>::lines_per_cell;
                     ++i, ++j)
                   {
-                    (*sp3)[j]
-                      = (hex->line(i)->has_children() ?
-                           hex->line(i)->child(0)->vertex(1) :
-                           hex->line(i)->get_manifold().get_new_point_on_line(
-                             hex->line(i)));
+                    (*sp3)[j] =
+                      (hex->line(i)->has_children() ?
+                         hex->line(i)->child(0)->vertex(1) :
+                         hex->line(i)->get_manifold().get_new_point_on_line(
+                           hex->line(i)));
                     points_weights.second[j] = -1.0 / 4.0;
                   }
                 for(unsigned int i = 0; i < GeometryInfo<dim>::faces_per_cell;
                     ++i, ++j)
                   {
-                    (*sp3)[j]
-                      = (hex->quad(i)->has_children() ?
-                           hex->quad(i)->isotropic_child(0)->vertex(3) :
-                           hex->quad(i)->get_manifold().get_new_point_on_quad(
-                             hex->quad(i)));
+                    (*sp3)[j] =
+                      (hex->quad(i)->has_children() ?
+                         hex->quad(i)->isotropic_child(0)->vertex(3) :
+                         hex->quad(i)->get_manifold().get_new_point_on_quad(
+                           hex->quad(i)));
                     points_weights.second[j] = 1.0 / 2.0;
                   }
               }

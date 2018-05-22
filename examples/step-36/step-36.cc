@@ -243,8 +243,8 @@ namespace Step36
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -261,9 +261,9 @@ namespace Step36
 
     std::vector<double> potential_values(n_q_points);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         fe_values.reinit(cell);
@@ -277,17 +277,17 @@ namespace Step36
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
             for(unsigned int j = 0; j < dofs_per_cell; ++j)
               {
-                cell_stiffness_matrix(i, j)
-                  += (fe_values.shape_grad(i, q_point)
-                        * fe_values.shape_grad(j, q_point)
-                      + potential_values[q_point]
-                          * fe_values.shape_value(i, q_point)
-                          * fe_values.shape_value(j, q_point))
-                     * fe_values.JxW(q_point);
+                cell_stiffness_matrix(i, j) +=
+                  (fe_values.shape_grad(i, q_point) *
+                     fe_values.shape_grad(j, q_point) +
+                   potential_values[q_point] *
+                     fe_values.shape_value(i, q_point) *
+                     fe_values.shape_value(j, q_point)) *
+                  fe_values.JxW(q_point);
 
-                cell_mass_matrix(i, j) += (fe_values.shape_value(i, q_point)
-                                           * fe_values.shape_value(j, q_point))
-                                          * fe_values.JxW(q_point);
+                cell_mass_matrix(i, j) += (fe_values.shape_value(i, q_point) *
+                                           fe_values.shape_value(j, q_point)) *
+                                          fe_values.JxW(q_point);
               }
 
         // Now that we have the local matrix contributions, we transfer them
@@ -410,8 +410,8 @@ namespace Step36
 
     for(unsigned int i = 0; i < eigenfunctions.size(); ++i)
       data_out.add_data_vector(eigenfunctions[i],
-                               std::string("eigenfunction_")
-                                 + Utilities::int_to_string(i));
+                               std::string("eigenfunction_") +
+                                 Utilities::int_to_string(i));
 
     // The only thing worth discussing may be that because the potential is
     // specified as a function expression in the input file, it would be nice

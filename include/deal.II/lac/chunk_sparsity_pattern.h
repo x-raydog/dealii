@@ -874,13 +874,13 @@ namespace ChunkSparsityPatternIterators
   inline bool
   Accessor::is_valid_entry() const
   {
-    return reduced_accessor.is_valid_entry()
-           && sparsity_pattern->get_chunk_size() * reduced_accessor.row()
-                  + chunk_row
-                < sparsity_pattern->n_rows()
-           && sparsity_pattern->get_chunk_size() * reduced_accessor.column()
-                  + chunk_col
-                < sparsity_pattern->n_cols();
+    return reduced_accessor.is_valid_entry() &&
+           sparsity_pattern->get_chunk_size() * reduced_accessor.row() +
+               chunk_row <
+             sparsity_pattern->n_rows() &&
+           sparsity_pattern->get_chunk_size() * reduced_accessor.column() +
+               chunk_col <
+             sparsity_pattern->n_cols();
   }
 
   inline unsigned int
@@ -888,8 +888,8 @@ namespace ChunkSparsityPatternIterators
   {
     Assert(is_valid_entry() == true, ExcInvalidIterator());
 
-    return sparsity_pattern->get_chunk_size() * reduced_accessor.row()
-           + chunk_row;
+    return sparsity_pattern->get_chunk_size() * reduced_accessor.row() +
+           chunk_row;
   }
 
   inline unsigned int
@@ -897,8 +897,8 @@ namespace ChunkSparsityPatternIterators
   {
     Assert(is_valid_entry() == true, ExcInvalidIterator());
 
-    return sparsity_pattern->get_chunk_size() * reduced_accessor.column()
-           + chunk_col;
+    return sparsity_pattern->get_chunk_size() * reduced_accessor.column() +
+           chunk_col;
   }
 
   inline std::size_t
@@ -915,8 +915,8 @@ namespace ChunkSparsityPatternIterators
     // no need to check for equality of sparsity patterns as this is done in
     // the reduced case already and every ChunkSparsityPattern has its own
     // reduced sparsity pattern
-    return (reduced_accessor == other.reduced_accessor
-            && chunk_row == other.chunk_row && chunk_col == other.chunk_col);
+    return (reduced_accessor == other.reduced_accessor &&
+            chunk_row == other.chunk_row && chunk_col == other.chunk_col);
   }
 
   inline bool
@@ -926,30 +926,31 @@ namespace ChunkSparsityPatternIterators
 
     if(chunk_row != other.chunk_row)
       {
-        if(reduced_accessor.index_within_sparsity
-           == reduced_accessor.sparsity_pattern->n_nonzero_elements())
+        if(reduced_accessor.index_within_sparsity ==
+           reduced_accessor.sparsity_pattern->n_nonzero_elements())
           return false;
-        if(other.reduced_accessor.index_within_sparsity
-           == reduced_accessor.sparsity_pattern->n_nonzero_elements())
+        if(other.reduced_accessor.index_within_sparsity ==
+           reduced_accessor.sparsity_pattern->n_nonzero_elements())
           return true;
 
-        const unsigned int global_row
-          = sparsity_pattern->get_chunk_size() * reduced_accessor.row()
-            + chunk_row,
-          other_global_row
-          = sparsity_pattern->get_chunk_size() * other.reduced_accessor.row()
-            + other.chunk_row;
+        const unsigned int global_row = sparsity_pattern->get_chunk_size() *
+                                          reduced_accessor.row() +
+                                        chunk_row,
+                           other_global_row =
+                             sparsity_pattern->get_chunk_size() *
+                               other.reduced_accessor.row() +
+                             other.chunk_row;
         if(global_row < other_global_row)
           return true;
         else if(global_row > other_global_row)
           return false;
       }
 
-    return (reduced_accessor.index_within_sparsity
-              < other.reduced_accessor.index_within_sparsity
-            || (reduced_accessor.index_within_sparsity
-                  == other.reduced_accessor.index_within_sparsity
-                && chunk_col < other.chunk_col));
+    return (reduced_accessor.index_within_sparsity <
+              other.reduced_accessor.index_within_sparsity ||
+            (reduced_accessor.index_within_sparsity ==
+               other.reduced_accessor.index_within_sparsity &&
+             chunk_col < other.chunk_col));
   }
 
   inline void
@@ -958,10 +959,10 @@ namespace ChunkSparsityPatternIterators
     const unsigned int chunk_size = sparsity_pattern->get_chunk_size();
     Assert(chunk_row < chunk_size && chunk_col < chunk_size,
            ExcIteratorPastEnd());
-    Assert(reduced_accessor.row() * chunk_size + chunk_row
-               < sparsity_pattern->n_rows()
-             && reduced_accessor.column() * chunk_size + chunk_col
-                  < sparsity_pattern->n_cols(),
+    Assert(reduced_accessor.row() * chunk_size + chunk_row <
+               sparsity_pattern->n_rows() &&
+             reduced_accessor.column() * chunk_size + chunk_col <
+               sparsity_pattern->n_cols(),
            ExcIteratorPastEnd());
     if(chunk_size == 1)
       {
@@ -972,23 +973,23 @@ namespace ChunkSparsityPatternIterators
     ++chunk_col;
 
     // end of chunk
-    if(chunk_col == chunk_size
-       || reduced_accessor.column() * chunk_size + chunk_col
-            == sparsity_pattern->n_cols())
+    if(chunk_col == chunk_size ||
+       reduced_accessor.column() * chunk_size + chunk_col ==
+         sparsity_pattern->n_cols())
       {
         const unsigned int reduced_row = reduced_accessor.row();
         // end of row
-        if(reduced_accessor.index_within_sparsity + 1
-           == reduced_accessor.sparsity_pattern->rowstart[reduced_row + 1])
+        if(reduced_accessor.index_within_sparsity + 1 ==
+           reduced_accessor.sparsity_pattern->rowstart[reduced_row + 1])
           {
             ++chunk_row;
 
             chunk_col = 0;
 
             // end of chunk rows or end of matrix
-            if(chunk_row == chunk_size
-               || (reduced_row * chunk_size + chunk_row
-                   == sparsity_pattern->n_rows()))
+            if(chunk_row == chunk_size ||
+               (reduced_row * chunk_size + chunk_row ==
+                sparsity_pattern->n_rows()))
               {
                 chunk_row = 0;
                 reduced_accessor.advance();
@@ -996,8 +997,8 @@ namespace ChunkSparsityPatternIterators
             // go back to the beginning of the same reduced row but with
             // chunk_row increased by one
             else
-              reduced_accessor.index_within_sparsity
-                = reduced_accessor.sparsity_pattern->rowstart[reduced_row];
+              reduced_accessor.index_within_sparsity =
+                reduced_accessor.sparsity_pattern->rowstart[reduced_row];
           }
         // advance within chunk
         else
@@ -1127,8 +1128,8 @@ ChunkSparsityPattern::copy_from(const size_type       n_rows,
   std::vector<size_type> row_lengths;
   row_lengths.reserve(n_rows);
   for(ForwardIterator i = begin; i != end; ++i)
-    row_lengths.push_back(std::distance(i->begin(), i->end())
-                          + (is_square ? 1 : 0));
+    row_lengths.push_back(std::distance(i->begin(), i->end()) +
+                          (is_square ? 1 : 0));
   reinit(n_rows, n_cols, row_lengths, chunk_size);
 
   // now enter all the elements into the matrix
@@ -1141,9 +1142,8 @@ ChunkSparsityPattern::copy_from(const size_type       n_rows,
       const inner_iterator end_of_row = i->end();
       for(inner_iterator j = i->begin(); j != end_of_row; ++j)
         {
-          const size_type col
-            = internal::SparsityPatternTools::get_column_index_from_iterator(
-              *j);
+          const size_type col =
+            internal::SparsityPatternTools::get_column_index_from_iterator(*j);
           Assert(col < n_cols, ExcInvalidIndex(col, n_cols));
 
           add(row, col);

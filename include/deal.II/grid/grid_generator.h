@@ -416,12 +416,12 @@ namespace GridGenerator
    */
   template <int dim, int spacedim>
   void
-  subdivided_parallelepiped(Triangulation<dim, spacedim>&               tria,
-                            const Point<spacedim>&                      origin,
-                            const std::array<Tensor<1, spacedim>, dim>& edges,
-                            const std::vector<unsigned int>& subdivisions
-                            = std::vector<unsigned int>(),
-                            const bool colorize = false);
+  subdivided_parallelepiped(
+    Triangulation<dim, spacedim>&               tria,
+    const Point<spacedim>&                      origin,
+    const std::array<Tensor<1, spacedim>, dim>& edges,
+    const std::vector<unsigned int>& subdivisions = std::vector<unsigned int>(),
+    const bool                       colorize     = false);
 
   /**
    * Hypercube with a layer of hypercubes around it. The first two parameters
@@ -1241,8 +1241,8 @@ namespace GridGenerator
 #endif
   extract_boundary_mesh(const MeshType<dim, spacedim>&      volume_mesh,
                         MeshType<dim - 1, spacedim>&        surface_mesh,
-                        const std::set<types::boundary_id>& boundary_ids
-                        = std::set<types::boundary_id>());
+                        const std::set<types::boundary_id>& boundary_ids =
+                          std::set<types::boundary_id>());
 
   ///@}
 

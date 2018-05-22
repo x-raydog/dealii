@@ -809,8 +809,8 @@ namespace internal
         char c = 's';
         ar& c&* p;
       }
-    else if(const unsigned long long int* p
-            = boost::get<unsigned long long int>(&value))
+    else if(const unsigned long long int* p =
+              boost::get<unsigned long long int>(&value))
       {
         char c = 'l';
         ar& c&* p;
@@ -912,9 +912,9 @@ TableHandler::add_value(const std::string& key, const T value)
   columns[key].entries.push_back(internal::TableEntry(value));
   internal::TableEntry& entry = columns[key].entries.back();
   entry.cache_string(columns[key].scientific, columns[key].precision);
-  columns[key].max_length
-    = std::max(columns[key].max_length,
-               static_cast<unsigned int>(entry.get_cached_string().length()));
+  columns[key].max_length =
+    std::max(columns[key].max_length,
+             static_cast<unsigned int>(entry.get_cached_string().length()));
 }
 
 template <class Archive>

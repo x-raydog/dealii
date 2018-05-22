@@ -214,8 +214,8 @@ namespace OpenCASCADE
                 const Tensor<1, dim>& direction,
                 const double          tolerance)
   {
-    const double rel_tol
-      = std::max(tolerance, std::max(p1.norm(), p2.norm()) * tolerance);
+    const double rel_tol =
+      std::max(tolerance, std::max(p1.norm(), p2.norm()) * tolerance);
     if(direction.norm() > 0.0)
       return (p1 * direction < p2 * direction - rel_tol);
     else
@@ -393,17 +393,17 @@ namespace OpenCASCADE
           if(added[i] == false)
             {
               Handle(Geom_Curve) curve = intersections[i];
-              Handle(Geom_BoundedCurve) bcurve
-                = Handle(Geom_BoundedCurve)::DownCast(curve);
+              Handle(Geom_BoundedCurve) bcurve =
+                Handle(Geom_BoundedCurve)::DownCast(curve);
               check = convert_bspline.Add(bcurve, tolerance, false, true, 0);
-              if(check
-                 == false) // If we failed, try again with the reversed curve
+              if(check ==
+                 false) // If we failed, try again with the reversed curve
                 {
                   curve->Reverse();
-                  Handle(Geom_BoundedCurve) bcurve
-                    = Handle(Geom_BoundedCurve)::DownCast(curve);
-                  check
-                    = convert_bspline.Add(bcurve, tolerance, false, true, 0);
+                  Handle(Geom_BoundedCurve) bcurve =
+                    Handle(Geom_BoundedCurve)::DownCast(curve);
+                  check =
+                    convert_bspline.Add(bcurve, tolerance, false, true, 0);
                 }
               one_failed = one_failed || (check == false);
               one_added  = one_added || (check == true);
@@ -485,8 +485,8 @@ namespace OpenCASCADE
       }
 
     // set up array of vertices
-    Handle(TColgp_HArray1OfPnt) vertices
-      = new TColgp_HArray1OfPnt(1, n_vertices);
+    Handle(TColgp_HArray1OfPnt) vertices =
+      new TColgp_HArray1OfPnt(1, n_vertices);
     for(unsigned int vertex = 0; vertex < n_vertices; ++vertex)
       {
         vertices->SetValue(vertex + 1, point(curve_points[vertex]));
@@ -666,8 +666,8 @@ namespace OpenCASCADE
 
               // the projection function needs a Curve, so we obtain the
               // curve upon which the edge is defined
-              Handle(Geom_Curve) CurveToProj
-                = BRep_Tool::Curve(edge, L, First, Last);
+              Handle(Geom_Curve) CurveToProj =
+                BRep_Tool::Curve(edge, L, First, Last);
 
               GeomAPI_ProjectPointOnCurve Proj(point(origin), CurveToProj);
               unsigned int                num_proj_points = Proj.NbPoints();
@@ -693,8 +693,8 @@ namespace OpenCASCADE
                 const Point<dim>&   origin,
                 const double        tolerance)
   {
-    std::tuple<Point<dim>, TopoDS_Shape, double, double> ref
-      = project_point_and_pull_back(in_shape, origin, tolerance);
+    std::tuple<Point<dim>, TopoDS_Shape, double, double> ref =
+      project_point_and_pull_back(in_shape, origin, tolerance);
     return std::get<0>(ref);
   }
 
@@ -704,8 +704,8 @@ namespace OpenCASCADE
                                        const double        tolerance)
 
   {
-    std::tuple<Point<3>, TopoDS_Shape, double, double> shape_and_params
-      = project_point_and_pull_back(in_shape, origin, tolerance);
+    std::tuple<Point<3>, TopoDS_Shape, double, double> shape_and_params =
+      project_point_and_pull_back(in_shape, origin, tolerance);
 
     TopoDS_Shape& out_shape = std::get<1>(shape_and_params);
     double&       u         = std::get<2>(shape_and_params);
@@ -713,8 +713,8 @@ namespace OpenCASCADE
 
     // just a check here: the number of faces in out_shape must be 1, otherwise
     // something is wrong
-    std::tuple<unsigned int, unsigned int, unsigned int> numbers
-      = count_elements(out_shape);
+    std::tuple<unsigned int, unsigned int, unsigned int> numbers =
+      count_elements(out_shape);
     (void) numbers;
 
     Assert(

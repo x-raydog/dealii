@@ -29,8 +29,8 @@ namespace internal
 {
   namespace BlockLinearOperatorImplementation
   {
-    template <typename PayloadBlockType
-              = internal::LinearOperatorImplementation::EmptyPayload>
+    template <typename PayloadBlockType =
+                internal::LinearOperatorImplementation::EmptyPayload>
     class EmptyBlockPayload;
   }
 } // namespace internal
@@ -40,14 +40,14 @@ class BlockVector;
 
 template <typename Range  = BlockVector<double>,
           typename Domain = Range,
-          typename BlockPayload
-          = internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
+          typename BlockPayload =
+            internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
 class BlockLinearOperator;
 
 template <typename Range  = BlockVector<double>,
           typename Domain = Range,
-          typename BlockPayload
-          = internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>,
+          typename BlockPayload =
+            internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>,
           typename BlockMatrixType>
 BlockLinearOperator<Range, Domain, BlockPayload>
 block_operator(const BlockMatrixType& matrix);
@@ -56,8 +56,8 @@ template <size_t m,
           size_t n,
           typename Range  = BlockVector<double>,
           typename Domain = Range,
-          typename BlockPayload
-          = internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
+          typename BlockPayload =
+            internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
 BlockLinearOperator<Range, Domain, BlockPayload>
 block_operator(
   const std::array<std::array<LinearOperator<typename Range::BlockType,
@@ -69,8 +69,8 @@ block_operator(
 template <size_t m,
           typename Range  = BlockVector<double>,
           typename Domain = Range,
-          typename BlockPayload
-          = internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
+          typename BlockPayload =
+            internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
 BlockLinearOperator<Range, Domain, BlockPayload>
 block_diagonal_operator(
   const std::array<LinearOperator<typename Range::BlockType,
@@ -81,8 +81,8 @@ block_diagonal_operator(
 template <size_t m,
           typename Range  = BlockVector<double>,
           typename Domain = Range,
-          typename BlockPayload
-          = internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
+          typename BlockPayload =
+            internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
 BlockLinearOperator<Range, Domain, BlockPayload>
 block_diagonal_operator(
   const LinearOperator<typename Range::BlockType,
@@ -98,16 +98,16 @@ block_diagonal_operator(
 
 template <typename Range  = BlockVector<double>,
           typename Domain = Range,
-          typename BlockPayload
-          = internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>,
+          typename BlockPayload =
+            internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>,
           typename BlockMatrixType>
 BlockLinearOperator<Range, Domain, BlockPayload>
 block_diagonal_operator(const BlockMatrixType& block_matrix);
 
 template <typename Range  = BlockVector<double>,
           typename Domain = Range,
-          typename BlockPayload
-          = internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
+          typename BlockPayload =
+            internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
 LinearOperator<Domain, Range, typename BlockPayload::BlockType>
 block_forward_substitution(
   const BlockLinearOperator<Range, Domain, BlockPayload>&,
@@ -115,8 +115,8 @@ block_forward_substitution(
 
 template <typename Range  = BlockVector<double>,
           typename Domain = Range,
-          typename BlockPayload
-          = internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
+          typename BlockPayload =
+            internal::BlockLinearOperatorImplementation::EmptyBlockPayload<>>
 LinearOperator<Domain, Range, typename BlockPayload::BlockType>
 block_back_substitution(
   const BlockLinearOperator<Range, Domain, BlockPayload>&,
@@ -241,8 +241,8 @@ public:
   /**
    * Default copy constructor.
    */
-  BlockLinearOperator(const BlockLinearOperator<Range, Domain, BlockPayload>&)
-    = default;
+  BlockLinearOperator(const BlockLinearOperator<Range, Domain, BlockPayload>&) =
+    default;
 
   /**
    * Templated copy constructor that creates a BlockLinearOperator object from
@@ -281,8 +281,7 @@ public:
    * Default copy assignment operator.
    */
   BlockLinearOperator<Range, Domain, BlockPayload>&
-  operator=(const BlockLinearOperator<Range, Domain, BlockPayload>&)
-    = default;
+  operator=(const BlockLinearOperator<Range, Domain, BlockPayload>&) = default;
 
   /**
    * Templated copy assignment operator for an object @p op for which the
@@ -539,14 +538,16 @@ block_operator(const BlockMatrixType& block_matrix)
   BlockLinearOperator<Range, Domain, BlockPayload> return_op(
     BlockPayload(block_matrix, block_matrix));
 
-  return_op.n_block_rows
-    = [&block_matrix]() -> unsigned int { return block_matrix.n_block_rows(); };
+  return_op.n_block_rows = [&block_matrix]() -> unsigned int {
+    return block_matrix.n_block_rows();
+  };
 
-  return_op.n_block_cols
-    = [&block_matrix]() -> unsigned int { return block_matrix.n_block_cols(); };
+  return_op.n_block_cols = [&block_matrix]() -> unsigned int {
+    return block_matrix.n_block_cols();
+  };
 
-  return_op.block
-    = [&block_matrix](unsigned int i, unsigned int j) -> BlockType {
+  return_op.block = [&block_matrix](unsigned int i,
+                                    unsigned int j) -> BlockType {
 #ifdef DEBUG
     const unsigned int m = block_matrix.n_block_rows();
     const unsigned int n = block_matrix.n_block_cols();
@@ -655,14 +656,16 @@ block_diagonal_operator(const BlockMatrixType& block_matrix)
   BlockLinearOperator<Range, Domain, BlockPayload> return_op(
     BlockPayload(block_matrix, block_matrix));
 
-  return_op.n_block_rows
-    = [&block_matrix]() -> unsigned int { return block_matrix.n_block_rows(); };
+  return_op.n_block_rows = [&block_matrix]() -> unsigned int {
+    return block_matrix.n_block_rows();
+  };
 
-  return_op.n_block_cols
-    = [&block_matrix]() -> unsigned int { return block_matrix.n_block_cols(); };
+  return_op.n_block_cols = [&block_matrix]() -> unsigned int {
+    return block_matrix.n_block_cols();
+  };
 
-  return_op.block
-    = [&block_matrix](unsigned int i, unsigned int j) -> BlockType {
+  return_op.block = [&block_matrix](unsigned int i,
+                                    unsigned int j) -> BlockType {
 #ifdef DEBUG
     const unsigned int m = block_matrix.n_block_rows();
     const unsigned int n = block_matrix.n_block_cols();
@@ -817,68 +820,68 @@ block_forward_substitution(
   return_op.reinit_range_vector  = diagonal_inverse.reinit_range_vector;
   return_op.reinit_domain_vector = diagonal_inverse.reinit_domain_vector;
 
-  return_op.vmult
-    = [block_operator, diagonal_inverse](Range& v, const Range& u) {
-        const unsigned int m = block_operator.n_block_rows();
-        Assert(block_operator.n_block_cols() == m,
-               ExcDimensionMismatch(block_operator.n_block_cols(), m));
-        Assert(diagonal_inverse.n_block_rows() == m,
-               ExcDimensionMismatch(diagonal_inverse.n_block_rows(), m));
-        Assert(diagonal_inverse.n_block_cols() == m,
-               ExcDimensionMismatch(diagonal_inverse.n_block_cols(), m));
-        Assert(v.n_blocks() == m, ExcDimensionMismatch(v.n_blocks(), m));
-        Assert(u.n_blocks() == m, ExcDimensionMismatch(u.n_blocks(), m));
+  return_op.vmult = [block_operator, diagonal_inverse](Range&       v,
+                                                       const Range& u) {
+    const unsigned int m = block_operator.n_block_rows();
+    Assert(block_operator.n_block_cols() == m,
+           ExcDimensionMismatch(block_operator.n_block_cols(), m));
+    Assert(diagonal_inverse.n_block_rows() == m,
+           ExcDimensionMismatch(diagonal_inverse.n_block_rows(), m));
+    Assert(diagonal_inverse.n_block_cols() == m,
+           ExcDimensionMismatch(diagonal_inverse.n_block_cols(), m));
+    Assert(v.n_blocks() == m, ExcDimensionMismatch(v.n_blocks(), m));
+    Assert(u.n_blocks() == m, ExcDimensionMismatch(u.n_blocks(), m));
 
-        if(m == 0)
-          return;
+    if(m == 0)
+      return;
 
-        diagonal_inverse.block(0, 0).vmult(v.block(0), u.block(0));
-        for(unsigned int i = 1; i < m; ++i)
-          {
-            auto& dst = v.block(i);
-            dst       = u.block(i);
-            dst *= -1.;
-            for(unsigned int j = 0; j < i; ++j)
-              block_operator.block(i, j).vmult_add(dst, v.block(j));
-            dst *= -1.;
-            diagonal_inverse.block(i, i).vmult(
-              dst, dst); // uses intermediate storage
-          }
-      };
+    diagonal_inverse.block(0, 0).vmult(v.block(0), u.block(0));
+    for(unsigned int i = 1; i < m; ++i)
+      {
+        auto& dst = v.block(i);
+        dst       = u.block(i);
+        dst *= -1.;
+        for(unsigned int j = 0; j < i; ++j)
+          block_operator.block(i, j).vmult_add(dst, v.block(j));
+        dst *= -1.;
+        diagonal_inverse.block(i, i).vmult(dst,
+                                           dst); // uses intermediate storage
+      }
+  };
 
-  return_op.vmult_add
-    = [block_operator, diagonal_inverse](Range& v, const Range& u) {
-        const unsigned int m = block_operator.n_block_rows();
-        Assert(block_operator.n_block_cols() == m,
-               ExcDimensionMismatch(block_operator.n_block_cols(), m));
-        Assert(diagonal_inverse.n_block_rows() == m,
-               ExcDimensionMismatch(diagonal_inverse.n_block_rows(), m));
-        Assert(diagonal_inverse.n_block_cols() == m,
-               ExcDimensionMismatch(diagonal_inverse.n_block_cols(), m));
-        Assert(v.n_blocks() == m, ExcDimensionMismatch(v.n_blocks(), m));
-        Assert(u.n_blocks() == m, ExcDimensionMismatch(u.n_blocks(), m));
+  return_op.vmult_add = [block_operator, diagonal_inverse](Range&       v,
+                                                           const Range& u) {
+    const unsigned int m = block_operator.n_block_rows();
+    Assert(block_operator.n_block_cols() == m,
+           ExcDimensionMismatch(block_operator.n_block_cols(), m));
+    Assert(diagonal_inverse.n_block_rows() == m,
+           ExcDimensionMismatch(diagonal_inverse.n_block_rows(), m));
+    Assert(diagonal_inverse.n_block_cols() == m,
+           ExcDimensionMismatch(diagonal_inverse.n_block_cols(), m));
+    Assert(v.n_blocks() == m, ExcDimensionMismatch(v.n_blocks(), m));
+    Assert(u.n_blocks() == m, ExcDimensionMismatch(u.n_blocks(), m));
 
-        if(m == 0)
-          return;
+    if(m == 0)
+      return;
 
-        GrowingVectorMemory<typename Range::BlockType>            vector_memory;
-        typename VectorMemory<typename Range::BlockType>::Pointer tmp(
-          vector_memory);
+    GrowingVectorMemory<typename Range::BlockType>            vector_memory;
+    typename VectorMemory<typename Range::BlockType>::Pointer tmp(
+      vector_memory);
 
-        diagonal_inverse.block(0, 0).vmult_add(v.block(0), u.block(0));
+    diagonal_inverse.block(0, 0).vmult_add(v.block(0), u.block(0));
 
-        for(unsigned int i = 1; i < m; ++i)
-          {
-            diagonal_inverse.block(i, i).reinit_range_vector(
-              *tmp, /*bool omit_zeroing_entries=*/true);
-            *tmp = u.block(i);
-            *tmp *= -1.;
-            for(unsigned int j = 0; j < i; ++j)
-              block_operator.block(i, j).vmult_add(*tmp, v.block(j));
-            *tmp *= -1.;
-            diagonal_inverse.block(i, i).vmult_add(v.block(i), *tmp);
-          }
-      };
+    for(unsigned int i = 1; i < m; ++i)
+      {
+        diagonal_inverse.block(i, i).reinit_range_vector(
+          *tmp, /*bool omit_zeroing_entries=*/true);
+        *tmp = u.block(i);
+        *tmp *= -1.;
+        for(unsigned int j = 0; j < i; ++j)
+          block_operator.block(i, j).vmult_add(*tmp, v.block(j));
+        *tmp *= -1.;
+        diagonal_inverse.block(i, i).vmult_add(v.block(i), *tmp);
+      }
+  };
 
   return return_op;
 }
@@ -960,39 +963,39 @@ block_back_substitution(
       }
   };
 
-  return_op.vmult_add
-    = [block_operator, diagonal_inverse](Range& v, const Range& u) {
-        const unsigned int m = block_operator.n_block_rows();
-        Assert(block_operator.n_block_cols() == m,
-               ExcDimensionMismatch(block_operator.n_block_cols(), m));
-        Assert(diagonal_inverse.n_block_rows() == m,
-               ExcDimensionMismatch(diagonal_inverse.n_block_rows(), m));
-        Assert(diagonal_inverse.n_block_cols() == m,
-               ExcDimensionMismatch(diagonal_inverse.n_block_cols(), m));
-        Assert(v.n_blocks() == m, ExcDimensionMismatch(v.n_blocks(), m));
-        Assert(u.n_blocks() == m, ExcDimensionMismatch(u.n_blocks(), m));
-        GrowingVectorMemory<typename Range::BlockType>            vector_memory;
-        typename VectorMemory<typename Range::BlockType>::Pointer tmp(
-          vector_memory);
+  return_op.vmult_add = [block_operator, diagonal_inverse](Range&       v,
+                                                           const Range& u) {
+    const unsigned int m = block_operator.n_block_rows();
+    Assert(block_operator.n_block_cols() == m,
+           ExcDimensionMismatch(block_operator.n_block_cols(), m));
+    Assert(diagonal_inverse.n_block_rows() == m,
+           ExcDimensionMismatch(diagonal_inverse.n_block_rows(), m));
+    Assert(diagonal_inverse.n_block_cols() == m,
+           ExcDimensionMismatch(diagonal_inverse.n_block_cols(), m));
+    Assert(v.n_blocks() == m, ExcDimensionMismatch(v.n_blocks(), m));
+    Assert(u.n_blocks() == m, ExcDimensionMismatch(u.n_blocks(), m));
+    GrowingVectorMemory<typename Range::BlockType>            vector_memory;
+    typename VectorMemory<typename Range::BlockType>::Pointer tmp(
+      vector_memory);
 
-        if(m == 0)
-          return;
+    if(m == 0)
+      return;
 
-        diagonal_inverse.block(m - 1, m - 1)
-          .vmult_add(v.block(m - 1), u.block(m - 1));
+    diagonal_inverse.block(m - 1, m - 1)
+      .vmult_add(v.block(m - 1), u.block(m - 1));
 
-        for(int i = m - 2; i >= 0; --i)
-          {
-            diagonal_inverse.block(i, i).reinit_range_vector(
-              *tmp, /*bool omit_zeroing_entries=*/true);
-            *tmp = u.block(i);
-            *tmp *= -1.;
-            for(unsigned int j = i + 1; j < m; ++j)
-              block_operator.block(i, j).vmult_add(*tmp, v.block(j));
-            *tmp *= -1.;
-            diagonal_inverse.block(i, i).vmult_add(v.block(i), *tmp);
-          }
-      };
+    for(int i = m - 2; i >= 0; --i)
+      {
+        diagonal_inverse.block(i, i).reinit_range_vector(
+          *tmp, /*bool omit_zeroing_entries=*/true);
+        *tmp = u.block(i);
+        *tmp *= -1.;
+        for(unsigned int j = i + 1; j < m; ++j)
+          block_operator.block(i, j).vmult_add(*tmp, v.block(j));
+        *tmp *= -1.;
+        diagonal_inverse.block(i, i).vmult_add(v.block(i), *tmp);
+      }
+  };
 
   return return_op;
 }

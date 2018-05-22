@@ -511,8 +511,9 @@ namespace Step60
   // conflicts in the parameters for the two problems.
   template <int dim, int spacedim>
   DistributedLagrangeProblem<dim, spacedim>::Parameters::Parameters()
-    : ParameterAcceptor("/Distributed Lagrange<" + Utilities::int_to_string(dim)
-                        + "," + Utilities::int_to_string(spacedim) + ">/")
+    : ParameterAcceptor("/Distributed Lagrange<" +
+                        Utilities::int_to_string(dim) + "," +
+                        Utilities::int_to_string(spacedim) + ">/")
   {
     // The ParameterAcceptor::add_parameter() function does a few things:
     //
@@ -638,9 +639,8 @@ namespace Step60
     // the specifications in the parameter file, and construct a
     // GridTools::Cache with it.
     space_grid->refine_global(parameters.initial_refinement);
-    space_grid_tools_cache
-      = std_cxx14::make_unique<GridTools::Cache<spacedim, spacedim>>(
-        *space_grid);
+    space_grid_tools_cache =
+      std_cxx14::make_unique<GridTools::Cache<spacedim, spacedim>>(*space_grid);
 
     // The same is done with the embedded grid. Since the embedded grid is
     // deformed, we first need to setup the deformation mapping. We do so in the
@@ -654,8 +654,8 @@ namespace Step60
         parameters.embedded_configuration_finite_element_degree),
       spacedim);
 
-    embedded_configuration_dh
-      = std_cxx14::make_unique<DoFHandler<dim, spacedim>>(*embedded_grid);
+    embedded_configuration_dh =
+      std_cxx14::make_unique<DoFHandler<dim, spacedim>>(*embedded_grid);
 
     embedded_configuration_dh->distribute_dofs(*embedded_configuration_fe);
     embedded_configuration.reinit(embedded_configuration_dh->n_dofs());
@@ -693,17 +693,17 @@ namespace Step60
     // absolute `deformation` field.
 
     if(parameters.use_displacement == true)
-      embedded_mapping = std_cxx14::make_unique<
-        MappingQEulerian<dim, Vector<double>, spacedim>>(
-        parameters.embedded_configuration_finite_element_degree,
-        *embedded_configuration_dh,
-        embedded_configuration);
+      embedded_mapping =
+        std_cxx14::make_unique<MappingQEulerian<dim, Vector<double>, spacedim>>(
+          parameters.embedded_configuration_finite_element_degree,
+          *embedded_configuration_dh,
+          embedded_configuration);
     else
-      embedded_mapping
-        = std_cxx14::make_unique<MappingFEField<dim,
-                                                spacedim,
-                                                Vector<double>,
-                                                DoFHandler<dim, spacedim>>>(
+      embedded_mapping =
+        std_cxx14::make_unique<MappingFEField<dim,
+                                              spacedim,
+                                              Vector<double>,
+                                              DoFHandler<dim, spacedim>>>(
           *embedded_configuration_dh, embedded_configuration);
 
     // In order to construct a well posed coupling interpolation operator $C$,
@@ -731,10 +731,10 @@ namespace Step60
     // This choice guarantees that almost every cell of the embedded grid spans
     // no more than two cells of the embedding grid, with some rare exceptions,
     // that are negligible in terms of the resulting inf-sup.
-    const double embedded_space_maximal_diameter
-      = GridTools::maximal_cell_diameter(*embedded_grid, *embedded_mapping);
-    double embedding_space_minimal_diameter
-      = GridTools::minimal_cell_diameter(*space_grid);
+    const double embedded_space_maximal_diameter =
+      GridTools::maximal_cell_diameter(*embedded_grid, *embedded_mapping);
+    double embedding_space_minimal_diameter =
+      GridTools::minimal_cell_diameter(*space_grid);
 
     setup_embedded_dofs();
 
@@ -835,15 +835,15 @@ namespace Step60
         space_grid->execute_coarsening_and_refinement();
       }
 
-    embedding_space_minimal_diameter
-      = GridTools::minimal_cell_diameter(*space_grid);
+    embedding_space_minimal_diameter =
+      GridTools::minimal_cell_diameter(*space_grid);
 
     deallog << "Embedding minimal diameter: "
             << embedding_space_minimal_diameter
             << ", embedded maximal diameter: "
             << embedded_space_maximal_diameter << ", ratio: "
-            << embedded_space_maximal_diameter
-                 / embedding_space_minimal_diameter
+            << embedded_space_maximal_diameter /
+                 embedding_space_minimal_diameter
             << std::endl;
 
     AssertThrow(
@@ -892,8 +892,8 @@ namespace Step60
   void
   DistributedLagrangeProblem<dim, spacedim>::setup_embedded_dofs()
   {
-    embedded_dh
-      = std_cxx14::make_unique<DoFHandler<dim, spacedim>>(*embedded_grid);
+    embedded_dh =
+      std_cxx14::make_unique<DoFHandler<dim, spacedim>>(*embedded_grid);
     embedded_fe = std_cxx14::make_unique<FE_Q<dim, spacedim>>(
       parameters.embedded_space_finite_element_degree);
     embedded_dh->distribute_dofs(*embedded_fe);

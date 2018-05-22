@@ -88,8 +88,8 @@ namespace internal
         // start from fe=1 as 0th is always non-enriched FE.
         for(unsigned int fe = 1; fe < fes.size(); fe++)
           {
-            const FE_Nothing<dim>* fe_nothing
-              = dynamic_cast<const FE_Nothing<dim>*>(fes[fe]);
+            const FE_Nothing<dim>* fe_nothing =
+              dynamic_cast<const FE_Nothing<dim>*>(fes[fe]);
             if(fe_nothing)
               AssertThrow(
                 fe_nothing->is_dominating(),
@@ -203,22 +203,22 @@ FE_Enriched<dim, spacedim>::FE_Enriched(
   for(unsigned int system_index = 0; system_index < this->dofs_per_cell;
       ++system_index)
     {
-      const unsigned int base_no
-        = this->system_to_base_table[system_index].first.first;
+      const unsigned int base_no =
+        this->system_to_base_table[system_index].first.first;
       if(base_no == 0) // 0th is always non-enriched FE
         continue;
 
-      const unsigned int base_m
-        = this->system_to_base_table[system_index].first.second;
+      const unsigned int base_m =
+        this->system_to_base_table[system_index].first.second;
 
       Assert(base_m < base_no_mult_local_enriched_dofs[base_no].size(),
              ExcMessage(
                "Size mismatch for base_no_mult_local_enriched_dofs: "
-               "base_index = "
-               + std::to_string(this->system_to_base_table[system_index].second)
-               + "; base_no = " + std::to_string(base_no)
-               + "; base_m = " + std::to_string(base_m)
-               + "; system_index = " + std::to_string(system_index)));
+               "base_index = " +
+               std::to_string(this->system_to_base_table[system_index].second) +
+               "; base_no = " + std::to_string(base_no) +
+               "; base_m = " + std::to_string(base_m) +
+               "; system_index = " + std::to_string(system_index)));
 
       Assert(base_m < base_no_mult_local_enriched_dofs[base_no].size(),
              ExcDimensionMismatch(
@@ -236,8 +236,8 @@ FE_Enriched<dim, spacedim>::FE_Enriched(
       for(unsigned int m = 0;
           m < base_no_mult_local_enriched_dofs[base_no].size();
           m++)
-        Assert(base_no_mult_local_enriched_dofs[base_no][m].size()
-                 == fes[base_no]->dofs_per_cell,
+        Assert(base_no_mult_local_enriched_dofs[base_no][m].size() ==
+                 fes[base_no]->dofs_per_cell,
                ExcDimensionMismatch(
                  base_no_mult_local_enriched_dofs[base_no][m].size(),
                  fes[base_no]->dofs_per_cell));
@@ -352,8 +352,8 @@ FE_Enriched<dim, spacedim>::get_face_data(
   internal::FEValuesImplementation::FiniteElementRelatedData<dim, spacedim>&
     output_data) const
 {
-  auto data
-    = fe_system->get_face_data(update_flags, mapping, quadrature, output_data);
+  auto data =
+    fe_system->get_face_data(update_flags, mapping, quadrature, output_data);
   return setup_data(
     Utilities::dynamic_unique_cast<
       typename FESystem<dim, spacedim>::InternalData>(std::move(data)),
@@ -371,8 +371,8 @@ FE_Enriched<dim, spacedim>::get_subface_data(
                                                                      spacedim>&
     output_data) const
 {
-  auto data = fe_system->get_subface_data(
-    update_flags, mapping, quadrature, output_data);
+  auto data =
+    fe_system->get_subface_data(update_flags, mapping, quadrature, output_data);
   return setup_data(
     Utilities::dynamic_unique_cast<
       typename FESystem<dim, spacedim>::InternalData>(std::move(data)),
@@ -451,8 +451,8 @@ FE_Enriched<dim, spacedim>::initialize(
 
   // take adjust_quad_dof_index_for_face_orientation_table from FESystem:
   {
-    this->adjust_line_dof_index_for_line_orientation_table
-      = fe_system->adjust_line_dof_index_for_line_orientation_table;
+    this->adjust_line_dof_index_for_line_orientation_table =
+      fe_system->adjust_line_dof_index_for_line_orientation_table;
   }
 }
 
@@ -622,12 +622,11 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
     for(unsigned int base_no = 1; base_no < this->n_base_elements(); base_no++)
       {
         const FiniteElement<dim, spacedim>& base_fe = base_element(base_no);
-        typename FiniteElement<dim, spacedim>::InternalDataBase& base_fe_data
-          = fe_data.get_fe_data(base_no);
+        typename FiniteElement<dim, spacedim>::InternalDataBase& base_fe_data =
+          fe_data.get_fe_data(base_no);
         internal::FEValuesImplementation::FiniteElementRelatedData<dim,
                                                                    spacedim>&
-          base_data
-          = fe_data.get_fe_output_object(base_no);
+          base_data = fe_data.get_fe_output_object(base_no);
 
         const UpdateFlags base_flags = base_fe_data.update_each;
 
@@ -635,8 +634,8 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
             ++system_index)
           if(this->system_to_base_table[system_index].first.first == base_no)
             {
-              const unsigned int base_index
-                = this->system_to_base_table[system_index].second;
+              const unsigned int base_index =
+                this->system_to_base_table[system_index].second;
               Assert(base_index < base_fe.dofs_per_cell, ExcInternalError());
 
               // now copy. if the shape function is primitive, then there
@@ -653,8 +652,8 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
                 in_index += base_fe.n_nonzero_components(i);
 
               // then loop over the number of components to be copied
-              Assert(this->n_nonzero_components(system_index)
-                       == base_fe.n_nonzero_components(base_index),
+              Assert(this->n_nonzero_components(system_index) ==
+                       base_fe.n_nonzero_components(base_index),
                      ExcInternalError());
               for(unsigned int s = 0;
                   s < this->n_nonzero_components(system_index);
@@ -662,18 +661,18 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
                 {
                   if(base_flags & update_values)
                     for(unsigned int q = 0; q < n_q_points; ++q)
-                      output_data.shape_values[out_index + s][q]
-                        = base_data.shape_values(in_index + s, q);
+                      output_data.shape_values[out_index + s][q] =
+                        base_data.shape_values(in_index + s, q);
 
                   if(base_flags & update_gradients)
                     for(unsigned int q = 0; q < n_q_points; ++q)
-                      output_data.shape_gradients[out_index + s][q]
-                        = base_data.shape_gradients[in_index + s][q];
+                      output_data.shape_gradients[out_index + s][q] =
+                        base_data.shape_gradients[in_index + s][q];
 
                   if(base_flags & update_hessians)
                     for(unsigned int q = 0; q < n_q_points; ++q)
-                      output_data.shape_hessians[out_index + s][q]
-                        = base_data.shape_hessians[in_index + s][q];
+                      output_data.shape_hessians[out_index + s][q] =
+                        base_data.shape_hessians[in_index + s][q];
                 }
             }
       }
@@ -685,8 +684,8 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
   for(unsigned int base_no = 1; base_no < this->n_base_elements(); base_no++)
     {
       Assert(
-        base_no_mult_local_enriched_dofs[base_no].size()
-          == fe_data.enrichment[base_no].size(),
+        base_no_mult_local_enriched_dofs[base_no].size() ==
+          fe_data.enrichment[base_no].size(),
         ExcDimensionMismatch(base_no_mult_local_enriched_dofs[base_no].size(),
                              fe_data.enrichment[base_no].size()));
       for(unsigned int m = 0;
@@ -712,8 +711,8 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
                 ExcDimensionMismatch(
                   fe_data.enrichment[base_no][m].hessians.size(), n_q_points));
               for(unsigned int q = 0; q < n_q_points; q++)
-                fe_data.enrichment[base_no][m].hessians[q]
-                  = enrichments[base_no - 1][m](cell)->hessian(
+                fe_data.enrichment[base_no][m].hessians[q] =
+                  enrichments[base_no - 1][m](cell)->hessian(
                     mapping_data.quadrature_points[q]);
             }
 
@@ -724,8 +723,8 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
                 ExcDimensionMismatch(
                   fe_data.enrichment[base_no][m].gradients.size(), n_q_points));
               for(unsigned int q = 0; q < n_q_points; q++)
-                fe_data.enrichment[base_no][m].gradients[q]
-                  = enrichments[base_no - 1][m](cell)->gradient(
+                fe_data.enrichment[base_no][m].gradients[q] =
+                  enrichments[base_no - 1][m](cell)->gradient(
                     mapping_data.quadrature_points[q]);
             }
 
@@ -736,8 +735,8 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
                 ExcDimensionMismatch(
                   fe_data.enrichment[base_no][m].values.size(), n_q_points));
               for(unsigned int q = 0; q < n_q_points; q++)
-                fe_data.enrichment[base_no][m].values[q]
-                  = enrichments[base_no - 1][m](cell)->value(
+                fe_data.enrichment[base_no][m].values[q] =
+                  enrichments[base_no - 1][m](cell)->value(
                     mapping_data.quadrature_points[q]);
             }
         }
@@ -760,23 +759,22 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
                 i < base_no_mult_local_enriched_dofs[base_no][m].size();
                 i++)
               {
-                const unsigned int enriched_dof
-                  = base_no_mult_local_enriched_dofs[base_no][m][i];
+                const unsigned int enriched_dof =
+                  base_no_mult_local_enriched_dofs[base_no][m][i];
                 for(unsigned int q = 0; q < n_q_points; ++q)
                   {
                     const Tensor<2, spacedim> grad_grad = outer_product(
                       output_data.shape_gradients[enriched_dof][q],
                       fe_data.enrichment[base_no][m].gradients[q]);
-                    const Tensor<2, spacedim, double> sym_grad_grad
-                      = symmetrize(grad_grad)
-                        * 2.0; // symmetrize does [s+s^T]/2
+                    const Tensor<2, spacedim, double> sym_grad_grad =
+                      symmetrize(grad_grad) * 2.0; // symmetrize does [s+s^T]/2
 
-                    output_data.shape_hessians[enriched_dof][q]
-                      *= fe_data.enrichment[base_no][m].values[q];
-                    output_data.shape_hessians[enriched_dof][q]
-                      += sym_grad_grad
-                         + output_data.shape_values[enriched_dof][q]
-                             * fe_data.enrichment[base_no][m].hessians[q];
+                    output_data.shape_hessians[enriched_dof][q] *=
+                      fe_data.enrichment[base_no][m].values[q];
+                    output_data.shape_hessians[enriched_dof][q] +=
+                      sym_grad_grad +
+                      output_data.shape_values[enriched_dof][q] *
+                        fe_data.enrichment[base_no][m].hessians[q];
                   }
               }
         }
@@ -792,15 +790,15 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
               i < base_no_mult_local_enriched_dofs[base_no][m].size();
               i++)
             {
-              const unsigned int enriched_dof
-                = base_no_mult_local_enriched_dofs[base_no][m][i];
+              const unsigned int enriched_dof =
+                base_no_mult_local_enriched_dofs[base_no][m][i];
               for(unsigned int q = 0; q < n_q_points; ++q)
                 {
-                  output_data.shape_gradients[enriched_dof][q]
-                    *= fe_data.enrichment[base_no][m].values[q];
-                  output_data.shape_gradients[enriched_dof][q]
-                    += output_data.shape_values[enriched_dof][q]
-                       * fe_data.enrichment[base_no][m].gradients[q];
+                  output_data.shape_gradients[enriched_dof][q] *=
+                    fe_data.enrichment[base_no][m].values[q];
+                  output_data.shape_gradients[enriched_dof][q] +=
+                    output_data.shape_values[enriched_dof][q] *
+                    fe_data.enrichment[base_no][m].gradients[q];
                 }
             }
       }
@@ -815,12 +813,12 @@ FE_Enriched<dim, spacedim>::multiply_by_enrichment(
               i < base_no_mult_local_enriched_dofs[base_no][m].size();
               i++)
             {
-              const unsigned int enriched_dof
-                = base_no_mult_local_enriched_dofs[base_no][m][i];
+              const unsigned int enriched_dof =
+                base_no_mult_local_enriched_dofs[base_no][m][i];
               for(unsigned int q = 0; q < n_q_points; ++q)
                 {
-                  output_data.shape_values[enriched_dof][q]
-                    *= fe_data.enrichment[base_no][m].values[q];
+                  output_data.shape_values[enriched_dof][q] *=
+                    fe_data.enrichment[base_no][m].values[q];
                 }
             }
       }
@@ -846,8 +844,8 @@ FE_Enriched<dim, spacedim>::get_face_interpolation_matrix(
   const FiniteElement<dim, spacedim>& source,
   FullMatrix<double>&                 matrix) const
 {
-  if(const FE_Enriched<dim, spacedim>* fe_enr_other
-     = dynamic_cast<const FE_Enriched<dim, spacedim>*>(&source))
+  if(const FE_Enriched<dim, spacedim>* fe_enr_other =
+       dynamic_cast<const FE_Enriched<dim, spacedim>*>(&source))
     {
       fe_system->get_face_interpolation_matrix(fe_enr_other->get_fe_system(),
                                                matrix);
@@ -868,8 +866,8 @@ FE_Enriched<dim, spacedim>::get_subface_interpolation_matrix(
   const unsigned int                  subface,
   FullMatrix<double>&                 matrix) const
 {
-  if(const FE_Enriched<dim, spacedim>* fe_enr_other
-     = dynamic_cast<const FE_Enriched<dim, spacedim>*>(&source))
+  if(const FE_Enriched<dim, spacedim>* fe_enr_other =
+       dynamic_cast<const FE_Enriched<dim, spacedim>*>(&source))
     {
       fe_system->get_subface_interpolation_matrix(
         fe_enr_other->get_fe_system(), subface, matrix);
@@ -888,8 +886,8 @@ std::vector<std::pair<unsigned int, unsigned int>>
 FE_Enriched<dim, spacedim>::hp_vertex_dof_identities(
   const FiniteElement<dim, spacedim>& fe_other) const
 {
-  if(const FE_Enriched<dim, spacedim>* fe_enr_other
-     = dynamic_cast<const FE_Enriched<dim, spacedim>*>(&fe_other))
+  if(const FE_Enriched<dim, spacedim>* fe_enr_other =
+       dynamic_cast<const FE_Enriched<dim, spacedim>*>(&fe_other))
     {
       return fe_system->hp_vertex_dof_identities(fe_enr_other->get_fe_system());
     }
@@ -905,8 +903,8 @@ std::vector<std::pair<unsigned int, unsigned int>>
 FE_Enriched<dim, spacedim>::hp_line_dof_identities(
   const FiniteElement<dim, spacedim>& fe_other) const
 {
-  if(const FE_Enriched<dim, spacedim>* fe_enr_other
-     = dynamic_cast<const FE_Enriched<dim, spacedim>*>(&fe_other))
+  if(const FE_Enriched<dim, spacedim>* fe_enr_other =
+       dynamic_cast<const FE_Enriched<dim, spacedim>*>(&fe_other))
     {
       return fe_system->hp_line_dof_identities(fe_enr_other->get_fe_system());
     }
@@ -922,8 +920,8 @@ std::vector<std::pair<unsigned int, unsigned int>>
 FE_Enriched<dim, spacedim>::hp_quad_dof_identities(
   const FiniteElement<dim, spacedim>& fe_other) const
 {
-  if(const FE_Enriched<dim, spacedim>* fe_enr_other
-     = dynamic_cast<const FE_Enriched<dim, spacedim>*>(&fe_other))
+  if(const FE_Enriched<dim, spacedim>* fe_enr_other =
+       dynamic_cast<const FE_Enriched<dim, spacedim>*>(&fe_other))
     {
       return fe_system->hp_quad_dof_identities(fe_enr_other->get_fe_system());
     }
@@ -949,8 +947,8 @@ FE_Enriched<dim, spacedim>::compare_for_face_domination(
   // In that case, through an error
 
   // if it's also enriched, do domination based on each one's FESystem
-  if(const FE_Enriched<dim, spacedim>* fe_enr_other
-     = dynamic_cast<const FE_Enriched<dim, spacedim>*>(&fe_other))
+  if(const FE_Enriched<dim, spacedim>* fe_enr_other =
+       dynamic_cast<const FE_Enriched<dim, spacedim>*>(&fe_other))
     {
       return fe_system->compare_for_face_domination(
         fe_enr_other->get_fe_system());

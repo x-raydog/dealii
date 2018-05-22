@@ -310,8 +310,7 @@ namespace internal
        * Clear all references to the vectors.
        */
       virtual void
-      clear()
-        = 0;
+      clear() = 0;
 
       /**
        * Determine an estimate for the memory consumption (in bytes) of this
@@ -716,8 +715,8 @@ public:
     const std::vector<std::string>& names,
     const DataVectorType            type = type_automatic,
     const std::vector<DataComponentInterpretation::DataComponentInterpretation>&
-      data_component_interpretation
-    = std::vector<DataComponentInterpretation::DataComponentInterpretation>());
+      data_component_interpretation = std::vector<
+        DataComponentInterpretation::DataComponentInterpretation>());
 
   /**
    * This function is an abbreviation to the above one (see there for a
@@ -742,8 +741,8 @@ public:
     const std::string&   name,
     const DataVectorType type = type_automatic,
     const std::vector<DataComponentInterpretation::DataComponentInterpretation>&
-      data_component_interpretation
-    = std::vector<DataComponentInterpretation::DataComponentInterpretation>());
+      data_component_interpretation = std::vector<
+        DataComponentInterpretation::DataComponentInterpretation>());
 
   /**
    * This function is an extension of the above one (see there for a
@@ -766,8 +765,8 @@ public:
     const VectorType&               data,
     const std::vector<std::string>& names,
     const std::vector<DataComponentInterpretation::DataComponentInterpretation>&
-      data_component_interpretation
-    = std::vector<DataComponentInterpretation::DataComponentInterpretation>());
+      data_component_interpretation = std::vector<
+        DataComponentInterpretation::DataComponentInterpretation>());
 
   /**
    * This function is an abbreviation of the function above with only a scalar
@@ -780,8 +779,8 @@ public:
     const VectorType&     data,
     const std::string&    name,
     const std::vector<DataComponentInterpretation::DataComponentInterpretation>&
-      data_component_interpretation
-    = std::vector<DataComponentInterpretation::DataComponentInterpretation>());
+      data_component_interpretation = std::vector<
+        DataComponentInterpretation::DataComponentInterpretation>());
 
   /**
    * This function is an alternative to the above ones, allowing the output of
@@ -1104,22 +1103,22 @@ DataOut_DoFData<DoFHandlerType, patch_dim, patch_space_dim>::merge_patches(
 
   // check equality of the vector data
   // specifications
-  Assert(get_vector_data_ranges().size()
-           == source.get_vector_data_ranges().size(),
+  Assert(get_vector_data_ranges().size() ==
+           source.get_vector_data_ranges().size(),
          ExcMessage("Both sources need to declare the same components "
                     "as vectors."));
   for(unsigned int i = 0; i < get_vector_data_ranges().size(); ++i)
     {
-      Assert(std::get<0>(get_vector_data_ranges()[i])
-               == std::get<0>(source.get_vector_data_ranges()[i]),
+      Assert(std::get<0>(get_vector_data_ranges()[i]) ==
+               std::get<0>(source.get_vector_data_ranges()[i]),
              ExcMessage("Both sources need to declare the same components "
                         "as vectors."));
-      Assert(std::get<1>(get_vector_data_ranges()[i])
-               == std::get<1>(source.get_vector_data_ranges()[i]),
+      Assert(std::get<1>(get_vector_data_ranges()[i]) ==
+               std::get<1>(source.get_vector_data_ranges()[i]),
              ExcMessage("Both sources need to declare the same components "
                         "as vectors."));
-      Assert(std::get<2>(get_vector_data_ranges()[i])
-               == std::get<2>(source.get_vector_data_ranges()[i]),
+      Assert(std::get<2>(get_vector_data_ranges()[i]) ==
+               std::get<2>(source.get_vector_data_ranges()[i]),
              ExcMessage("Both sources need to declare the same components "
                         "as vectors."));
     }

@@ -177,8 +177,7 @@ public:
    * to this object.
    */
   Quadrature&
-  operator=(Quadrature<dim>&&)
-    = default; // NOLINT
+  operator=(Quadrature<dim>&&) = default; // NOLINT
 
   /**
    * Test for equality of two quadratures.

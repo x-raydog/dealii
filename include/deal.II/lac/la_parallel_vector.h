@@ -457,9 +457,9 @@ namespace LinearAlgebra
        * messages with the same ID that will corrupt this operation.
        */
       void
-      compress_start(const unsigned int communication_channel = 0,
-                     ::dealii::VectorOperation::values operation
-                     = VectorOperation::add);
+      compress_start(
+        const unsigned int                communication_channel = 0,
+        ::dealii::VectorOperation::values operation = VectorOperation::add);
 
       /**
        * For all requests that have been initiated in compress_start, wait for
@@ -494,8 +494,8 @@ namespace LinearAlgebra
        * several messages with the same ID that will corrupt this operation.
        */
       void
-      update_ghost_values_start(const unsigned int communication_channel
-                                = 0) const;
+      update_ghost_values_start(
+        const unsigned int communication_channel = 0) const;
 
       /**
        * For all requests that have been started in update_ghost_values_start,
@@ -601,8 +601,8 @@ namespace LinearAlgebra
       import(
         const LinearAlgebra::ReadWriteVector<Number>&   V,
         VectorOperation::values                         operation,
-        std::shared_ptr<const CommunicationPatternBase> communication_pattern
-        = std::shared_ptr<const CommunicationPatternBase>()) override;
+        std::shared_ptr<const CommunicationPatternBase> communication_pattern =
+          std::shared_ptr<const CommunicationPatternBase>()) override;
 
       /**
        * Return the scalar product of two vectors.
@@ -1408,15 +1408,15 @@ namespace LinearAlgebra
     Vector<Number>::operator()(const size_type global_index) const
     {
       Assert(
-        partitioner->in_local_range(global_index)
-          || partitioner->ghost_indices().is_element(global_index),
+        partitioner->in_local_range(global_index) ||
+          partitioner->ghost_indices().is_element(global_index),
         ExcAccessToNonLocalElement(global_index,
                                    partitioner->local_range().first,
                                    partitioner->local_range().second,
                                    partitioner->ghost_indices().n_elements()));
       // do not allow reading a vector which is not in ghost mode
-      Assert(partitioner->in_local_range(global_index)
-               || vector_is_ghosted == true,
+      Assert(partitioner->in_local_range(global_index) ||
+               vector_is_ghosted == true,
              ExcMessage("You tried to read a ghost element of this vector, "
                         "but it has not imported its ghost values."));
       return values[partitioner->global_to_local(global_index)];
@@ -1427,8 +1427,8 @@ namespace LinearAlgebra
     Vector<Number>::operator()(const size_type global_index)
     {
       Assert(
-        partitioner->in_local_range(global_index)
-          || partitioner->ghost_indices().is_element(global_index),
+        partitioner->in_local_range(global_index) ||
+          partitioner->ghost_indices().is_element(global_index),
         ExcAccessToNonLocalElement(global_index,
                                    partitioner->local_range().first,
                                    partitioner->local_range().second,
@@ -1459,8 +1459,8 @@ namespace LinearAlgebra
     Vector<Number>::local_element(const size_type local_index) const
     {
       AssertIndexRange(local_index,
-                       partitioner->local_size()
-                         + partitioner->n_ghost_indices());
+                       partitioner->local_size() +
+                         partitioner->n_ghost_indices());
       // do not allow reading a vector which is not in ghost mode
       Assert(local_index < local_size() || vector_is_ghosted == true,
              ExcMessage("You tried to read a ghost element of this vector, "
@@ -1473,8 +1473,8 @@ namespace LinearAlgebra
     Vector<Number>::local_element(const size_type local_index)
     {
       AssertIndexRange(local_index,
-                       partitioner->local_size()
-                         + partitioner->n_ghost_indices());
+                       partitioner->local_size() +
+                         partitioner->n_ghost_indices());
       return values[local_index];
     }
 

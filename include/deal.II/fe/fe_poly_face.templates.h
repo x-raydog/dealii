@@ -130,12 +130,12 @@ FE_PolyFace<PolynomialType, dim, spacedim>::fill_fe_face_values(
                 // Fill data for quad shape functions
                 if(this->dofs_per_quad != 0)
                   {
-                    const unsigned int foffset
-                      = this->first_quad_index + this->dofs_per_quad * face_no;
+                    const unsigned int foffset =
+                      this->first_quad_index + this->dofs_per_quad * face_no;
                     for(unsigned int k = 0; k < this->dofs_per_quad; ++k)
-                      output_data.shape_values(foffset + k, i)
-                        = fe_data
-                            .shape_values[k + this->first_face_quad_index][i];
+                      output_data.shape_values(foffset + k, i) =
+                        fe_data
+                          .shape_values[k + this->first_face_quad_index][i];
                   }
               }
               DEAL_II_FALLTHROUGH;
@@ -152,15 +152,15 @@ FE_PolyFace<PolynomialType, dim, spacedim>::fill_fe_face_values(
                       {
                         for(unsigned int k = 0; k < this->dofs_per_line; ++k)
                           output_data.shape_values(
-                            foffset
-                              + GeometryInfo<dim>::face_to_cell_lines(face_no,
-                                                                      line)
-                                  * this->dofs_per_line
-                              + k,
-                            i)
-                            = fe_data
-                                .shape_values[k + (line * this->dofs_per_line)
-                                              + this->first_face_line_index][i];
+                            foffset +
+                              GeometryInfo<dim>::face_to_cell_lines(face_no,
+                                                                    line) *
+                                this->dofs_per_line +
+                              k,
+                            i) =
+                            fe_data
+                              .shape_values[k + (line * this->dofs_per_line) +
+                                            this->first_face_line_index][i];
                       }
                   }
               }
@@ -176,8 +176,7 @@ FE_PolyFace<PolynomialType, dim, spacedim>::fill_fe_face_values(
                     output_data.shape_values(
                       GeometryInfo<dim>::face_to_cell_vertices(face_no,
                                                                lvertex),
-                      i)
-                      = fe_data.shape_values[lvertex][i];
+                      i) = fe_data.shape_values[lvertex][i];
                 break;
               }
           }
@@ -218,8 +217,8 @@ FE_PolyFace<PolynomialType, dim, spacedim>::fill_fe_subface_values(
           output_data.shape_values(k, i) = 0.;
       for(unsigned int k = 0; k < fe_data.shape_values.size(); ++k)
         for(unsigned int i = 0; i < quadrature.size(); ++i)
-          output_data.shape_values(foffset + k, i)
-            = fe_data.shape_values[k][i + offset];
+          output_data.shape_values(foffset + k, i) =
+            fe_data.shape_values[k][i + offset];
     }
 
   Assert(!(fe_data.update_each & update_gradients), ExcNotImplemented());

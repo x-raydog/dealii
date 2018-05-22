@@ -83,8 +83,7 @@ public:
    * Reset the object to its original state.
    */
   virtual void
-  clear()
-    = 0;
+  clear() = 0;
 
   /**
    * Matrix-vector product.

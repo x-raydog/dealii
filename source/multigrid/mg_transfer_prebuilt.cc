@@ -116,18 +116,16 @@ namespace
           const unsigned int                    level,
           std::vector<types::global_dof_index>& dof_indices)
   {
-    if(mg_constrained_dofs != nullptr
-       && mg_constrained_dofs->get_level_constraint_matrix(level)
-              .n_constraints()
-            > 0)
+    if(mg_constrained_dofs != nullptr &&
+       mg_constrained_dofs->get_level_constraint_matrix(level).n_constraints() >
+         0)
       for(auto& ind : dof_indices)
         if(mg_constrained_dofs->get_level_constraint_matrix(level)
              .is_identity_constrained(ind))
           {
             Assert(mg_constrained_dofs->get_level_constraint_matrix(level)
                        .get_constraint_entries(ind)
-                       ->size()
-                     == 1,
+                       ->size() == 1,
                    ExcInternalError());
             ind = mg_constrained_dofs->get_level_constraint_matrix(level)
                     .get_constraint_entries(ind)
@@ -201,24 +199,24 @@ MGTransferPrebuilt<VectorType>::build_matrices(
         this->sizes[level + 1], this->sizes[level], level_p1_relevant_dofs);
       typename DoFHandler<dim>::cell_iterator cell, endc = mg_dof.end(level);
       for(cell = mg_dof.begin(level); cell != endc; ++cell)
-        if(cell->has_children()
-           && (mg_dof.get_triangulation().locally_owned_subdomain()
-                 == numbers::invalid_subdomain_id
-               || cell->level_subdomain_id()
-                    == mg_dof.get_triangulation().locally_owned_subdomain()))
+        if(cell->has_children() &&
+           (mg_dof.get_triangulation().locally_owned_subdomain() ==
+              numbers::invalid_subdomain_id ||
+            cell->level_subdomain_id() ==
+              mg_dof.get_triangulation().locally_owned_subdomain()))
           {
             cell->get_mg_dof_indices(dof_indices_parent);
 
             replace(this->mg_constrained_dofs, level, dof_indices_parent);
 
-            Assert(cell->n_children()
-                     == GeometryInfo<dim>::max_children_per_cell,
+            Assert(cell->n_children() ==
+                     GeometryInfo<dim>::max_children_per_cell,
                    ExcNotImplemented());
             for(unsigned int child = 0; child < cell->n_children(); ++child)
               {
                 // set an alias to the prolongation matrix for this child
-                const FullMatrix<double>& prolongation
-                  = mg_dof.get_fe().get_prolongation_matrix(
+                const FullMatrix<double>& prolongation =
+                  mg_dof.get_fe().get_prolongation_matrix(
                     child, cell->refinement_case());
 
                 Assert(prolongation.n() != 0, ExcNoProlongation());
@@ -255,18 +253,18 @@ MGTransferPrebuilt<VectorType>::build_matrices(
 
       // now actually build the matrices
       for(cell = mg_dof.begin(level); cell != endc; ++cell)
-        if(cell->has_children()
-           && (mg_dof.get_triangulation().locally_owned_subdomain()
-                 == numbers::invalid_subdomain_id
-               || cell->level_subdomain_id()
-                    == mg_dof.get_triangulation().locally_owned_subdomain()))
+        if(cell->has_children() &&
+           (mg_dof.get_triangulation().locally_owned_subdomain() ==
+              numbers::invalid_subdomain_id ||
+            cell->level_subdomain_id() ==
+              mg_dof.get_triangulation().locally_owned_subdomain()))
           {
             cell->get_mg_dof_indices(dof_indices_parent);
 
             replace(this->mg_constrained_dofs, level, dof_indices_parent);
 
-            Assert(cell->n_children()
-                     == GeometryInfo<dim>::max_children_per_cell,
+            Assert(cell->n_children() ==
+                     GeometryInfo<dim>::max_children_per_cell,
                    ExcNotImplemented());
             for(unsigned int child = 0; child < cell->n_children(); ++child)
               {
@@ -274,8 +272,8 @@ MGTransferPrebuilt<VectorType>::build_matrices(
                 prolongation = mg_dof.get_fe().get_prolongation_matrix(
                   child, cell->refinement_case());
 
-                if(this->mg_constrained_dofs != nullptr
-                   && this->mg_constrained_dofs->have_boundary_indices())
+                if(this->mg_constrained_dofs != nullptr &&
+                   this->mg_constrained_dofs->have_boundary_indices())
                   for(unsigned int j = 0; j < dofs_per_cell; ++j)
                     if(this->mg_constrained_dofs->is_boundary_index(
                          level, dof_indices_parent[j]))
@@ -320,8 +318,8 @@ MGTransferPrebuilt<VectorType>::memory_consumption() const
 {
   std::size_t result = MGLevelGlobalTransfer<VectorType>::memory_consumption();
   for(unsigned int i = 0; i < prolongation_matrices.size(); ++i)
-    result += prolongation_matrices[i]->memory_consumption()
-              + prolongation_sparsities[i]->memory_consumption();
+    result += prolongation_matrices[i]->memory_consumption() +
+              prolongation_sparsities[i]->memory_consumption();
 
   return result;
 }

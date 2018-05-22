@@ -194,11 +194,11 @@ DerivativeForm<1, chartdim, spacedim>
 CompositionManifold<dim, spacedim, chartdim, intermediate_dim, dim1, dim2>::
   push_forward_gradient(const Point<chartdim>& chart_point) const
 {
-  DerivativeForm<1, chartdim, intermediate_dim> DF
-    = F->push_forward_gradient(chart_point);
+  DerivativeForm<1, chartdim, intermediate_dim> DF =
+    F->push_forward_gradient(chart_point);
 
-  DerivativeForm<1, intermediate_dim, spacedim> DG
-    = G->push_forward_gradient(F->push_forward(chart_point));
+  DerivativeForm<1, intermediate_dim, spacedim> DG =
+    G->push_forward_gradient(F->push_forward(chart_point));
 
   DerivativeForm<1, chartdim, spacedim> DF_DG;
 

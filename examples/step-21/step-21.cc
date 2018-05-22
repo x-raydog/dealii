@@ -295,13 +295,13 @@ namespace Step21
         {
           values[p].clear();
 
-          const double distance_to_flowline
-            = std::fabs(points[p][1] - 0.5 - 0.1 * std::sin(10 * points[p][0]));
+          const double distance_to_flowline =
+            std::fabs(points[p][1] - 0.5 - 0.1 * std::sin(10 * points[p][0]));
 
-          const double permeability
-            = std::max(std::exp(-(distance_to_flowline * distance_to_flowline)
-                                / (0.1 * 0.1)),
-                       0.01);
+          const double permeability =
+            std::max(std::exp(-(distance_to_flowline * distance_to_flowline) /
+                              (0.1 * 0.1)),
+                     0.01);
 
           for(unsigned int d = 0; d < dim; ++d)
             values[p][d][d] = 1. / permeability;
@@ -362,15 +362,15 @@ namespace Step21
     };
 
     template <int dim>
-    std::vector<Point<dim>> KInverse<dim>::centers
-      = KInverse<dim>::get_centers();
+    std::vector<Point<dim>>
+      KInverse<dim>::centers = KInverse<dim>::get_centers();
 
     template <int dim>
     std::vector<Point<dim>>
     KInverse<dim>::get_centers()
     {
-      const unsigned int N
-        = (dim == 2 ? 40 : (dim == 3 ? 100 : throw ExcNotImplemented()));
+      const unsigned int N =
+        (dim == 2 ? 40 : (dim == 3 ? 100 : throw ExcNotImplemented()));
 
       std::vector<Point<dim>> centers_list(N);
       for(unsigned int i = 0; i < N; ++i)
@@ -394,11 +394,11 @@ namespace Step21
 
           double permeability = 0;
           for(unsigned int i = 0; i < centers.size(); ++i)
-            permeability += std::exp(-(points[p] - centers[i]).norm_square()
-                                     / (0.05 * 0.05));
+            permeability +=
+              std::exp(-(points[p] - centers[i]).norm_square() / (0.05 * 0.05));
 
-          const double normalized_permeability
-            = std::min(std::max(permeability, 0.01), 4.);
+          const double normalized_permeability =
+            std::min(std::max(permeability, 0.01), 4.);
 
           for(unsigned int d = 0; d < dim; ++d)
             values[p][d][d] = 1. / normalized_permeability;
@@ -653,13 +653,13 @@ namespace Step21
 
     FEValues<dim>     fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
     FEFaceValues<dim> fe_face_values(fe,
                                      face_quadrature_formula,
-                                     update_values | update_normal_vectors
-                                       | update_quadrature_points
-                                       | update_JxW_values);
+                                     update_values | update_normal_vectors |
+                                       update_quadrature_points |
+                                       update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
 
@@ -688,9 +688,9 @@ namespace Step21
     const FEValuesExtractors::Scalar pressure(dim);
     const FEValuesExtractors::Scalar saturation(dim + 1);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         fe_values.reinit(cell);
@@ -733,23 +733,23 @@ namespace Step21
 
               for(unsigned int j = 0; j < dofs_per_cell; ++j)
                 {
-                  const Tensor<1, dim> phi_j_u
-                    = fe_values[velocities].value(j, q);
-                  const double div_phi_j_u
-                    = fe_values[velocities].divergence(j, q);
+                  const Tensor<1, dim> phi_j_u =
+                    fe_values[velocities].value(j, q);
+                  const double div_phi_j_u =
+                    fe_values[velocities].divergence(j, q);
                   const double phi_j_p = fe_values[pressure].value(j, q);
                   const double phi_j_s = fe_values[saturation].value(j, q);
 
-                  local_matrix(i, j)
-                    += (phi_i_u * k_inverse_values[q]
-                          * mobility_inverse(old_s, viscosity) * phi_j_u
-                        - div_phi_i_u * phi_j_p - phi_i_p * div_phi_j_u
-                        + phi_i_s * phi_j_s)
-                       * fe_values.JxW(q);
+                  local_matrix(i, j) +=
+                    (phi_i_u * k_inverse_values[q] *
+                       mobility_inverse(old_s, viscosity) * phi_j_u -
+                     div_phi_i_u * phi_j_p - phi_i_p * div_phi_j_u +
+                     phi_i_s * phi_j_s) *
+                    fe_values.JxW(q);
                 }
 
-              local_rhs(i)
-                += (-phi_i_p * pressure_rhs_values[q]) * fe_values.JxW(q);
+              local_rhs(i) +=
+                (-phi_i_p * pressure_rhs_values[q]) * fe_values.JxW(q);
             }
 
         // Next, we also have to deal with the pressure boundary values. This,
@@ -767,12 +767,12 @@ namespace Step21
               for(unsigned int q = 0; q < n_face_q_points; ++q)
                 for(unsigned int i = 0; i < dofs_per_cell; ++i)
                   {
-                    const Tensor<1, dim> phi_i_u
-                      = fe_face_values[velocities].value(i, q);
+                    const Tensor<1, dim> phi_i_u =
+                      fe_face_values[velocities].value(i, q);
 
-                    local_rhs(i)
-                      += -(phi_i_u * fe_face_values.normal_vector(q)
-                           * boundary_values[q] * fe_face_values.JxW(q));
+                    local_rhs(i) +=
+                      -(phi_i_u * fe_face_values.normal_vector(q) *
+                        boundary_values[q] * fe_face_values.JxW(q));
                   }
             }
 
@@ -806,13 +806,13 @@ namespace Step21
     QGauss<dim - 1>   face_quadrature_formula(degree + 2);
     FEValues<dim>     fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
     FEFaceValues<dim> fe_face_values(fe,
                                      face_quadrature_formula,
-                                     update_values | update_normal_vectors
-                                       | update_quadrature_points
-                                       | update_JxW_values);
+                                     update_values | update_normal_vectors |
+                                       update_quadrature_points |
+                                       update_JxW_values);
     FEFaceValues<dim> fe_face_values_neighbor(
       fe, face_quadrature_formula, update_values);
 
@@ -840,9 +840,9 @@ namespace Step21
 
     const FEValuesExtractors::Scalar saturation(dim + 1);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         local_rhs = 0;
@@ -864,13 +864,13 @@ namespace Step21
                 present_u[d] = present_solution_values[q](d);
 
               const double         phi_i_s = fe_values[saturation].value(i, q);
-              const Tensor<1, dim> grad_phi_i_s
-                = fe_values[saturation].gradient(i, q);
+              const Tensor<1, dim> grad_phi_i_s =
+                fe_values[saturation].gradient(i, q);
 
-              local_rhs(i) += (time_step * fractional_flow(old_s, viscosity)
-                                 * present_u * grad_phi_i_s
-                               + old_s * phi_i_s)
-                              * fe_values.JxW(q);
+              local_rhs(i) += (time_step * fractional_flow(old_s, viscosity) *
+                                 present_u * grad_phi_i_s +
+                               old_s * phi_i_s) *
+                              fe_values.JxW(q);
             }
 
         // Secondly, we have to deal with the flux parts on the face
@@ -898,10 +898,10 @@ namespace Step21
                 fe_face_values.get_quadrature_points(), neighbor_saturation);
             else
               {
-                const typename DoFHandler<dim>::active_cell_iterator neighbor
-                  = cell->neighbor(face_no);
-                const unsigned int neighbor_face
-                  = cell->neighbor_of_neighbor(face_no);
+                const typename DoFHandler<dim>::active_cell_iterator neighbor =
+                  cell->neighbor(face_no);
+                const unsigned int neighbor_face =
+                  cell->neighbor_of_neighbor(face_no);
 
                 fe_face_values_neighbor.reinit(neighbor, neighbor_face);
 
@@ -909,8 +909,8 @@ namespace Step21
                   old_solution, old_solution_values_face_neighbor);
 
                 for(unsigned int q = 0; q < n_face_q_points; ++q)
-                  neighbor_saturation[q]
-                    = old_solution_values_face_neighbor[q](dim + 1);
+                  neighbor_saturation[q] =
+                    old_solution_values_face_neighbor[q](dim + 1);
               }
 
             for(unsigned int q = 0; q < n_face_q_points; ++q)
@@ -919,20 +919,20 @@ namespace Step21
                 for(unsigned int d = 0; d < dim; ++d)
                   present_u_face[d] = present_solution_values_face[q](d);
 
-                const double normal_flux
-                  = present_u_face * fe_face_values.normal_vector(q);
+                const double normal_flux =
+                  present_u_face * fe_face_values.normal_vector(q);
 
                 const bool is_outflow_q_point = (normal_flux >= 0);
 
                 for(unsigned int i = 0; i < dofs_per_cell; ++i)
-                  local_rhs(i) -= time_step * normal_flux
-                                  * fractional_flow(
-                                      (is_outflow_q_point == true ?
-                                         old_solution_values_face[q](dim + 1) :
-                                         neighbor_saturation[q]),
-                                      viscosity)
-                                  * fe_face_values[saturation].value(i, q)
-                                  * fe_face_values.JxW(q);
+                  local_rhs(i) -=
+                    time_step * normal_flux *
+                    fractional_flow((is_outflow_q_point == true ?
+                                       old_solution_values_face[q](dim + 1) :
+                                       neighbor_saturation[q]),
+                                    viscosity) *
+                    fe_face_values[saturation].value(i, q) *
+                    fe_face_values.JxW(q);
               }
           }
 
@@ -1002,8 +1002,8 @@ namespace Step21
     // The maximal velocity we compute using a helper function to compute the
     // maximal velocity defined below, and with all this we can evaluate our
     // new time step length:
-    time_step
-      = std::pow(0.5, double(n_refinement_steps)) / get_maximal_velocity();
+    time_step =
+      std::pow(0.5, double(n_refinement_steps)) / get_maximal_velocity();
 
     // The next step is to assemble the right hand side, and then to pass
     // everything on for solution. At the end, we project back saturations
@@ -1074,8 +1074,8 @@ namespace Step21
 
     data_out.build_patches(degree + 1);
 
-    std::ofstream output(
-      "solution-" + Utilities::int_to_string(timestep_number, 4) + ".vtk");
+    std::ofstream output("solution-" +
+                         Utilities::int_to_string(timestep_number, 4) + ".vtk");
     data_out.write_vtk(output);
   }
 
@@ -1124,9 +1124,9 @@ namespace Step21
                                                 Vector<double>(dim + 2));
     double                      max_velocity = 0;
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         fe_values.reinit(cell);

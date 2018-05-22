@@ -95,8 +95,8 @@ namespace internal
     Vec        sequential_vector;
     VecScatter scatter_context;
 
-    PetscErrorCode ierr
-      = VecScatterCreateToAll(v, &scatter_context, &sequential_vector);
+    PetscErrorCode ierr =
+      VecScatterCreateToAll(v, &scatter_context, &sequential_vector);
     AssertThrow(ierr == 0, ExcPETScError(ierr));
 
     ierr = VecScatterBegin(
@@ -242,8 +242,8 @@ Vector<Number>::reinit(const size_type n, const bool omit_zeroing_entries)
     {
       values.reset();
       max_vec_size = vec_size = 0;
-      thread_loop_partitioner
-        = std::make_shared<parallel::internal::TBBPartitioner>();
+      thread_loop_partitioner =
+        std::make_shared<parallel::internal::TBBPartitioner>();
       return;
     }
 
@@ -259,10 +259,10 @@ Vector<Number>::reinit(const size_type n, const bool omit_zeroing_entries)
 
       // only reset the partitioner if we actually expect a significant vector
       // size
-      if(vec_size
-         >= 4 * internal::VectorImplementation::minimum_parallel_grain_size)
-        thread_loop_partitioner
-          = std::make_shared<parallel::internal::TBBPartitioner>();
+      if(vec_size >=
+         4 * internal::VectorImplementation::minimum_parallel_grain_size)
+        thread_loop_partitioner =
+          std::make_shared<parallel::internal::TBBPartitioner>();
     }
 
   if(omit_zeroing_entries == false)
@@ -277,8 +277,8 @@ Vector<Number>::grow_or_shrink(const size_type n)
     {
       values.reset();
       max_vec_size = vec_size = 0;
-      thread_loop_partitioner
-        = std::make_shared<parallel::internal::TBBPartitioner>();
+      thread_loop_partitioner =
+        std::make_shared<parallel::internal::TBBPartitioner>();
       return;
     }
 
@@ -295,10 +295,10 @@ Vector<Number>::grow_or_shrink(const size_type n)
 
       // only reset the partitioner if we actually expect a significant vector
       // size
-      if(vec_size
-         >= 4 * internal::VectorImplementation::minimum_parallel_grain_size)
-        thread_loop_partitioner
-          = std::make_shared<parallel::internal::TBBPartitioner>();
+      if(vec_size >=
+         4 * internal::VectorImplementation::minimum_parallel_grain_size)
+        thread_loop_partitioner =
+          std::make_shared<parallel::internal::TBBPartitioner>();
     }
 
   // pad with zeroes
@@ -502,8 +502,8 @@ Vector<Number>::l2_norm() const
   internal::VectorOperations::Norm2<Number, real_type> norm2(values.get());
   internal::VectorOperations::parallel_reduce(
     norm2, 0, vec_size, norm_square, thread_loop_partitioner);
-  if(numbers::is_finite(norm_square)
-     && norm_square >= std::numeric_limits<real_type>::min())
+  if(numbers::is_finite(norm_square) &&
+     norm_square >= std::numeric_limits<real_type>::min())
     return std::sqrt(norm_square);
   else
     {
@@ -513,8 +513,8 @@ Vector<Number>::l2_norm() const
         {
           if(values[i] != Number())
             {
-              const real_type abs_x
-                = numbers::NumberTraits<Number>::abs(values[i]);
+              const real_type abs_x =
+                numbers::NumberTraits<Number>::abs(values[i]);
               if(scale < abs_x)
                 {
                   sum   = 1. + sum * (scale / abs_x) * (scale / abs_x);
@@ -555,8 +555,8 @@ Vector<Number>::lp_norm(const real_type p) const
         {
           if(values[i] != Number())
             {
-              const real_type abs_x
-                = numbers::NumberTraits<Number>::abs(values[i]);
+              const real_type abs_x =
+                numbers::NumberTraits<Number>::abs(values[i]);
               if(scale < abs_x)
                 {
                   sum   = 1. + sum * std::pow(scale / abs_x, p);
@@ -929,8 +929,8 @@ Vector<Number>::block_write(std::ostream& out) const
 
   out.write(buf, std::strlen(buf));
   out.write(reinterpret_cast<const char*>(begin()),
-            reinterpret_cast<const char*>(end())
-              - reinterpret_cast<const char*>(begin()));
+            reinterpret_cast<const char*>(end()) -
+              reinterpret_cast<const char*>(begin()));
 
   // out << ']';
   const char outro = ']';
@@ -962,8 +962,8 @@ Vector<Number>::block_read(std::istream& in)
   AssertThrow(c == '[', ExcIO());
 
   in.read(reinterpret_cast<char*>(begin()),
-          reinterpret_cast<const char*>(end())
-            - reinterpret_cast<const char*>(begin()));
+          reinterpret_cast<const char*>(end()) -
+            reinterpret_cast<const char*>(begin()));
 
   //  in >> c;
   in.read(&c, 1);

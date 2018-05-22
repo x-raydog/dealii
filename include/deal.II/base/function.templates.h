@@ -543,8 +543,8 @@ ComponentSelectFunction<dim, RangeNumberType>::memory_consumption() const
   // No new complex data structure is introduced here, just evaluate how much
   // more memory is used *inside* the class via sizeof() and add that value to
   // parent class's memory_consumption()
-  return (sizeof(*this) - sizeof(ConstantFunction<dim, RangeNumberType>)
-          + ConstantFunction<dim, RangeNumberType>::memory_consumption());
+  return (sizeof(*this) - sizeof(ConstantFunction<dim, RangeNumberType>) +
+          ConstantFunction<dim, RangeNumberType>::memory_consumption());
 }
 
 //---------------------------------------------------------------------------
@@ -642,8 +642,8 @@ VectorFunctionFromTensorFunction<dim, RangeNumberType>::value(
 
   // if the requested component is out of the range selected, then we can
   // return early
-  if((component < selected_component)
-     || (component >= selected_component + dim))
+  if((component < selected_component) ||
+     (component >= selected_component + dim))
     return 0;
 
   // otherwise retrieve the values from the <tt>tensor_function</tt> to be

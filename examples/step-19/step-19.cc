@@ -68,22 +68,22 @@ namespace Step19
   void
   print_usage_message()
   {
-    static const char* message
-      = "\n"
-        "Converter from deal.II intermediate format to other graphics formats.\n"
-        "\n"
-        "Usage:\n"
-        "    ./step-19 [-p parameter_file] list_of_input_files \n"
-        "              [-x output_format] [-o output_file]\n"
-        "\n"
-        "Parameter sequences in brackets can be omitted if a parameter file is\n"
-        "specified on the command line and if it provides values for these\n"
-        "missing parameters.\n"
-        "\n"
-        "The parameter file has the following format and allows the following\n"
-        "values (you can cut and paste this and use it for your own parameter\n"
-        "file):\n"
-        "\n";
+    static const char* message =
+      "\n"
+      "Converter from deal.II intermediate format to other graphics formats.\n"
+      "\n"
+      "Usage:\n"
+      "    ./step-19 [-p parameter_file] list_of_input_files \n"
+      "              [-x output_format] [-o output_file]\n"
+      "\n"
+      "Parameter sequences in brackets can be omitted if a parameter file is\n"
+      "specified on the command line and if it provides values for these\n"
+      "missing parameters.\n"
+      "\n"
+      "The parameter file has the following format and allows the following\n"
+      "values (you can cut and paste this and use it for your own parameter\n"
+      "file):\n"
+      "\n";
     std::cout << message;
 
     prm.print_parameters(std::cout, ParameterHandler::Text);
@@ -397,8 +397,8 @@ namespace Step19
     std::ofstream output_stream(output_file);
     AssertThrow(output_stream, ExcIO());
 
-    const DataOutBase::OutputFormat format
-      = DataOutBase::parse_output_format(output_format);
+    const DataOutBase::OutputFormat format =
+      DataOutBase::parse_output_format(output_format);
 
     // Finally, write the merged data to the output:
     merged_data.write(output_stream, format);
@@ -435,8 +435,8 @@ namespace Step19
     std::ifstream input(input_file_names[0]);
     AssertThrow(input, ExcIO());
 
-    const std::pair<unsigned int, unsigned int> dimensions
-      = DataOutBase::determine_intermediate_format_dimensions(input);
+    const std::pair<unsigned int, unsigned int> dimensions =
+      DataOutBase::determine_intermediate_format_dimensions(input);
 
     switch(dimensions.first)
       {

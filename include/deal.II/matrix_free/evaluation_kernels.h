@@ -141,12 +141,12 @@ namespace internal
              const bool                                    evaluate_gradients,
              const bool                                    evaluate_hessians)
   {
-    if(evaluate_values == false && evaluate_gradients == false
-       && evaluate_hessians == false)
+    if(evaluate_values == false && evaluate_gradients == false &&
+       evaluate_hessians == false)
       return;
 
-    const EvaluatorVariant variant
-      = EvaluatorSelector<type, (fe_degree + n_q_points_1d > 4)>::variant;
+    const EvaluatorVariant variant =
+      EvaluatorSelector<type, (fe_degree + n_q_points_1d > 4)>::variant;
     typedef EvaluatorTensorProduct<variant,
                                    dim,
                                    fe_degree + 1,
@@ -162,21 +162,20 @@ namespace internal
               shape_info.fe_degree + 1,
               shape_info.n_q_points_1d);
 
-    const unsigned int temp_size
-      = Eval::n_rows_of_product == numbers::invalid_unsigned_int ?
-          0 :
-          (Eval::n_rows_of_product > Eval::n_columns_of_product ?
-             Eval::n_rows_of_product :
-             Eval::n_columns_of_product);
+    const unsigned int temp_size =
+      Eval::n_rows_of_product == numbers::invalid_unsigned_int ?
+        0 :
+        (Eval::n_rows_of_product > Eval::n_columns_of_product ?
+           Eval::n_rows_of_product :
+           Eval::n_columns_of_product);
     Number* temp1;
     Number* temp2;
     if(temp_size == 0)
       {
         temp1 = scratch_data;
-        temp2
-          = temp1
-            + std::max(Utilities::fixed_power<dim>(shape_info.fe_degree + 1),
-                       Utilities::fixed_power<dim>(shape_info.n_q_points_1d));
+        temp2 = temp1 +
+                std::max(Utilities::fixed_power<dim>(shape_info.fe_degree + 1),
+                         Utilities::fixed_power<dim>(shape_info.n_q_points_1d));
       }
     else
       {
@@ -184,20 +183,18 @@ namespace internal
         temp2 = temp1 + temp_size;
       }
 
-    const unsigned int n_q_points
-      = temp_size == 0 ? shape_info.n_q_points : Eval::n_columns_of_product;
-    const unsigned int dofs_per_comp
-      = (type == MatrixFreeFunctions::truncated_tensor) ?
-          Utilities::fixed_power<dim>(shape_info.fe_degree + 1) :
-          shape_info.dofs_per_component_on_cell;
+    const unsigned int n_q_points =
+      temp_size == 0 ? shape_info.n_q_points : Eval::n_columns_of_product;
+    const unsigned int dofs_per_comp =
+      (type == MatrixFreeFunctions::truncated_tensor) ?
+        Utilities::fixed_power<dim>(shape_info.fe_degree + 1) :
+        shape_info.dofs_per_component_on_cell;
     const Number* values_dofs = values_dofs_actual;
     if(type == MatrixFreeFunctions::truncated_tensor)
       {
-        Number* values_dofs_tmp
-          = scratch_data
-            + 2
-                * (std::max(shape_info.dofs_per_component_on_cell,
-                            shape_info.n_q_points));
+        Number* values_dofs_tmp =
+          scratch_data + 2 * (std::max(shape_info.dofs_per_component_on_cell,
+                                       shape_info.n_q_points));
         const int degree = fe_degree != -1 ? fe_degree : shape_info.fe_degree;
         unsigned int count_p = 0, count_q = 0;
         for(int i = 0; i < (dim > 2 ? degree + 1 : 1); ++i)
@@ -207,8 +204,8 @@ namespace internal
                 for(int k = 0; k < degree + 1 - j - i;
                     ++k, ++count_p, ++count_q)
                   for(unsigned int c = 0; c < n_components; ++c)
-                    values_dofs_tmp[c * dofs_per_comp + count_q]
-                      = values_dofs_actual
+                    values_dofs_tmp[c * dofs_per_comp + count_q] =
+                      values_dofs_actual
                         [c * shape_info.dofs_per_component_on_cell + count_p];
                 for(int k = degree + 1 - j - i; k < degree + 1; ++k, ++count_q)
                   for(unsigned int c = 0; c < n_components; ++c)
@@ -377,16 +374,15 @@ namespace internal
 
     // case additional dof for FE_Q_DG0: add values; gradients and second
     // derivatives evaluate to zero
-    if(type == MatrixFreeFunctions::tensor_symmetric_plus_dg0
-       && evaluate_values)
+    if(type == MatrixFreeFunctions::tensor_symmetric_plus_dg0 &&
+       evaluate_values)
       {
         values_quad -= n_components * n_q_points;
         values_dofs -= n_components * dofs_per_comp;
         for(unsigned int c = 0; c < n_components; ++c)
           for(unsigned int q = 0; q < shape_info.n_q_points; ++q)
-            values_quad[c * shape_info.n_q_points + q]
-              += values_dofs[(c + 1) * shape_info.dofs_per_component_on_cell
-                             - 1];
+            values_quad[c * shape_info.n_q_points + q] +=
+              values_dofs[(c + 1) * shape_info.dofs_per_component_on_cell - 1];
       }
   }
 
@@ -407,8 +403,8 @@ namespace internal
               const bool                                    integrate_gradients,
               const bool add_into_values_array)
   {
-    const EvaluatorVariant variant
-      = EvaluatorSelector<type, (fe_degree + n_q_points_1d > 4)>::variant;
+    const EvaluatorVariant variant =
+      EvaluatorSelector<type, (fe_degree + n_q_points_1d > 4)>::variant;
     typedef EvaluatorTensorProduct<variant,
                                    dim,
                                    fe_degree + 1,
@@ -424,21 +420,20 @@ namespace internal
               shape_info.fe_degree + 1,
               shape_info.n_q_points_1d);
 
-    const unsigned int temp_size
-      = Eval::n_rows_of_product == numbers::invalid_unsigned_int ?
-          0 :
-          (Eval::n_rows_of_product > Eval::n_columns_of_product ?
-             Eval::n_rows_of_product :
-             Eval::n_columns_of_product);
+    const unsigned int temp_size =
+      Eval::n_rows_of_product == numbers::invalid_unsigned_int ?
+        0 :
+        (Eval::n_rows_of_product > Eval::n_columns_of_product ?
+           Eval::n_rows_of_product :
+           Eval::n_columns_of_product);
     Number* temp1;
     Number* temp2;
     if(temp_size == 0)
       {
         temp1 = scratch_data;
-        temp2
-          = temp1
-            + std::max(Utilities::fixed_power<dim>(shape_info.fe_degree + 1),
-                       Utilities::fixed_power<dim>(shape_info.n_q_points_1d));
+        temp2 = temp1 +
+                std::max(Utilities::fixed_power<dim>(shape_info.fe_degree + 1),
+                         Utilities::fixed_power<dim>(shape_info.n_q_points_1d));
       }
     else
       {
@@ -446,20 +441,18 @@ namespace internal
         temp2 = temp1 + temp_size;
       }
 
-    const unsigned int n_q_points
-      = temp_size == 0 ? shape_info.n_q_points : Eval::n_columns_of_product;
-    const unsigned int dofs_per_comp
-      = (type == MatrixFreeFunctions::truncated_tensor) ?
-          Utilities::fixed_power<dim>(shape_info.fe_degree + 1) :
-          shape_info.dofs_per_component_on_cell;
+    const unsigned int n_q_points =
+      temp_size == 0 ? shape_info.n_q_points : Eval::n_columns_of_product;
+    const unsigned int dofs_per_comp =
+      (type == MatrixFreeFunctions::truncated_tensor) ?
+        Utilities::fixed_power<dim>(shape_info.fe_degree + 1) :
+        shape_info.dofs_per_component_on_cell;
     // expand dof_values to tensor product for truncated tensor products
-    Number* values_dofs
-      = (type == MatrixFreeFunctions::truncated_tensor) ?
-          scratch_data
-            + 2
-                * (std::max(shape_info.dofs_per_component_on_cell,
-                            shape_info.n_q_points)) :
-          values_dofs_actual;
+    Number* values_dofs =
+      (type == MatrixFreeFunctions::truncated_tensor) ?
+        scratch_data + 2 * (std::max(shape_info.dofs_per_component_on_cell,
+                                     shape_info.n_q_points)) :
+        values_dofs_actual;
 
     switch(dim)
       {
@@ -569,8 +562,8 @@ namespace internal
     // case FE_Q_DG0: add values, gradients and second derivatives are zero
     if(type == MatrixFreeFunctions::tensor_symmetric_plus_dg0)
       {
-        values_dofs -= n_components * dofs_per_comp
-                       - shape_info.dofs_per_component_on_cell + 1;
+        values_dofs -= n_components * dofs_per_comp -
+                       shape_info.dofs_per_component_on_cell + 1;
         values_quad -= n_components * n_q_points;
         if(integrate_values)
           for(unsigned int c = 0; c < n_components; ++c)
@@ -603,8 +596,8 @@ namespace internal
                   {
                     for(unsigned int c = 0; c < n_components; ++c)
                       values_dofs_actual
-                        [c * shape_info.dofs_per_component_on_cell + count_p]
-                        = values_dofs[c * dofs_per_comp + count_q];
+                        [c * shape_info.dofs_per_component_on_cell + count_p] =
+                          values_dofs[c * dofs_per_comp + count_q];
                   }
                 count_q += j + i;
               }
@@ -664,13 +657,12 @@ namespace internal
     DEAL_II_ALWAYS_INLINE
 #endif
     static void
-    do_forward(const AlignedVector<Number2>& transformation_matrix,
-               const Number*                 values_in,
-               Number*                       values_out,
-               const unsigned int            basis_size_1_variable
-               = numbers::invalid_unsigned_int,
-               const unsigned int basis_size_2_variable
-               = numbers::invalid_unsigned_int)
+    do_forward(
+      const AlignedVector<Number2>& transformation_matrix,
+      const Number*                 values_in,
+      Number*                       values_out,
+      const unsigned int basis_size_1_variable = numbers::invalid_unsigned_int,
+      const unsigned int basis_size_2_variable = numbers::invalid_unsigned_int)
     {
       Assert(
         basis_size_1 != 0 || basis_size_1_variable <= basis_size_2_variable,
@@ -680,11 +672,11 @@ namespace internal
       // basis_size_1==basis_size_2. The latter optimization increases
       // optimization possibilities for the compiler but does only work for
       // aliased pointers if the sizes are equal.
-      constexpr int next_dim
-        = (dim > 2
-           || ((basis_size_1 == 0 || basis_size_2 > basis_size_1) && dim > 1)) ?
-            dim - 1 :
-            dim;
+      constexpr int next_dim =
+        (dim > 2 ||
+         ((basis_size_1 == 0 || basis_size_2 > basis_size_1) && dim > 1)) ?
+          dim - 1 :
+          dim;
 
       EvaluatorTensorProduct<variant,
                              dim,
@@ -697,10 +689,10 @@ namespace internal
                  AlignedVector<Number2>(),
                  basis_size_1_variable,
                  basis_size_2_variable);
-      const unsigned int np_1
-        = basis_size_1 > 0 ? basis_size_1 : basis_size_1_variable;
-      const unsigned int np_2
-        = basis_size_1 > 0 ? basis_size_2 : basis_size_2_variable;
+      const unsigned int np_1 =
+        basis_size_1 > 0 ? basis_size_1 : basis_size_1_variable;
+      const unsigned int np_2 =
+        basis_size_1 > 0 ? basis_size_2 : basis_size_2_variable;
       Assert(np_1 > 0 && np_1 != numbers::invalid_unsigned_int,
              ExcMessage("Cannot transform with 0-point basis"));
       Assert(np_2 > 0 && np_2 != numbers::invalid_unsigned_int,
@@ -709,8 +701,8 @@ namespace internal
       // run loop backwards to ensure correctness if values_in aliases with
       // values_out in case with basis_size_1 < basis_size_2
       values_in = values_in + n_components * Utilities::fixed_power<dim>(np_1);
-      values_out
-        = values_out + n_components * Utilities::fixed_power<dim>(np_2);
+      values_out =
+        values_out + n_components * Utilities::fixed_power<dim>(np_2);
       for(unsigned int c = n_components; c != 0; --c)
         {
           values_in -= Utilities::fixed_power<dim>(np_1);
@@ -782,14 +774,13 @@ namespace internal
     DEAL_II_ALWAYS_INLINE
 #endif
     static void
-    do_backward(const AlignedVector<Number2>& transformation_matrix,
-                const bool                    add_into_result,
-                Number*                       values_in,
-                Number*                       values_out,
-                const unsigned int            basis_size_1_variable
-                = numbers::invalid_unsigned_int,
-                const unsigned int basis_size_2_variable
-                = numbers::invalid_unsigned_int)
+    do_backward(
+      const AlignedVector<Number2>& transformation_matrix,
+      const bool                    add_into_result,
+      Number*                       values_in,
+      Number*                       values_out,
+      const unsigned int basis_size_1_variable = numbers::invalid_unsigned_int,
+      const unsigned int basis_size_2_variable = numbers::invalid_unsigned_int)
     {
       Assert(
         basis_size_1 != 0 || basis_size_1_variable <= basis_size_2_variable,
@@ -799,11 +790,11 @@ namespace internal
         ExcMessage("Input and output cannot alias with each other when "
                    "adding the result of the basis change to existing data"));
 
-      constexpr int next_dim
-        = (dim > 2
-           || ((basis_size_1 == 0 || basis_size_2 > basis_size_1) && dim > 1)) ?
-            dim - 1 :
-            dim;
+      constexpr int next_dim =
+        (dim > 2 ||
+         ((basis_size_1 == 0 || basis_size_2 > basis_size_1) && dim > 1)) ?
+          dim - 1 :
+          dim;
       EvaluatorTensorProduct<variant,
                              dim,
                              basis_size_1,
@@ -815,10 +806,10 @@ namespace internal
                  AlignedVector<Number2>(),
                  basis_size_1_variable,
                  basis_size_2_variable);
-      const unsigned int np_1
-        = basis_size_1 > 0 ? basis_size_1 : basis_size_1_variable;
-      const unsigned int np_2
-        = basis_size_1 > 0 ? basis_size_2 : basis_size_2_variable;
+      const unsigned int np_1 =
+        basis_size_1 > 0 ? basis_size_1 : basis_size_1_variable;
+      const unsigned int np_2 =
+        basis_size_1 > 0 ? basis_size_2 : basis_size_2_variable;
       Assert(np_1 > 0 && np_1 != numbers::invalid_unsigned_int,
              ExcMessage("Cannot transform with 0-point basis"));
       Assert(np_2 > 0 && np_2 != numbers::invalid_unsigned_int,
@@ -895,20 +886,21 @@ namespace internal
             Number*                       values_out)
     {
       constexpr int next_dim = dim > 1 ? dim - 1 : dim;
-      Number*       my_scratch
-        = basis_size_1 != basis_size_2 ? scratch_data : values_out;
+      Number*       my_scratch =
+        basis_size_1 != basis_size_2 ? scratch_data : values_out;
       for(unsigned int q = basis_size_1; q != 0; --q)
-        FEEvaluationImplBasisChange<variant,
-                                    next_dim,
-                                    basis_size_1,
-                                    basis_size_2,
-                                    n_components,
-                                    Number,
-                                    Number2>::
-          do_forward(
-            transformation_matrix,
-            values_in + (q - 1) * Utilities::pow(basis_size_1, dim - 1),
-            my_scratch + (q - 1) * Utilities::pow(basis_size_2, dim - 1));
+        FEEvaluationImplBasisChange<
+          variant,
+          next_dim,
+          basis_size_1,
+          basis_size_2,
+          n_components,
+          Number,
+          Number2>::do_forward(transformation_matrix,
+                               values_in + (q - 1) * Utilities::pow(
+                                                       basis_size_1, dim - 1),
+                               my_scratch + (q - 1) * Utilities::pow(
+                                                        basis_size_2, dim - 1));
       EvaluatorTensorProduct<variant,
                              dim,
                              basis_size_1,
@@ -916,8 +908,8 @@ namespace internal
                              Number,
                              Number2>
                          eval_val(transformation_matrix);
-      const unsigned int n_inner_blocks
-        = (dim > 1 && basis_size_2 < 10) ? basis_size_2 : 1;
+      const unsigned int n_inner_blocks =
+        (dim > 1 && basis_size_2 < 10) ? basis_size_2 : 1;
       const unsigned int n_blocks = Utilities::pow(basis_size_2, dim - 1);
       for(unsigned int ii = 0; ii < n_blocks; ii += n_inner_blocks)
         for(unsigned int c = 0; c < n_components; ++c)
@@ -933,19 +925,22 @@ namespace internal
                 my_scratch + i, my_scratch + i);
           }
       for(unsigned int q = 0; q < basis_size_1; ++q)
-        FEEvaluationImplBasisChange<
-          variant,
-          next_dim,
-          basis_size_1,
-          basis_size_2,
-          n_components,
-          Number,
-          Number2>::do_backward(transformation_matrix,
-                                false,
-                                my_scratch
-                                  + q * Utilities::pow(basis_size_2, dim - 1),
-                                values_out
-                                  + q * Utilities::pow(basis_size_1, dim - 1));
+        FEEvaluationImplBasisChange<variant,
+                                    next_dim,
+                                    basis_size_1,
+                                    basis_size_2,
+                                    n_components,
+                                    Number,
+                                    Number2>::do_backward(transformation_matrix,
+                                                          false,
+                                                          my_scratch +
+                                                            q * Utilities::pow(
+                                                                  basis_size_2,
+                                                                  dim - 1),
+                                                          values_out +
+                                                            q * Utilities::pow(
+                                                                  basis_size_1,
+                                                                  dim - 1));
     }
   };
 
@@ -1292,31 +1287,31 @@ namespace internal
                      const bool         evaluate_grad,
                      const unsigned int subface_index)
     {
-      const AlignedVector<Number>& val1
-        = symmetric_evaluate ?
-            data.shape_values_eo :
-            (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
-               data.shape_values :
-               data.values_within_subface[subface_index % 2]);
-      const AlignedVector<Number>& val2
-        = symmetric_evaluate ?
-            data.shape_values_eo :
-            (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
-               data.shape_values :
-               data.values_within_subface[subface_index / 2]);
+      const AlignedVector<Number>& val1 =
+        symmetric_evaluate ?
+          data.shape_values_eo :
+          (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
+             data.shape_values :
+             data.values_within_subface[subface_index % 2]);
+      const AlignedVector<Number>& val2 =
+        symmetric_evaluate ?
+          data.shape_values_eo :
+          (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
+             data.shape_values :
+             data.values_within_subface[subface_index / 2]);
 
-      const AlignedVector<Number>& grad1
-        = symmetric_evaluate ?
-            data.shape_gradients_eo :
-            (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
-               data.shape_gradients :
-               data.gradients_within_subface[subface_index % 2]);
-      const AlignedVector<Number>& grad2
-        = symmetric_evaluate ?
-            data.shape_gradients_eo :
-            (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
-               data.shape_gradients :
-               data.gradients_within_subface[subface_index / 2]);
+      const AlignedVector<Number>& grad1 =
+        symmetric_evaluate ?
+          data.shape_gradients_eo :
+          (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
+             data.shape_gradients :
+             data.gradients_within_subface[subface_index % 2]);
+      const AlignedVector<Number>& grad2 =
+        symmetric_evaluate ?
+          data.shape_gradients_eo :
+          (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
+             data.shape_gradients :
+             data.gradients_within_subface[subface_index / 2]);
 
       typedef internal::EvaluatorTensorProduct<symmetric_evaluate ?
                                                  internal::evaluate_evenodd :
@@ -1337,10 +1332,10 @@ namespace internal
                  data.fe_degree + 1,
                  data.n_q_points_1d);
 
-      const unsigned int size_deg
-        = fe_degree > -1 ?
-            Utilities::pow(fe_degree + 1, dim - 1) :
-            (dim > 1 ? Utilities::fixed_power<dim - 1>(data.fe_degree + 1) : 1);
+      const unsigned int size_deg =
+        fe_degree > -1 ?
+          Utilities::pow(fe_degree + 1, dim - 1) :
+          (dim > 1 ? Utilities::fixed_power<dim - 1>(data.fe_degree + 1) : 1);
 
       const unsigned int n_q_points = fe_degree > -1 ?
                                         Utilities::pow(n_q_points_1d, dim - 1) :
@@ -1451,31 +1446,31 @@ namespace internal
                       const bool         integrate_grad,
                       const unsigned int subface_index)
     {
-      const AlignedVector<Number>& val1
-        = symmetric_evaluate ?
-            data.shape_values_eo :
-            (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
-               data.shape_values :
-               data.values_within_subface[subface_index % 2]);
-      const AlignedVector<Number>& val2
-        = symmetric_evaluate ?
-            data.shape_values_eo :
-            (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
-               data.shape_values :
-               data.values_within_subface[subface_index / 2]);
+      const AlignedVector<Number>& val1 =
+        symmetric_evaluate ?
+          data.shape_values_eo :
+          (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
+             data.shape_values :
+             data.values_within_subface[subface_index % 2]);
+      const AlignedVector<Number>& val2 =
+        symmetric_evaluate ?
+          data.shape_values_eo :
+          (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
+             data.shape_values :
+             data.values_within_subface[subface_index / 2]);
 
-      const AlignedVector<Number>& grad1
-        = symmetric_evaluate ?
-            data.shape_gradients_eo :
-            (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
-               data.shape_gradients :
-               data.gradients_within_subface[subface_index % 2]);
-      const AlignedVector<Number>& grad2
-        = symmetric_evaluate ?
-            data.shape_gradients_eo :
-            (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
-               data.shape_gradients :
-               data.gradients_within_subface[subface_index / 2]);
+      const AlignedVector<Number>& grad1 =
+        symmetric_evaluate ?
+          data.shape_gradients_eo :
+          (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
+             data.shape_gradients :
+             data.gradients_within_subface[subface_index % 2]);
+      const AlignedVector<Number>& grad2 =
+        symmetric_evaluate ?
+          data.shape_gradients_eo :
+          (subface_index >= GeometryInfo<dim>::max_children_per_cell ?
+             data.shape_gradients :
+             data.gradients_within_subface[subface_index / 2]);
 
       typedef internal::EvaluatorTensorProduct<symmetric_evaluate ?
                                                  internal::evaluate_evenodd :
@@ -1488,15 +1483,15 @@ namespace internal
       Eval eval1(val1, grad1, val1, data.fe_degree + 1, data.n_q_points_1d);
       Eval eval2(val2, grad2, val1, data.fe_degree + 1, data.n_q_points_1d);
 
-      const unsigned int size_deg
-        = fe_degree > -1 ?
-            Utilities::pow(fe_degree + 1, dim - 1) :
-            (dim > 1 ? Utilities::fixed_power<dim - 1>(data.fe_degree + 1) : 1);
+      const unsigned int size_deg =
+        fe_degree > -1 ?
+          Utilities::pow(fe_degree + 1, dim - 1) :
+          (dim > 1 ? Utilities::fixed_power<dim - 1>(data.fe_degree + 1) : 1);
 
-      const unsigned int n_q_points
-        = fe_degree > -1 ?
-            Utilities::fixed_int_power<n_q_points_1d, dim - 1>::value :
-            data.n_q_points_face;
+      const unsigned int n_q_points =
+        fe_degree > -1 ?
+          Utilities::fixed_int_power<n_q_points_1d, dim - 1>::value :
+          data.n_q_points_face;
 
       if(integrate_grad == false)
         for(unsigned int c = 0; c < n_components; ++c)

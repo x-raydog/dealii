@@ -62,11 +62,11 @@ namespace LocalIntegrators
             for(unsigned int j = 0; j < n_dofs; ++j)
               for(unsigned int d1 = 0; d1 < dim; ++d1)
                 for(unsigned int d2 = 0; d2 < dim; ++d2)
-                  M(i, j) += dx * .25
-                             * (fe.shape_grad_component(j, k, d1)[d2]
-                                + fe.shape_grad_component(j, k, d2)[d1])
-                             * (fe.shape_grad_component(i, k, d1)[d2]
-                                + fe.shape_grad_component(i, k, d2)[d1]);
+                  M(i, j) += dx * .25 *
+                             (fe.shape_grad_component(j, k, d1)[d2] +
+                              fe.shape_grad_component(j, k, d2)[d1]) *
+                             (fe.shape_grad_component(i, k, d1)[d2] +
+                              fe.shape_grad_component(i, k, d2)[d1]);
         }
     }
 
@@ -98,9 +98,10 @@ namespace LocalIntegrators
             for(unsigned int d1 = 0; d1 < dim; ++d1)
               for(unsigned int d2 = 0; d2 < dim; ++d2)
                 {
-                  result(i) += dx * .25 * (input[d1][k][d2] + input[d2][k][d1])
-                               * (fe.shape_grad_component(i, k, d1)[d2]
-                                  + fe.shape_grad_component(i, k, d2)[d1]);
+                  result(i) += dx * .25 *
+                               (input[d1][k][d2] + input[d2][k][d1]) *
+                               (fe.shape_grad_component(i, k, d1)[d2] +
+                                fe.shape_grad_component(i, k, d2)[d1]);
                 }
         }
     }
@@ -138,17 +139,21 @@ namespace LocalIntegrators
                   for(unsigned int d2 = 0; d2 < dim; ++d2)
                     {
                       // v . nabla u n
-                      M(i, j) -= .5 * dx * fe.shape_grad_component(j, k, d1)[d2]
-                                 * n[d2] * v;
+                      M(i, j) -= .5 * dx *
+                                 fe.shape_grad_component(j, k, d1)[d2] * n[d2] *
+                                 v;
                       // v (nabla u)^T n
-                      M(i, j) -= .5 * dx * fe.shape_grad_component(j, k, d2)[d1]
-                                 * n[d2] * v;
+                      M(i, j) -= .5 * dx *
+                                 fe.shape_grad_component(j, k, d2)[d1] * n[d2] *
+                                 v;
                       // u  nabla v n
-                      M(i, j) -= .5 * dx * fe.shape_grad_component(i, k, d1)[d2]
-                                 * n[d2] * u;
+                      M(i, j) -= .5 * dx *
+                                 fe.shape_grad_component(i, k, d1)[d2] * n[d2] *
+                                 u;
                       // u (nabla v)^T n
-                      M(i, j) -= .5 * dx * fe.shape_grad_component(i, k, d2)[d1]
-                                 * n[d2] * u;
+                      M(i, j) -= .5 * dx *
+                                 fe.shape_grad_component(i, k, d2)[d1] * n[d2] *
+                                 u;
                     }
                 }
         }
@@ -194,31 +199,31 @@ namespace LocalIntegrators
                   }
                 for(unsigned int d1 = 0; d1 < dim; ++d1)
                   {
-                    const double u
-                      = fe.shape_value_component(j, k, d1) - udotn * n[d1];
-                    const double v
-                      = fe.shape_value_component(i, k, d1) - vdotn * n[d1];
+                    const double u =
+                      fe.shape_value_component(j, k, d1) - udotn * n[d1];
+                    const double v =
+                      fe.shape_value_component(i, k, d1) - vdotn * n[d1];
                     M(i, j) += dx * 2. * penalty * u * v;
                     // Correct the gradients below and subtract normal component
                     M(i, j) += dx * (ngradun * v + ngradvn * u);
                     for(unsigned int d2 = 0; d2 < dim; ++d2)
                       {
                         // v . nabla u n
-                        M(i, j) -= .5 * dx
-                                   * fe.shape_grad_component(j, k, d1)[d2]
-                                   * n[d2] * v;
+                        M(i, j) -= .5 * dx *
+                                   fe.shape_grad_component(j, k, d1)[d2] *
+                                   n[d2] * v;
                         // v (nabla u)^T n
-                        M(i, j) -= .5 * dx
-                                   * fe.shape_grad_component(j, k, d2)[d1]
-                                   * n[d2] * v;
+                        M(i, j) -= .5 * dx *
+                                   fe.shape_grad_component(j, k, d2)[d1] *
+                                   n[d2] * v;
                         // u  nabla v n
-                        M(i, j) -= .5 * dx
-                                   * fe.shape_grad_component(i, k, d1)[d2]
-                                   * n[d2] * u;
+                        M(i, j) -= .5 * dx *
+                                   fe.shape_grad_component(i, k, d1)[d2] *
+                                   n[d2] * u;
                         // u (nabla v)^T n
-                        M(i, j) -= .5 * dx
-                                   * fe.shape_grad_component(i, k, d2)[d1]
-                                   * n[d2] * u;
+                        M(i, j) -= .5 * dx *
+                                   fe.shape_grad_component(i, k, d2)[d1] *
+                                   n[d2] * u;
                       }
                   }
               }
@@ -276,13 +281,11 @@ namespace LocalIntegrators
                     // v . (nabla u)^T n
                     result(i) -= .5 * dx * v * Dinput[d2][k][d1] * n[d2];
                     // u  nabla v n
-                    result(i) -= .5 * dx * (u - g)
-                                 * fe.shape_grad_component(i, k, d1)[d2]
-                                 * n[d2];
+                    result(i) -= .5 * dx * (u - g) *
+                                 fe.shape_grad_component(i, k, d1)[d2] * n[d2];
                     // u  (nabla v)^T n
-                    result(i) -= .5 * dx * (u - g)
-                                 * fe.shape_grad_component(i, k, d2)[d1]
-                                 * n[d2];
+                    result(i) -= .5 * dx * (u - g) *
+                                 fe.shape_grad_component(i, k, d2)[d1] * n[d2];
                   }
               }
         }
@@ -333,8 +336,8 @@ namespace LocalIntegrators
               for(unsigned int d1 = 0; d1 < dim; ++d1)
                 {
                   const double u = input[d1][k] - udotn * n[d1];
-                  const double v
-                    = fe.shape_value_component(i, k, d1) - vdotn * n[d1];
+                  const double v =
+                    fe.shape_value_component(i, k, d1) - vdotn * n[d1];
                   const double g = data[d1][k] - gdotn * n[d1];
                   result(i) += dx * 2. * penalty * (u - g) * v;
                   // Correct the gradients below and subtract normal component
@@ -346,13 +349,13 @@ namespace LocalIntegrators
                       // v (nabla u)^T n
                       result(i) -= .5 * dx * Dinput[d2][k][d1] * n[d2] * v;
                       // u  nabla v n
-                      result(i) -= .5 * dx * (u - g)
-                                   * fe.shape_grad_component(i, k, d1)[d2]
-                                   * n[d2];
+                      result(i) -= .5 * dx * (u - g) *
+                                   fe.shape_grad_component(i, k, d1)[d2] *
+                                   n[d2];
                       // u (nabla v)^T n
-                      result(i) -= .5 * dx * (u - g)
-                                   * fe.shape_grad_component(i, k, d2)[d1]
-                                   * n[d2];
+                      result(i) -= .5 * dx * (u - g) *
+                                   fe.shape_grad_component(i, k, d2)[d1] *
+                                   n[d2];
                     }
                 }
             }
@@ -406,13 +409,11 @@ namespace LocalIntegrators
                     // v . (nabla u)^T n
                     result(i) -= .5 * dx * v * Dinput[d2][k][d1] * n[d2];
                     // u  nabla v n
-                    result(i) -= .5 * dx * u
-                                 * fe.shape_grad_component(i, k, d1)[d2]
-                                 * n[d2];
+                    result(i) -= .5 * dx * u *
+                                 fe.shape_grad_component(i, k, d1)[d2] * n[d2];
                     // u  (nabla v)^T n
-                    result(i) -= .5 * dx * u
-                                 * fe.shape_grad_component(i, k, d2)[d1]
-                                 * n[d2];
+                    result(i) -= .5 * dx * u *
+                                 fe.shape_grad_component(i, k, d2)[d1] * n[d2];
                   }
               }
         }
@@ -471,57 +472,57 @@ namespace LocalIntegrators
                   for(unsigned int d2 = 0; d2 < dim; ++d2)
                     {
                       // v . nabla u n
-                      M11(i, j) -= .25 * dx * nu1
-                                   * fe1.shape_grad_component(j, k, d1)[d2]
-                                   * n[d2] * v1;
-                      M12(i, j) -= .25 * dx * nu2
-                                   * fe2.shape_grad_component(j, k, d1)[d2]
-                                   * n[d2] * v1;
-                      M21(i, j) += .25 * dx * nu1
-                                   * fe1.shape_grad_component(j, k, d1)[d2]
-                                   * n[d2] * v2;
-                      M22(i, j) += .25 * dx * nu2
-                                   * fe2.shape_grad_component(j, k, d1)[d2]
-                                   * n[d2] * v2;
+                      M11(i, j) -= .25 * dx * nu1 *
+                                   fe1.shape_grad_component(j, k, d1)[d2] *
+                                   n[d2] * v1;
+                      M12(i, j) -= .25 * dx * nu2 *
+                                   fe2.shape_grad_component(j, k, d1)[d2] *
+                                   n[d2] * v1;
+                      M21(i, j) += .25 * dx * nu1 *
+                                   fe1.shape_grad_component(j, k, d1)[d2] *
+                                   n[d2] * v2;
+                      M22(i, j) += .25 * dx * nu2 *
+                                   fe2.shape_grad_component(j, k, d1)[d2] *
+                                   n[d2] * v2;
                       // v (nabla u)^T n
-                      M11(i, j) -= .25 * dx * nu1
-                                   * fe1.shape_grad_component(j, k, d2)[d1]
-                                   * n[d2] * v1;
-                      M12(i, j) -= .25 * dx * nu2
-                                   * fe2.shape_grad_component(j, k, d2)[d1]
-                                   * n[d2] * v1;
-                      M21(i, j) += .25 * dx * nu1
-                                   * fe1.shape_grad_component(j, k, d2)[d1]
-                                   * n[d2] * v2;
-                      M22(i, j) += .25 * dx * nu2
-                                   * fe2.shape_grad_component(j, k, d2)[d1]
-                                   * n[d2] * v2;
+                      M11(i, j) -= .25 * dx * nu1 *
+                                   fe1.shape_grad_component(j, k, d2)[d1] *
+                                   n[d2] * v1;
+                      M12(i, j) -= .25 * dx * nu2 *
+                                   fe2.shape_grad_component(j, k, d2)[d1] *
+                                   n[d2] * v1;
+                      M21(i, j) += .25 * dx * nu1 *
+                                   fe1.shape_grad_component(j, k, d2)[d1] *
+                                   n[d2] * v2;
+                      M22(i, j) += .25 * dx * nu2 *
+                                   fe2.shape_grad_component(j, k, d2)[d1] *
+                                   n[d2] * v2;
                       // u  nabla v n
-                      M11(i, j) -= .25 * dx * nu1
-                                   * fe1.shape_grad_component(i, k, d1)[d2]
-                                   * n[d2] * u1;
-                      M12(i, j) += .25 * dx * nu1
-                                   * fe1.shape_grad_component(i, k, d1)[d2]
-                                   * n[d2] * u2;
-                      M21(i, j) -= .25 * dx * nu2
-                                   * fe2.shape_grad_component(i, k, d1)[d2]
-                                   * n[d2] * u1;
-                      M22(i, j) += .25 * dx * nu2
-                                   * fe2.shape_grad_component(i, k, d1)[d2]
-                                   * n[d2] * u2;
+                      M11(i, j) -= .25 * dx * nu1 *
+                                   fe1.shape_grad_component(i, k, d1)[d2] *
+                                   n[d2] * u1;
+                      M12(i, j) += .25 * dx * nu1 *
+                                   fe1.shape_grad_component(i, k, d1)[d2] *
+                                   n[d2] * u2;
+                      M21(i, j) -= .25 * dx * nu2 *
+                                   fe2.shape_grad_component(i, k, d1)[d2] *
+                                   n[d2] * u1;
+                      M22(i, j) += .25 * dx * nu2 *
+                                   fe2.shape_grad_component(i, k, d1)[d2] *
+                                   n[d2] * u2;
                       // u (nabla v)^T n
-                      M11(i, j) -= .25 * dx * nu1
-                                   * fe1.shape_grad_component(i, k, d2)[d1]
-                                   * n[d2] * u1;
-                      M12(i, j) += .25 * dx * nu1
-                                   * fe1.shape_grad_component(i, k, d2)[d1]
-                                   * n[d2] * u2;
-                      M21(i, j) -= .25 * dx * nu2
-                                   * fe2.shape_grad_component(i, k, d2)[d1]
-                                   * n[d2] * u1;
-                      M22(i, j) += .25 * dx * nu2
-                                   * fe2.shape_grad_component(i, k, d2)[d1]
-                                   * n[d2] * u2;
+                      M11(i, j) -= .25 * dx * nu1 *
+                                   fe1.shape_grad_component(i, k, d2)[d1] *
+                                   n[d2] * u1;
+                      M12(i, j) += .25 * dx * nu1 *
+                                   fe1.shape_grad_component(i, k, d2)[d1] *
+                                   n[d2] * u2;
+                      M21(i, j) -= .25 * dx * nu2 *
+                                   fe2.shape_grad_component(i, k, d2)[d1] *
+                                   n[d2] * u1;
+                      M22(i, j) += .25 * dx * nu2 *
+                                   fe2.shape_grad_component(i, k, d2)[d1] *
+                                   n[d2] * u2;
                     }
                 }
         }
@@ -583,37 +584,37 @@ namespace LocalIntegrators
                 for(unsigned int d2 = 0; d2 < dim; ++d2)
                   {
                     // v . nabla u n
-                    result1(i)
-                      -= .25 * dx
-                         * (nu1 * Dinput1[d1][k][d2] + nu2 * Dinput2[d1][k][d2])
-                         * n[d2] * v1;
-                    result2(i)
-                      += .25 * dx
-                         * (nu1 * Dinput1[d1][k][d2] + nu2 * Dinput2[d1][k][d2])
-                         * n[d2] * v2;
+                    result1(i) -=
+                      .25 * dx *
+                      (nu1 * Dinput1[d1][k][d2] + nu2 * Dinput2[d1][k][d2]) *
+                      n[d2] * v1;
+                    result2(i) +=
+                      .25 * dx *
+                      (nu1 * Dinput1[d1][k][d2] + nu2 * Dinput2[d1][k][d2]) *
+                      n[d2] * v2;
                     // v . (nabla u)^T n
-                    result1(i)
-                      -= .25 * dx
-                         * (nu1 * Dinput1[d2][k][d1] + nu2 * Dinput2[d2][k][d1])
-                         * n[d2] * v1;
-                    result2(i)
-                      += .25 * dx
-                         * (nu1 * Dinput1[d2][k][d1] + nu2 * Dinput2[d2][k][d1])
-                         * n[d2] * v2;
+                    result1(i) -=
+                      .25 * dx *
+                      (nu1 * Dinput1[d2][k][d1] + nu2 * Dinput2[d2][k][d1]) *
+                      n[d2] * v1;
+                    result2(i) +=
+                      .25 * dx *
+                      (nu1 * Dinput1[d2][k][d1] + nu2 * Dinput2[d2][k][d1]) *
+                      n[d2] * v2;
                     // u  nabla v n
-                    result1(i) -= .25 * dx * nu1
-                                  * fe1.shape_grad_component(i, k, d1)[d2]
-                                  * n[d2] * (u1 - u2);
-                    result2(i) -= .25 * dx * nu2
-                                  * fe2.shape_grad_component(i, k, d1)[d2]
-                                  * n[d2] * (u1 - u2);
+                    result1(i) -= .25 * dx * nu1 *
+                                  fe1.shape_grad_component(i, k, d1)[d2] *
+                                  n[d2] * (u1 - u2);
+                    result2(i) -= .25 * dx * nu2 *
+                                  fe2.shape_grad_component(i, k, d1)[d2] *
+                                  n[d2] * (u1 - u2);
                     // u  (nabla v)^T n
-                    result1(i) -= .25 * dx * nu1
-                                  * fe1.shape_grad_component(i, k, d2)[d1]
-                                  * n[d2] * (u1 - u2);
-                    result2(i) -= .25 * dx * nu2
-                                  * fe2.shape_grad_component(i, k, d2)[d1]
-                                  * n[d2] * (u1 - u2);
+                    result1(i) -= .25 * dx * nu1 *
+                                  fe1.shape_grad_component(i, k, d2)[d1] *
+                                  n[d2] * (u1 - u2);
+                    result2(i) -= .25 * dx * nu2 *
+                                  fe2.shape_grad_component(i, k, d2)[d1] *
+                                  n[d2] * (u1 - u2);
                   }
               }
         }

@@ -354,8 +354,8 @@ namespace Step29
                ExcDimensionMismatch(inputs.solution_values[i].size(), 2));
 
         computed_quantities[i](0) = std::sqrt(
-          inputs.solution_values[i](0) * inputs.solution_values[i](0)
-          + inputs.solution_values[i](1) * inputs.solution_values[i](1));
+          inputs.solution_values[i](0) * inputs.solution_values[i](0) +
+          inputs.solution_values[i](1) * inputs.solution_values[i](1));
       }
   }
 
@@ -446,8 +446,8 @@ namespace Step29
     // Even though this tutorial only deals with the 2D case, the necessary
     // additions to make this program functional in 3D are so minimal that we
     // opt for including them:
-    const Point<dim> transducer
-      = (dim == 2) ? Point<dim>(0.5, 0.0) : Point<dim>(0.5, 0.5, 0.0);
+    const Point<dim> transducer =
+      (dim == 2) ? Point<dim>(0.5, 0.0) : Point<dim>(0.5, 0.5, 0.0);
     const Point<dim> focal_point = (dim == 2) ?
                                      Point<dim>(0.5, focal_distance) :
                                      Point<dim>(0.5, 0.5, focal_distance);
@@ -470,8 +470,8 @@ namespace Step29
     for(; cell != endc; ++cell)
       for(unsigned int face = 0; face < GeometryInfo<dim>::faces_per_cell;
           ++face)
-        if(cell->face(face)->at_boundary()
-           && ((cell->face(face)->center() - transducer).norm_square() < 0.01))
+        if(cell->face(face)->at_boundary() &&
+           ((cell->face(face)->center() - transducer).norm_square() < 0.01))
           {
             cell->face(face)->set_boundary_id(1);
             cell->face(face)->set_manifold_id(1);
@@ -565,8 +565,8 @@ namespace Step29
     // only shape function values and the quadrature weights are necessary.
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_JxW_values);
+                            update_values | update_gradients |
+                              update_JxW_values);
 
     FEFaceValues<dim> fe_face_values(
       fe, face_quadrature_formula, update_values | update_JxW_values);
@@ -578,9 +578,9 @@ namespace Step29
     FullMatrix<double> cell_matrix(dofs_per_cell, dofs_per_cell);
     std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
 
     for(; cell != endc; ++cell)
       {
@@ -626,8 +626,8 @@ namespace Step29
                 // behind primitive vector valued elements, take a look at
                 // step-8 or the @ref vector_valued module, where these topics
                 // are explained in depth.
-                if(fe.system_to_component_index(i).first
-                   == fe.system_to_component_index(j).first)
+                if(fe.system_to_component_index(i).first ==
+                   fe.system_to_component_index(j).first)
                   {
                     // If both DoFs $i$ and $j$ belong to same component,
                     // i.e. their shape functions are both $\phi$'s or both
@@ -642,14 +642,14 @@ namespace Step29
 
                     for(unsigned int q_point = 0; q_point < n_q_points;
                         ++q_point)
-                      cell_matrix(i, j)
-                        += (((fe_values.shape_value(i, q_point)
-                              * fe_values.shape_value(j, q_point))
-                               * (-omega * omega)
-                             + (fe_values.shape_grad(i, q_point)
-                                * fe_values.shape_grad(j, q_point))
-                                 * c * c)
-                            * fe_values.JxW(q_point));
+                      cell_matrix(i, j) +=
+                        (((fe_values.shape_value(i, q_point) *
+                           fe_values.shape_value(j, q_point)) *
+                            (-omega * omega) +
+                          (fe_values.shape_grad(i, q_point) *
+                           fe_values.shape_grad(j, q_point)) *
+                            c * c) *
+                         fe_values.JxW(q_point));
 
                     // You might think that we would have to specify which
                     // component of the shape function we'd like to evaluate
@@ -670,8 +670,8 @@ namespace Step29
         // absorbing boundary conditions:
         for(unsigned int face = 0; face < GeometryInfo<dim>::faces_per_cell;
             ++face)
-          if(cell->face(face)->at_boundary()
-             && (cell->face(face)->boundary_id() == 0))
+          if(cell->face(face)->at_boundary() &&
+             (cell->face(face)->boundary_id() == 0))
             {
               // These faces will certainly contribute to the off-diagonal
               // blocks of the system matrix, so we ask the FEFaceValues
@@ -684,10 +684,10 @@ namespace Step29
               // support on the current face:
               for(unsigned int i = 0; i < dofs_per_cell; ++i)
                 for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                  if((fe.system_to_component_index(i).first
-                      != fe.system_to_component_index(j).first)
-                     && fe.has_support_on_face(i, face)
-                     && fe.has_support_on_face(j, face))
+                  if((fe.system_to_component_index(i).first !=
+                      fe.system_to_component_index(j).first) &&
+                     fe.has_support_on_face(i, face) &&
+                     fe.has_support_on_face(j, face))
                     // The check whether shape functions have support on a
                     // face is not strictly necessary: if we don't check for
                     // it we would simply add up terms to the local cell
@@ -711,12 +711,12 @@ namespace Step29
                     // of them to which component it belongs.
                     for(unsigned int q_point = 0; q_point < n_face_q_points;
                         ++q_point)
-                      cell_matrix(i, j)
-                        += ((fe.system_to_component_index(i).first == 0) ? -1 :
-                                                                           1)
-                           * fe_face_values.shape_value(i, q_point)
-                           * fe_face_values.shape_value(j, q_point) * c * omega
-                           * fe_face_values.JxW(q_point);
+                      cell_matrix(i, j) +=
+                        ((fe.system_to_component_index(i).first == 0) ? -1 :
+                                                                        1) *
+                        fe_face_values.shape_value(i, q_point) *
+                        fe_face_values.shape_value(j, q_point) * c * omega *
+                        fe_face_values.JxW(q_point);
             }
 
         // Now we are done with this cell and have to transfer its

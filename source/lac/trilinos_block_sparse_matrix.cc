@@ -69,12 +69,12 @@ namespace TrilinosWrappers
     const BlockSparsityPatternType& block_sparsity_pattern,
     const bool                      exchange_data)
   {
-    Assert(parallel_partitioning.size()
-             == block_sparsity_pattern.n_block_rows(),
+    Assert(parallel_partitioning.size() ==
+             block_sparsity_pattern.n_block_rows(),
            ExcDimensionMismatch(parallel_partitioning.size(),
                                 block_sparsity_pattern.n_block_rows()));
-    Assert(parallel_partitioning.size()
-             == block_sparsity_pattern.n_block_cols(),
+    Assert(parallel_partitioning.size() ==
+             block_sparsity_pattern.n_block_cols(),
            ExcDimensionMismatch(parallel_partitioning.size(),
                                 block_sparsity_pattern.n_block_cols()));
 
@@ -199,8 +199,8 @@ namespace TrilinosWrappers
     const ::dealii::BlockSparseMatrix<double>& dealii_block_sparse_matrix,
     const double                               drop_tolerance)
   {
-    Assert(dealii_block_sparse_matrix.n_block_rows()
-             == dealii_block_sparse_matrix.n_block_cols(),
+    Assert(dealii_block_sparse_matrix.n_block_rows() ==
+             dealii_block_sparse_matrix.n_block_cols(),
            ExcDimensionMismatch(dealii_block_sparse_matrix.n_block_rows(),
                                 dealii_block_sparse_matrix.n_block_cols()));
     Assert(dealii_block_sparse_matrix.m() == dealii_block_sparse_matrix.n(),

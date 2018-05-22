@@ -1462,15 +1462,15 @@ public:
      * This flag sums up all smoothing algorithms which may be performed upon
      * refinement by flagging some more cells for refinement.
      */
-    smoothing_on_refinement
-    = (limit_level_difference_at_vertices | eliminate_unrefined_islands),
+    smoothing_on_refinement =
+      (limit_level_difference_at_vertices | eliminate_unrefined_islands),
     /**
      * This flag sums up all smoothing algorithms which may be performed upon
      * coarsening by flagging some more cells for coarsening.
      */
-    smoothing_on_coarsening
-    = (eliminate_refined_inner_islands | eliminate_refined_boundary_islands
-       | do_not_produce_unrefined_islands),
+    smoothing_on_coarsening =
+      (eliminate_refined_inner_islands | eliminate_refined_boundary_islands |
+       do_not_produce_unrefined_islands),
 
     /**
      * This flag includes all the above ones and therefore combines all

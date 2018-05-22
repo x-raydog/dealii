@@ -116,11 +116,11 @@ namespace internal
       {
         const size_type vec_size = end - start;
         // set chunk size for sub-tasks
-        const unsigned int gs
-          = internal::VectorImplementation::minimum_parallel_grain_size;
-        n_chunks
-          = std::min(static_cast<size_type>(4 * MultithreadInfo::n_threads()),
-                     vec_size / gs);
+        const unsigned int gs =
+          internal::VectorImplementation::minimum_parallel_grain_size;
+        n_chunks =
+          std::min(static_cast<size_type>(4 * MultithreadInfo::n_threads()),
+                   vec_size / gs);
         chunk_size = vec_size / n_chunks;
 
         // round to next multiple of 512 (or minimum grain size if that happens
@@ -162,16 +162,16 @@ namespace internal
       size_type vec_size = end - start;
       // only go to the parallel function in case there are at least 4 parallel
       // items, otherwise the overhead is too large
-      if(vec_size
-           >= 4 * internal::VectorImplementation::minimum_parallel_grain_size
-         && MultithreadInfo::n_threads() > 1)
+      if(vec_size >=
+           4 * internal::VectorImplementation::minimum_parallel_grain_size &&
+         MultithreadInfo::n_threads() > 1)
         {
           Assert(
             partitioner.get() != nullptr,
             ExcInternalError("Unexpected initialization of Vector that does "
                              "not set the TBB partitioner to a usable state."));
-          std::shared_ptr<tbb::affinity_partitioner> tbb_partitioner
-            = partitioner->acquire_one_partitioner();
+          std::shared_ptr<tbb::affinity_partitioner> tbb_partitioner =
+            partitioner->acquire_one_partitioner();
 
           TBBForFunctor<Functor> generic_functor(functor, start, end);
           tbb::parallel_for(
@@ -238,15 +238,15 @@ namespace internal
         Assert(end >= begin, ExcInternalError());
 
 #if __GNUG__ && __GNUC__ < 5
-        if(__has_trivial_copy(Number)
-           && std::is_same<Number, OtherNumber>::value)
+        if(__has_trivial_copy(Number) &&
+           std::is_same<Number, OtherNumber>::value)
 #else
 #  ifdef DEAL_II_WITH_CXX17
-        if constexpr(std::is_trivially_copyable<Number>()
-                     && std::is_same<Number, OtherNumber>::value)
+        if constexpr(std::is_trivially_copyable<Number>() &&
+                     std::is_same<Number, OtherNumber>::value)
 #  else
-        if(std::is_trivially_copyable<Number>()
-           && std::is_same<Number, OtherNumber>::value)
+        if(std::is_trivially_copyable<Number>() &&
+           std::is_same<Number, OtherNumber>::value)
 #  endif
 #endif
           std::memcpy(dst + begin, src + begin, (end - begin) * sizeof(Number));
@@ -686,9 +686,9 @@ namespace internal
     template <typename Number, typename Number2>
     struct Dot
     {
-      static const bool vectorizes
-        = std::is_same<Number, Number2>::value
-          && (VectorizedArray<Number>::n_array_elements > 1);
+      static const bool vectorizes =
+        std::is_same<Number, Number2>::value &&
+        (VectorizedArray<Number>::n_array_elements > 1);
 
       Dot(const Number* X, const Number2* Y) : X(X), Y(Y)
       {}
@@ -726,8 +726,8 @@ namespace internal
     template <typename Number, typename RealType>
     struct Norm2
     {
-      static const bool vectorizes
-        = VectorizedArray<Number>::n_array_elements > 1;
+      static const bool vectorizes =
+        VectorizedArray<Number>::n_array_elements > 1;
 
       Norm2(const Number* X) : X(X)
       {}
@@ -752,8 +752,8 @@ namespace internal
     template <typename Number, typename RealType>
     struct Norm1
     {
-      static const bool vectorizes
-        = VectorizedArray<Number>::n_array_elements > 1;
+      static const bool vectorizes =
+        VectorizedArray<Number>::n_array_elements > 1;
 
       Norm1(const Number* X) : X(X)
       {}
@@ -778,8 +778,8 @@ namespace internal
     template <typename Number, typename RealType>
     struct NormP
     {
-      static const bool vectorizes
-        = VectorizedArray<Number>::n_array_elements > 1;
+      static const bool vectorizes =
+        VectorizedArray<Number>::n_array_elements > 1;
 
       NormP(const Number* X, RealType p) : X(X), p(p)
       {}
@@ -805,8 +805,8 @@ namespace internal
     template <typename Number>
     struct MeanValue
     {
-      static const bool vectorizes
-        = VectorizedArray<Number>::n_array_elements > 1;
+      static const bool vectorizes =
+        VectorizedArray<Number>::n_array_elements > 1;
 
       MeanValue(const Number* X) : X(X)
       {}
@@ -831,8 +831,8 @@ namespace internal
     template <typename Number>
     struct AddAndDot
     {
-      static const bool vectorizes
-        = VectorizedArray<Number>::n_array_elements > 1;
+      static const bool vectorizes =
+        VectorizedArray<Number>::n_array_elements > 1;
 
       AddAndDot(Number* X, const Number* V, const Number* W, Number a)
         : X(X), V(V), W(W), a(a)
@@ -941,8 +941,8 @@ namespace internal
           // to which we can write after accumulate_regular() is executed.
           size_type       n_chunks  = vec_size / 32;
           const size_type remainder = vec_size % 32;
-          Assert(remainder == 0
-                   || n_chunks < vector_accumulation_recursion_threshold,
+          Assert(remainder == 0 ||
+                   n_chunks < vector_accumulation_recursion_threshold,
                  ExcInternalError());
 
           // Select between the regular version and vectorized version based
@@ -996,8 +996,8 @@ namespace internal
                     r0 += r2;
                     r0 += r1;
                     if(n_chunks == vector_accumulation_recursion_threshold)
-                      outer_results[vector_accumulation_recursion_threshold - 1]
-                        += r0;
+                      outer_results[vector_accumulation_recursion_threshold -
+                                    1] += r0;
                     else
                       {
                         outer_results[n_chunks] = r0;
@@ -1026,9 +1026,9 @@ namespace internal
           // split vector into four pieces and work on the pieces
           // recursively. Make pieces (except last) divisible by one fourth the
           // recursion threshold.
-          const size_type new_size
-            = (vec_size / (vector_accumulation_recursion_threshold * 32))
-              * vector_accumulation_recursion_threshold * 8;
+          const size_type new_size =
+            (vec_size / (vector_accumulation_recursion_threshold * 32)) *
+            vector_accumulation_recursion_threshold * 8;
           Assert(first + 3 * new_size < last, ExcInternalError());
           ResultType r0, r1, r2, r3;
           accumulate_recursive(op, first, first + new_size, r0);
@@ -1187,11 +1187,11 @@ namespace internal
       {
         const size_type vec_size = end - start;
         // set chunk size for sub-tasks
-        const unsigned int gs
-          = internal::VectorImplementation::minimum_parallel_grain_size;
-        n_chunks
-          = std::min(static_cast<size_type>(4 * MultithreadInfo::n_threads()),
-                     vec_size / gs);
+        const unsigned int gs =
+          internal::VectorImplementation::minimum_parallel_grain_size;
+        n_chunks =
+          std::min(static_cast<size_type>(4 * MultithreadInfo::n_threads()),
+                   vec_size / gs);
         chunk_size = vec_size / n_chunks;
 
         // round to next multiple of 512 (or leave it at the minimum grain size
@@ -1274,16 +1274,16 @@ namespace internal
       size_type vec_size = end - start;
       // only go to the parallel function in case there are at least 4 parallel
       // items, otherwise the overhead is too large
-      if(vec_size
-           >= 4 * internal::VectorImplementation::minimum_parallel_grain_size
-         && MultithreadInfo::n_threads() > 1)
+      if(vec_size >=
+           4 * internal::VectorImplementation::minimum_parallel_grain_size &&
+         MultithreadInfo::n_threads() > 1)
         {
           Assert(
             partitioner.get() != nullptr,
             ExcInternalError("Unexpected initialization of Vector that does "
                              "not set the TBB partitioner to a usable state."));
-          std::shared_ptr<tbb::affinity_partitioner> tbb_partitioner
-            = partitioner->acquire_one_partitioner();
+          std::shared_ptr<tbb::affinity_partitioner> tbb_partitioner =
+            partitioner->acquire_one_partitioner();
 
           TBBReduceFunctor<Operation, ResultType> generic_functor(
             op, start, end);

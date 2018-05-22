@@ -220,10 +220,10 @@ namespace Step13
       // vertex matches the evaluation point. If this is the case, then
       // extract the point value, set a flag that we have found the point of
       // interest, and exit the loop.
-      typename DoFHandler<dim>::active_cell_iterator cell
-        = dof_handler.begin_active(),
-        endc                      = dof_handler.end();
-      bool evaluation_point_found = false;
+      typename DoFHandler<dim>::active_cell_iterator cell = dof_handler
+                                                              .begin_active(),
+                                                     endc = dof_handler.end();
+      bool evaluation_point_found                         = false;
       for(; (cell != endc) && !evaluation_point_found; ++cell)
         for(unsigned int vertex = 0;
             vertex < GeometryInfo<dim>::vertices_per_cell;
@@ -406,9 +406,9 @@ namespace Step13
       data_out.add_data_vector(solution, "solution");
       data_out.build_patches();
 
-      std::ofstream out(output_name_base + "-"
-                        + std::to_string(this->refinement_cycle)
-                        + data_out.default_suffix(output_format));
+      std::ofstream out(output_name_base + "-" +
+                        std::to_string(this->refinement_cycle) +
+                        data_out.default_suffix(output_format));
 
       data_out.write(out, output_format);
     }
@@ -499,14 +499,12 @@ namespace Step13
       virtual ~Base();
 
       virtual void
-      solve_problem()
-        = 0;
+      solve_problem() = 0;
       virtual void
       postprocess(
         const Evaluation::EvaluationBase<dim>& postprocessor) const = 0;
       virtual void
-      refine_grid()
-        = 0;
+      refine_grid() = 0;
       virtual unsigned int
       n_dofs() const = 0;
 
@@ -747,8 +745,8 @@ namespace Step13
     void
     Solver<dim>::assemble_linear_system(LinearSystem& linear_system)
     {
-      Threads::Task<> rhs_task = Threads::new_task(
-        &Solver<dim>::assemble_rhs, *this, linear_system.rhs);
+      Threads::Task<> rhs_task =
+        Threads::new_task(&Solver<dim>::assemble_rhs, *this, linear_system.rhs);
 
       WorkStream::run(dof_handler.begin_active(),
                       dof_handler.end(),
@@ -931,10 +929,10 @@ namespace Step13
       for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
         for(unsigned int i = 0; i < dofs_per_cell; ++i)
           for(unsigned int j = 0; j < dofs_per_cell; ++j)
-            copy_data.cell_matrix(i, j)
-              += (scratch_data.fe_values.shape_grad(i, q_point)
-                  * scratch_data.fe_values.shape_grad(j, q_point)
-                  * scratch_data.fe_values.JxW(q_point));
+            copy_data.cell_matrix(i, j) +=
+              (scratch_data.fe_values.shape_grad(i, q_point) *
+               scratch_data.fe_values.shape_grad(j, q_point) *
+               scratch_data.fe_values.JxW(q_point));
 
       cell->get_dof_indices(copy_data.local_dof_indices);
     }
@@ -986,12 +984,12 @@ namespace Step13
     {
       hanging_node_constraints.clear();
 
-      void (*mhnc_p)(const DoFHandler<dim>&, ConstraintMatrix&)
-        = &DoFTools::make_hanging_node_constraints;
+      void (*mhnc_p)(const DoFHandler<dim>&, ConstraintMatrix&) =
+        &DoFTools::make_hanging_node_constraints;
 
       // Start a side task then continue on the main thread
-      Threads::Task<> side_task
-        = Threads::new_task(mhnc_p, dof_handler, hanging_node_constraints);
+      Threads::Task<> side_task =
+        Threads::new_task(mhnc_p, dof_handler, hanging_node_constraints);
 
       DynamicSparsityPattern dsp(dof_handler.n_dofs(), dof_handler.n_dofs());
       DoFTools::make_sparsity_pattern(dof_handler, dsp);
@@ -1083,8 +1081,8 @@ namespace Step13
     {
       FEValues<dim> fe_values(*this->fe,
                               *this->quadrature,
-                              update_values | update_quadrature_points
-                                | update_JxW_values);
+                              update_values | update_quadrature_points |
+                                update_JxW_values);
 
       const unsigned int dofs_per_cell = this->fe->dofs_per_cell;
       const unsigned int n_q_points    = this->quadrature->size();
@@ -1093,9 +1091,10 @@ namespace Step13
       std::vector<double>                  rhs_values(n_q_points);
       std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
-      typename DoFHandler<dim>::active_cell_iterator cell
-        = this->dof_handler.begin_active(),
-        endc = this->dof_handler.end();
+      typename DoFHandler<dim>::active_cell_iterator cell = this->dof_handler
+                                                              .begin_active(),
+                                                     endc =
+                                                       this->dof_handler.end();
       for(; cell != endc; ++cell)
         {
           cell_rhs = 0;
@@ -1105,8 +1104,8 @@ namespace Step13
 
           for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
-              cell_rhs(i) += (fe_values.shape_value(i, q_point)
-                              * rhs_values[q_point] * fe_values.JxW(q_point));
+              cell_rhs(i) += (fe_values.shape_value(i, q_point) *
+                              rhs_values[q_point] * fe_values.JxW(q_point));
 
           cell->get_dof_indices(local_dof_indices);
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
@@ -1293,11 +1292,11 @@ namespace Step13
     for(unsigned int i = 1; i < dim; ++i)
       {
         t1 += std::cos(10 * p(i) + 5 * p(0) * p(0)) * 10 * p(0);
-        t2 += 10 * std::cos(10 * p(i) + 5 * p(0) * p(0))
-              - 100 * std::sin(10 * p(i) + 5 * p(0) * p(0)) * p(0) * p(0);
-        t3 += 100 * std::cos(10 * p(i) + 5 * p(0) * p(0))
-                * std::cos(10 * p(i) + 5 * p(0) * p(0))
-              - 100 * std::sin(10 * p(i) + 5 * p(0) * p(0));
+        t2 += 10 * std::cos(10 * p(i) + 5 * p(0) * p(0)) -
+              100 * std::sin(10 * p(i) + 5 * p(0) * p(0)) * p(0) * p(0);
+        t3 += 100 * std::cos(10 * p(i) + 5 * p(0) * p(0)) *
+                std::cos(10 * p(i) + 5 * p(0) * p(0)) -
+              100 * std::sin(10 * p(i) + 5 * p(0) * p(0));
       };
     t1 = t1 * t1;
 
@@ -1342,8 +1341,7 @@ namespace Step13
         solver.solve_problem();
 
         for(typename std::list<Evaluation::EvaluationBase<dim>*>::const_iterator
-              i
-            = postprocessor_list.begin();
+              i = postprocessor_list.begin();
             i != postprocessor_list.end();
             ++i)
           {
@@ -1380,8 +1378,8 @@ namespace Step13
     // First minor task: tell the user what is going to happen. Thus write a
     // header line, and a line with all '-' characters of the same length as
     // the first one right below.
-    const std::string header
-      = "Running tests with \"" + solver_name + "\" refinement criterion:";
+    const std::string header =
+      "Running tests with \"" + solver_name + "\" refinement criterion:";
     std::cout << header << std::endl
               << std::string(header.size(), '-') << std::endl;
 

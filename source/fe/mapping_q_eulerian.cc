@@ -64,8 +64,8 @@ MappingQEulerian<dim, VectorType, spacedim>::MappingQEulerian(
   // reset the q1 mapping we use for interior cells (and previously
   // set by the MappingQ constructor) to a MappingQ1Eulerian with the
   // current vector
-  this->q1_mapping
-    = std::make_shared<MappingQ1Eulerian<dim, VectorType, spacedim>>(
+  this->q1_mapping =
+    std::make_shared<MappingQ1Eulerian<dim, VectorType, spacedim>>(
       euler_dof_handler, euler_vector);
 
   // also reset the qp mapping pointer with our own class
@@ -117,9 +117,9 @@ MappingQEulerian<dim, VectorType, spacedim>::get_vertices(
   const typename Triangulation<dim, spacedim>::cell_iterator& cell) const
 {
   // get the vertices as the first 2^dim mapping support points
-  const std::vector<Point<spacedim>> a
-    = dynamic_cast<const MappingQEulerianGeneric&>(*this->qp_mapping)
-        .compute_mapping_support_points(cell);
+  const std::vector<Point<spacedim>> a =
+    dynamic_cast<const MappingQEulerianGeneric&>(*this->qp_mapping)
+      .compute_mapping_support_points(cell);
 
   std::array<Point<spacedim>, GeometryInfo<dim>::vertices_per_cell>
     vertex_locations;
@@ -153,15 +153,15 @@ MappingQEulerian<dim, VectorType, spacedim>::MappingQEulerianGeneric::
   compute_mapping_support_points(
     const typename Triangulation<dim, spacedim>::cell_iterator& cell) const
 {
-  const bool mg_vector
-    = mapping_q_eulerian.level != numbers::invalid_unsigned_int;
+  const bool mg_vector =
+    mapping_q_eulerian.level != numbers::invalid_unsigned_int;
 
-  const types::global_dof_index n_dofs
-    = mg_vector ?
-        mapping_q_eulerian.euler_dof_handler->n_dofs(mapping_q_eulerian.level) :
-        mapping_q_eulerian.euler_dof_handler->n_dofs();
-  const types::global_dof_index vector_size
-    = mapping_q_eulerian.euler_vector->size();
+  const types::global_dof_index n_dofs =
+    mg_vector ?
+      mapping_q_eulerian.euler_dof_handler->n_dofs(mapping_q_eulerian.level) :
+      mapping_q_eulerian.euler_dof_handler->n_dofs();
+  const types::global_dof_index vector_size =
+    mapping_q_eulerian.euler_vector->size();
 
   (void) n_dofs;
   (void) vector_size;
@@ -187,8 +187,8 @@ MappingQEulerian<dim, VectorType, spacedim>::MappingQEulerianGeneric::
   // that. This implies that the user should order components appropriately,
   // or create a separate dof handler for the displacements.
   const unsigned int n_support_pts = support_quadrature.size();
-  const unsigned int n_components
-    = mapping_q_eulerian.euler_dof_handler->get_fe(0).n_components();
+  const unsigned int n_components =
+    mapping_q_eulerian.euler_dof_handler->get_fe(0).n_components();
 
   Assert(n_components >= spacedim,
          ExcDimensionMismatch(n_components, spacedim));

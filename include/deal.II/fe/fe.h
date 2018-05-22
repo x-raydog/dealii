@@ -1051,8 +1051,8 @@ public:
    */
   virtual const FullMatrix<double>&
   get_restriction_matrix(const unsigned int         child,
-                         const RefinementCase<dim>& refinement_case
-                         = RefinementCase<dim>::isotropic_refinement) const;
+                         const RefinementCase<dim>& refinement_case =
+                           RefinementCase<dim>::isotropic_refinement) const;
 
   /**
    * Prolongation/embedding matrix between grids.
@@ -1085,8 +1085,8 @@ public:
    */
   virtual const FullMatrix<double>&
   get_prolongation_matrix(const unsigned int         child,
-                          const RefinementCase<dim>& refinement_case
-                          = RefinementCase<dim>::isotropic_refinement) const;
+                          const RefinementCase<dim>& refinement_case =
+                            RefinementCase<dim>::isotropic_refinement) const;
 
   /**
    * Return whether this element implements its prolongation matrices. The
@@ -1195,8 +1195,8 @@ public:
    * the exception.
    */
   const FullMatrix<double>&
-  constraints(const dealii::internal::SubfaceCase<dim>& subface_case
-              = dealii::internal::SubfaceCase<dim>::case_isotropic) const;
+  constraints(const dealii::internal::SubfaceCase<dim>& subface_case =
+                dealii::internal::SubfaceCase<dim>::case_isotropic) const;
 
   /**
    * Return whether this element implements its hanging node constraints. The
@@ -1215,8 +1215,8 @@ public:
    */
   bool
   constraints_are_implemented(
-    const dealii::internal::SubfaceCase<dim>& subface_case
-    = dealii::internal::SubfaceCase<dim>::case_isotropic) const;
+    const dealii::internal::SubfaceCase<dim>& subface_case =
+      dealii::internal::SubfaceCase<dim>::case_isotropic) const;
 
   /**
    * Return whether this element implements its hanging node constraints in
@@ -3085,21 +3085,21 @@ FiniteElement<dim, spacedim>::component_to_system_index(
   const unsigned int index) const
 {
   AssertIndexRange(component, this->n_components());
-  const std::vector<std::pair<unsigned int, unsigned int>>::const_iterator it
-    = std::find(system_to_component_table.begin(),
-                system_to_component_table.end(),
-                std::pair<unsigned int, unsigned int>(component, index));
+  const std::vector<std::pair<unsigned int, unsigned int>>::const_iterator it =
+    std::find(system_to_component_table.begin(),
+              system_to_component_table.end(),
+              std::pair<unsigned int, unsigned int>(component, index));
 
   Assert(it != system_to_component_table.end(),
          ExcMessage("You are asking for the number of the shape function "
                     "within a system element that corresponds to vector "
-                    "component "
-                    + Utilities::int_to_string(component)
-                    + " and within this to "
-                      "index "
-                    + Utilities::int_to_string(index)
-                    + ". But no such "
-                      "shape function exists."));
+                    "component " +
+                    Utilities::int_to_string(component) +
+                    " and within this to "
+                    "index " +
+                    Utilities::int_to_string(index) +
+                    ". But no such "
+                    "shape function exists."));
   return std::distance(system_to_component_table.begin(), it);
 }
 
@@ -3189,8 +3189,8 @@ FiniteElement<dim, spacedim>::system_to_block_index(
   // first block of this base plus
   // the index within the base blocks
   return std::pair<unsigned int, types::global_dof_index>(
-    first_block_of_base(system_to_base_table[index].first.first)
-      + system_to_base_table[index].first.second,
+    first_block_of_base(system_to_base_table[index].first.first) +
+      system_to_base_table[index].first.second,
     system_to_base_table[index].second);
 }
 

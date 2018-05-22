@@ -78,19 +78,19 @@ namespace internal
 
       // set the triple of indices
       // that we want to work with
-      present_fe_values_index
-        = TableIndices<3>(fe_index, mapping_index, q_index);
+      present_fe_values_index =
+        TableIndices<3>(fe_index, mapping_index, q_index);
 
       // first check whether we
       // already have an object for
       // this particular combination
       // of indices
       if(fe_values_table(present_fe_values_index).get() == nullptr)
-        fe_values_table(present_fe_values_index)
-          = std::make_shared<FEValuesType>((*mapping_collection)[mapping_index],
-                                           (*fe_collection)[fe_index],
-                                           q_collection[q_index],
-                                           update_flags);
+        fe_values_table(present_fe_values_index) =
+          std::make_shared<FEValuesType>((*mapping_collection)[mapping_index],
+                                         (*fe_collection)[fe_index],
+                                         q_collection[q_index],
+                                         update_flags);
 
       // now there definitely is one!
       return *fe_values_table(present_fe_values_index);

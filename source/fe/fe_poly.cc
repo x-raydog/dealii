@@ -51,16 +51,16 @@ FE_Poly<TensorProductPolynomials<1>, 1, 2>::fill_fe_values(
   // transform gradients and higher derivatives. there is nothing to do
   // for values since we already emplaced them into output_data when
   // we were in get_data()
-  if(fe_data.update_each & update_gradients
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_gradients &&
+     cell_similarity != CellSimilarity::translation)
     for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
       mapping.transform(make_array_view(fe_data.shape_gradients, k),
                         mapping_covariant,
                         mapping_internal,
                         make_array_view(output_data.shape_gradients, k));
 
-  if(fe_data.update_each & update_hessians
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_hessians &&
+     cell_similarity != CellSimilarity::translation)
     {
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         mapping.transform(make_array_view(fe_data.shape_hessians, k),
@@ -71,13 +71,13 @@ FE_Poly<TensorProductPolynomials<1>, 1, 2>::fill_fe_values(
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         for(unsigned int i = 0; i < quadrature.size(); ++i)
           for(unsigned int j = 0; j < 2; ++j)
-            output_data.shape_hessians[k][i]
-              -= mapping_data.jacobian_pushed_forward_grads[i][j]
-                 * output_data.shape_gradients[k][i][j];
+            output_data.shape_hessians[k][i] -=
+              mapping_data.jacobian_pushed_forward_grads[i][j] *
+              output_data.shape_gradients[k][i][j];
     }
 
-  if(fe_data.update_each & update_3rd_derivatives
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_3rd_derivatives &&
+     cell_similarity != CellSimilarity::translation)
     {
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         mapping.transform(
@@ -115,16 +115,16 @@ FE_Poly<TensorProductPolynomials<2>, 2, 3>::fill_fe_values(
   // transform gradients and higher derivatives. there is nothing to do
   // for values since we already emplaced them into output_data when
   // we were in get_data()
-  if(fe_data.update_each & update_gradients
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_gradients &&
+     cell_similarity != CellSimilarity::translation)
     for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
       mapping.transform(make_array_view(fe_data.shape_gradients, k),
                         mapping_covariant,
                         mapping_internal,
                         make_array_view(output_data.shape_gradients, k));
 
-  if(fe_data.update_each & update_hessians
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_hessians &&
+     cell_similarity != CellSimilarity::translation)
     {
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         mapping.transform(make_array_view(fe_data.shape_hessians, k),
@@ -135,13 +135,13 @@ FE_Poly<TensorProductPolynomials<2>, 2, 3>::fill_fe_values(
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         for(unsigned int i = 0; i < quadrature.size(); ++i)
           for(unsigned int j = 0; j < 3; ++j)
-            output_data.shape_hessians[k][i]
-              -= mapping_data.jacobian_pushed_forward_grads[i][j]
-                 * output_data.shape_gradients[k][i][j];
+            output_data.shape_hessians[k][i] -=
+              mapping_data.jacobian_pushed_forward_grads[i][j] *
+              output_data.shape_gradients[k][i][j];
     }
 
-  if(fe_data.update_each & update_3rd_derivatives
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_3rd_derivatives &&
+     cell_similarity != CellSimilarity::translation)
     {
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         mapping.transform(
@@ -182,16 +182,16 @@ FE_Poly<PolynomialSpace<1>, 1, 2>::fill_fe_values(
   // transform gradients and higher derivatives. there is nothing to do
   // for values since we already emplaced them into output_data when
   // we were in get_data()
-  if(fe_data.update_each & update_gradients
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_gradients &&
+     cell_similarity != CellSimilarity::translation)
     for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
       mapping.transform(make_array_view(fe_data.shape_gradients, k),
                         mapping_covariant,
                         mapping_internal,
                         make_array_view(output_data.shape_gradients, k));
 
-  if(fe_data.update_each & update_hessians
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_hessians &&
+     cell_similarity != CellSimilarity::translation)
     {
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         mapping.transform(make_array_view(fe_data.shape_hessians, k),
@@ -202,13 +202,13 @@ FE_Poly<PolynomialSpace<1>, 1, 2>::fill_fe_values(
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         for(unsigned int i = 0; i < quadrature.size(); ++i)
           for(unsigned int j = 0; j < 2; ++j)
-            output_data.shape_hessians[k][i]
-              -= mapping_data.jacobian_pushed_forward_grads[i][j]
-                 * output_data.shape_gradients[k][i][j];
+            output_data.shape_hessians[k][i] -=
+              mapping_data.jacobian_pushed_forward_grads[i][j] *
+              output_data.shape_gradients[k][i][j];
     }
 
-  if(fe_data.update_each & update_3rd_derivatives
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_3rd_derivatives &&
+     cell_similarity != CellSimilarity::translation)
     {
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         mapping.transform(
@@ -244,16 +244,16 @@ FE_Poly<PolynomialSpace<2>, 2, 3>::fill_fe_values(
   // transform gradients and higher derivatives. there is nothing to do
   // for values since we already emplaced them into output_data when
   // we were in get_data()
-  if(fe_data.update_each & update_gradients
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_gradients &&
+     cell_similarity != CellSimilarity::translation)
     for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
       mapping.transform(make_array_view(fe_data.shape_gradients, k),
                         mapping_covariant,
                         mapping_internal,
                         make_array_view(output_data.shape_gradients, k));
 
-  if(fe_data.update_each & update_hessians
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_hessians &&
+     cell_similarity != CellSimilarity::translation)
     {
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         mapping.transform(make_array_view(fe_data.shape_hessians, k),
@@ -264,13 +264,13 @@ FE_Poly<PolynomialSpace<2>, 2, 3>::fill_fe_values(
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         for(unsigned int i = 0; i < quadrature.size(); ++i)
           for(unsigned int j = 0; j < 3; ++j)
-            output_data.shape_hessians[k][i]
-              -= mapping_data.jacobian_pushed_forward_grads[i][j]
-                 * output_data.shape_gradients[k][i][j];
+            output_data.shape_hessians[k][i] -=
+              mapping_data.jacobian_pushed_forward_grads[i][j] *
+              output_data.shape_gradients[k][i][j];
     }
 
-  if(fe_data.update_each & update_3rd_derivatives
-     && cell_similarity != CellSimilarity::translation)
+  if(fe_data.update_each & update_3rd_derivatives &&
+     cell_similarity != CellSimilarity::translation)
     {
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         mapping.transform(

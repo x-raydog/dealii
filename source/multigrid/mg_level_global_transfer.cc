@@ -52,13 +52,12 @@ MGLevelGlobalTransfer<VectorType>::fill_and_communicate_copy_indices(
 
   // check if we can run a plain copy operation between the global DoFs and
   // the finest level.
-  bool my_perform_plain_copy
-    = (copy_indices.back().size() == mg_dof.locally_owned_dofs().n_elements())
-      && (mg_dof.locally_owned_dofs().n_elements()
-          == mg_dof
-               .locally_owned_mg_dofs(
-                 mg_dof.get_triangulation().n_global_levels() - 1)
-               .n_elements());
+  bool my_perform_plain_copy =
+    (copy_indices.back().size() == mg_dof.locally_owned_dofs().n_elements()) &&
+    (mg_dof.locally_owned_dofs().n_elements() ==
+     mg_dof
+       .locally_owned_mg_dofs(mg_dof.get_triangulation().n_global_levels() - 1)
+       .n_elements());
   if(my_perform_plain_copy)
     {
       AssertDimension(copy_indices_global_mine.back().size(), 0);
@@ -77,12 +76,11 @@ MGLevelGlobalTransfer<VectorType>::fill_and_communicate_copy_indices(
 
   // now do a global reduction over all processors to see what operation
   // they can agree upon
-  if(const parallel::Triangulation<dim, spacedim>* ptria
-     = dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
-       &mg_dof.get_triangulation()))
+  if(const parallel::Triangulation<dim, spacedim>* ptria =
+       dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
+         &mg_dof.get_triangulation()))
     perform_plain_copy = (Utilities::MPI::min(my_perform_plain_copy ? 1 : 0,
-                                              ptria->get_communicator())
-                          == 1);
+                                              ptria->get_communicator()) == 1);
   else
     perform_plain_copy = my_perform_plain_copy;
 }
@@ -233,10 +231,10 @@ namespace
         level < mg_dof.get_triangulation().n_global_levels();
         ++level)
       {
-        const Utilities::MPI::Partitioner& global_partitioner
-          = *ghosted_global_vector.get_partitioner();
-        const Utilities::MPI::Partitioner& level_partitioner
-          = *ghosted_level_vector[level].get_partitioner();
+        const Utilities::MPI::Partitioner& global_partitioner =
+          *ghosted_global_vector.get_partitioner();
+        const Utilities::MPI::Partitioner& level_partitioner =
+          *ghosted_level_vector[level].get_partitioner();
         // owned-owned case: the locally owned indices are going to control
         // the local index
         copy_indices[level].resize(my_copy_indices[level].size());
@@ -252,8 +250,8 @@ namespace
           my_copy_indices_level_mine[level].size());
         for(unsigned int i = 0; i < my_copy_indices_level_mine[level].size();
             ++i)
-          copy_indices_level_mine[level][i]
-            = std::pair<unsigned int, unsigned int>(
+          copy_indices_level_mine[level][i] =
+            std::pair<unsigned int, unsigned int>(
               global_partitioner.global_to_local(
                 my_copy_indices_level_mine[level][i].first),
               level_partitioner.global_to_local(
@@ -265,8 +263,8 @@ namespace
           my_copy_indices_global_mine[level].size());
         for(unsigned int i = 0; i < my_copy_indices_global_mine[level].size();
             ++i)
-          copy_indices_global_mine[level][i]
-            = std::pair<unsigned int, unsigned int>(
+          copy_indices_global_mine[level][i] =
+            std::pair<unsigned int, unsigned int>(
               global_partitioner.global_to_local(
                 my_copy_indices_global_mine[level][i].first),
               level_partitioner.global_to_local(
@@ -281,11 +279,11 @@ void
 MGLevelGlobalTransfer<LinearAlgebra::distributed::Vector<Number>>::
   fill_and_communicate_copy_indices(const DoFHandler<dim, spacedim>& mg_dof)
 {
-  const parallel::Triangulation<dim, spacedim>* ptria
-    = dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
+  const parallel::Triangulation<dim, spacedim>* ptria =
+    dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
       &mg_dof.get_triangulation());
-  const MPI_Comm mpi_communicator
-    = ptria != nullptr ? ptria->get_communicator() : MPI_COMM_SELF;
+  const MPI_Comm mpi_communicator =
+    ptria != nullptr ? ptria->get_communicator() : MPI_COMM_SELF;
 
   fill_internal(mg_dof,
                 mg_constrained_dofs,
@@ -307,9 +305,9 @@ MGLevelGlobalTransfer<LinearAlgebra::distributed::Vector<Number>>::
                 solution_ghosted_global_vector,
                 solution_ghosted_level_vector);
 
-  bool my_perform_renumbered_plain_copy
-    = (this->copy_indices.back().size()
-       == mg_dof.locally_owned_dofs().n_elements());
+  bool my_perform_renumbered_plain_copy =
+    (this->copy_indices.back().size() ==
+     mg_dof.locally_owned_dofs().n_elements());
   bool my_perform_plain_copy = false;
   if(my_perform_renumbered_plain_copy)
     {
@@ -321,8 +319,8 @@ MGLevelGlobalTransfer<LinearAlgebra::distributed::Vector<Number>>::
       // either the finest level or the global dofs, which means that we
       // cannot apply a plain copy
       for(unsigned int i = 0; i < this->copy_indices.back().size(); ++i)
-        if(this->copy_indices.back()[i].first
-           != this->copy_indices.back()[i].second)
+        if(this->copy_indices.back()[i].first !=
+           this->copy_indices.back()[i].second)
           {
             my_perform_plain_copy = false;
             break;

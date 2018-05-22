@@ -291,8 +291,8 @@ namespace MatrixCreator
     const Function<spacedim, number>&                                rhs,
     Vector<number>&                                                  rhs_vector,
     const Function<spacedim,
-                   typename numbers::NumberTraits<number>::real_type>* const a
-    = nullptr,
+                   typename numbers::NumberTraits<number>::real_type>* const a =
+      nullptr,
     const ConstraintMatrix& constraints = ConstraintMatrix());
 
   /**
@@ -308,8 +308,8 @@ namespace MatrixCreator
     const Function<spacedim, number>&                                rhs,
     Vector<number>&                                                  rhs_vector,
     const Function<spacedim,
-                   typename numbers::NumberTraits<number>::real_type>* const a
-    = nullptr,
+                   typename numbers::NumberTraits<number>::real_type>* const a =
+      nullptr,
     const ConstraintMatrix& constraints = ConstraintMatrix());
 
   /**
@@ -348,8 +348,8 @@ namespace MatrixCreator
     const Function<spacedim, number>&                                rhs,
     Vector<number>&                                                  rhs_vector,
     const Function<spacedim,
-                   typename numbers::NumberTraits<number>::real_type>* const a
-    = nullptr,
+                   typename numbers::NumberTraits<number>::real_type>* const a =
+      nullptr,
     const ConstraintMatrix& constraints = ConstraintMatrix());
 
   /**
@@ -364,8 +364,8 @@ namespace MatrixCreator
     const Function<spacedim, number>&                                rhs,
     Vector<number>&                                                  rhs_vector,
     const Function<spacedim,
-                   typename numbers::NumberTraits<number>::real_type>* const a
-    = nullptr,
+                   typename numbers::NumberTraits<number>::real_type>* const a =
+      nullptr,
     const ConstraintMatrix& constraints = ConstraintMatrix());
 
   /**
@@ -406,8 +406,7 @@ namespace MatrixCreator
     std::vector<types::global_dof_index>& dof_to_boundary_mapping,
     const Function<spacedim,
                    typename numbers::NumberTraits<number>::real_type>* const
-      weight
-    = 0,
+                              weight            = 0,
     std::vector<unsigned int> component_mapping = std::vector<unsigned int>());
 
   /**
@@ -425,8 +424,8 @@ namespace MatrixCreator
     Vector<number>&                       rhs_vector,
     std::vector<types::global_dof_index>& dof_to_boundary_mapping,
     const Function<spacedim,
-                   typename numbers::NumberTraits<number>::real_type>* const a
-    = nullptr,
+                   typename numbers::NumberTraits<number>::real_type>* const a =
+      nullptr,
     std::vector<unsigned int> component_mapping = std::vector<unsigned int>());
 
   /**
@@ -444,8 +443,8 @@ namespace MatrixCreator
     Vector<number>&                       rhs_vector,
     std::vector<types::global_dof_index>& dof_to_boundary_mapping,
     const Function<spacedim,
-                   typename numbers::NumberTraits<number>::real_type>* const a
-    = nullptr,
+                   typename numbers::NumberTraits<number>::real_type>* const a =
+      nullptr,
     std::vector<unsigned int> component_mapping = std::vector<unsigned int>());
 
   /**
@@ -462,8 +461,8 @@ namespace MatrixCreator
     Vector<number>&                       rhs_vector,
     std::vector<types::global_dof_index>& dof_to_boundary_mapping,
     const Function<spacedim,
-                   typename numbers::NumberTraits<number>::real_type>* const a
-    = nullptr,
+                   typename numbers::NumberTraits<number>::real_type>* const a =
+      nullptr,
     std::vector<unsigned int> component_mapping = std::vector<unsigned int>());
 
   /**
@@ -487,13 +486,13 @@ namespace MatrixCreator
    */
   template <int dim, int spacedim>
   void
-  create_laplace_matrix(const Mapping<dim, spacedim>&    mapping,
-                        const DoFHandler<dim, spacedim>& dof,
-                        const Quadrature<dim>&           q,
-                        SparseMatrix<double>&            matrix,
-                        const Function<spacedim>* const  a = nullptr,
-                        const ConstraintMatrix&          constraints
-                        = ConstraintMatrix());
+  create_laplace_matrix(
+    const Mapping<dim, spacedim>&    mapping,
+    const DoFHandler<dim, spacedim>& dof,
+    const Quadrature<dim>&           q,
+    SparseMatrix<double>&            matrix,
+    const Function<spacedim>* const  a           = nullptr,
+    const ConstraintMatrix&          constraints = ConstraintMatrix());
 
   /**
    * Call the create_laplace_matrix() function, see above, with
@@ -501,12 +500,12 @@ namespace MatrixCreator
    */
   template <int dim, int spacedim>
   void
-  create_laplace_matrix(const DoFHandler<dim, spacedim>& dof,
-                        const Quadrature<dim>&           q,
-                        SparseMatrix<double>&            matrix,
-                        const Function<spacedim>* const  a = nullptr,
-                        const ConstraintMatrix&          constraints
-                        = ConstraintMatrix());
+  create_laplace_matrix(
+    const DoFHandler<dim, spacedim>& dof,
+    const Quadrature<dim>&           q,
+    SparseMatrix<double>&            matrix,
+    const Function<spacedim>* const  a           = nullptr,
+    const ConstraintMatrix&          constraints = ConstraintMatrix());
 
   /**
    * Assemble the Laplace matrix and a right hand side vector. If no
@@ -528,15 +527,15 @@ namespace MatrixCreator
    */
   template <int dim, int spacedim>
   void
-  create_laplace_matrix(const Mapping<dim, spacedim>&    mapping,
-                        const DoFHandler<dim, spacedim>& dof,
-                        const Quadrature<dim>&           q,
-                        SparseMatrix<double>&            matrix,
-                        const Function<spacedim>&        rhs,
-                        Vector<double>&                  rhs_vector,
-                        const Function<spacedim>* const  a = nullptr,
-                        const ConstraintMatrix&          constraints
-                        = ConstraintMatrix());
+  create_laplace_matrix(
+    const Mapping<dim, spacedim>&    mapping,
+    const DoFHandler<dim, spacedim>& dof,
+    const Quadrature<dim>&           q,
+    SparseMatrix<double>&            matrix,
+    const Function<spacedim>&        rhs,
+    Vector<double>&                  rhs_vector,
+    const Function<spacedim>* const  a           = nullptr,
+    const ConstraintMatrix&          constraints = ConstraintMatrix());
 
   /**
    * Call the create_laplace_matrix() function, see above, with
@@ -544,14 +543,14 @@ namespace MatrixCreator
    */
   template <int dim, int spacedim>
   void
-  create_laplace_matrix(const DoFHandler<dim, spacedim>& dof,
-                        const Quadrature<dim>&           q,
-                        SparseMatrix<double>&            matrix,
-                        const Function<spacedim>&        rhs,
-                        Vector<double>&                  rhs_vector,
-                        const Function<spacedim>* const  a = nullptr,
-                        const ConstraintMatrix&          constraints
-                        = ConstraintMatrix());
+  create_laplace_matrix(
+    const DoFHandler<dim, spacedim>& dof,
+    const Quadrature<dim>&           q,
+    SparseMatrix<double>&            matrix,
+    const Function<spacedim>&        rhs,
+    Vector<double>&                  rhs_vector,
+    const Function<spacedim>* const  a           = nullptr,
+    const ConstraintMatrix&          constraints = ConstraintMatrix());
 
   /**
    * Like the functions above, but for hp dof handlers, mappings, and
@@ -559,13 +558,13 @@ namespace MatrixCreator
    */
   template <int dim, int spacedim>
   void
-  create_laplace_matrix(const hp::MappingCollection<dim, spacedim>& mapping,
-                        const hp::DoFHandler<dim, spacedim>&        dof,
-                        const hp::QCollection<dim>&                 q,
-                        SparseMatrix<double>&                       matrix,
-                        const Function<spacedim>* const             a = nullptr,
-                        const ConstraintMatrix&                     constraints
-                        = ConstraintMatrix());
+  create_laplace_matrix(
+    const hp::MappingCollection<dim, spacedim>& mapping,
+    const hp::DoFHandler<dim, spacedim>&        dof,
+    const hp::QCollection<dim>&                 q,
+    SparseMatrix<double>&                       matrix,
+    const Function<spacedim>* const             a = nullptr,
+    const ConstraintMatrix& constraints           = ConstraintMatrix());
 
   /**
    * Like the functions above, but for hp dof handlers, mappings, and
@@ -573,12 +572,12 @@ namespace MatrixCreator
    */
   template <int dim, int spacedim>
   void
-  create_laplace_matrix(const hp::DoFHandler<dim, spacedim>& dof,
-                        const hp::QCollection<dim>&          q,
-                        SparseMatrix<double>&                matrix,
-                        const Function<spacedim>* const      a = nullptr,
-                        const ConstraintMatrix&              constraints
-                        = ConstraintMatrix());
+  create_laplace_matrix(
+    const hp::DoFHandler<dim, spacedim>& dof,
+    const hp::QCollection<dim>&          q,
+    SparseMatrix<double>&                matrix,
+    const Function<spacedim>* const      a           = nullptr,
+    const ConstraintMatrix&              constraints = ConstraintMatrix());
 
   /**
    * Like the functions above, but for hp dof handlers, mappings, and
@@ -586,15 +585,15 @@ namespace MatrixCreator
    */
   template <int dim, int spacedim>
   void
-  create_laplace_matrix(const hp::MappingCollection<dim, spacedim>& mapping,
-                        const hp::DoFHandler<dim, spacedim>&        dof,
-                        const hp::QCollection<dim>&                 q,
-                        SparseMatrix<double>&                       matrix,
-                        const Function<spacedim>&                   rhs,
-                        Vector<double>&                             rhs_vector,
-                        const Function<spacedim>* const             a = nullptr,
-                        const ConstraintMatrix&                     constraints
-                        = ConstraintMatrix());
+  create_laplace_matrix(
+    const hp::MappingCollection<dim, spacedim>& mapping,
+    const hp::DoFHandler<dim, spacedim>&        dof,
+    const hp::QCollection<dim>&                 q,
+    SparseMatrix<double>&                       matrix,
+    const Function<spacedim>&                   rhs,
+    Vector<double>&                             rhs_vector,
+    const Function<spacedim>* const             a = nullptr,
+    const ConstraintMatrix& constraints           = ConstraintMatrix());
 
   /**
    * Like the functions above, but for hp dof handlers, mappings, and
@@ -602,14 +601,14 @@ namespace MatrixCreator
    */
   template <int dim, int spacedim>
   void
-  create_laplace_matrix(const hp::DoFHandler<dim, spacedim>& dof,
-                        const hp::QCollection<dim>&          q,
-                        SparseMatrix<double>&                matrix,
-                        const Function<spacedim>&            rhs,
-                        Vector<double>&                      rhs_vector,
-                        const Function<spacedim>* const      a = nullptr,
-                        const ConstraintMatrix&              constraints
-                        = ConstraintMatrix());
+  create_laplace_matrix(
+    const hp::DoFHandler<dim, spacedim>& dof,
+    const hp::QCollection<dim>&          q,
+    SparseMatrix<double>&                matrix,
+    const Function<spacedim>&            rhs,
+    Vector<double>&                      rhs_vector,
+    const Function<spacedim>* const      a           = nullptr,
+    const ConstraintMatrix&              constraints = ConstraintMatrix());
 
   /**
    * Exception

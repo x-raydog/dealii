@@ -413,8 +413,8 @@ namespace internal
        */
       static UpdateFlags
       compute_update_flags(const UpdateFlags update_flags,
-                           const std::vector<dealii::hp::QCollection<1>>& quad
-                           = std::vector<dealii::hp::QCollection<1>>());
+                           const std::vector<dealii::hp::QCollection<1>>& quad =
+                             std::vector<dealii::hp::QCollection<1>>());
     };
 
     /**

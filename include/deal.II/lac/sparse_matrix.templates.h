@@ -170,9 +170,9 @@ SparseMatrix<number>::operator=(const double d)
   // minimum_parallel_grain_size, weighted by the number of nonzero entries
   // per row on average.
   const std::size_t matrix_size = cols->n_nonzero_elements();
-  const size_type   grain_size
-    = internal::SparseMatrixImplementation::minimum_parallel_grain_size
-      * (cols->n_nonzero_elements() + m()) / m();
+  const size_type   grain_size =
+    internal::SparseMatrixImplementation::minimum_parallel_grain_size *
+    (cols->n_nonzero_elements() + m()) / m();
   if(matrix_size > grain_size)
     parallel::apply_to_subranges(
       0U,
@@ -309,8 +309,8 @@ SparseMatrix<number>::symmetrize()
         {
           // compute the mean of this
           // and the transpose value
-          const number mean_value
-            = (*val_ptr + val[(*cols)(*colnum_ptr, row)]) / number(2.0);
+          const number mean_value =
+            (*val_ptr + val[(*cols)(*colnum_ptr, row)]) / number(2.0);
           // set this value and the
           // transpose one to the
           // mean
@@ -505,8 +505,8 @@ SparseMatrix<number>::add(const size_type  row,
         {
           // find diagonal and add it if found
           Assert(this_cols[0] == row, ExcInternalError());
-          const size_type* diag_pos
-            = Utilities::lower_bound(col_indices, col_indices + n_cols, row);
+          const size_type* diag_pos =
+            Utilities::lower_bound(col_indices, col_indices + n_cols, row);
           const size_type diag      = diag_pos - col_indices;
           size_type       post_diag = diag;
           if(diag != n_cols && *diag_pos == row)
@@ -519,12 +519,12 @@ SparseMatrix<number>::add(const size_type  row,
           size_type counter = 1;
           for(size_type i = 0; i < diag; ++i)
             {
-              while(this_cols[counter] < col_indices[i]
-                    && counter < row_length_1)
+              while(this_cols[counter] < col_indices[i] &&
+                    counter < row_length_1)
                 ++counter;
 
-              Assert((this_cols[counter] == col_indices[i])
-                       || (values[i] == number2()),
+              Assert((this_cols[counter] == col_indices[i]) ||
+                       (values[i] == number2()),
                      ExcInvalidIndex(row, col_indices[i]));
 
               val_ptr[counter] += values[i];
@@ -533,12 +533,12 @@ SparseMatrix<number>::add(const size_type  row,
           // add indices after diagonal
           for(size_type i = post_diag; i < n_cols; ++i)
             {
-              while(this_cols[counter] < col_indices[i]
-                    && counter < row_length_1)
+              while(this_cols[counter] < col_indices[i] &&
+                    counter < row_length_1)
                 ++counter;
 
-              Assert((this_cols[counter] == col_indices[i])
-                       || (values[i] == number2()),
+              Assert((this_cols[counter] == col_indices[i]) ||
+                       (values[i] == number2()),
                      ExcInvalidIndex(row, col_indices[i]));
 
               val_ptr[counter] += values[i];
@@ -553,12 +553,12 @@ SparseMatrix<number>::add(const size_type  row,
           size_type counter = 0;
           for(size_type i = 0; i < n_cols; ++i)
             {
-              while(this_cols[counter] < col_indices[i]
-                    && counter < row_length_1)
+              while(this_cols[counter] < col_indices[i] &&
+                    counter < row_length_1)
                 ++counter;
 
-              Assert((this_cols[counter] == col_indices[i])
-                       || (values[i] == number2()),
+              Assert((this_cols[counter] == col_indices[i]) ||
+                       (values[i] == number2()),
                      ExcInvalidIndex(row, col_indices[i]));
 
               val_ptr[counter] += values[i];
@@ -826,9 +826,9 @@ namespace internal
           typename InVector::value_type s = 0;
           for(size_type j = rowstart[i]; j < rowstart[i + 1]; j++)
             s += typename InVector::value_type(values[j]) * v(colnums[j]);
-          norm_sqr += v(i)
-                      * numbers::NumberTraits<
-                          typename InVector::value_type>::conjugate(s);
+          norm_sqr +=
+            v(i) *
+            numbers::NumberTraits<typename InVector::value_type>::conjugate(s);
         }
       return norm_sqr;
     }
@@ -888,9 +888,9 @@ namespace internal
           typename InVector::value_type s = 0;
           for(size_type j = rowstart[i]; j < rowstart[i + 1]; j++)
             s += typename InVector::value_type(values[j]) * v(colnums[j]);
-          norm_sqr += u(i)
-                      * numbers::NumberTraits<
-                          typename InVector::value_type>::conjugate(s);
+          norm_sqr +=
+            u(i) *
+            numbers::NumberTraits<typename InVector::value_type>::conjugate(s);
         }
       return norm_sqr;
     }
@@ -953,8 +953,8 @@ SparseMatrix<number>::mmult(SparseMatrix<numberC>&       C,
                         "different matrices if it is to be rebuilt."));
 
       // need to change the sparsity pattern of C, so cast away const-ness.
-      SparsityPattern& sp_C
-        = *(const_cast<SparsityPattern*>(&C.get_sparsity_pattern()));
+      SparsityPattern& sp_C =
+        *(const_cast<SparsityPattern*>(&C.get_sparsity_pattern()));
       C.clear();
       sp_C.reinit(0, 0, 0);
 
@@ -1000,9 +1000,9 @@ SparseMatrix<number>::mmult(SparseMatrix<numberC>&       C,
               C.add(
                 i,
                 *new_cols,
-                numberC(A_val)
-                  * numberC(B.val[new_cols - &sp_B.colnums[sp_B.rowstart[0]]])
-                  * numberC(use_vector ? V(col) : 1));
+                numberC(A_val) *
+                  numberC(B.val[new_cols - &sp_B.colnums[sp_B.rowstart[0]]]) *
+                  numberC(use_vector ? V(col) : 1));
               ++new_cols;
             }
 
@@ -1010,12 +1010,12 @@ SparseMatrix<number>::mmult(SparseMatrix<numberC>&       C,
           // 'col' of matrix B. Cache the elements, and then write them into C
           // at once
           numberC*       new_ptr = new_entries.data();
-          const numberB* B_val_ptr
-            = &B.val[new_cols - &sp_B.colnums[sp_B.rowstart[0]]];
+          const numberB* B_val_ptr =
+            &B.val[new_cols - &sp_B.colnums[sp_B.rowstart[0]]];
           const numberB* const end_cols = &B.val[sp_B.rowstart[col + 1]];
           for(; B_val_ptr != end_cols; ++B_val_ptr)
-            *new_ptr++ = numberC(A_val) * numberC(*B_val_ptr)
-                         * numberC(use_vector ? V(col) : 1);
+            *new_ptr++ = numberC(A_val) * numberC(*B_val_ptr) *
+                         numberC(use_vector ? V(col) : 1);
 
           C.add(i,
                 new_ptr - new_entries.data(),
@@ -1057,8 +1057,8 @@ SparseMatrix<number>::Tmmult(SparseMatrix<numberC>&       C,
                         "different matrices if it is to be rebuilt."));
 
       // need to change the sparsity pattern of C, so cast away const-ness.
-      SparsityPattern& sp_C
-        = *(const_cast<SparsityPattern*>(&C.get_sparsity_pattern()));
+      SparsityPattern& sp_C =
+        *(const_cast<SparsityPattern*>(&C.get_sparsity_pattern()));
       C.clear();
       sp_C.reinit(0, 0, 0);
 
@@ -1072,13 +1072,13 @@ SparseMatrix<number>::Tmmult(SparseMatrix<numberC>&       C,
         for(size_type i = 0; i < sp_A.n_rows(); ++i)
           {
             const size_type*       rows = &sp_A.colnums[sp_A.rowstart[i]];
-            const size_type* const end_rows
-              = &sp_A.colnums[sp_A.rowstart[i + 1]];
+            const size_type* const end_rows =
+              &sp_A.colnums[sp_A.rowstart[i + 1]];
             // cast away constness to conform with dsp.add_entries interface
-            size_type* new_cols
-              = const_cast<size_type*>(&sp_B.colnums[sp_B.rowstart[i]]);
-            size_type* end_new_cols
-              = const_cast<size_type*>(&sp_B.colnums[sp_B.rowstart[i + 1]]);
+            size_type* new_cols =
+              const_cast<size_type*>(&sp_B.colnums[sp_B.rowstart[i]]);
+            size_type* end_new_cols =
+              const_cast<size_type*>(&sp_B.colnums[sp_B.rowstart[i + 1]]);
 
             if(sp_B.n_rows() == sp_B.n_cols())
               ++new_cols;
@@ -1137,19 +1137,19 @@ SparseMatrix<number>::Tmmult(SparseMatrix<numberC>&       C,
             C.add(
               row,
               i,
-              numberC(A_val)
-                * numberC(B.val[new_cols - 1 - &sp_B.colnums[sp_B.rowstart[0]]])
-                * numberC(use_vector ? V(i) : 1));
+              numberC(A_val) *
+                numberC(B.val[new_cols - 1 - &sp_B.colnums[sp_B.rowstart[0]]]) *
+                numberC(use_vector ? V(i) : 1));
 
           // now the innermost loop that goes over all the elements in row
           // 'col' of matrix B. Cache the elements, and then write them into C
           // at once
           numberC*       new_ptr = new_entries.data();
-          const numberB* B_val_ptr
-            = &B.val[new_cols - &sp_B.colnums[sp_B.rowstart[0]]];
+          const numberB* B_val_ptr =
+            &B.val[new_cols - &sp_B.colnums[sp_B.rowstart[0]]];
           for(; B_val_ptr != end_cols; ++B_val_ptr)
-            *new_ptr++ = numberC(A_val) * numberC(*B_val_ptr)
-                         * numberC(use_vector ? V(i) : 1);
+            *new_ptr++ = numberC(A_val) * numberC(*B_val_ptr) *
+                         numberC(use_vector ? V(i) : 1);
 
           C.add(row,
                 new_ptr - new_entries.data(),
@@ -1172,8 +1172,8 @@ SparseMatrix<number>::l1_norm() const
   const size_type   n_rows = m();
   for(size_type row = 0; row < n_rows; ++row)
     for(size_type j = cols->rowstart[row]; j < cols->rowstart[row + 1]; ++j)
-      column_sums(cols->colnums[j])
-        += numbers::NumberTraits<number>::abs(val[j]);
+      column_sums(cols->colnums[j]) +=
+        numbers::NumberTraits<number>::abs(val[j]);
 
   return column_sums.linfty_norm();
 }
@@ -1248,9 +1248,9 @@ namespace internal
           for(size_type j = rowstart[i]; j < rowstart[i + 1]; j++)
             s -= typename OutVector::value_type(values[j]) * u(colnums[j]);
           dst(i) = s;
-          norm_sqr += s
-                      * numbers::NumberTraits<
-                          typename OutVector::value_type>::conjugate(s);
+          norm_sqr +=
+            s *
+            numbers::NumberTraits<typename OutVector::value_type>::conjugate(s);
         }
       return norm_sqr;
     }
@@ -1301,20 +1301,19 @@ namespace
 #ifdef DEBUG
     for(typename SparseMatrix<number>::size_type row = 0; row < matrix.m();
         ++row)
-      Assert(
-        matrix.diag_element(row) != number(),
-        ExcMessage("There is a zero on the diagonal of this matrix "
-                   "in row "
-                   + Utilities::to_string(row)
-                   + ". The preconditioner you selected cannot work if that "
-                     "is the case because one of its steps requires "
-                     "division by the diagonal elements of the matrix."
-                     "\n\n"
-                     "You should check whether you have correctly "
-                     "assembled the matrix that you use for this "
-                     "preconditioner. If it is correct that there are "
-                     "zeros on the diagonal, then you will have to chose "
-                     "a different preconditioner."));
+      Assert(matrix.diag_element(row) != number(),
+             ExcMessage("There is a zero on the diagonal of this matrix "
+                        "in row " +
+                        Utilities::to_string(row) +
+                        ". The preconditioner you selected cannot work if that "
+                        "is the case because one of its steps requires "
+                        "division by the diagonal elements of the matrix."
+                        "\n\n"
+                        "You should check whether you have correctly "
+                        "assembled the matrix that you use for this "
+                        "preconditioner. If it is correct that there are "
+                        "zeros on the diagonal, then you will have to chose "
+                        "a different preconditioner."));
 #else
     (void) matrix;
 #endif
@@ -1397,8 +1396,8 @@ SparseMatrix<number>::precondition_SSOR(
       for(size_type row = 0; row < n; ++row, ++dst_ptr, ++rowstart_ptr)
         {
           *dst_ptr = src(row);
-          const std::size_t first_right_of_diagonal_index
-            = pos_right_of_diagonal[row];
+          const std::size_t first_right_of_diagonal_index =
+            pos_right_of_diagonal[row];
           Assert(first_right_of_diagonal_index <= *(rowstart_ptr + 1),
                  ExcInternalError());
           number s = 0;
@@ -1415,8 +1414,8 @@ SparseMatrix<number>::precondition_SSOR(
       rowstart_ptr = &cols->rowstart[0];
       dst_ptr      = &dst(0);
       for(; rowstart_ptr != &cols->rowstart[n]; ++rowstart_ptr, ++dst_ptr)
-        *dst_ptr *= somenumber(om * (number(2.) - om))
-                    * somenumber(val[*rowstart_ptr]);
+        *dst_ptr *=
+          somenumber(om * (number(2.) - om)) * somenumber(val[*rowstart_ptr]);
 
       // backward sweep
       rowstart_ptr = &cols->rowstart[n - 1];
@@ -1424,8 +1423,8 @@ SparseMatrix<number>::precondition_SSOR(
       for(int row = n - 1; row >= 0; --row, --rowstart_ptr, --dst_ptr)
         {
           const size_type end_row = *(rowstart_ptr + 1);
-          const size_type first_right_of_diagonal_index
-            = pos_right_of_diagonal[row];
+          const size_type first_right_of_diagonal_index =
+            pos_right_of_diagonal[row];
           number s = 0;
           for(size_type j = first_right_of_diagonal_index; j < end_row; ++j)
             s += val[j] * number(dst(cols->colnums[j]));
@@ -1450,11 +1449,11 @@ SparseMatrix<number>::precondition_SSOR(
       // note: the first entry in each
       // line denotes the diagonal element,
       // which we need not check.
-      const size_type first_right_of_diagonal_index
-        = (Utilities::lower_bound(&cols->colnums[*rowstart_ptr + 1],
-                                  &cols->colnums[*(rowstart_ptr + 1)],
-                                  row)
-           - &cols->colnums[0]);
+      const size_type first_right_of_diagonal_index =
+        (Utilities::lower_bound(&cols->colnums[*rowstart_ptr + 1],
+                                &cols->colnums[*(rowstart_ptr + 1)],
+                                row) -
+         &cols->colnums[0]);
 
       number s = 0;
       for(size_type j = (*rowstart_ptr) + 1; j < first_right_of_diagonal_index;
@@ -1478,11 +1477,11 @@ SparseMatrix<number>::precondition_SSOR(
   for(int row = n - 1; row >= 0; --row, --rowstart_ptr, --dst_ptr)
     {
       const size_type end_row = *(rowstart_ptr + 1);
-      const size_type first_right_of_diagonal_index
-        = (Utilities::lower_bound(&cols->colnums[*rowstart_ptr + 1],
-                                  &cols->colnums[end_row],
-                                  static_cast<size_type>(row))
-           - &cols->colnums[0]);
+      const size_type first_right_of_diagonal_index =
+        (Utilities::lower_bound(&cols->colnums[*rowstart_ptr + 1],
+                                &cols->colnums[end_row],
+                                static_cast<size_type>(row)) -
+         &cols->colnums[0]);
       number s = 0;
       for(size_type j = first_right_of_diagonal_index; j < end_row; ++j)
         s += val[j] * number(dst(cols->colnums[j]));
@@ -1881,8 +1880,8 @@ SparseMatrix<number>::block_write(std::ostream& out) const
   out << '[' << max_len << "][";
   // then write out real data
   out.write(reinterpret_cast<const char*>(val.get()),
-            reinterpret_cast<const char*>(val.get() + max_len)
-              - reinterpret_cast<const char*>(val.get()));
+            reinterpret_cast<const char*>(val.get() + max_len) -
+              reinterpret_cast<const char*>(val.get()));
   out << ']';
 
   AssertThrow(out, ExcIO());
@@ -1911,8 +1910,8 @@ SparseMatrix<number>::block_read(std::istream& in)
 
   // then read data
   in.read(reinterpret_cast<char*>(val.get()),
-          reinterpret_cast<char*>(val.get() + max_len)
-            - reinterpret_cast<char*>(val.get()));
+          reinterpret_cast<char*>(val.get() + max_len) -
+            reinterpret_cast<char*>(val.get()));
   in >> c;
   AssertThrow(c == ']', ExcIO());
 }

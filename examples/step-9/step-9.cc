@@ -374,8 +374,8 @@ namespace Step9
     (void) component;
     Assert(component == 0, ExcIndexRange(component, 0, 1));
 
-    const double sine_term
-      = std::sin(16 * numbers::PI * std::sqrt(p.norm_square()));
+    const double sine_term =
+      std::sin(16 * numbers::PI * std::sqrt(p.norm_square()));
     const double weight = std::exp(-5 * p.norm_square()) / std::exp(-5.);
     return sine_term * weight;
   }
@@ -595,12 +595,12 @@ namespace Step9
     const FiniteElement<dim>& fe)
     : fe_values(fe,
                 QGauss<dim>(2),
-                update_values | update_gradients | update_quadrature_points
-                  | update_JxW_values),
+                update_values | update_gradients | update_quadrature_points |
+                  update_JxW_values),
       fe_face_values(fe,
                      QGauss<dim - 1>(2),
-                     update_values | update_quadrature_points
-                       | update_JxW_values | update_normal_vectors)
+                     update_values | update_quadrature_points |
+                       update_JxW_values | update_normal_vectors)
   {}
 
   template <int dim>
@@ -608,12 +608,12 @@ namespace Step9
     const AssemblyScratchData& scratch_data)
     : fe_values(scratch_data.fe_values.get_fe(),
                 scratch_data.fe_values.get_quadrature(),
-                update_values | update_gradients | update_quadrature_points
-                  | update_JxW_values),
+                update_values | update_gradients | update_quadrature_points |
+                  update_JxW_values),
       fe_face_values(scratch_data.fe_face_values.get_fe(),
                      scratch_data.fe_face_values.get_quadrature(),
-                     update_values | update_quadrature_points
-                       | update_JxW_values | update_normal_vectors)
+                     update_values | update_quadrature_points |
+                       update_JxW_values | update_normal_vectors)
   {}
 
   // Now, this is the function that does the actual work. It is not very
@@ -667,10 +667,10 @@ namespace Step9
 
     // Then we define some abbreviations to avoid unnecessarily long lines:
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
-    const unsigned int n_q_points
-      = scratch_data.fe_values.get_quadrature().size();
-    const unsigned int n_face_q_points
-      = scratch_data.fe_face_values.get_quadrature().size();
+    const unsigned int n_q_points =
+      scratch_data.fe_values.get_quadrature().size();
+    const unsigned int n_face_q_points =
+      scratch_data.fe_face_values.get_quadrature().size();
 
     // We declare cell matrix and cell right hand side...
     copy_data.cell_matrix.reinit(dofs_per_cell, dofs_per_cell);
@@ -708,21 +708,19 @@ namespace Step9
       for(unsigned int i = 0; i < dofs_per_cell; ++i)
         {
           for(unsigned int j = 0; j < dofs_per_cell; ++j)
-            copy_data.cell_matrix(i, j)
-              += ((advection_directions[q_point]
-                   * scratch_data.fe_values.shape_grad(j, q_point)
-                   * (scratch_data.fe_values.shape_value(i, q_point)
-                      + delta
-                          * (advection_directions[q_point]
-                             * scratch_data.fe_values.shape_grad(i, q_point))))
-                  * scratch_data.fe_values.JxW(q_point));
+            copy_data.cell_matrix(i, j) +=
+              ((advection_directions[q_point] *
+                scratch_data.fe_values.shape_grad(j, q_point) *
+                (scratch_data.fe_values.shape_value(i, q_point) +
+                 delta * (advection_directions[q_point] *
+                          scratch_data.fe_values.shape_grad(i, q_point)))) *
+               scratch_data.fe_values.JxW(q_point));
 
-          copy_data.cell_rhs(i)
-            += ((scratch_data.fe_values.shape_value(i, q_point)
-                 + delta
-                     * (advection_directions[q_point]
-                        * scratch_data.fe_values.shape_grad(i, q_point)))
-                * rhs_values[q_point] * scratch_data.fe_values.JxW(q_point));
+          copy_data.cell_rhs(i) +=
+            ((scratch_data.fe_values.shape_value(i, q_point) +
+              delta * (advection_directions[q_point] *
+                       scratch_data.fe_values.shape_grad(i, q_point))) *
+             rhs_values[q_point] * scratch_data.fe_values.JxW(q_point));
         }
 
     // Besides the cell terms which we have built up now, the bilinear
@@ -764,9 +762,9 @@ namespace Step9
           // so if the advection direction points into the domain, its
           // scalar product with the normal vector must be negative):
           for(unsigned int q_point = 0; q_point < n_face_q_points; ++q_point)
-            if(scratch_data.fe_face_values.normal_vector(q_point)
-                 * face_advection_directions[q_point]
-               < 0)
+            if(scratch_data.fe_face_values.normal_vector(q_point) *
+                 face_advection_directions[q_point] <
+               0)
               // If the is part of the inflow boundary, then compute the
               // contributions of this face to the global matrix and right
               // hand side, using the values obtained from the
@@ -775,19 +773,19 @@ namespace Step9
               for(unsigned int i = 0; i < dofs_per_cell; ++i)
                 {
                   for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                    copy_data.cell_matrix(i, j)
-                      -= (face_advection_directions[q_point]
-                          * scratch_data.fe_face_values.normal_vector(q_point)
-                          * scratch_data.fe_face_values.shape_value(i, q_point)
-                          * scratch_data.fe_face_values.shape_value(j, q_point)
-                          * scratch_data.fe_face_values.JxW(q_point));
+                    copy_data.cell_matrix(i, j) -=
+                      (face_advection_directions[q_point] *
+                       scratch_data.fe_face_values.normal_vector(q_point) *
+                       scratch_data.fe_face_values.shape_value(i, q_point) *
+                       scratch_data.fe_face_values.shape_value(j, q_point) *
+                       scratch_data.fe_face_values.JxW(q_point));
 
-                  copy_data.cell_rhs(i)
-                    -= (face_advection_directions[q_point]
-                        * scratch_data.fe_face_values.normal_vector(q_point)
-                        * face_boundary_values[q_point]
-                        * scratch_data.fe_face_values.shape_value(i, q_point)
-                        * scratch_data.fe_face_values.JxW(q_point));
+                  copy_data.cell_rhs(i) -=
+                    (face_advection_directions[q_point] *
+                     scratch_data.fe_face_values.normal_vector(q_point) *
+                     face_boundary_values[q_point] *
+                     scratch_data.fe_face_values.shape_value(i, q_point) *
+                     scratch_data.fe_face_values.JxW(q_point));
                 }
         }
 
@@ -1036,8 +1034,8 @@ namespace Step9
     // neighbors is computed here.
     std::vector<typename DoFHandler<dim>::active_cell_iterator>
       active_neighbors;
-    active_neighbors.reserve(GeometryInfo<dim>::faces_per_cell
-                             * GeometryInfo<dim>::max_children_per_face);
+    active_neighbors.reserve(GeometryInfo<dim>::faces_per_cell *
+                             GeometryInfo<dim>::max_children_per_face);
 
     // First initialize the <code>FEValues</code> object, as well as the
     // <code>Y</code> tensor:
@@ -1076,10 +1074,10 @@ namespace Step9
         {
           // First define an abbreviation for the iterator to the face and
           // the neighbor
-          const typename DoFHandler<dim>::face_iterator face
-            = cell->face(face_no);
-          const typename DoFHandler<dim>::cell_iterator neighbor
-            = cell->neighbor(face_no);
+          const typename DoFHandler<dim>::face_iterator face =
+            cell->face(face_no);
+          const typename DoFHandler<dim>::cell_iterator neighbor =
+            cell->neighbor(face_no);
 
           // Then check whether the neighbor is active. If it is, then it
           // is on the same level or one level coarser (if we are not in
@@ -1096,11 +1094,11 @@ namespace Step9
                   // we are left of the present cell (n==0), or go to the
                   // left child if we are on the right (n==1), until we
                   // find an active cell.
-                  typename DoFHandler<dim>::cell_iterator neighbor_child
-                    = neighbor;
+                  typename DoFHandler<dim>::cell_iterator neighbor_child =
+                    neighbor;
                   while(neighbor_child->has_children())
-                    neighbor_child
-                      = neighbor_child->child(face_no == 0 ? 1 : 0);
+                    neighbor_child =
+                      neighbor_child->child(face_no == 0 ? 1 : 0);
 
                   // As this used some non-trivial geometrical intuition,
                   // we might want to check whether we did it right,
@@ -1147,8 +1145,8 @@ namespace Step9
     // points, of which there are only one, of course. Likewise, the
     // position of the center is the position of the first (and only)
     // quadrature point in real space.
-    const Point<dim> this_center
-      = scratch_data.fe_midpoint_value.quadrature_point(0);
+    const Point<dim> this_center =
+      scratch_data.fe_midpoint_value.quadrature_point(0);
 
     std::vector<double> this_midpoint_value(1);
     scratch_data.fe_midpoint_value.get_function_values(scratch_data.solution,
@@ -1163,22 +1161,21 @@ namespace Step9
     // expensive operation):
     std::vector<double> neighbor_midpoint_value(1);
     typename std::vector<typename DoFHandler<dim>::active_cell_iterator>::
-      const_iterator neighbor_ptr
-      = active_neighbors.begin();
+      const_iterator neighbor_ptr = active_neighbors.begin();
     for(; neighbor_ptr != active_neighbors.end(); ++neighbor_ptr)
       {
         // First define an abbreviation for the iterator to the active
         // neighbor cell:
-        const typename DoFHandler<dim>::active_cell_iterator neighbor
-          = *neighbor_ptr;
+        const typename DoFHandler<dim>::active_cell_iterator neighbor =
+          *neighbor_ptr;
 
         // Then get the center of the neighbor cell and the value of the
         // finite element function thereon. Note that for this information
         // we have to reinitialize the <code>FEValues</code> object for
         // the neighbor cell.
         scratch_data.fe_midpoint_value.reinit(neighbor);
-        const Point<dim> neighbor_center
-          = scratch_data.fe_midpoint_value.quadrature_point(0);
+        const Point<dim> neighbor_center =
+          scratch_data.fe_midpoint_value.quadrature_point(0);
 
         scratch_data.fe_midpoint_value.get_function_values(
           scratch_data.solution, neighbor_midpoint_value);
@@ -1197,9 +1194,8 @@ namespace Step9
             Y[i][j] += y[i] * y[j];
 
         // ... and update the sum of difference quotients:
-        projected_gradient
-          += (neighbor_midpoint_value[0] - this_midpoint_value[0]) / distance
-             * y;
+        projected_gradient +=
+          (neighbor_midpoint_value[0] - this_midpoint_value[0]) / distance * y;
       }
 
     // If now, after collecting all the information from the neighbors, we
@@ -1239,9 +1235,9 @@ namespace Step9
     // scratch data object, and all we have to do is know how to get
     // at the correct element inside this vector -- but we can ask the
     // cell we're on the how-manyth active cell it is for this:
-    scratch_data.error_per_cell(cell->active_cell_index())
-      = (std::pow(cell->diameter(), 1 + 1.0 * dim / 2)
-         * std::sqrt(gradient.norm_square()));
+    scratch_data.error_per_cell(cell->active_cell_index()) =
+      (std::pow(cell->diameter(), 1 + 1.0 * dim / 2) *
+       std::sqrt(gradient.norm_square()));
   }
 } // namespace Step9
 

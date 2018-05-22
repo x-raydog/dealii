@@ -246,8 +246,7 @@ public:
    * Release matrices.
    */
   virtual void
-  clear()
-    = 0;
+  clear() = 0;
 
   /**
    * Smoothing function that smooths the content in @p u given the right hand

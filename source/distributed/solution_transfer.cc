@@ -50,8 +50,7 @@ namespace parallel
       Assert(
         (dynamic_cast<const parallel::distributed::
                         Triangulation<dim, DoFHandlerType::space_dimension>*>(
-           &dof_handler->get_triangulation())
-         != nullptr),
+           &dof_handler->get_triangulation()) != nullptr),
         ExcMessage(
           "parallel::distributed::SolutionTransfer requires a parallel::distributed::Triangulation object."));
     }
@@ -76,12 +75,12 @@ namespace parallel
       //TODO: casting away constness is bad
       parallel::distributed::Triangulation<dim,
                                            DoFHandlerType::space_dimension>*
-        tria
-        = (dynamic_cast<parallel::distributed::
+        tria =
+          (dynamic_cast<parallel::distributed::
                           Triangulation<dim, DoFHandlerType::space_dimension>*>(
-          const_cast<
-            dealii::Triangulation<dim, DoFHandlerType::space_dimension>*>(
-            &dof_handler->get_triangulation())));
+            const_cast<
+              dealii::Triangulation<dim, DoFHandlerType::space_dimension>*>(
+              &dof_handler->get_triangulation())));
       Assert(tria != nullptr, ExcInternalError());
 
       handle = tria->register_data_attach(
@@ -153,12 +152,12 @@ namespace parallel
       //TODO: casting away constness is bad
       parallel::distributed::Triangulation<dim,
                                            DoFHandlerType::space_dimension>*
-        tria
-        = (dynamic_cast<parallel::distributed::
+        tria =
+          (dynamic_cast<parallel::distributed::
                           Triangulation<dim, DoFHandlerType::space_dimension>*>(
-          const_cast<
-            dealii::Triangulation<dim, DoFHandlerType::space_dimension>*>(
-            &dof_handler->get_triangulation())));
+            const_cast<
+              dealii::Triangulation<dim, DoFHandlerType::space_dimension>*>(
+              &dof_handler->get_triangulation())));
       Assert(tria != nullptr, ExcInternalError());
 
       tria->notify_ready_to_unpack(
@@ -192,8 +191,8 @@ namespace parallel
     unsigned int
     SolutionTransfer<dim, VectorType, DoFHandlerType>::get_data_size() const
     {
-      return sizeof(typename VectorType::value_type)
-             * DoFTools::max_dofs_per_cell(*dof_handler);
+      return sizeof(typename VectorType::value_type) *
+             DoFTools::max_dofs_per_cell(*dof_handler);
     }
 
     template <int dim, typename VectorType, typename DoFHandlerType>
@@ -205,16 +204,16 @@ namespace parallel
         CellStatus /*status*/,
       void* data)
     {
-      typename VectorType::value_type* data_store
-        = reinterpret_cast<typename VectorType::value_type*>(data);
+      typename VectorType::value_type* data_store =
+        reinterpret_cast<typename VectorType::value_type*>(data);
 
       typename DoFHandlerType::cell_iterator cell(*cell_, dof_handler);
 
       const unsigned int dofs_per_cell = cell->get_fe().dofs_per_cell;
       ::dealii::Vector<typename VectorType::value_type> dofvalues(
         dofs_per_cell);
-      for(typename std::vector<const VectorType*>::iterator it
-          = input_vectors.begin();
+      for(typename std::vector<const VectorType*>::iterator it =
+            input_vectors.begin();
           it != input_vectors.end();
           ++it)
         {
@@ -241,8 +240,8 @@ namespace parallel
       const unsigned int dofs_per_cell = cell->get_fe().dofs_per_cell;
       ::dealii::Vector<typename VectorType::value_type> dofvalues(
         dofs_per_cell);
-      const typename VectorType::value_type* data_store
-        = reinterpret_cast<const typename VectorType::value_type*>(data);
+      const typename VectorType::value_type* data_store =
+        reinterpret_cast<const typename VectorType::value_type*>(data);
 
       for(typename std::vector<VectorType*>::iterator it = all_out.begin();
           it != all_out.end();

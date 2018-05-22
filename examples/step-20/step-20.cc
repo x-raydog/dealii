@@ -176,8 +176,8 @@ namespace Step20
   {
     const double alpha = 0.3;
     const double beta  = 1;
-    return -(alpha * p[0] * p[1] * p[1] / 2 + beta * p[0]
-             - alpha * p[0] * p[0] * p[0] / 6);
+    return -(alpha * p[0] * p[1] * p[1] / 2 + beta * p[0] -
+             alpha * p[0] * p[0] * p[0] / 6);
   }
 
   template <int dim>
@@ -193,8 +193,8 @@ namespace Step20
 
     values(0) = alpha * p[1] * p[1] / 2 + beta - alpha * p[0] * p[0] / 2;
     values(1) = alpha * p[0] * p[1];
-    values(2) = -(alpha * p[0] * p[1] * p[1] / 2 + beta * p[0]
-                  - alpha * p[0] * p[0] * p[0] / 6);
+    values(2) = -(alpha * p[0] * p[1] * p[1] / 2 + beta * p[0] -
+                  alpha * p[0] * p[0] * p[0] / 6);
   }
 
   // @sect3{The inverse permeability tensor}
@@ -423,13 +423,13 @@ namespace Step20
 
     FEValues<dim>     fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
     FEFaceValues<dim> fe_face_values(fe,
                                      face_quadrature_formula,
-                                     update_values | update_normal_vectors
-                                       | update_quadrature_points
-                                       | update_JxW_values);
+                                     update_values | update_normal_vectors |
+                                       update_quadrature_points |
+                                       update_JxW_values);
 
     const unsigned int dofs_per_cell   = fe.dofs_per_cell;
     const unsigned int n_q_points      = quadrature_formula.size();
@@ -469,9 +469,9 @@ namespace Step20
     // With all this in place, we can go on with the loop over all cells. The
     // body of this loop has been discussed in the introduction, and will not
     // be commented any further here:
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         fe_values.reinit(cell);
@@ -492,16 +492,16 @@ namespace Step20
 
               for(unsigned int j = 0; j < dofs_per_cell; ++j)
                 {
-                  const Tensor<1, dim> phi_j_u
-                    = fe_values[velocities].value(j, q);
-                  const double div_phi_j_u
-                    = fe_values[velocities].divergence(j, q);
+                  const Tensor<1, dim> phi_j_u =
+                    fe_values[velocities].value(j, q);
+                  const double div_phi_j_u =
+                    fe_values[velocities].divergence(j, q);
                   const double phi_j_p = fe_values[pressure].value(j, q);
 
-                  local_matrix(i, j)
-                    += (phi_i_u * k_inverse_values[q] * phi_j_u
-                        - div_phi_i_u * phi_j_p - phi_i_p * div_phi_j_u)
-                       * fe_values.JxW(q);
+                  local_matrix(i, j) +=
+                    (phi_i_u * k_inverse_values[q] * phi_j_u -
+                     div_phi_i_u * phi_j_p - phi_i_p * div_phi_j_u) *
+                    fe_values.JxW(q);
                 }
 
               local_rhs(i) += -phi_i_p * rhs_values[q] * fe_values.JxW(q);
@@ -518,10 +518,9 @@ namespace Step20
 
               for(unsigned int q = 0; q < n_face_q_points; ++q)
                 for(unsigned int i = 0; i < dofs_per_cell; ++i)
-                  local_rhs(i)
-                    += -(fe_face_values[velocities].value(i, q)
-                         * fe_face_values.normal_vector(q) * boundary_values[q]
-                         * fe_face_values.JxW(q));
+                  local_rhs(i) += -(fe_face_values[velocities].value(i, q) *
+                                    fe_face_values.normal_vector(q) *
+                                    boundary_values[q] * fe_face_values.JxW(q));
             }
 
         // The final step in the loop over all cells is to transfer local

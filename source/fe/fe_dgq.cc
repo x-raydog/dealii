@@ -63,9 +63,9 @@ FE_DGQ<dim, spacedim>::FE_DGQ(const unsigned int degree)
 {
   // Compute support points, which are the tensor product of the Lagrange
   // interpolation points in the constructor.
-  this->unit_support_points
-    = Quadrature<dim>(internal::FE_DGQ::get_QGaussLobatto_points(degree))
-        .get_points();
+  this->unit_support_points =
+    Quadrature<dim>(internal::FE_DGQ::get_QGaussLobatto_points(degree))
+      .get_points();
 
   // do not initialize embedding and restriction here. these matrices are
   // initialized on demand in get_restriction_matrix and
@@ -250,8 +250,8 @@ FE_DGQ<dim, spacedim>::get_interpolation_matrix(
 
   // ok, source is a Q element, so
   // we will be able to do the work
-  const FE_DGQ<dim, spacedim>& source_fe
-    = dynamic_cast<const FE_DGQ<dim, spacedim>&>(x_source_fe);
+  const FE_DGQ<dim, spacedim>& source_fe =
+    dynamic_cast<const FE_DGQ<dim, spacedim>&>(x_source_fe);
 
   Assert(interpolation_matrix.m() == this->dofs_per_cell,
          ExcDimensionMismatch(interpolation_matrix.m(), this->dofs_per_cell));
@@ -381,14 +381,14 @@ FE_DGQ<dim, spacedim>::get_prolongation_matrix(
       Threads::Mutex::ScopedLock lock(this->mutex);
 
       // if matrix got updated while waiting for the lock
-      if(this->prolongation[refinement_case - 1][child].n()
-         == this->dofs_per_cell)
+      if(this->prolongation[refinement_case - 1][child].n() ==
+         this->dofs_per_cell)
         return this->prolongation[refinement_case - 1][child];
 
       // now do the work. need to get a non-const version of data in order to
       // be able to modify them inside a const function
-      FE_DGQ<dim, spacedim>& this_nonconst
-        = const_cast<FE_DGQ<dim, spacedim>&>(*this);
+      FE_DGQ<dim, spacedim>& this_nonconst =
+        const_cast<FE_DGQ<dim, spacedim>&>(*this);
       if(refinement_case == RefinementCase<dim>::isotropic_refinement)
         {
           std::vector<std::vector<FullMatrix<double>>> isotropic_matrices(
@@ -455,14 +455,14 @@ FE_DGQ<dim, spacedim>::get_restriction_matrix(
       Threads::Mutex::ScopedLock lock(this->mutex);
 
       // if matrix got updated while waiting for the lock...
-      if(this->restriction[refinement_case - 1][child].n()
-         == this->dofs_per_cell)
+      if(this->restriction[refinement_case - 1][child].n() ==
+         this->dofs_per_cell)
         return this->restriction[refinement_case - 1][child];
 
       // now do the work. need to get a non-const version of data in order to
       // be able to modify them inside a const function
-      FE_DGQ<dim, spacedim>& this_nonconst
-        = const_cast<FE_DGQ<dim, spacedim>&>(*this);
+      FE_DGQ<dim, spacedim>& this_nonconst =
+        const_cast<FE_DGQ<dim, spacedim>&>(*this);
       if(refinement_case == RefinementCase<dim>::isotropic_refinement)
         {
           std::vector<std::vector<FullMatrix<double>>> isotropic_matrices(
@@ -604,8 +604,8 @@ FE_DGQ<dim, spacedim>::has_support_on_face(const unsigned int shape_index,
           // class, the first is on vertex 0
           // (==face 0 in some sense), the
           // second on face 1:
-          return (((shape_index == 0) && (face_index == 0))
-                  || ((shape_index == this->degree) && (face_index == 1)));
+          return (((shape_index == 0) && (face_index == 0)) ||
+                  ((shape_index == this->degree) && (face_index == 1)));
         };
 
       case 2:
@@ -693,8 +693,8 @@ FE_DGQArbitraryNodes<dim, spacedim>::get_name() const
   bool                equidistant = true;
   std::vector<double> points(this->degree + 1);
 
-  std::vector<unsigned int> lexicographic
-    = this->poly_space.get_numbering_inverse();
+  std::vector<unsigned int> lexicographic =
+    this->poly_space.get_numbering_inverse();
   for(unsigned int j = 0; j <= this->degree; j++)
     points[j] = this->unit_support_points[lexicographic[j]][0];
 
@@ -803,8 +803,8 @@ FE_DGQArbitraryNodes<dim, spacedim>::clone() const
 {
   // Construct a dummy quadrature formula containing the FE's nodes:
   std::vector<Point<1>>     qpoints(this->degree + 1);
-  std::vector<unsigned int> lexicographic
-    = this->poly_space.get_numbering_inverse();
+  std::vector<unsigned int> lexicographic =
+    this->poly_space.get_numbering_inverse();
   for(unsigned int i = 0; i <= this->degree; ++i)
     qpoints[i] = Point<1>(this->unit_support_points[lexicographic[i]][0]);
   Quadrature<1> pquadrature(qpoints);
@@ -837,8 +837,8 @@ template <int dim, int spacedim>
 std::string
 FE_DGQLegendre<dim, spacedim>::get_name() const
 {
-  return "FE_DGQLegendre<" + Utilities::dim_string(dim, spacedim) + ">("
-         + Utilities::int_to_string(this->degree) + ")";
+  return "FE_DGQLegendre<" + Utilities::dim_string(dim, spacedim) + ">(" +
+         Utilities::int_to_string(this->degree) + ")";
 }
 
 template <int dim, int spacedim>
@@ -860,8 +860,8 @@ template <int dim, int spacedim>
 std::string
 FE_DGQHermite<dim, spacedim>::get_name() const
 {
-  return "FE_DGQHermite<" + Utilities::dim_string(dim, spacedim) + ">("
-         + Utilities::int_to_string(this->degree) + ")";
+  return "FE_DGQHermite<" + Utilities::dim_string(dim, spacedim) + ">(" +
+         Utilities::int_to_string(this->degree) + ")";
 }
 
 template <int dim, int spacedim>

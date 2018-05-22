@@ -298,8 +298,8 @@ DerivativeForm<order, dim, spacedim, Number>::determinant() const
   Assert(order == 1, ExcMessage("Only for order == 1."));
   if(dim == spacedim)
     {
-      const Tensor<2, dim, Number> T
-        = static_cast<Tensor<2, dim, Number>>(*this);
+      const Tensor<2, dim, Number> T =
+        static_cast<Tensor<2, dim, Number>>(*this);
       return dealii::determinant(T);
     }
   else
@@ -321,8 +321,8 @@ DerivativeForm<order, dim, spacedim, Number>::covariant_form() const
 {
   if(dim == spacedim)
     {
-      const Tensor<2, dim, Number> DF_t
-        = dealii::transpose(invert(static_cast<Tensor<2, dim, Number>>(*this)));
+      const Tensor<2, dim, Number> DF_t =
+        dealii::transpose(invert(static_cast<Tensor<2, dim, Number>>(*this)));
       return DerivativeForm<1, dim, spacedim>(DF_t);
     }
   else

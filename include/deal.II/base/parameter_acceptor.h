@@ -387,8 +387,8 @@ public:
   static void
   initialize(const std::string&                  filename        = "",
              const std::string&                  output_filename = "",
-             const ParameterHandler::OutputStyle output_style_for_prm_format
-             = ParameterHandler::ShortText,
+             const ParameterHandler::OutputStyle output_style_for_prm_format =
+               ParameterHandler::ShortText,
              ParameterHandler& prm = ParameterAcceptor::prm);
 
   /**
@@ -492,8 +492,8 @@ public:
                 ParameterType&               parameter,
                 const std::string&           documentation = std::string(),
                 ParameterHandler&            prm_          = prm,
-                const Patterns::PatternBase& pattern
-                = *Patterns::Tools::Convert<ParameterType>::to_pattern());
+                const Patterns::PatternBase& pattern =
+                  *Patterns::Tools::Convert<ParameterType>::to_pattern());
 
   /**
    * The global parameter handler.

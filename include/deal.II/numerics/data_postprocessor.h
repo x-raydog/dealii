@@ -1060,8 +1060,8 @@ namespace DataPostprocessorInputs
     // see if we had previously already stored a cell that has the same
     // data type; if so, reuse the memory location and avoid calling 'new'
     // inside boost::any
-    if(typename DoFHandlerType::cell_iterator* storage_location
-       = boost::any_cast<typename DoFHandlerType::cell_iterator>(&cell))
+    if(typename DoFHandlerType::cell_iterator* storage_location =
+         boost::any_cast<typename DoFHandlerType::cell_iterator>(&cell))
       *storage_location = new_cell;
     else
       // if we had nothing stored before, or if we had stored a different
@@ -1079,8 +1079,8 @@ namespace DataPostprocessorInputs
       ExcMessage("You are trying to access the cell associated with a "
                  "DataPostprocessorInputs::Scalar object for which no cell has "
                  "been set."));
-    Assert(boost::any_cast<typename DoFHandlerType::cell_iterator>(&cell)
-             != nullptr,
+    Assert(boost::any_cast<typename DoFHandlerType::cell_iterator>(&cell) !=
+             nullptr,
            ExcMessage(
              "You are trying to access the cell associated with a "
              "DataPostprocessorInputs::Scalar with a DoFHandler type that "

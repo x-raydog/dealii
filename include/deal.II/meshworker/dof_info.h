@@ -342,8 +342,8 @@ namespace MeshWorker
                                          const DHFaceIterator& f,
                                          const unsigned int    face_no)
   {
-    if((cell.state() != IteratorState::valid)
-       || cell != typename Triangulation<dim, spacedim>::cell_iterator(*c))
+    if((cell.state() != IteratorState::valid) ||
+       cell != typename Triangulation<dim, spacedim>::cell_iterator(*c))
       get_indices(c);
     level_cell = c->is_level_cell();
 
@@ -376,10 +376,9 @@ namespace MeshWorker
                                          const unsigned int    face_no,
                                          const unsigned int    subface_no)
   {
-    if(cell.state() != IteratorState::valid
-       || cell
-            != static_cast<
-                 typename Triangulation<dim, spacedim>::cell_iterator>(c))
+    if(cell.state() != IteratorState::valid ||
+       cell !=
+         static_cast<typename Triangulation<dim, spacedim>::cell_iterator>(c))
       get_indices(c);
     level_cell = c->is_level_cell();
 

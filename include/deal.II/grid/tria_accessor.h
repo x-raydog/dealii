@@ -332,8 +332,7 @@ protected:
    * Consequently, this operator is declared as deleted and can not be used.
    */
   void
-  operator=(const TriaAccessorBase*)
-    = delete;
+  operator=(const TriaAccessorBase*) = delete;
 
   /**
    * Copy operator. Since this is only called from iterators, do not return
@@ -706,8 +705,7 @@ public:
    * Consequently, this operator is declared as deleted and can not be used.
    */
   void
-  operator=(const TriaAccessor&)
-    = delete;
+  operator=(const TriaAccessor&) = delete;
 
   /**
    * Test for the element being used or not.  The return value is @p true for
@@ -2615,8 +2613,7 @@ public:
    * Consequently, this operator is declared as deleted and can not be used.
    */
   void
-  operator=(const CellAccessor<dim, spacedim>&)
-    = delete;
+  operator=(const CellAccessor<dim, spacedim>&) = delete;
 
   /**
    * @}
@@ -3012,8 +3009,8 @@ public:
    * space it lives in.
    */
   void
-  set_refine_flag(const RefinementCase<dim> ref_case
-                  = RefinementCase<dim>::isotropic_refinement) const;
+  set_refine_flag(const RefinementCase<dim> ref_case =
+                    RefinementCase<dim>::isotropic_refinement) const;
 
   /**
    * Clear the refinement flag.
@@ -3031,8 +3028,8 @@ public:
   bool
   flag_for_face_refinement(
     const unsigned int             face_no,
-    const RefinementCase<dim - 1>& face_refinement_case
-    = RefinementCase<dim - 1>::isotropic_refinement) const;
+    const RefinementCase<dim - 1>& face_refinement_case =
+      RefinementCase<dim - 1>::isotropic_refinement) const;
 
   /**
    * Modify the refinement flag of the cell to ensure that line

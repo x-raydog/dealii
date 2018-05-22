@@ -93,8 +93,8 @@ DataOutFaces<dim, DoFHandlerType>::build_one_patch(
   for(unsigned int vertex = 0;
       vertex < GeometryInfo<dimension - 1>::vertices_per_cell;
       ++vertex)
-    patch.vertices[vertex]
-      = data.mapping_collection[0].transform_unit_to_real_cell(
+    patch.vertices[vertex] =
+      data.mapping_collection[0].transform_unit_to_real_cell(
         cell_and_face->first,
         GeometryInfo<dimension>::unit_cell_vertex(
           GeometryInfo<dim>::face_to_cell_vertices(
@@ -108,15 +108,15 @@ DataOutFaces<dim, DoFHandlerType>::build_one_patch(
     {
       data.reinit_all_fe_values(
         this->dof_data, cell_and_face->first, cell_and_face->second);
-      const FEValuesBase<dimension>& fe_patch_values
-        = data.get_present_fe_values(0);
+      const FEValuesBase<dimension>& fe_patch_values =
+        data.get_present_fe_values(0);
 
       const unsigned int n_q_points = fe_patch_values.n_quadrature_points;
 
       // store the intermediate points
       Assert(patch.space_dim == dimension, ExcInternalError());
-      const std::vector<Point<dimension>>& q_points
-        = fe_patch_values.get_quadrature_points();
+      const std::vector<Point<dimension>>& q_points =
+        fe_patch_values.get_quadrature_points();
       // resize the patch.data member in order to have enough memory for the
       // quadrature points as well
       patch.data.reinit(data.n_datasets + dimension, patch.data.size(1));
@@ -134,18 +134,18 @@ DataOutFaces<dim, DoFHandlerType>::build_one_patch(
       // first fill dof_data
       for(unsigned int dataset = 0; dataset < this->dof_data.size(); ++dataset)
         {
-          const FEValuesBase<dimension>& this_fe_patch_values
-            = data.get_present_fe_values(dataset);
-          const unsigned int n_components
-            = this_fe_patch_values.get_fe().n_components();
-          const DataPostprocessor<dim>* postprocessor
-            = this->dof_data[dataset]->postprocessor;
+          const FEValuesBase<dimension>& this_fe_patch_values =
+            data.get_present_fe_values(dataset);
+          const unsigned int n_components =
+            this_fe_patch_values.get_fe().n_components();
+          const DataPostprocessor<dim>* postprocessor =
+            this->dof_data[dataset]->postprocessor;
           if(postprocessor != nullptr)
             {
               // we have to postprocess the data, so determine, which fields
               // have to be updated
-              const UpdateFlags update_flags
-                = postprocessor->get_needed_update_flags();
+              const UpdateFlags update_flags =
+                postprocessor->get_needed_update_flags();
 
               if(n_components == 1)
                 {
@@ -171,12 +171,12 @@ DataOutFaces<dim, DoFHandlerType>::build_one_patch(
                       data.patch_values_scalar.solution_hessians);
 
                   if(update_flags & update_quadrature_points)
-                    data.patch_values_scalar.evaluation_points
-                      = this_fe_patch_values.get_quadrature_points();
+                    data.patch_values_scalar.evaluation_points =
+                      this_fe_patch_values.get_quadrature_points();
 
                   if(update_flags & update_normal_vectors)
-                    data.patch_values_scalar.normals
-                      = this_fe_patch_values.get_all_normal_vectors();
+                    data.patch_values_scalar.normals =
+                      this_fe_patch_values.get_all_normal_vectors();
 
                   const typename DoFHandlerType::active_cell_iterator dh_cell(
                     &cell_and_face->first->get_triangulation(),
@@ -215,12 +215,12 @@ DataOutFaces<dim, DoFHandlerType>::build_one_patch(
                       data.patch_values_system.solution_hessians);
 
                   if(update_flags & update_quadrature_points)
-                    data.patch_values_system.evaluation_points
-                      = this_fe_patch_values.get_quadrature_points();
+                    data.patch_values_system.evaluation_points =
+                      this_fe_patch_values.get_quadrature_points();
 
                   if(update_flags & update_normal_vectors)
-                    data.patch_values_system.normals
-                      = this_fe_patch_values.get_all_normal_vectors();
+                    data.patch_values_system.normals =
+                      this_fe_patch_values.get_all_normal_vectors();
 
                   const typename DoFHandlerType::active_cell_iterator dh_cell(
                     &cell_and_face->first->get_triangulation(),
@@ -239,8 +239,8 @@ DataOutFaces<dim, DoFHandlerType>::build_one_patch(
                 for(unsigned int component = 0;
                     component < this->dof_data[dataset]->n_output_variables;
                     ++component)
-                  patch.data(offset + component, q)
-                    = data.postprocessed_values[dataset][q](component);
+                  patch.data(offset + component, q) =
+                    data.postprocessed_values[dataset][q](component);
             }
           else
             // now we use the given data vector without modifications. again,
@@ -253,8 +253,8 @@ DataOutFaces<dim, DoFHandlerType>::build_one_patch(
                 internal::DataOutImplementation::ComponentExtractor::real_part,
                 data.patch_values_scalar.solution_values);
               for(unsigned int q = 0; q < n_q_points; ++q)
-                patch.data(offset, q)
-                  = data.patch_values_scalar.solution_values[q];
+                patch.data(offset, q) =
+                  data.patch_values_scalar.solution_values[q];
             }
           else
             {
@@ -266,8 +266,8 @@ DataOutFaces<dim, DoFHandlerType>::build_one_patch(
               for(unsigned int component = 0; component < n_components;
                   ++component)
                 for(unsigned int q = 0; q < n_q_points; ++q)
-                  patch.data(offset + component, q)
-                    = data.patch_values_system.solution_values[q](component);
+                  patch.data(offset + component, q) =
+                    data.patch_values_system.solution_values[q](component);
             }
           // increment the counter for the actual data record
           offset += this->dof_data[dataset]->n_output_variables;
@@ -285,10 +285,10 @@ DataOutFaces<dim, DoFHandlerType>::build_one_patch(
               "The current function is trying to generate cell-data output "
               "for a face that does not belong to an active cell. This is "
               "not supported."));
-          const unsigned int cell_number
-            = std::distance(this->triangulation->begin_active(),
-                            typename Triangulation<dimension, space_dimension>::
-                              active_cell_iterator(cell_and_face->first));
+          const unsigned int cell_number =
+            std::distance(this->triangulation->begin_active(),
+                          typename Triangulation<dimension, space_dimension>::
+                            active_cell_iterator(cell_and_face->first));
 
           const double value = this->cell_data[dataset]->get_cell_data_value(
             cell_number,
@@ -316,8 +316,8 @@ DataOutFaces<dim, DoFHandlerType>::build_patches(
   // Check consistency of redundant template parameter
   Assert(dim == dimension, ExcDimensionMismatch(dim, dimension));
 
-  const unsigned int n_subdivisions
-    = (n_subdivisions_ != 0) ? n_subdivisions_ : this->default_subdivisions;
+  const unsigned int n_subdivisions =
+    (n_subdivisions_ != 0) ? n_subdivisions_ : this->default_subdivisions;
 
   Assert(n_subdivisions >= 1,
          Exceptions::DataOutImplementation::ExcInvalidNumberOfSubdivisions(
@@ -338,8 +338,8 @@ DataOutFaces<dim, DoFHandlerType>::build_patches(
   // case that first_face() returns an invalid FaceDescriptor object
   std::vector<FaceDescriptor> all_faces;
   for(FaceDescriptor face = first_face();
-      ((face.first != this->triangulation->end())
-       && (face != FaceDescriptor()));
+      ((face.first != this->triangulation->end()) &&
+       (face != FaceDescriptor()));
       face = next_face(face))
     all_faces.push_back(face);
 
@@ -351,16 +351,16 @@ DataOutFaces<dim, DoFHandlerType>::build_patches(
   std::vector<unsigned int> n_postprocessor_outputs(this->dof_data.size());
   for(unsigned int dataset = 0; dataset < this->dof_data.size(); ++dataset)
     if(this->dof_data[dataset]->postprocessor)
-      n_postprocessor_outputs[dataset]
-        = this->dof_data[dataset]->n_output_variables;
+      n_postprocessor_outputs[dataset] =
+        this->dof_data[dataset]->n_output_variables;
     else
       n_postprocessor_outputs[dataset] = 0;
 
   UpdateFlags update_flags = update_values;
   for(unsigned int i = 0; i < this->dof_data.size(); ++i)
     if(this->dof_data[i]->postprocessor)
-      update_flags
-        |= this->dof_data[i]->postprocessor->get_needed_update_flags();
+      update_flags |=
+        this->dof_data[i]->postprocessor->get_needed_update_flags();
   update_flags |= update_quadrature_points;
 
   internal::DataOutFacesImplementation::ParallelData<dimension, space_dimension>
@@ -396,8 +396,8 @@ typename DataOutFaces<dim, DoFHandlerType>::FaceDescriptor
 DataOutFaces<dim, DoFHandlerType>::first_face()
 {
   // simply find first active cell with a face on the boundary
-  typename Triangulation<dimension, space_dimension>::active_cell_iterator cell
-    = this->triangulation->begin_active();
+  typename Triangulation<dimension, space_dimension>::active_cell_iterator
+    cell = this->triangulation->begin_active();
   for(; cell != this->triangulation->end(); ++cell)
     if(cell->is_locally_owned())
       for(unsigned int f = 0; f < GeometryInfo<dimension>::faces_per_cell; ++f)
@@ -434,8 +434,7 @@ DataOutFaces<dim, DoFHandlerType>::next_face(const FaceDescriptor& old_face)
   // convert the iterator to an active_iterator and advance this to the next
   // active cell
   typename Triangulation<dimension, space_dimension>::active_cell_iterator
-    active_cell
-    = face.first;
+    active_cell = face.first;
 
   // increase face pointer by one
   ++active_cell;

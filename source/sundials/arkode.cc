@@ -109,8 +109,8 @@ namespace SUNDIALS
                             N_Vector,
                             N_Vector)
     {
-      ARKode<VectorType>& solver
-        = *static_cast<ARKode<VectorType>*>(arkode_mem->ark_user_data);
+      ARKode<VectorType>& solver =
+        *static_cast<ARKode<VectorType>*>(arkode_mem->ark_user_data);
       GrowingVectorMemory<VectorType> mem;
 
       typename VectorMemory<VectorType>::Pointer src_ypred(mem);
@@ -142,8 +142,8 @@ namespace SUNDIALS
                             N_Vector ycur,
                             N_Vector fcur)
     {
-      ARKode<VectorType>& solver
-        = *static_cast<ARKode<VectorType>*>(arkode_mem->ark_user_data);
+      ARKode<VectorType>& solver =
+        *static_cast<ARKode<VectorType>*>(arkode_mem->ark_user_data);
       GrowingVectorMemory<VectorType> mem;
 
       typename VectorMemory<VectorType>::Pointer src(mem);
@@ -177,8 +177,8 @@ namespace SUNDIALS
     int
     t_arkode_setup_mass(ARKodeMem arkode_mem, N_Vector, N_Vector, N_Vector)
     {
-      ARKode<VectorType>& solver
-        = *static_cast<ARKode<VectorType>*>(arkode_mem->ark_user_data);
+      ARKode<VectorType>& solver =
+        *static_cast<ARKode<VectorType>*>(arkode_mem->ark_user_data);
       int err = solver.setup_mass(arkode_mem->ark_tn);
       return err;
     }
@@ -194,8 +194,8 @@ namespace SUNDIALS
 #  endif
     )
     {
-      ARKode<VectorType>& solver
-        = *static_cast<ARKode<VectorType>*>(arkode_mem->ark_user_data);
+      ARKode<VectorType>& solver =
+        *static_cast<ARKode<VectorType>*>(arkode_mem->ark_user_data);
       GrowingVectorMemory<VectorType> mem;
 
       typename VectorMemory<VectorType>::Pointer src(mem);
@@ -266,8 +266,8 @@ namespace SUNDIALS
 
         yy = N_VNew_Parallel(communicator, local_system_size, system_size);
 
-        abs_tolls
-          = N_VNew_Parallel(communicator, local_system_size, system_size);
+        abs_tolls =
+          N_VNew_Parallel(communicator, local_system_size, system_size);
       }
     else
 #  endif
@@ -364,8 +364,8 @@ namespace SUNDIALS
 
         yy = N_VNew_Parallel(communicator, local_system_size, system_size);
 
-        abs_tolls
-          = N_VNew_Parallel(communicator, local_system_size, system_size);
+        abs_tolls =
+          N_VNew_Parallel(communicator, local_system_size, system_size);
       }
     else
 #  endif
@@ -390,8 +390,8 @@ namespace SUNDIALS
     if(get_local_tolerances)
       {
         copy(abs_tolls, get_local_tolerances());
-        status
-          = ARKodeSVtolerances(arkode_mem, data.relative_tolerance, abs_tolls);
+        status =
+          ARKodeSVtolerances(arkode_mem, data.relative_tolerance, abs_tolls);
         AssertARKode(status);
       }
     else
@@ -410,8 +410,8 @@ namespace SUNDIALS
     status = ARKodeSetStopTime(arkode_mem, data.final_time);
     AssertARKode(status);
 
-    status
-      = ARKodeSetMaxNonlinIters(arkode_mem, data.maximum_non_linear_iterations);
+    status =
+      ARKodeSetMaxNonlinIters(arkode_mem, data.maximum_non_linear_iterations);
     AssertARKode(status);
 
     // Initialize solver
@@ -439,8 +439,8 @@ namespace SUNDIALS
       }
     else
       {
-        status
-          = ARKodeSetFixedPoint(arkode_mem, data.maximum_non_linear_iterations);
+        status =
+          ARKodeSetFixedPoint(arkode_mem, data.maximum_non_linear_iterations);
         AssertARKode(status);
       }
 
@@ -469,8 +469,9 @@ namespace SUNDIALS
       AssertThrow(false, ExcFunctionNotProvided("reinit_vector"));
     };
 
-    solver_should_restart
-      = [](const double, VectorType&) -> bool { return false; };
+    solver_should_restart = [](const double, VectorType&) -> bool {
+      return false;
+    };
   }
 
   template class ARKode<Vector<double>>;

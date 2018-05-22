@@ -30,8 +30,8 @@
 
 namespace LA
 {
-#if defined(DEAL_II_WITH_PETSC) \
-  && !(defined(DEAL_II_WITH_TRILINOS) && defined(FORCE_USE_OF_TRILINOS))
+#if defined(DEAL_II_WITH_PETSC) && \
+  !(defined(DEAL_II_WITH_TRILINOS) && defined(FORCE_USE_OF_TRILINOS))
   using namespace dealii::LinearAlgebraPETSc;
 #  define USE_PETSC_LA
 #elif defined(DEAL_II_WITH_TRILINOS)
@@ -203,18 +203,17 @@ namespace Step55
 
     const double pi  = numbers::PI;
     const double pi2 = pi * pi;
-    values[0]        = -1.0L / 2.0L * (-2 * sqrt(25.0 + 4 * pi2) + 10.0)
-                  * exp(R_x * (-2 * sqrt(25.0 + 4 * pi2) + 10.0))
-                - 0.4 * pi2 * exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0))
-                    * cos(2 * R_y * pi)
-                + 0.1 * pow(-sqrt(25.0 + 4 * pi2) + 5.0, 2)
-                    * exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0))
-                    * cos(2 * R_y * pi);
-    values[1] = 0.2 * pi * (-sqrt(25.0 + 4 * pi2) + 5.0)
-                  * exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0)) * sin(2 * R_y * pi)
-                - 0.05 * pow(-sqrt(25.0 + 4 * pi2) + 5.0, 3)
-                    * exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0))
-                    * sin(2 * R_y * pi) / pi;
+    values[0] =
+      -1.0L / 2.0L * (-2 * sqrt(25.0 + 4 * pi2) + 10.0) *
+        exp(R_x * (-2 * sqrt(25.0 + 4 * pi2) + 10.0)) -
+      0.4 * pi2 * exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0)) * cos(2 * R_y * pi) +
+      0.1 * pow(-sqrt(25.0 + 4 * pi2) + 5.0, 2) *
+        exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0)) * cos(2 * R_y * pi);
+    values[1] = 0.2 * pi * (-sqrt(25.0 + 4 * pi2) + 5.0) *
+                  exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0)) * sin(2 * R_y * pi) -
+                0.05 * pow(-sqrt(25.0 + 4 * pi2) + 5.0, 3) *
+                  exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0)) * sin(2 * R_y * pi) /
+                  pi;
     values[2] = 0;
   }
 
@@ -239,25 +238,25 @@ namespace Step55
 
     const double pi  = numbers::PI;
     const double pi2 = pi * pi;
-    values[0]
-      = -exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0)) * cos(2 * R_y * pi) + 1;
-    values[1] = (1.0L / 2.0L) * (-sqrt(25.0 + 4 * pi2) + 5.0)
-                * exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0)) * sin(2 * R_y * pi)
-                / pi;
-    values[2]
-      = -1.0L / 2.0L * exp(R_x * (-2 * sqrt(25.0 + 4 * pi2) + 10.0))
-        - 2.0
-            * (-6538034.74494422
-               + 0.0134758939981709 * exp(4 * sqrt(25.0 + 4 * pi2)))
-            / (-80.0 * exp(3 * sqrt(25.0 + 4 * pi2))
-               + 16.0 * sqrt(25.0 + 4 * pi2) * exp(3 * sqrt(25.0 + 4 * pi2)))
-        - 1634508.68623606 * exp(-3.0 * sqrt(25.0 + 4 * pi2))
-            / (-10.0 + 2.0 * sqrt(25.0 + 4 * pi2))
-        + (-0.00673794699908547 * exp(sqrt(25.0 + 4 * pi2))
-           + 3269017.37247211 * exp(-3 * sqrt(25.0 + 4 * pi2)))
-            / (-8 * sqrt(25.0 + 4 * pi2) + 40.0)
-        + 0.00336897349954273 * exp(1.0 * sqrt(25.0 + 4 * pi2))
-            / (-10.0 + 2.0 * sqrt(25.0 + 4 * pi2));
+    values[0] =
+      -exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0)) * cos(2 * R_y * pi) + 1;
+    values[1] = (1.0L / 2.0L) * (-sqrt(25.0 + 4 * pi2) + 5.0) *
+                exp(R_x * (-sqrt(25.0 + 4 * pi2) + 5.0)) * sin(2 * R_y * pi) /
+                pi;
+    values[2] =
+      -1.0L / 2.0L * exp(R_x * (-2 * sqrt(25.0 + 4 * pi2) + 10.0)) -
+      2.0 *
+        (-6538034.74494422 +
+         0.0134758939981709 * exp(4 * sqrt(25.0 + 4 * pi2))) /
+        (-80.0 * exp(3 * sqrt(25.0 + 4 * pi2)) +
+         16.0 * sqrt(25.0 + 4 * pi2) * exp(3 * sqrt(25.0 + 4 * pi2))) -
+      1634508.68623606 * exp(-3.0 * sqrt(25.0 + 4 * pi2)) /
+        (-10.0 + 2.0 * sqrt(25.0 + 4 * pi2)) +
+      (-0.00673794699908547 * exp(sqrt(25.0 + 4 * pi2)) +
+       3269017.37247211 * exp(-3 * sqrt(25.0 + 4 * pi2))) /
+        (-8 * sqrt(25.0 + 4 * pi2) + 40.0) +
+      0.00336897349954273 * exp(1.0 * sqrt(25.0 + 4 * pi2)) /
+        (-10.0 + 2.0 * sqrt(25.0 + 4 * pi2));
   }
 
   // @sect3{The main program}
@@ -320,8 +319,8 @@ namespace Step55
       fe(FE_Q<dim>(velocity_degree), dim, FE_Q<dim>(velocity_degree - 1), 1),
       triangulation(mpi_communicator,
                     typename Triangulation<dim>::MeshSmoothing(
-                      Triangulation<dim>::smoothing_on_refinement
-                      | Triangulation<dim>::smoothing_on_coarsening)),
+                      Triangulation<dim>::smoothing_on_refinement |
+                      Triangulation<dim>::smoothing_on_coarsening)),
       dof_handler(triangulation),
       pcout(std::cout,
             (Utilities::MPI::this_mpi_process(mpi_communicator) == 0)),
@@ -375,8 +374,8 @@ namespace Step55
     // and vectors.
     owned_partitioning.resize(2);
     owned_partitioning[0] = dof_handler.locally_owned_dofs().get_view(0, n_u);
-    owned_partitioning[1]
-      = dof_handler.locally_owned_dofs().get_view(n_u, n_u + n_p);
+    owned_partitioning[1] =
+      dof_handler.locally_owned_dofs().get_view(n_u, n_u + n_p);
 
     IndexSet locally_relevant_dofs;
     DoFTools::extract_locally_relevant_dofs(dof_handler, locally_relevant_dofs);
@@ -490,8 +489,8 @@ namespace Step55
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -511,9 +510,9 @@ namespace Step55
     const FEValuesExtractors::Vector     velocities(0);
     const FEValuesExtractors::Scalar     pressure(dim);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       if(cell->is_locally_owned())
         {
@@ -537,21 +536,20 @@ namespace Step55
                 {
                   for(unsigned int j = 0; j < dofs_per_cell; ++j)
                     {
-                      cell_matrix(i, j)
-                        += (viscosity
-                              * scalar_product(grad_phi_u[i], grad_phi_u[j])
-                            - div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j])
-                           * fe_values.JxW(q);
+                      cell_matrix(i, j) +=
+                        (viscosity *
+                           scalar_product(grad_phi_u[i], grad_phi_u[j]) -
+                         div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j]) *
+                        fe_values.JxW(q);
 
-                      cell_matrix2(i, j) += 1.0 / viscosity * phi_p[i]
-                                            * phi_p[j] * fe_values.JxW(q);
+                      cell_matrix2(i, j) += 1.0 / viscosity * phi_p[i] *
+                                            phi_p[j] * fe_values.JxW(q);
                     }
 
-                  const unsigned int component_i
-                    = fe.system_to_component_index(i).first;
-                  cell_rhs(i) += fe_values.shape_value(i, q)
-                                 * rhs_values[q](component_i)
-                                 * fe_values.JxW(q);
+                  const unsigned int component_i =
+                    fe.system_to_component_index(i).first;
+                  cell_rhs(i) += fe_values.shape_value(i, q) *
+                                 rhs_values[q](component_i) * fe_values.JxW(q);
                 }
             }
 
@@ -652,11 +650,11 @@ namespace Step55
     // computations against our reference solution, which has a mean value
     // of zero.
     locally_relevant_solution = distributed_solution;
-    const double mean_pressure
-      = VectorTools::compute_mean_value(dof_handler,
-                                        QGauss<dim>(velocity_degree + 2),
-                                        locally_relevant_solution,
-                                        dim);
+    const double mean_pressure =
+      VectorTools::compute_mean_value(dof_handler,
+                                      QGauss<dim>(velocity_degree + 2),
+                                      locally_relevant_solution,
+                                      dim);
     distributed_solution.block(1).add(-mean_pressure);
     locally_relevant_solution.block(1) = distributed_solution.block(1);
   }
@@ -768,10 +766,9 @@ namespace Step55
 
     data_out.build_patches();
 
-    const std::string filename
-      = ("solution-" + Utilities::int_to_string(cycle, 2) + "."
-         + Utilities::int_to_string(triangulation.locally_owned_subdomain(),
-                                    4));
+    const std::string filename =
+      ("solution-" + Utilities::int_to_string(cycle, 2) + "." +
+       Utilities::int_to_string(triangulation.locally_owned_subdomain(), 4));
     std::ofstream output((filename + ".vtu"));
     data_out.write_vtu(output);
 
@@ -781,8 +778,8 @@ namespace Step55
         for(unsigned int i = 0;
             i < Utilities::MPI::n_mpi_processes(mpi_communicator);
             ++i)
-          filenames.push_back("solution-" + Utilities::int_to_string(cycle, 2)
-                              + "." + Utilities::int_to_string(i, 4) + ".vtu");
+          filenames.push_back("solution-" + Utilities::int_to_string(cycle, 2) +
+                              "." + Utilities::int_to_string(i, 4) + ".vtu");
 
         std::ofstream master_output(
           "solution-" + Utilities::int_to_string(cycle, 2) + ".pvtu");

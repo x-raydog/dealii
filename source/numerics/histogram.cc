@@ -25,8 +25,8 @@ template <typename number>
 bool
 Histogram::logarithmic_less(const number n1, const number n2)
 {
-  return (((n1 < n2) && (n1 > 0)) || ((n1 < n2) && (n2 <= 0))
-          || ((n2 < n1) && (n1 > 0) && (n2 <= 0)));
+  return (((n1 < n2) && (n1 > 0)) || ((n1 < n2) && (n2 <= 0)) ||
+          ((n2 < n1) && (n1 > 0) && (n2 <= 0)));
 }
 
 Histogram::Interval::Interval(const double left_point, const double right_point)
@@ -71,12 +71,12 @@ Histogram::evaluate(const std::vector<Vector<number>>& values,
 
           for(unsigned int i = 1; i < values.size(); ++i)
             {
-              min_value = std::min(
-                min_value,
-                *std::min_element(values[i].begin(), values[i].end()));
-              max_value = std::max(
-                max_value,
-                *std::max_element(values[i].begin(), values[i].end()));
+              min_value =
+                std::min(min_value,
+                         *std::min_element(values[i].begin(), values[i].end()));
+              max_value =
+                std::max(max_value,
+                         *std::max_element(values[i].begin(), values[i].end()));
             };
 
           break;
@@ -85,8 +85,8 @@ Histogram::evaluate(const std::vector<Vector<number>>& values,
       case logarithmic:
         {
           typedef bool (*comparator)(const number, const number);
-          const comparator logarithmic_less_function
-            = &Histogram::template logarithmic_less<number>;
+          const comparator logarithmic_less_function =
+            &Histogram::template logarithmic_less<number>;
 
           min_value = *std::min_element(
             values[0].begin(), values[0].end(), logarithmic_less_function);
@@ -149,8 +149,8 @@ Histogram::evaluate(const std::vector<Vector<number>>& values,
 
       case logarithmic:
         {
-          const float delta
-            = (std::log(max_value) - std::log(min_value)) / n_intervals;
+          const float delta =
+            (std::log(max_value) - std::log(min_value)) / n_intervals;
 
           for(unsigned int n = 0; n < n_intervals; ++n)
             intervals[0].emplace_back(
@@ -278,8 +278,8 @@ Histogram::parse_interval_spacing(const std::string& name)
 std::size_t
 Histogram::memory_consumption() const
 {
-  return (MemoryConsumption::memory_consumption(intervals)
-          + MemoryConsumption::memory_consumption(y_values));
+  return (MemoryConsumption::memory_consumption(intervals) +
+          MemoryConsumption::memory_consumption(y_values));
 }
 
 // explicit instantiations for float

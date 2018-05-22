@@ -122,15 +122,19 @@ namespace Step7
   // <code>dim</code>, but can immediately use the following definition:
   template <>
   const Point<1>
-    SolutionBase<1>::source_centers[SolutionBase<1>::n_source_centers]
-    = {Point<1>(-1.0 / 3.0), Point<1>(0.0), Point<1>(+1.0 / 3.0)};
+    SolutionBase<1>::source_centers[SolutionBase<1>::n_source_centers] = {
+      Point<1>(-1.0 / 3.0),
+      Point<1>(0.0),
+      Point<1>(+1.0 / 3.0)};
 
   // Likewise, we can provide an explicit specialization for
   // <code>dim=2</code>. We place the centers for the 2d case as follows:
   template <>
   const Point<2>
-    SolutionBase<2>::source_centers[SolutionBase<2>::n_source_centers]
-    = {Point<2>(-0.5, +0.5), Point<2>(-0.5, -0.5), Point<2>(+0.5, -0.5)};
+    SolutionBase<2>::source_centers[SolutionBase<2>::n_source_centers] = {
+      Point<2>(-0.5, +0.5),
+      Point<2>(-0.5, -0.5),
+      Point<2>(+0.5, -0.5)};
 
   // There remains to assign a value to the half-width of the exponentials. We
   // would like to use the same value for all dimensions. In this case, we
@@ -210,8 +214,8 @@ namespace Step7
     for(unsigned int i = 0; i < this->n_source_centers; ++i)
       {
         const Tensor<1, dim> x_minus_xi = p - this->source_centers[i];
-        return_value
-          += std::exp(-x_minus_xi.norm_square() / (this->width * this->width));
+        return_value +=
+          std::exp(-x_minus_xi.norm_square() / (this->width * this->width));
       }
 
     return return_value;
@@ -254,10 +258,10 @@ namespace Step7
         // For the gradient, note that its direction is along (x-x_i), so we
         // add up multiples of this distance vector, where the factor is given
         // by the exponentials.
-        return_value += (-2 / (this->width * this->width)
-                         * std::exp(-x_minus_xi.norm_square()
-                                    / (this->width * this->width))
-                         * x_minus_xi);
+        return_value +=
+          (-2 / (this->width * this->width) *
+           std::exp(-x_minus_xi.norm_square() / (this->width * this->width)) *
+           x_minus_xi);
       }
 
     return return_value;
@@ -293,15 +297,14 @@ namespace Step7
         const Tensor<1, dim> x_minus_xi = p - this->source_centers[i];
 
         // The first contribution is the Laplacian:
-        return_value
-          += ((2 * dim
-               - 4 * x_minus_xi.norm_square() / (this->width * this->width))
-              / (this->width * this->width)
-              * std::exp(-x_minus_xi.norm_square()
-                         / (this->width * this->width)));
+        return_value +=
+          ((2 * dim -
+            4 * x_minus_xi.norm_square() / (this->width * this->width)) /
+           (this->width * this->width) *
+           std::exp(-x_minus_xi.norm_square() / (this->width * this->width)));
         // And the second is the solution itself:
-        return_value
-          += std::exp(-x_minus_xi.norm_square() / (this->width * this->width));
+        return_value +=
+          std::exp(-x_minus_xi.norm_square() / (this->width * this->width));
       }
 
     return return_value;
@@ -593,14 +596,14 @@ namespace Step7
     // this information is called FEFaceValues:
     FEValues<dim> fe_values(*fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
 
     FEFaceValues<dim> fe_face_values(*fe,
                                      face_quadrature_formula,
-                                     update_values | update_quadrature_points
-                                       | update_normal_vectors
-                                       | update_JxW_values);
+                                     update_values | update_quadrature_points |
+                                       update_normal_vectors |
+                                       update_JxW_values);
 
     // Then we need some objects already known from previous examples: An
     // object denoting the right hand side function, its values at the
@@ -624,9 +627,9 @@ namespace Step7
 
     // Now for the main loop over all cells. This is mostly unchanged from
     // previous examples, so we only comment on the things that have changed.
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         cell_matrix = 0;
@@ -644,14 +647,14 @@ namespace Step7
                 // The first thing that has changed is the bilinear form. It
                 // now contains the additional term from the Helmholtz
                 // equation:
-                cell_matrix(i, j) += ((fe_values.shape_grad(i, q_point)
-                                         * fe_values.shape_grad(j, q_point)
-                                       + fe_values.shape_value(i, q_point)
-                                           * fe_values.shape_value(j, q_point))
-                                      * fe_values.JxW(q_point));
+                cell_matrix(i, j) += ((fe_values.shape_grad(i, q_point) *
+                                         fe_values.shape_grad(j, q_point) +
+                                       fe_values.shape_value(i, q_point) *
+                                         fe_values.shape_value(j, q_point)) *
+                                      fe_values.JxW(q_point));
 
-              cell_rhs(i) += (fe_values.shape_value(i, q_point)
-                              * rhs_values[q_point] * fe_values.JxW(q_point));
+              cell_rhs(i) += (fe_values.shape_value(i, q_point) *
+                              rhs_values[q_point] * fe_values.JxW(q_point));
             }
 
         // Then there is that second term on the right hand side, the contour
@@ -666,8 +669,8 @@ namespace Step7
         for(unsigned int face_number = 0;
             face_number < GeometryInfo<dim>::faces_per_cell;
             ++face_number)
-          if(cell->face(face_number)->at_boundary()
-             && (cell->face(face_number)->boundary_id() == 1))
+          if(cell->face(face_number)->at_boundary() &&
+             (cell->face(face_number)->boundary_id() == 1))
             {
               // If we came into here, then we have found an external face
               // belonging to Gamma2. Next, we have to compute the values of
@@ -690,15 +693,15 @@ namespace Step7
               for(unsigned int q_point = 0; q_point < n_face_q_points;
                   ++q_point)
                 {
-                  const double neumann_value
-                    = (exact_solution.gradient(
-                         fe_face_values.quadrature_point(q_point))
-                       * fe_face_values.normal_vector(q_point));
+                  const double neumann_value =
+                    (exact_solution.gradient(
+                       fe_face_values.quadrature_point(q_point)) *
+                     fe_face_values.normal_vector(q_point));
 
                   for(unsigned int i = 0; i < dofs_per_cell; ++i)
-                    cell_rhs(i)
-                      += (neumann_value * fe_face_values.shape_value(i, q_point)
-                          * fe_face_values.JxW(q_point));
+                    cell_rhs(i) +=
+                      (neumann_value * fe_face_values.shape_value(i, q_point) *
+                       fe_face_values.JxW(q_point));
                 }
             }
 
@@ -970,8 +973,8 @@ namespace Step7
   void
   HelmholtzProblem<dim>::run()
   {
-    const unsigned int n_cycles
-      = (refinement_mode == global_refinement) ? 5 : 9;
+    const unsigned int n_cycles =
+      (refinement_mode == global_refinement) ? 5 : 9;
     for(unsigned int cycle = 0; cycle < n_cycles; ++cycle)
       {
         if(cycle == 0)
@@ -979,17 +982,18 @@ namespace Step7
             GridGenerator::hyper_cube(triangulation, -1, 1);
             triangulation.refine_global(3);
 
-            typename Triangulation<dim>::cell_iterator cell
-              = triangulation.begin(),
-              endc = triangulation.end();
+            typename Triangulation<dim>::cell_iterator cell =
+                                                         triangulation.begin(),
+                                                       endc =
+                                                         triangulation.end();
             for(; cell != endc; ++cell)
               for(unsigned int face_number = 0;
                   face_number < GeometryInfo<dim>::faces_per_cell;
                   ++face_number)
-                if((std::fabs(cell->face(face_number)->center()(0) - (-1))
-                    < 1e-12)
-                   || (std::fabs(cell->face(face_number)->center()(1) - (-1))
-                       < 1e-12))
+                if((std::fabs(cell->face(face_number)->center()(0) - (-1)) <
+                    1e-12) ||
+                   (std::fabs(cell->face(face_number)->center()(1) - (-1)) <
+                    1e-12))
                   cell->face(face_number)->set_boundary_id(1);
           }
         else

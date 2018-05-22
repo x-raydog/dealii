@@ -1320,8 +1320,8 @@ public:
   precondition_SSOR(Vector<somenumber>&             dst,
                     const Vector<somenumber>&       src,
                     const number                    omega = 1.,
-                    const std::vector<std::size_t>& pos_right_of_diagonal
-                    = std::vector<std::size_t>()) const;
+                    const std::vector<std::size_t>& pos_right_of_diagonal =
+                      std::vector<std::size_t>()) const;
 
   /**
    * Apply SOR preconditioning matrix to <tt>src</tt>.

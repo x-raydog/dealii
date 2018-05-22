@@ -136,8 +136,8 @@ namespace Step48
     inv_mass_matrix.compress(VectorOperation::add);
     for(unsigned int k = 0; k < inv_mass_matrix.local_size(); ++k)
       if(inv_mass_matrix.local_element(k) > 1e-15)
-        inv_mass_matrix.local_element(k)
-          = 1. / inv_mass_matrix.local_element(k);
+        inv_mass_matrix.local_element(k) =
+          1. / inv_mass_matrix.local_element(k);
       else
         inv_mass_matrix.local_element(k) = 0;
   }
@@ -200,8 +200,8 @@ namespace Step48
             const VectorizedArray<double> current_value = current.get_value(q);
             const VectorizedArray<double> old_value     = old.get_value(q);
 
-            current.submit_value(2. * current_value - old_value
-                                   - delta_t_sqr * std::sin(current_value),
+            current.submit_value(2. * current_value - old_value -
+                                   delta_t_sqr * std::sin(current_value),
                                  q);
             current.submit_gradient(-delta_t_sqr * current.get_gradient(q), q);
           }
@@ -259,8 +259,8 @@ namespace Step48
     const double m  = 0.5;
     const double c1 = 0.;
     const double c2 = 0.;
-    const double factor
-      = (m / std::sqrt(1. - m * m) * std::sin(std::sqrt(1. - m * m) * t + c2));
+    const double factor =
+      (m / std::sqrt(1. - m * m) * std::sin(std::sqrt(1. - m * m) * t + c2));
     double result = 1.;
     for(unsigned int d = 0; d < dim; ++d)
       result *= -4. * std::atan(factor / std::cosh(m * p[d] + c1));
@@ -358,8 +358,8 @@ namespace Step48
     GridGenerator::hyper_cube(triangulation, -15, 15);
     triangulation.refine_global(n_global_refinements);
     {
-      typename Triangulation<dim>::active_cell_iterator cell
-        = triangulation.begin_active(),
+      typename Triangulation<dim>::active_cell_iterator
+        cell     = triangulation.begin_active(),
         end_cell = triangulation.end();
       for(; cell != end_cell; ++cell)
         if(cell->is_locally_owned())
@@ -410,8 +410,8 @@ namespace Step48
 
     QGaussLobatto<1>                         quadrature(fe_degree + 1);
     typename MatrixFree<dim>::AdditionalData additional_data;
-    additional_data.tasks_parallel_scheme
-      = MatrixFree<dim>::AdditionalData::partition_partition;
+    additional_data.tasks_parallel_scheme =
+      MatrixFree<dim>::AdditionalData::partition_partition;
 
     matrix_free_data.reinit(
       dof_handler, constraints, quadrature, additional_data);
@@ -471,14 +471,14 @@ namespace Step48
     data_out.add_data_vector(solution, "solution");
     data_out.build_patches();
 
-    const std::string filename
-      = "solution-" + Utilities::int_to_string(timestep_number, 3);
+    const std::string filename =
+      "solution-" + Utilities::int_to_string(timestep_number, 3);
 
     std::ofstream output(
-      filename + "."
-      + Utilities::int_to_string(
-          Utilities::MPI::this_mpi_process(MPI_COMM_WORLD), 4)
-      + ".vtu");
+      filename + "." +
+      Utilities::int_to_string(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD),
+                               4) +
+      ".vtu");
     data_out.write_vtu(output);
 
     if(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
@@ -487,9 +487,9 @@ namespace Step48
         for(unsigned int i = 0;
             i < Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
             ++i)
-          filenames.push_back("solution-"
-                              + Utilities::int_to_string(timestep_number, 3)
-                              + "." + Utilities::int_to_string(i, 4) + ".vtu");
+          filenames.push_back("solution-" +
+                              Utilities::int_to_string(timestep_number, 3) +
+                              "." + Utilities::int_to_string(i, 4) + ".vtu");
 
         std::ofstream master_output((filename + ".pvtu"));
         data_out.write_pvtu_record(master_output, filenames);
@@ -516,10 +516,10 @@ namespace Step48
   {
     make_grid_and_dofs();
 
-    const double local_min_cell_diameter
-      = triangulation.last()->diameter() / std::sqrt(dim);
-    const double global_min_cell_diameter
-      = -Utilities::MPI::max(-local_min_cell_diameter, MPI_COMM_WORLD);
+    const double local_min_cell_diameter =
+      triangulation.last()->diameter() / std::sqrt(dim);
+    const double global_min_cell_diameter =
+      -Utilities::MPI::max(-local_min_cell_diameter, MPI_COMM_WORLD);
     time_step = cfl_number * global_min_cell_diameter;
     time_step = (final_time - time) / (int((final_time - time) / time_step));
     pcout << "   Time step size: " << time_step

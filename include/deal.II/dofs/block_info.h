@@ -289,10 +289,10 @@ BlockInfo::print(OS& os) const
 inline std::size_t
 BlockInfo::memory_consumption() const
 {
-  return (MemoryConsumption::memory_consumption(bi_global)
-          + MemoryConsumption::memory_consumption(levels)
-          + MemoryConsumption::memory_consumption(bi_local)
-          + MemoryConsumption::memory_consumption(base_elements));
+  return (MemoryConsumption::memory_consumption(bi_global) +
+          MemoryConsumption::memory_consumption(levels) +
+          MemoryConsumption::memory_consumption(bi_local) +
+          MemoryConsumption::memory_consumption(base_elements));
 }
 
 template <class Archive>

@@ -789,9 +789,10 @@ BlockSparsityPatternBase<SparsityPatternType>::add(const size_type i,
   // if you get an error here, are
   // you sure you called
   // <tt>collect_sizes()</tt> before?
-  const std::pair<size_type, size_type> row_index
-    = row_indices.global_to_local(i),
-    col_index = column_indices.global_to_local(j);
+  const std::pair<size_type, size_type> row_index =
+                                          row_indices.global_to_local(i),
+                                        col_index =
+                                          column_indices.global_to_local(j);
   sub_objects[row_index.first][col_index.first]->add(row_index.second,
                                                      col_index.second);
 }
@@ -846,8 +847,8 @@ BlockSparsityPatternBase<SparsityPatternType>::add_entries(
     {
       const size_type col = *it;
 
-      const std::pair<size_type, size_type> col_index
-        = this->column_indices.global_to_local(col);
+      const std::pair<size_type, size_type> col_index =
+        this->column_indices.global_to_local(col);
 
       const size_type local_index = counter_within_block[col_index.first]++;
 
@@ -868,8 +869,8 @@ BlockSparsityPatternBase<SparsityPatternType>::add_entries(
   // where we should start reading out
   // data. Now let's write the data into
   // the individual blocks!
-  const std::pair<size_type, size_type> row_index
-    = this->row_indices.global_to_local(row);
+  const std::pair<size_type, size_type> row_index =
+    this->row_indices.global_to_local(row);
   for(size_type block_col = 0; block_col < n_block_cols(); ++block_col)
     {
       if(counter_within_block[block_col] == 0)
@@ -877,8 +878,8 @@ BlockSparsityPatternBase<SparsityPatternType>::add_entries(
       sub_objects[row_index.first][block_col]->add_entries(
         row_index.second,
         block_column_indices[block_col].begin(),
-        block_column_indices[block_col].begin()
-          + counter_within_block[block_col],
+        block_column_indices[block_col].begin() +
+          counter_within_block[block_col],
         indices_are_sorted);
     }
 }
@@ -891,9 +892,10 @@ BlockSparsityPatternBase<SparsityPatternType>::exists(const size_type i,
   // if you get an error here, are
   // you sure you called
   // <tt>collect_sizes()</tt> before?
-  const std::pair<size_type, size_type> row_index
-    = row_indices.global_to_local(i),
-    col_index = column_indices.global_to_local(j);
+  const std::pair<size_type, size_type> row_index =
+                                          row_indices.global_to_local(i),
+                                        col_index =
+                                          column_indices.global_to_local(j);
   return sub_objects[row_index.first][col_index.first]->exists(
     row_index.second, col_index.second);
 }
@@ -903,8 +905,8 @@ inline unsigned int
 BlockSparsityPatternBase<SparsityPatternType>::row_length(
   const size_type row) const
 {
-  const std::pair<size_type, size_type> row_index
-    = row_indices.global_to_local(row);
+  const std::pair<size_type, size_type> row_index =
+    row_indices.global_to_local(row);
 
   unsigned int c = 0;
 
@@ -933,8 +935,8 @@ BlockDynamicSparsityPattern::column_number(const size_type    row,
                                            const unsigned int index) const
 {
   // .first= ith block, .second = jth row in that block
-  const std::pair<size_type, size_type> row_index
-    = row_indices.global_to_local(row);
+  const std::pair<size_type, size_type> row_index =
+    row_indices.global_to_local(row);
 
   Assert(index < row_length(row), ExcIndexRange(index, 0, row_length(row)));
 
@@ -942,12 +944,11 @@ BlockDynamicSparsityPattern::column_number(const size_type    row,
   size_type block_columns = 0; //sum of n_cols for all blocks to the left
   for(unsigned int b = 0; b < columns; ++b)
     {
-      unsigned int rowlen
-        = sub_objects[row_index.first][b]->row_length(row_index.second);
+      unsigned int rowlen =
+        sub_objects[row_index.first][b]->row_length(row_index.second);
       if(index < c + rowlen)
-        return block_columns
-               + sub_objects[row_index.first][b]->column_number(
-                   row_index.second, index - c);
+        return block_columns + sub_objects[row_index.first][b]->column_number(
+                                 row_index.second, index - c);
       c += rowlen;
       block_columns += sub_objects[row_index.first][b]->n_cols();
     }

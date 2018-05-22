@@ -150,9 +150,8 @@ namespace Differentiation
         typedef typename ad_type::value_type  value_type;
         typedef typename ad_type::value_type  derivative_type;
 
-        static const unsigned int n_supported_derivative_levels
-          = 1
-            + SacadoNumberInfo<derivative_type>::n_supported_derivative_levels;
+        static const unsigned int n_supported_derivative_levels =
+          1 + SacadoNumberInfo<derivative_type>::n_supported_derivative_levels;
       };
 
       /**
@@ -170,9 +169,8 @@ namespace Differentiation
         typedef typename ad_type::ADVari::value_type  value_type;
         typedef typename ad_type::ADVari::value_type  derivative_type;
 
-        static const unsigned int n_supported_derivative_levels
-          = 1
-            + SacadoNumberInfo<derivative_type>::n_supported_derivative_levels;
+        static const unsigned int n_supported_derivative_levels =
+          1 + SacadoNumberInfo<derivative_type>::n_supported_derivative_levels;
       };
 
       /**
@@ -205,8 +203,8 @@ namespace Differentiation
         typedef Sacado::Fad::DFad<ScalarType> real_type;
         typedef
           typename SacadoNumberInfo<real_type>::derivative_type derivative_type;
-        static const unsigned int n_supported_derivative_levels
-          = SacadoNumberInfo<real_type>::n_supported_derivative_levels;
+        static const unsigned int n_supported_derivative_levels =
+          SacadoNumberInfo<real_type>::n_supported_derivative_levels;
       };
 
       /**
@@ -224,8 +222,8 @@ namespace Differentiation
         typedef Sacado::Fad::DFad<Sacado::Fad::DFad<ScalarType>> real_type;
         typedef
           typename SacadoNumberInfo<real_type>::derivative_type derivative_type;
-        static const unsigned int n_supported_derivative_levels
-          = SacadoNumberInfo<real_type>::n_supported_derivative_levels;
+        static const unsigned int n_supported_derivative_levels =
+          SacadoNumberInfo<real_type>::n_supported_derivative_levels;
       };
 
       /**
@@ -243,8 +241,8 @@ namespace Differentiation
         typedef Sacado::Rad::ADvar<ScalarType> real_type;
         typedef
           typename SacadoNumberInfo<real_type>::derivative_type derivative_type;
-        static const unsigned int n_supported_derivative_levels
-          = SacadoNumberInfo<real_type>::n_supported_derivative_levels;
+        static const unsigned int n_supported_derivative_levels =
+          SacadoNumberInfo<real_type>::n_supported_derivative_levels;
       };
 
       /**
@@ -262,8 +260,8 @@ namespace Differentiation
         typedef Sacado::Rad::ADvar<Sacado::Fad::DFad<ScalarType>> real_type;
         typedef
           typename SacadoNumberInfo<real_type>::derivative_type derivative_type;
-        static const unsigned int n_supported_derivative_levels
-          = SacadoNumberInfo<real_type>::n_supported_derivative_levels;
+        static const unsigned int n_supported_derivative_levels =
+          SacadoNumberInfo<real_type>::n_supported_derivative_levels;
       };
 
       /**
@@ -825,27 +823,27 @@ namespace Differentiation
     struct is_sacado_dfad_number<
       NumberType,
       typename std::enable_if<
-        ADNumberTraits<typename std::decay<NumberType>::type>::type_code
-          == NumberTypes::sacado_dfad
-        || ADNumberTraits<typename std::decay<NumberType>::type>::type_code
-             == NumberTypes::sacado_dfad_dfad>::type> : std::true_type
+        ADNumberTraits<typename std::decay<NumberType>::type>::type_code ==
+          NumberTypes::sacado_dfad ||
+        ADNumberTraits<typename std::decay<NumberType>::type>::type_code ==
+          NumberTypes::sacado_dfad_dfad>::type> : std::true_type
     {};
 
     template <typename NumberType>
     struct is_sacado_rad_number<
       NumberType,
       typename std::enable_if<
-        ADNumberTraits<typename std::decay<NumberType>::type>::type_code
-          == NumberTypes::sacado_rad
-        || ADNumberTraits<typename std::decay<NumberType>::type>::type_code
-             == NumberTypes::sacado_rad_dfad>::type> : std::true_type
+        ADNumberTraits<typename std::decay<NumberType>::type>::type_code ==
+          NumberTypes::sacado_rad ||
+        ADNumberTraits<typename std::decay<NumberType>::type>::type_code ==
+          NumberTypes::sacado_rad_dfad>::type> : std::true_type
     {};
 
     template <typename NumberType>
     struct is_sacado_number<
       NumberType,
-      typename std::enable_if<is_sacado_dfad_number<NumberType>::value
-                              || is_sacado_rad_number<NumberType>::value>::type>
+      typename std::enable_if<is_sacado_dfad_number<NumberType>::value ||
+                              is_sacado_rad_number<NumberType>::value>::type>
       : std::true_type
     {};
 

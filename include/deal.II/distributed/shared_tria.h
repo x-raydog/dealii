@@ -230,8 +230,8 @@ namespace parallel
        */
       Triangulation(
         MPI_Comm mpi_communicator,
-        const typename dealii::Triangulation<dim, spacedim>::MeshSmoothing
-        = (dealii::Triangulation<dim, spacedim>::none),
+        const typename dealii::Triangulation<dim, spacedim>::MeshSmoothing =
+          (dealii::Triangulation<dim, spacedim>::none),
         const bool     allow_artificial_cells = false,
         const Settings settings               = partition_auto);
 

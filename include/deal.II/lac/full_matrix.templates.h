@@ -301,8 +301,8 @@ FullMatrix<number>::fill(const FullMatrix<number2>& src,
 
   for(size_type i = 0; i < rows; ++i)
     for(size_type j = 0; j < cols; ++j)
-      (*this)(dst_offset_i + i, dst_offset_j + j)
-        = src(src_offset_i + i, src_offset_j + j);
+      (*this)(dst_offset_i + i, dst_offset_j + j) =
+        src(src_offset_i + i, src_offset_j + j);
 }
 
 template <typename number>
@@ -462,8 +462,8 @@ FullMatrix<number>::equ(const number               a,
 
   for(size_type i = 0; i < m(); ++i)
     for(size_type j = 0; j < n(); ++j)
-      (*this)(i, j)
-        = a * number(A(i, j)) + b * number(B(i, j)) + c * number(C(i, j));
+      (*this)(i, j) =
+        a * number(A(i, j)) + b * number(B(i, j)) + c * number(C(i, j));
 }
 
 template <typename number>
@@ -482,12 +482,13 @@ FullMatrix<number>::mmult(FullMatrix<number2>&       dst,
   // works for us (it is usually not efficient to use BLAS for very small
   // matrices):
 #ifdef DEAL_II_WITH_LAPACK
-  if((std::is_same<number, double>::value || std::is_same<number, float>::value)
-     && std::is_same<number, number2>::value)
-    if(this->n() * this->m() * src.n() > 300
-       && src.n() <= std::numeric_limits<types::blas_int>::max()
-       && this->m() <= std::numeric_limits<types::blas_int>::max()
-       && this->n() <= std::numeric_limits<types::blas_int>::max())
+  if((std::is_same<number, double>::value ||
+      std::is_same<number, float>::value) &&
+     std::is_same<number, number2>::value)
+    if(this->n() * this->m() * src.n() > 300 &&
+       src.n() <= std::numeric_limits<types::blas_int>::max() &&
+       this->m() <= std::numeric_limits<types::blas_int>::max() &&
+       this->n() <= std::numeric_limits<types::blas_int>::max())
       {
         // In case we have the BLAS function gemm detected by CMake, we
         // use that algorithm for matrix-matrix multiplication since it
@@ -561,12 +562,13 @@ FullMatrix<number>::Tmmult(FullMatrix<number2>&       dst,
   // works for us (it is usually not efficient to use BLAS for very small
   // matrices):
 #ifdef DEAL_II_WITH_LAPACK
-  if((std::is_same<number, double>::value || std::is_same<number, float>::value)
-     && std::is_same<number, number2>::value)
-    if(this->n() * this->m() * src.n() > 300
-       && src.n() <= std::numeric_limits<types::blas_int>::max()
-       && this->n() <= std::numeric_limits<types::blas_int>::max()
-       && this->m() <= std::numeric_limits<types::blas_int>::max())
+  if((std::is_same<number, double>::value ||
+      std::is_same<number, float>::value) &&
+     std::is_same<number, number2>::value)
+    if(this->n() * this->m() * src.n() > 300 &&
+       src.n() <= std::numeric_limits<types::blas_int>::max() &&
+       this->n() <= std::numeric_limits<types::blas_int>::max() &&
+       this->m() <= std::numeric_limits<types::blas_int>::max())
       {
         // In case we have the BLAS function gemm detected by CMake, we
         // use that algorithm for matrix-matrix multiplication since it
@@ -661,12 +663,13 @@ FullMatrix<number>::mTmult(FullMatrix<number2>&       dst,
   // works for us (it is usually not efficient to use BLAS for very small
   // matrices):
 #ifdef DEAL_II_WITH_LAPACK
-  if((std::is_same<number, double>::value || std::is_same<number, float>::value)
-     && std::is_same<number, number2>::value)
-    if(this->n() * this->m() * src.m() > 300
-       && src.m() <= std::numeric_limits<types::blas_int>::max()
-       && this->n() <= std::numeric_limits<types::blas_int>::max()
-       && this->m() <= std::numeric_limits<types::blas_int>::max())
+  if((std::is_same<number, double>::value ||
+      std::is_same<number, float>::value) &&
+     std::is_same<number, number2>::value)
+    if(this->n() * this->m() * src.m() > 300 &&
+       src.m() <= std::numeric_limits<types::blas_int>::max() &&
+       this->n() <= std::numeric_limits<types::blas_int>::max() &&
+       this->m() <= std::numeric_limits<types::blas_int>::max())
       {
         // In case we have the BLAS function gemm detected by CMake, we
         // use that algorithm for matrix-matrix multiplication since it
@@ -758,12 +761,13 @@ FullMatrix<number>::TmTmult(FullMatrix<number2>&       dst,
   // works for us (it is usually not efficient to use BLAS for very small
   // matrices):
 #ifdef DEAL_II_WITH_LAPACK
-  if((std::is_same<number, double>::value || std::is_same<number, float>::value)
-     && std::is_same<number, number2>::value)
-    if(this->n() * this->m() * src.m() > 300
-       && src.m() <= std::numeric_limits<types::blas_int>::max()
-       && this->n() <= std::numeric_limits<types::blas_int>::max()
-       && this->m() <= std::numeric_limits<types::blas_int>::max())
+  if((std::is_same<number, double>::value ||
+      std::is_same<number, float>::value) &&
+     std::is_same<number, number2>::value)
+    if(this->n() * this->m() * src.m() > 300 &&
+       src.m() <= std::numeric_limits<types::blas_int>::max() &&
+       this->n() <= std::numeric_limits<types::blas_int>::max() &&
+       this->m() <= std::numeric_limits<types::blas_int>::max())
       {
         // In case we have the BLAS function gemm detected by CMake, we
         // use that algorithm for matrix-matrix multiplication since it
@@ -1047,8 +1051,8 @@ FullMatrix<number>::add(const number               a,
 
   for(size_type i = 0; i < m(); ++i)
     for(size_type j = 0; j < n(); ++j)
-      (*this)(i, j)
-        += a * number(A(i, j)) + b * number(B(i, j)) + c * number(C(i, j));
+      (*this)(i, j) +=
+        a * number(A(i, j)) + b * number(B(i, j)) + c * number(C(i, j));
 }
 
 template <typename number>
@@ -1072,8 +1076,8 @@ FullMatrix<number>::add(const FullMatrix<number2>& src,
 
   for(size_type i = 0; i < rows; ++i)
     for(size_type j = 0; j < cols; ++j)
-      (*this)(dst_offset_i + i, dst_offset_j + j)
-        += factor * number(src(src_offset_i + i, src_offset_j + j));
+      (*this)(dst_offset_i + i, dst_offset_j + j) +=
+        factor * number(src(src_offset_i + i, src_offset_j + j));
 }
 
 template <typename number>
@@ -1097,8 +1101,8 @@ FullMatrix<number>::Tadd(const FullMatrix<number2>& src,
 
   for(size_type i = 0; i < rows; ++i)
     for(size_type j = 0; j < cols; ++j)
-      (*this)(dst_offset_i + i, dst_offset_j + j)
-        += factor * number(src(src_offset_i + j, src_offset_j + i));
+      (*this)(dst_offset_i + i, dst_offset_j + j) +=
+        factor * number(src(src_offset_i + j, src_offset_j + i));
 }
 
 template <typename number>
@@ -1147,8 +1151,8 @@ namespace internal
     template <typename number>
     struct Determinant<
       number,
-      typename std::enable_if<std::is_same<number, float>::value
-                              || std::is_same<number, double>::value>::type>
+      typename std::enable_if<std::is_same<number, float>::value ||
+                              std::is_same<number, double>::value>::type>
     {
 #ifdef DEAL_II_WITH_LAPACK
       static number
@@ -1192,12 +1196,12 @@ FullMatrix<number>::determinant() const
       case 2:
         return (*this)(0, 0) * (*this)(1, 1) - (*this)(1, 0) * (*this)(0, 1);
       case 3:
-        return ((*this)(0, 0) * (*this)(1, 1) * (*this)(2, 2)
-                - (*this)(0, 0) * (*this)(1, 2) * (*this)(2, 1)
-                - (*this)(1, 0) * (*this)(0, 1) * (*this)(2, 2)
-                + (*this)(1, 0) * (*this)(0, 2) * (*this)(2, 1)
-                + (*this)(2, 0) * (*this)(0, 1) * (*this)(1, 2)
-                - (*this)(2, 0) * (*this)(0, 2) * (*this)(1, 1));
+        return ((*this)(0, 0) * (*this)(1, 1) * (*this)(2, 2) -
+                (*this)(0, 0) * (*this)(1, 2) * (*this)(2, 1) -
+                (*this)(1, 0) * (*this)(0, 1) * (*this)(2, 2) +
+                (*this)(1, 0) * (*this)(0, 2) * (*this)(2, 1) +
+                (*this)(2, 0) * (*this)(0, 1) * (*this)(1, 2) -
+                (*this)(2, 0) * (*this)(0, 2) * (*this)(1, 1));
       default:
         return internal::Determinant<number>::value(*this);
     };
@@ -1284,8 +1288,8 @@ FullMatrix<number>::invert(const FullMatrix<number2>& M)
           // this is Maple output,
           // thus a bit unstructured
           {
-            const number2 t4
-              = number2(1.0) / (M(0, 0) * M(1, 1) - M(0, 1) * M(1, 0));
+            const number2 t4 =
+              number2(1.0) / (M(0, 0) * M(1, 1) - M(0, 1) * M(1, 0));
             (*this)(0, 0) = M(1, 1) * t4;
             (*this)(0, 1) = -M(0, 1) * t4;
             (*this)(1, 0) = -M(1, 0) * t4;
@@ -1298,10 +1302,9 @@ FullMatrix<number>::invert(const FullMatrix<number2>& M)
             const number2 t4 = M(0, 0) * M(1, 1), t6 = M(0, 0) * M(1, 2),
                           t8 = M(0, 1) * M(1, 0), t00 = M(0, 2) * M(1, 0),
                           t01 = M(0, 1) * M(2, 0), t04 = M(0, 2) * M(2, 0),
-                          t07
-                          = number2(1.0)
-                            / (t4 * M(2, 2) - t6 * M(2, 1) - t8 * M(2, 2)
-                               + t00 * M(2, 1) + t01 * M(1, 2) - t04 * M(1, 1));
+                          t07 = number2(1.0) /
+                                (t4 * M(2, 2) - t6 * M(2, 1) - t8 * M(2, 2) +
+                                 t00 * M(2, 1) + t01 * M(1, 2) - t04 * M(1, 1));
             (*this)(0, 0) = (M(1, 1) * M(2, 2) - M(1, 2) * M(2, 1)) * t07;
             (*this)(0, 1) = -(M(0, 1) * M(2, 2) - M(0, 2) * M(2, 1)) * t07;
             (*this)(0, 2) = -(-M(0, 1) * M(1, 2) + M(0, 2) * M(1, 1)) * t07;
@@ -1339,9 +1342,9 @@ FullMatrix<number>::invert(const FullMatrix<number2>& M)
             const number2 t37 = M(1, 0) * M(3, 1);
             const number2 t38 = M(0, 2) * M(2, 3);
             const number2 t40 = M(0, 3) * M(2, 2);
-            const number2 t42 = t14 * t15 - t14 * t17 - t19 * t20 + t19 * t22
-                                + t24 * t25 - t24 * t27 - t29 * t15 + t29 * t17
-                                + t32 * t33 - t32 * t35 - t37 * t38 + t37 * t40;
+            const number2 t42 = t14 * t15 - t14 * t17 - t19 * t20 + t19 * t22 +
+                                t24 * t25 - t24 * t27 - t29 * t15 + t29 * t17 +
+                                t32 * t33 - t32 * t35 - t37 * t38 + t37 * t40;
             const number2 t43 = M(2, 0) * M(0, 1);
             const number2 t46 = M(2, 0) * M(1, 1);
             const number2 t49 = M(2, 0) * M(3, 1);
@@ -1350,9 +1353,9 @@ FullMatrix<number>::invert(const FullMatrix<number2>& M)
             const number2 t54 = M(3, 0) * M(0, 1);
             const number2 t57 = M(3, 0) * M(1, 1);
             const number2 t60 = M(3, 0) * M(2, 1);
-            const number2 t63 = t43 * t20 - t43 * t22 - t46 * t33 + t46 * t35
-                                + t49 * t50 - t49 * t52 - t54 * t25 + t54 * t27
-                                + t57 * t38 - t57 * t40 - t60 * t50 + t60 * t52;
+            const number2 t63 = t43 * t20 - t43 * t22 - t46 * t33 + t46 * t35 +
+                                t49 * t50 - t49 * t52 - t54 * t25 + t54 * t27 +
+                                t57 * t38 - t57 * t40 - t60 * t50 + t60 * t52;
             const number2 t65  = number2(1.) / (t42 + t63);
             const number2 t71  = M(0, 2) * M(2, 1);
             const number2 t73  = M(0, 3) * M(2, 1);
@@ -1378,59 +1381,59 @@ FullMatrix<number>::invert(const FullMatrix<number2>& M)
             const number2 t131 = M(0, 0) * M(1, 3);
             const number2 t133 = M(1, 0) * M(0, 2);
             const number2 t135 = M(1, 0) * M(0, 3);
-            (*this)(0, 0)
-              = (M(1, 1) * M(2, 2) * M(3, 3) - M(1, 1) * M(2, 3) * M(3, 2)
-                 - M(2, 1) * M(1, 2) * M(3, 3) + M(2, 1) * M(1, 3) * M(3, 2)
-                 + M(3, 1) * M(1, 2) * M(2, 3) - M(3, 1) * M(1, 3) * M(2, 2))
-                * t65;
-            (*this)(0, 1) = -(M(0, 1) * M(2, 2) * M(3, 3)
-                              - M(0, 1) * M(2, 3) * M(3, 2) - t71 * M(3, 3)
-                              + t73 * M(3, 2) + t75 * M(2, 3) - t77 * M(2, 2))
-                            * t65;
-            (*this)(0, 2) = (t81 * M(3, 3) - t83 * M(3, 2) - t85 * M(3, 3)
-                             + t87 * M(3, 2) + t75 * M(1, 3) - t77 * M(1, 2))
-                            * t65;
-            (*this)(0, 3) = -(t81 * M(2, 3) - t83 * M(2, 2) - t85 * M(2, 3)
-                              + t87 * M(2, 2) + t71 * M(1, 3) - t73 * M(1, 2))
-                            * t65;
-            (*this)(1, 0)
-              = -(t101 * M(3, 3) - t103 * M(3, 2) - t105 * M(3, 3)
-                  + t107 * M(3, 2) + t109 * M(2, 3) - t111 * M(2, 2))
-                * t65;
-            (*this)(1, 1) = (t115 * M(3, 3) - t117 * M(3, 2) - t119 * M(3, 3)
-                             + t121 * M(3, 2) + t123 * M(2, 3) - t125 * M(2, 2))
-                            * t65;
-            (*this)(1, 2)
-              = -(t129 * M(3, 3) - t131 * M(3, 2) - t133 * M(3, 3)
-                  + t135 * M(3, 2) + t123 * M(1, 3) - t125 * M(1, 2))
-                * t65;
-            (*this)(1, 3) = (t129 * M(2, 3) - t131 * M(2, 2) - t133 * M(2, 3)
-                             + t135 * M(2, 2) + t119 * M(1, 3) - t121 * M(1, 2))
-                            * t65;
-            (*this)(2, 0) = (t32 * M(3, 3) - t103 * M(3, 1) - t46 * M(3, 3)
-                             + t107 * M(3, 1) + t57 * M(2, 3) - t111 * M(2, 1))
-                            * t65;
-            (*this)(2, 1) = -(t19 * M(3, 3) - t117 * M(3, 1) - t43 * M(3, 3)
-                              + t121 * M(3, 1) + t54 * M(2, 3) - t125 * M(2, 1))
-                            * t65;
-            (*this)(2, 2) = (t14 * M(3, 3) - t131 * M(3, 1) - t29 * M(3, 3)
-                             + t135 * M(3, 1) + t54 * M(1, 3) - t125 * M(1, 1))
-                            * t65;
-            (*this)(2, 3) = -(t14 * M(2, 3) - t131 * M(2, 1) - t29 * M(2, 3)
-                              + t135 * M(2, 1) + t43 * M(1, 3) - t121 * M(1, 1))
-                            * t65;
-            (*this)(3, 0) = -(t32 * M(3, 2) - t101 * M(3, 1) - t46 * M(3, 2)
-                              + t105 * M(3, 1) + t57 * M(2, 2) - t109 * M(2, 1))
-                            * t65;
-            (*this)(3, 1) = (t19 * M(3, 2) - t115 * M(3, 1) - t43 * M(3, 2)
-                             + t119 * M(3, 1) + t54 * M(2, 2) - t123 * M(2, 1))
-                            * t65;
-            (*this)(3, 2) = -(t14 * M(3, 2) - t129 * M(3, 1) - t29 * M(3, 2)
-                              + t133 * M(3, 1) + t54 * M(1, 2) - t123 * M(1, 1))
-                            * t65;
-            (*this)(3, 3) = (t14 * M(2, 2) - t129 * M(2, 1) - t29 * M(2, 2)
-                             + t133 * M(2, 1) + t43 * M(1, 2) - t119 * M(1, 1))
-                            * t65;
+            (*this)(0, 0) =
+              (M(1, 1) * M(2, 2) * M(3, 3) - M(1, 1) * M(2, 3) * M(3, 2) -
+               M(2, 1) * M(1, 2) * M(3, 3) + M(2, 1) * M(1, 3) * M(3, 2) +
+               M(3, 1) * M(1, 2) * M(2, 3) - M(3, 1) * M(1, 3) * M(2, 2)) *
+              t65;
+            (*this)(0, 1) =
+              -(M(0, 1) * M(2, 2) * M(3, 3) - M(0, 1) * M(2, 3) * M(3, 2) -
+                t71 * M(3, 3) + t73 * M(3, 2) + t75 * M(2, 3) - t77 * M(2, 2)) *
+              t65;
+            (*this)(0, 2) = (t81 * M(3, 3) - t83 * M(3, 2) - t85 * M(3, 3) +
+                             t87 * M(3, 2) + t75 * M(1, 3) - t77 * M(1, 2)) *
+                            t65;
+            (*this)(0, 3) = -(t81 * M(2, 3) - t83 * M(2, 2) - t85 * M(2, 3) +
+                              t87 * M(2, 2) + t71 * M(1, 3) - t73 * M(1, 2)) *
+                            t65;
+            (*this)(1, 0) =
+              -(t101 * M(3, 3) - t103 * M(3, 2) - t105 * M(3, 3) +
+                t107 * M(3, 2) + t109 * M(2, 3) - t111 * M(2, 2)) *
+              t65;
+            (*this)(1, 1) = (t115 * M(3, 3) - t117 * M(3, 2) - t119 * M(3, 3) +
+                             t121 * M(3, 2) + t123 * M(2, 3) - t125 * M(2, 2)) *
+                            t65;
+            (*this)(1, 2) =
+              -(t129 * M(3, 3) - t131 * M(3, 2) - t133 * M(3, 3) +
+                t135 * M(3, 2) + t123 * M(1, 3) - t125 * M(1, 2)) *
+              t65;
+            (*this)(1, 3) = (t129 * M(2, 3) - t131 * M(2, 2) - t133 * M(2, 3) +
+                             t135 * M(2, 2) + t119 * M(1, 3) - t121 * M(1, 2)) *
+                            t65;
+            (*this)(2, 0) = (t32 * M(3, 3) - t103 * M(3, 1) - t46 * M(3, 3) +
+                             t107 * M(3, 1) + t57 * M(2, 3) - t111 * M(2, 1)) *
+                            t65;
+            (*this)(2, 1) = -(t19 * M(3, 3) - t117 * M(3, 1) - t43 * M(3, 3) +
+                              t121 * M(3, 1) + t54 * M(2, 3) - t125 * M(2, 1)) *
+                            t65;
+            (*this)(2, 2) = (t14 * M(3, 3) - t131 * M(3, 1) - t29 * M(3, 3) +
+                             t135 * M(3, 1) + t54 * M(1, 3) - t125 * M(1, 1)) *
+                            t65;
+            (*this)(2, 3) = -(t14 * M(2, 3) - t131 * M(2, 1) - t29 * M(2, 3) +
+                              t135 * M(2, 1) + t43 * M(1, 3) - t121 * M(1, 1)) *
+                            t65;
+            (*this)(3, 0) = -(t32 * M(3, 2) - t101 * M(3, 1) - t46 * M(3, 2) +
+                              t105 * M(3, 1) + t57 * M(2, 2) - t109 * M(2, 1)) *
+                            t65;
+            (*this)(3, 1) = (t19 * M(3, 2) - t115 * M(3, 1) - t43 * M(3, 2) +
+                             t119 * M(3, 1) + t54 * M(2, 2) - t123 * M(2, 1)) *
+                            t65;
+            (*this)(3, 2) = -(t14 * M(3, 2) - t129 * M(3, 1) - t29 * M(3, 2) +
+                              t133 * M(3, 1) + t54 * M(1, 2) - t123 * M(1, 1)) *
+                            t65;
+            (*this)(3, 3) = (t14 * M(2, 2) - t129 * M(2, 1) - t29 * M(2, 2) +
+                             t133 * M(2, 1) + t43 * M(1, 2) - t119 * M(1, 1)) *
+                            t65;
 
             break;
           }
@@ -1724,8 +1727,8 @@ FullMatrix<number>::gauss_jordan()
   // matrices):
 #ifdef DEAL_II_WITH_LAPACK
   if(std::is_same<number, double>::value || std::is_same<number, float>::value)
-    if(this->n_cols() > 15
-       && this->n_cols() <= std::numeric_limits<types::blas_int>::max())
+    if(this->n_cols() > 15 &&
+       this->n_cols() <= std::numeric_limits<types::blas_int>::max())
       {
         // In case we have the LAPACK functions
         // getrf and getri detected by CMake,
@@ -1867,8 +1870,8 @@ template <typename number>
 std::size_t
 FullMatrix<number>::memory_consumption() const
 {
-  return (sizeof(*this) - sizeof(Table<2, number>)
-          + Table<2, number>::memory_consumption());
+  return (sizeof(*this) - sizeof(Table<2, number>) +
+          Table<2, number>::memory_consumption());
 }
 
 DEAL_II_NAMESPACE_CLOSE

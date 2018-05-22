@@ -319,8 +319,8 @@ Step4<dim>::assemble_system()
   // do for us by also giving it the #update_quadrature_points flag:
   FEValues<dim> fe_values(fe,
                           quadrature_formula,
-                          update_values | update_gradients
-                            | update_quadrature_points | update_JxW_values);
+                          update_values | update_gradients |
+                            update_quadrature_points | update_JxW_values);
 
   // We then again define a few abbreviations. The values of these variables
   // of course depend on the dimension which we are presently using. However,
@@ -361,14 +361,14 @@ Step4<dim>::assemble_system()
         for(unsigned int i = 0; i < dofs_per_cell; ++i)
           {
             for(unsigned int j = 0; j < dofs_per_cell; ++j)
-              cell_matrix(i, j) += (fe_values.shape_grad(i, q_index)
-                                    * fe_values.shape_grad(j, q_index)
-                                    * fe_values.JxW(q_index));
+              cell_matrix(i, j) +=
+                (fe_values.shape_grad(i, q_index) *
+                 fe_values.shape_grad(j, q_index) * fe_values.JxW(q_index));
 
-            cell_rhs(i)
-              += (fe_values.shape_value(i, q_index)
-                  * right_hand_side.value(fe_values.quadrature_point(q_index))
-                  * fe_values.JxW(q_index));
+            cell_rhs(i) +=
+              (fe_values.shape_value(i, q_index) *
+               right_hand_side.value(fe_values.quadrature_point(q_index)) *
+               fe_values.JxW(q_index));
           }
       // As a final remark to these loops: when we assemble the local
       // contributions into <code>cell_matrix(i,j)</code>, we have to multiply

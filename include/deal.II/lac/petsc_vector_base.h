@@ -808,8 +808,7 @@ namespace PETScWrappers
      * usage.
      */
     VectorBase&
-    operator=(const VectorBase&)
-      = delete;
+    operator=(const VectorBase&) = delete;
   };
 
   // ------------------- inline and template functions --------------
@@ -863,16 +862,16 @@ namespace PETScWrappers
     inline const VectorReference&
     VectorReference::operator=(const PetscScalar& value) const
     {
-      Assert((vector.last_action == VectorOperation::insert)
-               || (vector.last_action == VectorOperation::unknown),
+      Assert((vector.last_action == VectorOperation::insert) ||
+               (vector.last_action == VectorOperation::unknown),
              ExcWrongMode(VectorOperation::insert, vector.last_action));
 
       Assert(!vector.has_ghost_elements(), ExcGhostsPresent());
 
       const PetscInt petsc_i = index;
 
-      const PetscErrorCode ierr
-        = VecSetValues(vector, 1, &petsc_i, &value, INSERT_VALUES);
+      const PetscErrorCode ierr =
+        VecSetValues(vector, 1, &petsc_i, &value, INSERT_VALUES);
       AssertThrow(ierr == 0, ExcPETScError(ierr));
 
       vector.last_action = VectorOperation::insert;
@@ -883,8 +882,8 @@ namespace PETScWrappers
     inline const VectorReference&
     VectorReference::operator+=(const PetscScalar& value) const
     {
-      Assert((vector.last_action == VectorOperation::add)
-               || (vector.last_action == VectorOperation::unknown),
+      Assert((vector.last_action == VectorOperation::add) ||
+               (vector.last_action == VectorOperation::unknown),
              ExcWrongMode(VectorOperation::add, vector.last_action));
 
       Assert(!vector.has_ghost_elements(), ExcGhostsPresent());
@@ -903,8 +902,8 @@ namespace PETScWrappers
 
       // use the PETSc function to add something
       const PetscInt       petsc_i = index;
-      const PetscErrorCode ierr
-        = VecSetValues(vector, 1, &petsc_i, &value, ADD_VALUES);
+      const PetscErrorCode ierr =
+        VecSetValues(vector, 1, &petsc_i, &value, ADD_VALUES);
       AssertThrow(ierr == 0, ExcPETScError(ierr));
 
       return *this;
@@ -913,8 +912,8 @@ namespace PETScWrappers
     inline const VectorReference&
     VectorReference::operator-=(const PetscScalar& value) const
     {
-      Assert((vector.last_action == VectorOperation::add)
-               || (vector.last_action == VectorOperation::unknown),
+      Assert((vector.last_action == VectorOperation::add) ||
+               (vector.last_action == VectorOperation::unknown),
              ExcWrongMode(VectorOperation::add, vector.last_action));
 
       Assert(!vector.has_ghost_elements(), ExcGhostsPresent());
@@ -935,8 +934,8 @@ namespace PETScWrappers
       // add something
       const PetscInt       petsc_i     = index;
       const PetscScalar    subtractand = -value;
-      const PetscErrorCode ierr
-        = VecSetValues(vector, 1, &petsc_i, &subtractand, ADD_VALUES);
+      const PetscErrorCode ierr =
+        VecSetValues(vector, 1, &petsc_i, &subtractand, ADD_VALUES);
       AssertThrow(ierr == 0, ExcPETScError(ierr));
 
       return *this;
@@ -945,8 +944,8 @@ namespace PETScWrappers
     inline const VectorReference&
     VectorReference::operator*=(const PetscScalar& value) const
     {
-      Assert((vector.last_action == VectorOperation::insert)
-               || (vector.last_action == VectorOperation::unknown),
+      Assert((vector.last_action == VectorOperation::insert) ||
+               (vector.last_action == VectorOperation::unknown),
              ExcWrongMode(VectorOperation::insert, vector.last_action));
 
       Assert(!vector.has_ghost_elements(), ExcGhostsPresent());
@@ -966,8 +965,8 @@ namespace PETScWrappers
       const PetscInt    petsc_i   = index;
       const PetscScalar new_value = static_cast<PetscScalar>(*this) * value;
 
-      const PetscErrorCode ierr
-        = VecSetValues(vector, 1, &petsc_i, &new_value, INSERT_VALUES);
+      const PetscErrorCode ierr =
+        VecSetValues(vector, 1, &petsc_i, &new_value, INSERT_VALUES);
       AssertThrow(ierr == 0, ExcPETScError(ierr));
 
       return *this;
@@ -976,8 +975,8 @@ namespace PETScWrappers
     inline const VectorReference&
     VectorReference::operator/=(const PetscScalar& value) const
     {
-      Assert((vector.last_action == VectorOperation::insert)
-               || (vector.last_action == VectorOperation::unknown),
+      Assert((vector.last_action == VectorOperation::insert) ||
+               (vector.last_action == VectorOperation::unknown),
              ExcWrongMode(VectorOperation::insert, vector.last_action));
 
       Assert(!vector.has_ghost_elements(), ExcGhostsPresent());
@@ -997,8 +996,8 @@ namespace PETScWrappers
       const PetscInt    petsc_i   = index;
       const PetscScalar new_value = static_cast<PetscScalar>(*this) / value;
 
-      const PetscErrorCode ierr
-        = VecSetValues(vector, 1, &petsc_i, &new_value, INSERT_VALUES);
+      const PetscErrorCode ierr =
+        VecSetValues(vector, 1, &petsc_i, &new_value, INSERT_VALUES);
       AssertThrow(ierr == 0, ExcPETScError(ierr));
 
       return *this;
@@ -1030,12 +1029,12 @@ namespace PETScWrappers
   VectorBase::in_local_range(const size_type index) const
   {
     PetscInt             begin, end;
-    const PetscErrorCode ierr
-      = VecGetOwnershipRange(static_cast<const Vec&>(vector), &begin, &end);
+    const PetscErrorCode ierr =
+      VecGetOwnershipRange(static_cast<const Vec&>(vector), &begin, &end);
     AssertThrow(ierr == 0, ExcPETScError(ierr));
 
-    return ((index >= static_cast<size_type>(begin))
-            && (index < static_cast<size_type>(end)));
+    return ((index >= static_cast<size_type>(begin)) &&
+            (index < static_cast<size_type>(end)));
   }
 
   inline IndexSet
@@ -1147,8 +1146,8 @@ namespace PETScWrappers
         for(PetscInt i = 0; i < n_idx; ++i)
           {
             const unsigned int index = *(indices_begin + i);
-            if(index >= static_cast<unsigned int>(begin)
-               && index < static_cast<unsigned int>(end))
+            if(index >= static_cast<unsigned int>(begin) &&
+               index < static_cast<unsigned int>(end))
               {
                 //local entry
                 *(values_begin + i) = *(ptr + index - begin);
@@ -1156,8 +1155,8 @@ namespace PETScWrappers
             else
               {
                 //ghost entry
-                const unsigned int ghostidx
-                  = ghost_indices.index_within_set(index);
+                const unsigned int ghostidx =
+                  ghost_indices.index_within_set(index);
 
                 Assert(ghostidx + end - begin < (unsigned int) lsize,
                        ExcInternalError());
@@ -1188,8 +1187,8 @@ namespace PETScWrappers
           {
             const unsigned int index = *(indices_begin + i);
 
-            Assert(index >= static_cast<unsigned int>(begin)
-                     && index < static_cast<unsigned int>(end),
+            Assert(index >= static_cast<unsigned int>(begin) &&
+                     index < static_cast<unsigned int>(end),
                    ExcInternalError());
 
             *(values_begin + i) = *(ptr + index - begin);

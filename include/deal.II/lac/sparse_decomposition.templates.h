@@ -68,8 +68,8 @@ SparseLUDecomposition<number>::initialize(
 
   if(data.use_this_sparsity)
     sparsity_pattern_to_use = data.use_this_sparsity;
-  else if(data.use_previous_sparsity && !this->empty()
-          && (this->m() == matrix.m()))
+  else if(data.use_previous_sparsity && !this->empty() &&
+          (this->m() == matrix.m()))
     {
       // Use the sparsity that was
       // previously used. This is
@@ -104,8 +104,8 @@ SparseLUDecomposition<number>::initialize(
 
       // and recreate
       own_sparsity = new SparsityPattern(matrix_sparsity,
-                                         matrix_sparsity.max_entries_per_row()
-                                           + 2 * data.extra_off_diagonals,
+                                         matrix_sparsity.max_entries_per_row() +
+                                           2 * data.extra_off_diagonals,
                                          data.extra_off_diagonals);
       own_sparsity->compress();
       sparsity_pattern_to_use = own_sparsity;
@@ -127,20 +127,20 @@ template <typename number>
 void
 SparseLUDecomposition<number>::prebuild_lower_bound()
 {
-  const size_type* const column_numbers
-    = this->get_sparsity_pattern().colnums.get();
-  const std::size_t* const rowstart_indices
-    = this->get_sparsity_pattern().rowstart.get();
+  const size_type* const column_numbers =
+    this->get_sparsity_pattern().colnums.get();
+  const std::size_t* const rowstart_indices =
+    this->get_sparsity_pattern().rowstart.get();
   const size_type N = this->m();
 
   prebuilt_lower_bound.resize(N);
 
   for(size_type row = 0; row < N; row++)
     {
-      prebuilt_lower_bound[row]
-        = Utilities::lower_bound(&column_numbers[rowstart_indices[row] + 1],
-                                 &column_numbers[rowstart_indices[row + 1]],
-                                 row);
+      prebuilt_lower_bound[row] =
+        Utilities::lower_bound(&column_numbers[rowstart_indices[row] + 1],
+                               &column_numbers[rowstart_indices[row + 1]],
+                               row);
     }
 }
 
@@ -173,16 +173,16 @@ SparseLUDecomposition<number>::copy_from(const SparseMatrix<somenumber>& matrix)
   for(size_type row = 0; row < this->m(); ++row)
     {
       typename SparseMatrix<number>::iterator index = this->begin(row);
-      typename SparseMatrix<somenumber>::const_iterator in_index
-        = matrix.begin(row);
+      typename SparseMatrix<somenumber>::const_iterator in_index =
+        matrix.begin(row);
       index->value() = in_index->value();
       ++index, ++in_index;
       while(index < this->end(row) && in_index < matrix.end(row))
         {
           while(index->column() < in_index->column() && index < this->end(row))
             ++index;
-          while(in_index->column() < index->column()
-                && in_index < matrix.end(row))
+          while(in_index->column() < index->column() &&
+                in_index < matrix.end(row))
             ++in_index;
 
           index->value() = in_index->value();
@@ -200,8 +200,8 @@ SparseLUDecomposition<number>::strengthen_diagonal_impl()
       // get the global index of the first
       // non-diagonal element in this row
       Assert(this->m() == this->n(), ExcNotImplemented());
-      typename SparseMatrix<number>::iterator diagonal_element
-        = this->begin(row);
+      typename SparseMatrix<number>::iterator diagonal_element =
+        this->begin(row);
 
       number rowsum = 0;
       for(typename SparseMatrix<number>::iterator p = diagonal_element + 1;
@@ -209,8 +209,8 @@ SparseLUDecomposition<number>::strengthen_diagonal_impl()
           ++p)
         rowsum += std::fabs(p->value());
 
-      diagonal_element->value()
-        += this->get_strengthen_diagonal(rowsum, row) * rowsum;
+      diagonal_element->value() +=
+        this->get_strengthen_diagonal(rowsum, row) * rowsum;
     }
 }
 
@@ -218,8 +218,8 @@ template <typename number>
 std::size_t
 SparseLUDecomposition<number>::memory_consumption() const
 {
-  return (SparseMatrix<number>::memory_consumption()
-          + MemoryConsumption::memory_consumption(prebuilt_lower_bound));
+  return (SparseMatrix<number>::memory_consumption() +
+          MemoryConsumption::memory_consumption(prebuilt_lower_bound));
 }
 
 DEAL_II_NAMESPACE_CLOSE

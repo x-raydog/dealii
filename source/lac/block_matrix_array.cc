@@ -251,12 +251,11 @@ BlockTrianglePrecondition<number, BlockVectorType>::do_row(
 {
   GrowingVectorMemory<typename BlockVectorType::BlockType> mem;
   typename std::vector<
-    typename BlockMatrixArray<number, BlockVectorType>::Entry>::const_iterator m
-    = this->entries.begin();
+    typename BlockMatrixArray<number, BlockVectorType>::Entry>::const_iterator
+    m = this->entries.begin();
   typename std::vector<
     typename BlockMatrixArray<number, BlockVectorType>::Entry>::const_iterator
-    end
-    = this->entries.end();
+    end = this->entries.end();
   std::vector<typename std::vector<
     typename BlockMatrixArray<number, BlockVectorType>::Entry>::const_iterator>
     diagonals;

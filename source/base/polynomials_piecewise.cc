@@ -89,11 +89,10 @@ namespace Polynomials
 
         // on subinterval boundaries, cannot evaluate derivatives properly, so
         // set them to zero
-        if((std::abs(y) < 1e-14
-            && (interval > 0 || derivative_change_sign == -1.))
-           || (std::abs(y - step) < 1e-14
-               && (interval < n_intervals - 1
-                   || derivative_change_sign == -1.)))
+        if((std::abs(y) < 1e-14 &&
+            (interval > 0 || derivative_change_sign == -1.)) ||
+           (std::abs(y - step) < 1e-14 &&
+            (interval < n_intervals - 1 || derivative_change_sign == -1.)))
           {
             values[0] = value(x);
             for(unsigned int d = 1; d <= n_derivatives; ++d)
@@ -114,8 +113,8 @@ namespace Polynomials
     const unsigned int n_subdivisions,
     const unsigned int base_degree)
   {
-    std::vector<Polynomial<double>> p_base
-      = LagrangeEquidistant::generate_complete_basis(base_degree);
+    std::vector<Polynomial<double>> p_base =
+      LagrangeEquidistant::generate_complete_basis(base_degree);
     for(unsigned int i = 0; i < p_base.size(); ++i)
       p_base[i].scale(n_subdivisions);
 

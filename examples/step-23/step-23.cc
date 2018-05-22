@@ -257,8 +257,8 @@ namespace Step23
     (void) component;
     Assert(component == 0, ExcIndexRange(component, 0, 1));
 
-    if((this->get_time() <= 0.5) && (p[0] < 0) && (p[1] < 1. / 3)
-       && (p[1] > -1. / 3))
+    if((this->get_time() <= 0.5) && (p[0] < 0) && (p[1] < 1. / 3) &&
+       (p[1] > -1. / 3))
       return std::sin(this->get_time() * 4 * numbers::PI);
     else
       return 0;
@@ -272,8 +272,8 @@ namespace Step23
     (void) component;
     Assert(component == 0, ExcIndexRange(component, 0, 1));
 
-    if((this->get_time() <= 0.5) && (p[0] < 0) && (p[1] < 1. / 3)
-       && (p[1] > -1. / 3))
+    if((this->get_time() <= 0.5) && (p[0] < 0) && (p[1] < 1. / 3) &&
+       (p[1] > -1. / 3))
       return (std::cos(this->get_time() * 4 * numbers::PI) * 4 * numbers::PI);
     else
       return 0;
@@ -433,8 +433,8 @@ namespace Step23
 
     data_out.build_patches();
 
-    const std::string filename
-      = "solution-" + Utilities::int_to_string(timestep_number, 3) + ".gnuplot";
+    const std::string filename =
+      "solution-" + Utilities::int_to_string(timestep_number, 3) + ".gnuplot";
     std::ofstream output(filename);
     data_out.write_gnuplot(output);
   }
@@ -591,9 +591,9 @@ namespace Step23
         output_results();
 
         std::cout << "   Total energy: "
-                  << (mass_matrix.matrix_norm_square(solution_v)
-                      + laplace_matrix.matrix_norm_square(solution_u))
-                       / 2
+                  << (mass_matrix.matrix_norm_square(solution_v) +
+                      laplace_matrix.matrix_norm_square(solution_u)) /
+                       2
                   << std::endl;
 
         old_solution_u = solution_u;

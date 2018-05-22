@@ -1284,8 +1284,8 @@ FullMatrix<number>::extract_submatrix_from(
 
   for(size_type sub_row = 0; sub_row < n_rows_submatrix; ++sub_row)
     for(size_type sub_col = 0; sub_col < n_cols_submatrix; ++sub_col)
-      (*this)(sub_row, sub_col)
-        = matrix.el(row_index_set[sub_row], column_index_set[sub_col]);
+      (*this)(sub_row, sub_col) =
+        matrix.el(row_index_set[sub_row], column_index_set[sub_col]);
 }
 
 template <typename number>
@@ -1419,8 +1419,8 @@ inline bool
 FullMatrix<number>::const_iterator::
 operator==(const const_iterator& other) const
 {
-  return (accessor.row() == other.accessor.row()
-          && accessor.column() == other.accessor.column());
+  return (accessor.row() == other.accessor.row() &&
+          accessor.column() == other.accessor.column());
 }
 
 template <typename number>
@@ -1435,9 +1435,9 @@ template <typename number>
 inline bool
 FullMatrix<number>::const_iterator::operator<(const const_iterator& other) const
 {
-  return (accessor.row() < other.accessor.row()
-          || (accessor.row() == other.accessor.row()
-              && accessor.column() < other.accessor.column()));
+  return (accessor.row() < other.accessor.row() ||
+          (accessor.row() == other.accessor.row() &&
+           accessor.column() < other.accessor.column()));
 }
 
 template <typename number>

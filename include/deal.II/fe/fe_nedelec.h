@@ -232,8 +232,8 @@ public:
   virtual const FullMatrix<double>&
   get_restriction_matrix(
     const unsigned int         child,
-    const RefinementCase<dim>& refinement_case
-    = RefinementCase<dim>::isotropic_refinement) const override;
+    const RefinementCase<dim>& refinement_case =
+      RefinementCase<dim>::isotropic_refinement) const override;
 
   /**
    * Embedding matrix between grids.
@@ -258,8 +258,8 @@ public:
   virtual const FullMatrix<double>&
   get_prolongation_matrix(
     const unsigned int         child,
-    const RefinementCase<dim>& refinement_case
-    = RefinementCase<dim>::isotropic_refinement) const override;
+    const RefinementCase<dim>& refinement_case =
+      RefinementCase<dim>::isotropic_refinement) const override;
 
   // documentation inherited from the base class
   virtual void

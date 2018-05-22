@@ -113,8 +113,7 @@ namespace TimeStepping
         VectorType(const double, const double, const VectorType&)>>& J_inverse,
       double                                                         t,
       double                                                         delta_t,
-      VectorType&                                                    y)
-      = 0;
+      VectorType&                                                    y) = 0;
 
     /**
      * Empty structure used to store information.
@@ -148,8 +147,7 @@ namespace TimeStepping
      * Purely virtual method used to initialize the Runge-Kutta method.
      */
     virtual void
-    initialize(const runge_kutta_method method)
-      = 0;
+    initialize(const runge_kutta_method method) = 0;
 
     /**
      * This function is used to advance from time @p t to t+ @p delta_t. @p F
@@ -191,8 +189,7 @@ namespace TimeStepping
                   id_minus_tau_J_inverse,
       double      t,
       double      delta_t,
-      VectorType& y)
-      = 0;
+      VectorType& y) = 0;
 
   protected:
     /**

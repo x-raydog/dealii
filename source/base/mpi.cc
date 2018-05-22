@@ -187,8 +187,8 @@ namespace Utilities
 
       // let all processors communicate the maximal number of destinations
       // they have
-      const unsigned int max_n_destinations
-        = Utilities::MPI::max(destinations.size(), mpi_comm);
+      const unsigned int max_n_destinations =
+        Utilities::MPI::max(destinations.size(), mpi_comm);
 
       if(max_n_destinations == 0)
         // all processes have nothing to send/receive:
@@ -223,8 +223,8 @@ namespace Utilities
         for(unsigned int j = 0; j < max_n_destinations; ++j)
           if(all_destinations[i * max_n_destinations + j] == myid)
             origins.push_back(i);
-          else if(all_destinations[i * max_n_destinations + j]
-                  == numbers::invalid_unsigned_int)
+          else if(all_destinations[i * max_n_destinations + j] ==
+                  numbers::invalid_unsigned_int)
             break;
 
       return origins;
@@ -296,10 +296,10 @@ namespace Utilities
                           0,
                           0.};
 
-      const unsigned int my_id
-        = dealii::Utilities::MPI::this_mpi_process(mpi_communicator);
-      const unsigned int numproc
-        = dealii::Utilities::MPI::n_mpi_processes(mpi_communicator);
+      const unsigned int my_id =
+        dealii::Utilities::MPI::this_mpi_process(mpi_communicator);
+      const unsigned int numproc =
+        dealii::Utilities::MPI::n_mpi_processes(mpi_communicator);
 
       MPI_Op op;
       int    ierr = MPI_Op_create((MPI_User_function*) &max_reduce, true, &op);
@@ -468,16 +468,16 @@ namespace Utilities
           // in calculating the length of the string, don't forget the
           // terminating \0 on C-style strings
           const std::string  hostname = Utilities::System::get_hostname();
-          const unsigned int max_hostname_size
-            = Utilities::MPI::max(hostname.size() + 1, MPI_COMM_WORLD);
+          const unsigned int max_hostname_size =
+            Utilities::MPI::max(hostname.size() + 1, MPI_COMM_WORLD);
           std::vector<char> hostname_array(max_hostname_size);
           std::copy(hostname.c_str(),
                     hostname.c_str() + hostname.size() + 1,
                     hostname_array.begin());
 
-          std::vector<char> all_hostnames(
-            max_hostname_size * MPI::n_mpi_processes(MPI_COMM_WORLD));
-          const int ierr = MPI_Allgather(hostname_array.data(),
+          std::vector<char> all_hostnames(max_hostname_size *
+                                          MPI::n_mpi_processes(MPI_COMM_WORLD));
+          const int         ierr = MPI_Allgather(hostname_array.data(),
                                          max_hostname_size,
                                          MPI_CHAR,
                                          all_hostnames.data(),
@@ -491,8 +491,8 @@ namespace Utilities
           unsigned int n_local_processes   = 0;
           unsigned int nth_process_on_host = 0;
           for(unsigned int i = 0; i < MPI::n_mpi_processes(MPI_COMM_WORLD); ++i)
-            if(std::string(all_hostnames.data() + i * max_hostname_size)
-               == hostname)
+            if(std::string(all_hostnames.data() + i * max_hostname_size) ==
+               hostname)
               {
                 ++n_local_processes;
                 if(i <= MPI::this_mpi_process(MPI_COMM_WORLD))
@@ -506,13 +506,13 @@ namespace Utilities
           //
           // if the number would be zero, round up to one since every process
           // needs to have at least one thread
-          const unsigned int n_threads
-            = std::max(MultithreadInfo::n_cores() / n_local_processes
-                         + (nth_process_on_host <= MultithreadInfo::n_cores()
-                                                     % n_local_processes ?
-                              1 :
-                              0),
-                       1U);
+          const unsigned int n_threads =
+            std::max(MultithreadInfo::n_cores() / n_local_processes +
+                       (nth_process_on_host <=
+                            MultithreadInfo::n_cores() % n_local_processes ?
+                          1 :
+                          0),
+                     1U);
 #else
           const unsigned int n_threads = MultithreadInfo::n_cores();
 #endif
@@ -553,8 +553,8 @@ namespace Utilities
       // Now deal with PETSc (with or without MPI). Only delete the vectors if
       // finalize hasn't been called yet, otherwise this will lead to errors.
 #ifdef DEAL_II_WITH_PETSC
-      if((PetscInitializeCalled == PETSC_TRUE)
-         && (PetscFinalizeCalled == PETSC_FALSE))
+      if((PetscInitializeCalled == PETSC_TRUE) &&
+         (PetscFinalizeCalled == PETSC_FALSE))
         {
           GrowingVectorMemory<
             PETScWrappers::MPI::Vector>::release_unused_memory();

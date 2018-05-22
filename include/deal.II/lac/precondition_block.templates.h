@@ -172,8 +172,8 @@ PreconditionBlock<MatrixType, inverse_type>::invert_permuted_diagblocks()
                   if(inverse_permutation[entry->column()] < cell_start)
                     continue;
 
-                  const size_type column_cell
-                    = inverse_permutation[entry->column()] - cell_start;
+                  const size_type column_cell =
+                    inverse_permutation[entry->column()] - cell_start;
                   if(column_cell >= blocksize)
                     continue;
                   M_cell(row_cell, column_cell) = entry->value();
@@ -244,8 +244,8 @@ PreconditionBlock<MatrixType, inverse_type>::forward_step(
     {
       const unsigned int cell = cell_permuted ? permutation[rawcell] : rawcell;
       const size_type    block_start = cell * this->blocksize;
-      const size_type    permuted_block_start
-        = permuted ? permutation[block_start] : block_start;
+      const size_type    permuted_block_start =
+        permuted ? permutation[block_start] : block_start;
 
       //       deallog << std::endl << cell << '-' << block_start
       //            << '-' << permuted_block_start << (permuted ? 't' : 'f') << '\t';
@@ -261,13 +261,13 @@ PreconditionBlock<MatrixType, inverse_type>::forward_step(
           for(; entry != row_end; ++entry)
             {
               const size_type column = entry->column();
-              const size_type inverse_permuted_column
-                = permuted ? inverse_permutation[column] : column;
+              const size_type inverse_permuted_column =
+                permuted ? inverse_permutation[column] : column;
               b_cell_row -= entry->value() * prev(column);
               //TODO:[GK] Find out if this is really once column and once permuted
-              if(!this->inverses_ready()
-                 && inverse_permuted_column >= block_start
-                 && inverse_permuted_column < block_start + this->blocksize)
+              if(!this->inverses_ready() &&
+                 inverse_permuted_column >= block_start &&
+                 inverse_permuted_column < block_start + this->blocksize)
                 {
                   const size_type column_cell = column - block_start;
                   if(transpose_diagonal)
@@ -339,8 +339,8 @@ PreconditionBlock<MatrixType, inverse_type>::backward_step(
       const unsigned int cell = cell_permuted ? permutation[rawcell] : rawcell;
       const size_type    block_start = cell * this->blocksize;
       const size_type    block_end   = block_start + this->blocksize;
-      const size_type    permuted_block_start
-        = permuted ? permutation[block_start] : block_start;
+      const size_type    permuted_block_start =
+        permuted ? permutation[block_start] : block_start;
       for(row = permuted_block_start, row_cell = 0; row_cell < this->blocksize;
           ++row_cell, ++row)
         {
@@ -351,11 +351,11 @@ PreconditionBlock<MatrixType, inverse_type>::backward_step(
           for(; entry != row_end; ++entry)
             {
               const size_type column = entry->column();
-              const size_type inverse_permuted_column
-                = permuted ? inverse_permutation[column] : column;
+              const size_type inverse_permuted_column =
+                permuted ? inverse_permutation[column] : column;
               b_cell_row -= entry->value() * prev(column);
-              if(!this->inverses_ready() && inverse_permuted_column < block_end
-                 && column >= block_start)
+              if(!this->inverses_ready() &&
+                 inverse_permuted_column < block_end && column >= block_start)
                 {
                   const size_type column_cell = column - block_start;
                   // We need the
@@ -510,8 +510,8 @@ template <typename MatrixType, typename inverse_type>
 std::size_t
 PreconditionBlock<MatrixType, inverse_type>::memory_consumption() const
 {
-  return (sizeof(*this) - sizeof(PreconditionBlockBase<inverse_type>)
-          + PreconditionBlockBase<inverse_type>::memory_consumption());
+  return (sizeof(*this) - sizeof(PreconditionBlockBase<inverse_type>) +
+          PreconditionBlockBase<inverse_type>::memory_consumption());
 }
 
 /*--------------------- PreconditionBlockJacobi -----------------------*/
@@ -712,8 +712,8 @@ PreconditionBlockSOR<MatrixType, inverse_type>::forward(
 
   for(unsigned int cell = 0; cell < this->size(); ++cell)
     {
-      const size_type permuted_block_start
-        = permuted ? this->permutation[block_start] : block_start;
+      const size_type permuted_block_start =
+        permuted ? this->permutation[block_start] : block_start;
 
       for(row = permuted_block_start, row_cell = 0; row_cell < this->blocksize;
           ++row_cell, ++row)
@@ -725,13 +725,13 @@ PreconditionBlockSOR<MatrixType, inverse_type>::forward(
           for(; entry != row_end; ++entry)
             {
               const size_type column = entry->column();
-              const size_type inverse_permuted_column
-                = permuted ? this->inverse_permutation[column] : column;
+              const size_type inverse_permuted_column =
+                permuted ? this->inverse_permutation[column] : column;
 
               if(inverse_permuted_column < block_start)
                 b_cell_row -= entry->value() * dst(column);
-              else if(!this->inverses_ready()
-                      && column < block_start + this->blocksize)
+              else if(!this->inverses_ready() &&
+                      column < block_start + this->blocksize)
                 {
                   const size_type column_cell = column - block_start;
                   if(transpose_diagonal)
@@ -815,8 +815,8 @@ PreconditionBlockSOR<MatrixType, inverse_type>::backward(
           for(; entry != row_end; ++entry)
             {
               const size_type column = entry->column();
-              const size_type inverse_permuted_column
-                = permuted ? this->inverse_permutation[column] : column;
+              const size_type inverse_permuted_column =
+                permuted ? this->inverse_permutation[column] : column;
               if(inverse_permuted_column >= block_end)
                 b_cell_row -= entry->value() * dst(column);
               else if(!this->inverses_ready() && column >= block_start)

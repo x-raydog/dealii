@@ -282,8 +282,8 @@ namespace Step16
 
     std::set<types::boundary_id>          dirichlet_boundary_ids;
     Functions::ZeroFunction<dim>          homogeneous_dirichlet_bc;
-    const typename FunctionMap<dim>::type dirichlet_boundary_functions
-      = {{types::boundary_id(0), &homogeneous_dirichlet_bc}};
+    const typename FunctionMap<dim>::type dirichlet_boundary_functions = {
+      {types::boundary_id(0), &homogeneous_dirichlet_bc}};
     VectorTools::interpolate_boundary_values(
       static_cast<const DoFHandler<dim>&>(dof_handler),
       dirichlet_boundary_functions,
@@ -386,8 +386,8 @@ namespace Step16
   {
     MappingQ1<dim>                      mapping;
     MeshWorker::IntegrationInfoBox<dim> info_box;
-    UpdateFlags                         update_flags
-      = update_values | update_gradients | update_hessians;
+    UpdateFlags                         update_flags =
+      update_values | update_gradients | update_hessians;
     info_box.add_update_flags_all(update_flags);
     info_box.initialize(fe, mapping);
 
@@ -428,8 +428,8 @@ namespace Step16
   {
     MappingQ1<dim>                      mapping;
     MeshWorker::IntegrationInfoBox<dim> info_box;
-    UpdateFlags                         update_flags
-      = update_values | update_gradients | update_hessians;
+    UpdateFlags                         update_flags =
+      update_values | update_gradients | update_hessians;
     info_box.add_update_flags_all(update_flags);
     info_box.initialize(fe, mapping);
 
@@ -452,8 +452,8 @@ namespace Step16
     for(unsigned int level = 0; level < nlevels; ++level)
       {
         for(unsigned int i = 0; i < dof_handler.n_dofs(level); ++i)
-          if(mg_constrained_dofs.is_boundary_index(level, i)
-             || mg_constrained_dofs.at_refinement_edge(level, i))
+          if(mg_constrained_dofs.is_boundary_index(level, i) ||
+             mg_constrained_dofs.at_refinement_edge(level, i))
             mg_matrices[level].set(i, i, 1.);
       }
   }

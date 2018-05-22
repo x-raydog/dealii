@@ -595,8 +595,8 @@ public:
   virtual const FullMatrix<double>&
   get_prolongation_matrix(
     const unsigned int         child,
-    const RefinementCase<dim>& refinement_case
-    = RefinementCase<dim>::isotropic_refinement) const override;
+    const RefinementCase<dim>& refinement_case =
+      RefinementCase<dim>::isotropic_refinement) const override;
 
   /**
    * If, on a vertex, several finite elements are active, the hp code first

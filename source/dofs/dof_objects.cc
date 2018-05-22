@@ -52,14 +52,14 @@ namespace internal
         ExcIndexRange(local_index,
                       0,
                       dof_handler.get_fe().template n_dofs_per_object<dim>()));
-      Assert(obj_index * dof_handler.get_fe().template n_dofs_per_object<dim>()
-                 + local_index
-               < dofs.size(),
+      Assert(obj_index *
+                   dof_handler.get_fe().template n_dofs_per_object<dim>() +
+                 local_index <
+               dofs.size(),
              ExcInternalError());
 
-      dofs[obj_index * dof_handler.get_fe().template n_dofs_per_object<dim>()
-           + local_index]
-        = global_index;
+      dofs[obj_index * dof_handler.get_fe().template n_dofs_per_object<dim>() +
+           local_index] = global_index;
     }
   } // namespace DoFHandlerImplementation
 } // namespace internal

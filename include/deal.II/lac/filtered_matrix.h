@@ -641,8 +641,8 @@ inline bool
 FilteredMatrix<number>::const_iterator::
 operator==(const const_iterator& other) const
 {
-  return (accessor.index == other.accessor.index
-          && accessor.matrix == other.accessor.matrix);
+  return (accessor.index == other.accessor.index &&
+          accessor.matrix == other.accessor.matrix);
 }
 
 template <typename number>
@@ -935,8 +935,8 @@ template <typename VectorType>
 inline std::size_t
 FilteredMatrix<VectorType>::memory_consumption() const
 {
-  return (MemoryConsumption::memory_consumption(matrix)
-          + MemoryConsumption::memory_consumption(constraints));
+  return (MemoryConsumption::memory_consumption(matrix) +
+          MemoryConsumption::memory_consumption(constraints));
 }
 
 DEAL_II_NAMESPACE_CLOSE

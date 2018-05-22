@@ -102,8 +102,8 @@ FE_DGP<dim, spacedim>::get_face_interpolation_matrix(
   (void) interpolation_matrix;
   typedef FiniteElement<dim, spacedim> FE;
   typedef FE_DGP<dim, spacedim>        FEDGP;
-  AssertThrow((x_source_fe.get_name().find("FE_DGP<") == 0)
-                || (dynamic_cast<const FEDGP*>(&x_source_fe) != nullptr),
+  AssertThrow((x_source_fe.get_name().find("FE_DGP<") == 0) ||
+                (dynamic_cast<const FEDGP*>(&x_source_fe) != nullptr),
               typename FE::ExcInterpolationNotImplemented());
 
   Assert(interpolation_matrix.m() == 0,
@@ -126,8 +126,8 @@ FE_DGP<dim, spacedim>::get_subface_interpolation_matrix(
   (void) interpolation_matrix;
   typedef FiniteElement<dim, spacedim> FE;
   typedef FE_DGP<dim, spacedim>        FEDGP;
-  AssertThrow((x_source_fe.get_name().find("FE_DGP<") == 0)
-                || (dynamic_cast<const FEDGP*>(&x_source_fe) != nullptr),
+  AssertThrow((x_source_fe.get_name().find("FE_DGP<") == 0) ||
+                (dynamic_cast<const FEDGP*>(&x_source_fe) != nullptr),
               typename FE::ExcInterpolationNotImplemented());
 
   Assert(interpolation_matrix.m() == 0,

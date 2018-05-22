@@ -198,8 +198,8 @@ TensorProductPolynomialsBubbles<dim>::compute_grad_grad(
 
   for(unsigned int d1 = 0; d1 < dim; ++d1)
     for(unsigned int d2 = 0; d2 < dim; ++d2)
-      grad_grad[d1][d2]
-        = grad_grad_1[d1][d2] + grad_grad_2[d1][d2] + grad_grad_3[d1][d2];
+      grad_grad[d1][d2] =
+        grad_grad_1[d1][d2] + grad_grad_2[d1][d2] + grad_grad_3[d1][d2];
   grad_grad[comp][comp] += psi_value * v[dim][2];
 
   return grad_grad;
@@ -226,12 +226,12 @@ TensorProductPolynomialsBubbles<dim>::compute(
   Assert(
     grad_grads.size() == max_q_indices + n_bubbles || grad_grads.size() == 0,
     ExcDimensionMismatch2(grad_grads.size(), max_q_indices + n_bubbles, 0));
-  Assert(third_derivatives.size() == max_q_indices + n_bubbles
-           || third_derivatives.size() == 0,
+  Assert(third_derivatives.size() == max_q_indices + n_bubbles ||
+           third_derivatives.size() == 0,
          ExcDimensionMismatch2(
            third_derivatives.size(), max_q_indices + n_bubbles, 0));
-  Assert(fourth_derivatives.size() == max_q_indices + n_bubbles
-           || fourth_derivatives.size() == 0,
+  Assert(fourth_derivatives.size() == max_q_indices + n_bubbles ||
+           fourth_derivatives.size() == 0,
          ExcDimensionMismatch2(
            fourth_derivatives.size(), max_q_indices + n_bubbles, 0));
 

@@ -61,8 +61,8 @@ namespace TrilinosWrappers
             ncols,
             (TrilinosWrappers::types::int_type*) &(*colnum_cache)[0]);
           AssertThrow(ierr == 0, ExcTrilinosError(ierr));
-          AssertThrow(static_cast<std::vector<size_type>::size_type>(ncols)
-                        == colnum_cache->size(),
+          AssertThrow(static_cast<std::vector<size_type>::size_type>(ncols) ==
+                        colnum_cache->size(),
                       ExcInternalError());
         }
     }
@@ -81,10 +81,10 @@ namespace TrilinosWrappers
   // interface.
   SparsityPattern::SparsityPattern()
   {
-    column_space_map
-      = std_cxx14::make_unique<Epetra_Map>(TrilinosWrappers::types::int_type(0),
-                                           TrilinosWrappers::types::int_type(0),
-                                           Utilities::Trilinos::comm_self());
+    column_space_map =
+      std_cxx14::make_unique<Epetra_Map>(TrilinosWrappers::types::int_type(0),
+                                         TrilinosWrappers::types::int_type(0),
+                                         Utilities::Trilinos::comm_self());
     graph = std_cxx14::make_unique<Epetra_FECrsGraph>(
       View, *column_space_map, *column_space_map, 0);
     graph->FillComplete();
@@ -304,11 +304,11 @@ namespace TrilinosWrappers
 
       column_space_map = std_cxx14::make_unique<Epetra_Map>(col_map);
       std::vector<int> local_entries_per_row(
-        TrilinosWrappers::max_my_gid(row_map)
-        - TrilinosWrappers::min_my_gid(row_map));
+        TrilinosWrappers::max_my_gid(row_map) -
+        TrilinosWrappers::min_my_gid(row_map));
       for(unsigned int i = 0; i < local_entries_per_row.size(); ++i)
-        local_entries_per_row[i]
-          = n_entries_per_row[TrilinosWrappers::min_my_gid(row_map) + i];
+        local_entries_per_row[i] =
+          n_entries_per_row[TrilinosWrappers::min_my_gid(row_map) + i];
 
       if(row_map.Comm().NumProc() > 1)
         graph = std_cxx14::make_unique<Epetra_FECrsGraph>(
@@ -357,8 +357,8 @@ namespace TrilinosWrappers
       // Trilinos wants the row length as an int this is hopefully never going
       // to be a problem.
       for(size_type row = first_row; row < last_row; ++row)
-        n_entries_per_row[row - first_row]
-          = static_cast<int>(sp.row_length(row));
+        n_entries_per_row[row - first_row] =
+          static_cast<int>(sp.row_length(row));
 
       if(row_map.Comm().NumProc() > 1)
         graph = std_cxx14::make_unique<Epetra_FECrsGraph>(
@@ -377,8 +377,8 @@ namespace TrilinosWrappers
       if(exchange_data == false)
         for(size_type row = first_row; row < last_row; ++row)
           {
-            const TrilinosWrappers::types::int_type row_length
-              = sp.row_length(row);
+            const TrilinosWrappers::types::int_type row_length =
+              sp.row_length(row);
             if(row_length == 0)
               continue;
 
@@ -400,8 +400,8 @@ namespace TrilinosWrappers
       else
         for(size_type row = 0; row < sp.n_rows(); ++row)
           {
-            const TrilinosWrappers::types::int_type row_length
-              = sp.row_length(row);
+            const TrilinosWrappers::types::int_type row_length =
+              sp.row_length(row);
             if(row_length == 0)
               continue;
 
@@ -424,10 +424,10 @@ namespace TrilinosWrappers
               row_indices.data());
           }
 
-      int ierr = graph->GlobalAssemble(
-        *column_space_map,
-        static_cast<const Epetra_Map&>(graph->RangeMap()),
-        true);
+      int ierr =
+        graph->GlobalAssemble(*column_space_map,
+                              static_cast<const Epetra_Map&>(graph->RangeMap()),
+                              true);
       AssertThrow(ierr == 0, ExcTrilinosError(ierr));
 
       ierr = graph->OptimizeStorage();
@@ -490,8 +490,8 @@ namespace TrilinosWrappers
                           const MPI_Comm& communicator,
                           const size_type n_entries_per_row)
   {
-    Epetra_Map map
-      = parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map map =
+      parallel_partitioning.make_trilinos_map(communicator, false);
     reinit_sp(
       map, map, n_entries_per_row, column_space_map, graph, nonlocal_graph);
   }
@@ -501,8 +501,8 @@ namespace TrilinosWrappers
                           const MPI_Comm&               communicator,
                           const std::vector<size_type>& n_entries_per_row)
   {
-    Epetra_Map map
-      = parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map map =
+      parallel_partitioning.make_trilinos_map(communicator, false);
     reinit_sp(
       map, map, n_entries_per_row, column_space_map, graph, nonlocal_graph);
   }
@@ -513,10 +513,10 @@ namespace TrilinosWrappers
                           const MPI_Comm& communicator,
                           const size_type n_entries_per_row)
   {
-    Epetra_Map row_map
-      = row_parallel_partitioning.make_trilinos_map(communicator, false);
-    Epetra_Map col_map
-      = col_parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map row_map =
+      row_parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map col_map =
+      col_parallel_partitioning.make_trilinos_map(communicator, false);
     reinit_sp(row_map,
               col_map,
               n_entries_per_row,
@@ -531,10 +531,10 @@ namespace TrilinosWrappers
                           const MPI_Comm& communicator,
                           const std::vector<size_type>& n_entries_per_row)
   {
-    Epetra_Map row_map
-      = row_parallel_partitioning.make_trilinos_map(communicator, false);
-    Epetra_Map col_map
-      = col_parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map row_map =
+      row_parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map col_map =
+      col_parallel_partitioning.make_trilinos_map(communicator, false);
     reinit_sp(row_map,
               col_map,
               n_entries_per_row,
@@ -550,10 +550,10 @@ namespace TrilinosWrappers
                           const MPI_Comm& communicator,
                           const size_type n_entries_per_row)
   {
-    Epetra_Map row_map
-      = row_parallel_partitioning.make_trilinos_map(communicator, false);
-    Epetra_Map col_map
-      = col_parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map row_map =
+      row_parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map col_map =
+      col_parallel_partitioning.make_trilinos_map(communicator, false);
     reinit_sp(row_map,
               col_map,
               n_entries_per_row,
@@ -576,10 +576,10 @@ namespace TrilinosWrappers
     nonlocal_partitioner.subtract_set(row_parallel_partitioning);
     if(Utilities::MPI::n_mpi_processes(communicator) > 1)
       {
-        Epetra_Map nonlocal_map
-          = nonlocal_partitioner.make_trilinos_map(communicator, true);
-        nonlocal_graph
-          = std_cxx14::make_unique<Epetra_CrsGraph>(Copy, nonlocal_map, 0);
+        Epetra_Map nonlocal_map =
+          nonlocal_partitioner.make_trilinos_map(communicator, true);
+        nonlocal_graph =
+          std_cxx14::make_unique<Epetra_CrsGraph>(Copy, nonlocal_map, 0);
       }
     else
       Assert(nonlocal_partitioner.n_elements() == 0, ExcInternalError());
@@ -594,10 +594,10 @@ namespace TrilinosWrappers
     const MPI_Comm&            communicator,
     const bool                 exchange_data)
   {
-    Epetra_Map row_map
-      = row_parallel_partitioning.make_trilinos_map(communicator, false);
-    Epetra_Map col_map
-      = col_parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map row_map =
+      row_parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map col_map =
+      col_parallel_partitioning.make_trilinos_map(communicator, false);
     reinit_sp(row_map,
               col_map,
               nontrilinos_sparsity_pattern,
@@ -615,8 +615,8 @@ namespace TrilinosWrappers
     const MPI_Comm&            communicator,
     const bool                 exchange_data)
   {
-    Epetra_Map map
-      = parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map map =
+      parallel_partitioning.make_trilinos_map(communicator, false);
     reinit_sp(map,
               map,
               nontrilinos_sparsity_pattern,
@@ -673,8 +673,8 @@ namespace TrilinosWrappers
     graph            = std_cxx14::make_unique<Epetra_FECrsGraph>(*sp.graph);
 
     if(sp.nonlocal_graph.get() != nullptr)
-      nonlocal_graph
-        = std_cxx14::make_unique<Epetra_CrsGraph>(*sp.nonlocal_graph);
+      nonlocal_graph =
+        std_cxx14::make_unique<Epetra_CrsGraph>(*sp.nonlocal_graph);
     else
       nonlocal_graph.reset();
   }
@@ -700,10 +700,10 @@ namespace TrilinosWrappers
     // When we clear the matrix, reset
     // the pointer and generate an
     // empty sparsity pattern.
-    column_space_map
-      = std_cxx14::make_unique<Epetra_Map>(TrilinosWrappers::types::int_type(0),
-                                           TrilinosWrappers::types::int_type(0),
-                                           Utilities::Trilinos::comm_self());
+    column_space_map =
+      std_cxx14::make_unique<Epetra_Map>(TrilinosWrappers::types::int_type(0),
+                                         TrilinosWrappers::types::int_type(0),
+                                         Utilities::Trilinos::comm_self());
     graph = std_cxx14::make_unique<Epetra_FECrsGraph>(
       View, *column_space_map, *column_space_map, 0);
     graph->FillComplete();
@@ -718,17 +718,17 @@ namespace TrilinosWrappers
     Assert(column_space_map.get() != nullptr, ExcInternalError());
     if(nonlocal_graph.get() != nullptr)
       {
-        if(nonlocal_graph->IndicesAreGlobal() == false
-           && nonlocal_graph->RowMap().NumMyElements() > 0)
+        if(nonlocal_graph->IndicesAreGlobal() == false &&
+           nonlocal_graph->RowMap().NumMyElements() > 0)
           {
             // insert dummy element
-            TrilinosWrappers::types::int_type row
-              = nonlocal_graph->RowMap().MyGID(
+            TrilinosWrappers::types::int_type row =
+              nonlocal_graph->RowMap().MyGID(
                 static_cast<TrilinosWrappers::types::int_type>(0));
             nonlocal_graph->InsertGlobalIndices(row, 1, &row);
           }
-        Assert(nonlocal_graph->RowMap().NumMyElements() == 0
-                 || nonlocal_graph->IndicesAreGlobal() == true,
+        Assert(nonlocal_graph->RowMap().NumMyElements() == 0 ||
+                 nonlocal_graph->IndicesAreGlobal() == true,
                ExcInternalError());
         nonlocal_graph->FillComplete(
           *column_space_map, static_cast<const Epetra_Map&>(graph->RangeMap()));
@@ -740,10 +740,10 @@ namespace TrilinosWrappers
           *column_space_map, static_cast<const Epetra_Map&>(graph->RangeMap()));
       }
     else
-      ierr = graph->GlobalAssemble(
-        *column_space_map,
-        static_cast<const Epetra_Map&>(graph->RangeMap()),
-        true);
+      ierr =
+        graph->GlobalAssemble(*column_space_map,
+                              static_cast<const Epetra_Map&>(graph->RangeMap()),
+                              true);
 
     AssertThrow(ierr == 0, ExcTrilinosError(ierr));
 
@@ -756,10 +756,10 @@ namespace TrilinosWrappers
   {
     // Extract local indices in
     // the matrix.
-    int trilinos_i
-      = graph->LRID(static_cast<TrilinosWrappers::types::int_type>(i)),
-      trilinos_j
-      = graph->LCID(static_cast<TrilinosWrappers::types::int_type>(j));
+    int trilinos_i =
+          graph->LRID(static_cast<TrilinosWrappers::types::int_type>(i)),
+        trilinos_j =
+          graph->LCID(static_cast<TrilinosWrappers::types::int_type>(j));
 
     // If the data is not on the
     // present processor, we throw
@@ -798,11 +798,11 @@ namespace TrilinosWrappers
                    ExcDimensionMismatch(nnz_present, nnz_extracted));
 
             // Search the index
-            TrilinosWrappers::types::int_type* el_find
-              = std::find(col_indices, col_indices + nnz_present, trilinos_j);
+            TrilinosWrappers::types::int_type* el_find =
+              std::find(col_indices, col_indices + nnz_present, trilinos_j);
 
-            TrilinosWrappers::types::int_type local_col_index
-              = (TrilinosWrappers::types::int_type)(el_find - col_indices);
+            TrilinosWrappers::types::int_type local_col_index =
+              (TrilinosWrappers::types::int_type)(el_find - col_indices);
 
             if(local_col_index == nnz_present)
               return false;
@@ -819,8 +819,8 @@ namespace TrilinosWrappers
             // Generate the view and make
             // sure that we have not generated
             // an error.
-            int ierr
-              = graph->ExtractMyRowView(trilinos_i, nnz_extracted, col_indices);
+            int ierr =
+              graph->ExtractMyRowView(trilinos_i, nnz_extracted, col_indices);
             (void) ierr;
             Assert(ierr == 0, ExcTrilinosError(ierr));
 
@@ -856,8 +856,7 @@ namespace TrilinosWrappers
           {
             if(static_cast<size_type>(
                  std::abs(static_cast<TrilinosWrappers::types::int_type>(
-                   i - indices[j])))
-               > local_b)
+                   i - indices[j]))) > local_b)
               local_b = std::abs(
                 static_cast<TrilinosWrappers::types::int_type>(i - indices[j]));
           }
@@ -928,8 +927,8 @@ namespace TrilinosWrappers
     // get a representation of the
     // present row
     TrilinosWrappers::types::int_type ncols = -1;
-    TrilinosWrappers::types::int_type local_row
-      = graph->LRID(static_cast<TrilinosWrappers::types::int_type>(row));
+    TrilinosWrappers::types::int_type local_row =
+      graph->LRID(static_cast<TrilinosWrappers::types::int_type>(row));
 
     // on the processor who owns this
     // row, we'll have a non-negative
@@ -975,8 +974,8 @@ namespace TrilinosWrappers
   {
 #  ifdef DEAL_II_WITH_MPI
 
-    const Epetra_MpiComm* mpi_comm
-      = dynamic_cast<const Epetra_MpiComm*>(&graph->RangeMap().Comm());
+    const Epetra_MpiComm* mpi_comm =
+      dynamic_cast<const Epetra_MpiComm*>(&graph->RangeMap().Comm());
     Assert(mpi_comm != nullptr, ExcInternalError());
     return mpi_comm->Comm();
 #  else

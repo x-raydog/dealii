@@ -61,8 +61,8 @@ DynamicSparsityPattern::Line::add_entries(ForwardIterator begin,
       // actually doing something.
       ForwardIterator                  my_it = begin;
       size_type                        col   = *my_it;
-      std::vector<size_type>::iterator it
-        = Utilities::lower_bound(entries.begin(), entries.end(), col);
+      std::vector<size_type>::iterator it =
+        Utilities::lower_bound(entries.begin(), entries.end(), col);
       while(*it == col)
         {
           ++my_it;
@@ -322,8 +322,8 @@ DynamicSparsityPattern::exists(const size_type i, const size_type j) const
   if(!have_entries)
     return false;
 
-  const size_type rowindex
-    = rowset.size() == 0 ? i : rowset.index_within_set(i);
+  const size_type rowindex =
+    rowset.size() == 0 ? i : rowset.index_within_set(i);
 
   return std::binary_search(
     lines[rowindex].entries.begin(), lines[rowindex].entries.end(), j);
@@ -347,8 +347,8 @@ DynamicSparsityPattern::symmetrize()
   // already exist without any harm
   for(size_type row = 0; row < lines.size(); ++row)
     {
-      const size_type rowindex
-        = rowset.size() == 0 ? row : rowset.nth_index_in_set(row);
+      const size_type rowindex =
+        rowset.size() == 0 ? row : rowset.nth_index_in_set(row);
 
       for(std::vector<size_type>::const_iterator j = lines[row].entries.begin();
           j != lines[row].entries.end();
@@ -410,8 +410,8 @@ DynamicSparsityPattern::print_gnuplot(std::ostream& out) const
 {
   for(size_type row = 0; row < lines.size(); ++row)
     {
-      const size_type rowindex
-        = rowset.size() == 0 ? row : rowset.nth_index_in_set(row);
+      const size_type rowindex =
+        rowset.size() == 0 ? row : rowset.nth_index_in_set(row);
 
       for(std::vector<size_type>::const_iterator j = lines[row].entries.begin();
           j != lines[row].entries.end();
@@ -433,14 +433,14 @@ DynamicSparsityPattern::bandwidth() const
   size_type b = 0;
   for(size_type row = 0; row < lines.size(); ++row)
     {
-      const size_type rowindex
-        = rowset.size() == 0 ? row : rowset.nth_index_in_set(row);
+      const size_type rowindex =
+        rowset.size() == 0 ? row : rowset.nth_index_in_set(row);
 
       for(std::vector<size_type>::const_iterator j = lines[row].entries.begin();
           j != lines[row].entries.end();
           ++j)
-        if(static_cast<size_type>(std::abs(static_cast<int>(rowindex - *j)))
-           > b)
+        if(static_cast<size_type>(std::abs(static_cast<int>(rowindex - *j))) >
+           b)
           b = std::abs(static_cast<signed int>(rowindex - *j));
     }
 
@@ -465,9 +465,9 @@ DynamicSparsityPattern::n_nonzero_elements() const
 DynamicSparsityPattern::size_type
 DynamicSparsityPattern::memory_consumption() const
 {
-  size_type mem = sizeof(DynamicSparsityPattern)
-                  + MemoryConsumption::memory_consumption(rowset)
-                  - sizeof(rowset);
+  size_type mem = sizeof(DynamicSparsityPattern) +
+                  MemoryConsumption::memory_consumption(rowset) -
+                  sizeof(rowset);
 
   for(size_type i = 0; i < lines.size(); ++i)
     mem += MemoryConsumption::memory_consumption(lines[i]);

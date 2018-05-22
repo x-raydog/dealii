@@ -225,8 +225,8 @@ namespace Utilities
                                  typename std::decay<U>::type>::value,
                     "Input and output arguments must have the same type!");
       const auto array_view_values = make_array_view(values);
-      using const_type
-        = ArrayView<const typename decltype(array_view_values)::value_type>;
+      using const_type =
+        ArrayView<const typename decltype(array_view_values)::value_type>;
       sum(static_cast<const_type>(array_view_values),
           mpi_communicator,
           make_array_view(sums));
@@ -256,8 +256,8 @@ namespace Utilities
     sum(const SymmetricTensor<rank, dim, Number>& local,
         const MPI_Comm&                           mpi_communicator)
     {
-      const unsigned int n_entries
-        = SymmetricTensor<rank, dim, Number>::n_independent_components;
+      const unsigned int n_entries =
+        SymmetricTensor<rank, dim, Number>::n_independent_components;
       Number
         entries[SymmetricTensor<rank, dim, Number>::n_independent_components];
 
@@ -318,8 +318,8 @@ namespace Utilities
                                  typename std::decay<U>::type>::value,
                     "Input and output arguments must have the same type!");
       const auto array_view_values = make_array_view(values);
-      using const_type
-        = ArrayView<const typename decltype(array_view_values)::value_type>;
+      using const_type =
+        ArrayView<const typename decltype(array_view_values)::value_type>;
       max(static_cast<const_type>(array_view_values),
           mpi_communicator,
           make_array_view(maxima));
@@ -354,8 +354,8 @@ namespace Utilities
                                  typename std::decay<U>::type>::value,
                     "Input and output arguments must have the same type!");
       const auto array_view_values = make_array_view(values);
-      using const_type
-        = ArrayView<const typename decltype(array_view_values)::value_type>;
+      using const_type =
+        ArrayView<const typename decltype(array_view_values)::value_type>;
       min(static_cast<const_type>(array_view_values),
           mpi_communicator,
           make_array_view(minima));

@@ -132,8 +132,8 @@ namespace PETScWrappers
 
       this->communicator = other.communicator;
 
-      const PetscErrorCode ierr
-        = MatCopy(other.matrix, matrix, SAME_NONZERO_PATTERN);
+      const PetscErrorCode ierr =
+        MatCopy(other.matrix, matrix, SAME_NONZERO_PATTERN);
       AssertThrow(ierr == 0, ExcPETScError(ierr));
     }
 
@@ -343,25 +343,25 @@ namespace PETScWrappers
 #  ifdef DEBUG
       {
         // check indexsets
-        types::global_dof_index row_owners
-          = Utilities::MPI::sum(local_rows.n_elements(), communicator);
-        types::global_dof_index col_owners
-          = Utilities::MPI::sum(local_columns.n_elements(), communicator);
+        types::global_dof_index row_owners =
+          Utilities::MPI::sum(local_rows.n_elements(), communicator);
+        types::global_dof_index col_owners =
+          Utilities::MPI::sum(local_columns.n_elements(), communicator);
         Assert(row_owners == sparsity_pattern.n_rows(),
                ExcMessage(
                  std::string(
-                   "Each row has to be owned by exactly one owner (n_rows()=")
-                 + Utilities::to_string(sparsity_pattern.n_rows())
-                 + " but sum(local_rows.n_elements())="
-                 + Utilities::to_string(row_owners) + ")"));
+                   "Each row has to be owned by exactly one owner (n_rows()=") +
+                 Utilities::to_string(sparsity_pattern.n_rows()) +
+                 " but sum(local_rows.n_elements())=" +
+                 Utilities::to_string(row_owners) + ")"));
         Assert(
           col_owners == sparsity_pattern.n_cols(),
           ExcMessage(
             std::string(
-              "Each column has to be owned by exactly one owner (n_cols()=")
-            + Utilities::to_string(sparsity_pattern.n_cols())
-            + " but sum(local_columns.n_elements())="
-            + Utilities::to_string(col_owners) + ")"));
+              "Each column has to be owned by exactly one owner (n_cols()=") +
+            Utilities::to_string(sparsity_pattern.n_cols()) +
+            " but sum(local_columns.n_elements())=" +
+            Utilities::to_string(col_owners) + ")"));
       }
 #  endif
 
@@ -401,8 +401,8 @@ namespace PETScWrappers
           // pattern of a matrix
 
           const PetscInt local_row_start = local_rows.nth_index_in_set(0);
-          const PetscInt local_row_end
-            = local_row_start + local_rows.n_elements();
+          const PetscInt local_row_end =
+            local_row_start + local_rows.n_elements();
 
           // first set up the column number
           // array for the rows to be stored
@@ -419,8 +419,8 @@ namespace PETScWrappers
             for(PetscInt i = local_row_start; i < local_row_end; ++i)
               {
                 const PetscInt row_length = sparsity_pattern.row_length(i);
-                rowstart_in_window[i + 1 - local_row_start]
-                  = rowstart_in_window[i - local_row_start] + row_length;
+                rowstart_in_window[i + 1 - local_row_start] =
+                  rowstart_in_window[i - local_row_start] + row_length;
                 n_cols += row_length;
               }
             colnums_in_window.resize(n_cols + 1, -1);
@@ -431,8 +431,8 @@ namespace PETScWrappers
           {
             PetscInt* ptr = &colnums_in_window[0];
             for(PetscInt i = local_row_start; i < local_row_end; ++i)
-              for(typename SparsityPatternType::iterator p
-                  = sparsity_pattern.begin(i);
+              for(typename SparsityPatternType::iterator p =
+                    sparsity_pattern.begin(i);
                   p != sparsity_pattern.end(i);
                   ++p, ++ptr)
                 *ptr = p->column();
@@ -490,8 +490,8 @@ namespace PETScWrappers
           local_row_start += local_rows_per_process[p];
           local_col_start += local_columns_per_process[p];
         }
-      const size_type local_row_end
-        = local_row_start + local_rows_per_process[this_process];
+      const size_type local_row_end =
+        local_row_start + local_rows_per_process[this_process];
 
       // create the matrix. We
       // do not set row length but set the
@@ -544,8 +544,8 @@ namespace PETScWrappers
             for(size_type i = local_row_start; i < local_row_end; ++i)
               {
                 const size_type row_length = sparsity_pattern.row_length(i);
-                rowstart_in_window[i + 1 - local_row_start]
-                  = rowstart_in_window[i - local_row_start] + row_length;
+                rowstart_in_window[i + 1 - local_row_start] =
+                  rowstart_in_window[i - local_row_start] + row_length;
                 n_cols += row_length;
               }
             colnums_in_window.resize(n_cols + 1, -1);
@@ -556,8 +556,8 @@ namespace PETScWrappers
           {
             PetscInt* ptr = &colnums_in_window[0];
             for(size_type i = local_row_start; i < local_row_end; ++i)
-              for(typename SparsityPatternType::iterator p
-                  = sparsity_pattern.begin(i);
+              for(typename SparsityPatternType::iterator p =
+                    sparsity_pattern.begin(i);
                   p != sparsity_pattern.end(i);
                   ++p, ++ptr)
                 *ptr = p->column();

@@ -38,8 +38,8 @@
 // if we are using PETSc (see solve() for an example where this is necessary)
 namespace LA
 {
-#if defined(DEAL_II_WITH_PETSC) \
-  && !(defined(DEAL_II_WITH_TRILINOS) && defined(FORCE_USE_OF_TRILINOS))
+#if defined(DEAL_II_WITH_PETSC) && \
+  !(defined(DEAL_II_WITH_TRILINOS) && defined(FORCE_USE_OF_TRILINOS))
   using namespace dealii::LinearAlgebraPETSc;
 #  define USE_PETSC_LA
 #elif defined(DEAL_II_WITH_TRILINOS)
@@ -207,8 +207,8 @@ namespace Step40
     : mpi_communicator(MPI_COMM_WORLD),
       triangulation(mpi_communicator,
                     typename Triangulation<dim>::MeshSmoothing(
-                      Triangulation<dim>::smoothing_on_refinement
-                      | Triangulation<dim>::smoothing_on_coarsening)),
+                      Triangulation<dim>::smoothing_on_refinement |
+                      Triangulation<dim>::smoothing_on_coarsening)),
       dof_handler(triangulation),
       fe(2),
       pcout(std::cout,
@@ -369,8 +369,8 @@ namespace Step40
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -380,9 +380,9 @@ namespace Step40
 
     std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       if(cell->is_locally_owned())
         {
@@ -393,25 +393,24 @@ namespace Step40
 
           for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
             {
-              const double rhs_value
-                = (fe_values.quadrature_point(q_point)[1]
-                       > 0.5
-                           + 0.25
-                               * std::sin(
-                                   4.0 * numbers::PI
-                                   * fe_values.quadrature_point(q_point)[0]) ?
-                     1 :
-                     -1);
+              const double rhs_value =
+                (fe_values.quadrature_point(q_point)[1] >
+                     0.5 +
+                       0.25 * std::sin(4.0 * numbers::PI *
+                                       fe_values.quadrature_point(q_point)[0]) ?
+                   1 :
+                   -1);
 
               for(unsigned int i = 0; i < dofs_per_cell; ++i)
                 {
                   for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                    cell_matrix(i, j) += (fe_values.shape_grad(i, q_point)
-                                          * fe_values.shape_grad(j, q_point)
-                                          * fe_values.JxW(q_point));
+                    cell_matrix(i, j) += (fe_values.shape_grad(i, q_point) *
+                                          fe_values.shape_grad(j, q_point) *
+                                          fe_values.JxW(q_point));
 
-                  cell_rhs(i) += (rhs_value * fe_values.shape_value(i, q_point)
-                                  * fe_values.JxW(q_point));
+                  cell_rhs(i) +=
+                    (rhs_value * fe_values.shape_value(i, q_point) *
+                     fe_values.JxW(q_point));
                 }
             }
 
@@ -585,10 +584,9 @@ namespace Step40
     // that nobody ever tries to generate this much data -- you would likely
     // overflow all file system quotas), and <code>.vtu</code> indicates the
     // XML-based Visualization Toolkit (VTK) file format.
-    const std::string filename
-      = ("solution-" + Utilities::int_to_string(cycle, 2) + "."
-         + Utilities::int_to_string(triangulation.locally_owned_subdomain(),
-                                    4));
+    const std::string filename =
+      ("solution-" + Utilities::int_to_string(cycle, 2) + "." +
+       Utilities::int_to_string(triangulation.locally_owned_subdomain(), 4));
     std::ofstream output((filename + ".vtu"));
     data_out.write_vtu(output);
 
@@ -605,8 +603,8 @@ namespace Step40
         for(unsigned int i = 0;
             i < Utilities::MPI::n_mpi_processes(mpi_communicator);
             ++i)
-          filenames.push_back("solution-" + Utilities::int_to_string(cycle, 2)
-                              + "." + Utilities::int_to_string(i, 4) + ".vtu");
+          filenames.push_back("solution-" + Utilities::int_to_string(cycle, 2) +
+                              "." + Utilities::int_to_string(i, 4) + ".vtu");
 
         std::ofstream master_output(
           "solution-" + Utilities::int_to_string(cycle, 2) + ".pvtu");

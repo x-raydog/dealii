@@ -336,8 +336,7 @@ protected:
      * this, so it is explicitly deleted.
      */
     Entry&
-    operator=(const Entry&)
-      = delete;
+    operator=(const Entry&) = delete;
   };
 
   /**

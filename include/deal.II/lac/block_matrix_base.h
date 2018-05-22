@@ -1099,17 +1099,17 @@ namespace BlockMatrixIterators
     // the end of the matrix
     if(row < matrix->m())
       {
-        const std::pair<unsigned int, size_type> indices
-          = matrix->row_block_indices.global_to_local(row);
+        const std::pair<unsigned int, size_type> indices =
+          matrix->row_block_indices.global_to_local(row);
 
         // find the first block that does
         // have an entry in this row
         for(unsigned int bc = 0; bc < matrix->n_block_cols(); ++bc)
           {
-            base_iterator
-              = matrix->block(indices.first, bc).begin(indices.second);
-            if(base_iterator
-               != matrix->block(indices.first, bc).end(indices.second))
+            base_iterator =
+              matrix->block(indices.first, bc).begin(indices.second);
+            if(base_iterator !=
+               matrix->block(indices.first, bc).end(indices.second))
               {
                 this->row_block = indices.first;
                 this->col_block = bc;
@@ -1161,8 +1161,8 @@ namespace BlockMatrixIterators
     Assert(this->row_block != numbers::invalid_unsigned_int,
            ExcIteratorPastEnd());
 
-    return (matrix->row_block_indices.local_to_global(this->row_block, 0)
-            + base_iterator->row());
+    return (matrix->row_block_indices.local_to_global(this->row_block, 0) +
+            base_iterator->row());
   }
 
   template <class BlockMatrixType>
@@ -1172,8 +1172,8 @@ namespace BlockMatrixIterators
     Assert(this->col_block != numbers::invalid_unsigned_int,
            ExcIteratorPastEnd());
 
-    return (matrix->column_block_indices.local_to_global(this->col_block, 0)
-            + base_iterator->column());
+    return (matrix->column_block_indices.local_to_global(this->col_block, 0) +
+            base_iterator->column());
   }
 
   template <class BlockMatrixType>
@@ -1209,8 +1209,8 @@ namespace BlockMatrixIterators
     // times if rows inside a block are
     // empty), we have to jump to the next
     // block and take the
-    while(base_iterator
-          == matrix->block(this->row_block, this->col_block).end(local_row))
+    while(base_iterator ==
+          matrix->block(this->row_block, this->col_block).end(local_row))
       {
         // jump to next block in this block
         // row, if possible, otherwise go
@@ -1218,8 +1218,8 @@ namespace BlockMatrixIterators
         if(this->col_block < matrix->n_block_cols() - 1)
           {
             ++this->col_block;
-            base_iterator = matrix->block(this->row_block, this->col_block)
-                              .begin(local_row);
+            base_iterator =
+              matrix->block(this->row_block, this->col_block).begin(local_row);
           }
         else
           {
@@ -1246,8 +1246,8 @@ namespace BlockMatrixIterators
                   }
               }
 
-            base_iterator = matrix->block(this->row_block, this->col_block)
-                              .begin(local_row);
+            base_iterator =
+              matrix->block(this->row_block, this->col_block).begin(local_row);
           }
       }
   }
@@ -1264,9 +1264,9 @@ namespace BlockMatrixIterators
       // have to have the same
       // base_iterator representation, but
       // valid iterators have to
-      return (((this->row_block == numbers::invalid_unsigned_int)
-               && (this->col_block == numbers::invalid_unsigned_int))
-              || (base_iterator == a.base_iterator));
+      return (((this->row_block == numbers::invalid_unsigned_int) &&
+               (this->col_block == numbers::invalid_unsigned_int)) ||
+              (base_iterator == a.base_iterator));
 
     return false;
   }
@@ -1285,17 +1285,17 @@ namespace BlockMatrixIterators
     // the end of the matrix
     if(row < matrix->m())
       {
-        const std::pair<unsigned int, size_type> indices
-          = matrix->row_block_indices.global_to_local(row);
+        const std::pair<unsigned int, size_type> indices =
+          matrix->row_block_indices.global_to_local(row);
 
         // find the first block that does
         // have an entry in this row
         for(size_type bc = 0; bc < matrix->n_block_cols(); ++bc)
           {
-            base_iterator
-              = matrix->block(indices.first, bc).begin(indices.second);
-            if(base_iterator
-               != matrix->block(indices.first, bc).end(indices.second))
+            base_iterator =
+              matrix->block(indices.first, bc).begin(indices.second);
+            if(base_iterator !=
+               matrix->block(indices.first, bc).end(indices.second))
               {
                 this->row_block = indices.first;
                 this->col_block = bc;
@@ -1326,8 +1326,8 @@ namespace BlockMatrixIterators
   {
     Assert(this->row_block != numbers::invalid_size_type, ExcIteratorPastEnd());
 
-    return (matrix->row_block_indices.local_to_global(this->row_block, 0)
-            + base_iterator->row());
+    return (matrix->row_block_indices.local_to_global(this->row_block, 0) +
+            base_iterator->row());
   }
 
   template <class BlockMatrixType>
@@ -1336,8 +1336,8 @@ namespace BlockMatrixIterators
   {
     Assert(this->col_block != numbers::invalid_size_type, ExcIteratorPastEnd());
 
-    return (matrix->column_block_indices.local_to_global(this->col_block, 0)
-            + base_iterator->column());
+    return (matrix->column_block_indices.local_to_global(this->col_block, 0) +
+            base_iterator->column());
   }
 
   template <class BlockMatrixType>
@@ -1380,8 +1380,8 @@ namespace BlockMatrixIterators
     // times if rows inside a block are
     // empty), we have to jump to the next
     // block and take the
-    while(base_iterator
-          == matrix->block(this->row_block, this->col_block).end(local_row))
+    while(base_iterator ==
+          matrix->block(this->row_block, this->col_block).end(local_row))
       {
         // jump to next block in this block
         // row, if possible, otherwise go
@@ -1389,8 +1389,8 @@ namespace BlockMatrixIterators
         if(this->col_block < matrix->n_block_cols() - 1)
           {
             ++this->col_block;
-            base_iterator = matrix->block(this->row_block, this->col_block)
-                              .begin(local_row);
+            base_iterator =
+              matrix->block(this->row_block, this->col_block).begin(local_row);
           }
         else
           {
@@ -1417,8 +1417,8 @@ namespace BlockMatrixIterators
                   }
               }
 
-            base_iterator = matrix->block(this->row_block, this->col_block)
-                              .begin(local_row);
+            base_iterator =
+              matrix->block(this->row_block, this->col_block).begin(local_row);
           }
       }
   }
@@ -1435,9 +1435,9 @@ namespace BlockMatrixIterators
       // have to have the same
       // base_iterator representation, but
       // valid iterators have to
-      return (((this->row_block == numbers::invalid_size_type)
-               && (this->col_block == numbers::invalid_size_type))
-              || (base_iterator == a.base_iterator));
+      return (((this->row_block == numbers::invalid_size_type) &&
+               (this->col_block == numbers::invalid_size_type)) ||
+              (base_iterator == a.base_iterator));
 
     return false;
   }
@@ -1472,15 +1472,14 @@ template <class MatrixType>
 std::size_t
 BlockMatrixBase<MatrixType>::memory_consumption() const
 {
-  std::size_t mem
-    = MemoryConsumption::memory_consumption(row_block_indices)
-      + MemoryConsumption::memory_consumption(column_block_indices)
-      + MemoryConsumption::memory_consumption(sub_objects)
-      + MemoryConsumption::memory_consumption(
-          temporary_data.counter_within_block)
-      + MemoryConsumption::memory_consumption(temporary_data.column_indices)
-      + MemoryConsumption::memory_consumption(temporary_data.column_values)
-      + sizeof(temporary_data.mutex);
+  std::size_t mem =
+    MemoryConsumption::memory_consumption(row_block_indices) +
+    MemoryConsumption::memory_consumption(column_block_indices) +
+    MemoryConsumption::memory_consumption(sub_objects) +
+    MemoryConsumption::memory_consumption(temporary_data.counter_within_block) +
+    MemoryConsumption::memory_consumption(temporary_data.column_indices) +
+    MemoryConsumption::memory_consumption(temporary_data.column_values) +
+    sizeof(temporary_data.mutex);
 
   for(unsigned int r = 0; r < n_block_rows(); ++r)
     for(unsigned int c = 0; c < n_block_cols(); ++c)
@@ -1572,8 +1571,8 @@ BlockMatrixBase<MatrixType>::set(const size_type  i,
 
   AssertIsFinite(value);
 
-  const std::pair<unsigned int, size_type> row_index
-    = row_block_indices.global_to_local(i),
+  const std::pair<unsigned int, size_type>
+    row_index = row_block_indices.global_to_local(i),
     col_index = column_block_indices.global_to_local(j);
   block(row_index.first, col_index.first)
     .set(row_index.second, col_index.second, value);
@@ -1703,14 +1702,14 @@ BlockMatrixBase<MatrixType>::set(const size_type  row,
       if(value == number() && elide_zero_values == true)
         continue;
 
-      const std::pair<unsigned int, size_type> col_index
-        = this->column_block_indices.global_to_local(col_indices[j]);
+      const std::pair<unsigned int, size_type> col_index =
+        this->column_block_indices.global_to_local(col_indices[j]);
 
-      const size_type local_index
-        = temporary_data.counter_within_block[col_index.first]++;
+      const size_type local_index =
+        temporary_data.counter_within_block[col_index.first]++;
 
-      temporary_data.column_indices[col_index.first][local_index]
-        = col_index.second;
+      temporary_data.column_indices[col_index.first][local_index] =
+        col_index.second;
       temporary_data.column_values[col_index.first][local_index] = value;
     }
 
@@ -1728,8 +1727,8 @@ BlockMatrixBase<MatrixType>::set(const size_type  row,
   // where we should start reading out
   // data. Now let's write the data into
   // the individual blocks!
-  const std::pair<unsigned int, size_type> row_index
-    = this->row_block_indices.global_to_local(row);
+  const std::pair<unsigned int, size_type> row_index =
+    this->row_block_indices.global_to_local(row);
   for(unsigned int block_col = 0; block_col < n_block_cols(); ++block_col)
     {
       if(temporary_data.counter_within_block[block_col] == 0)
@@ -1758,12 +1757,12 @@ BlockMatrixBase<MatrixType>::add(const size_type  i,
   // only if it is safe for the matrix we are
   // working with
   typedef typename MatrixType::Traits MatrixTraits;
-  if((MatrixTraits::zero_addition_can_be_elided == true)
-     && (value == value_type()))
+  if((MatrixTraits::zero_addition_can_be_elided == true) &&
+     (value == value_type()))
     return;
 
-  const std::pair<unsigned int, size_type> row_index
-    = row_block_indices.global_to_local(i),
+  const std::pair<unsigned int, size_type>
+    row_index = row_block_indices.global_to_local(i),
     col_index = column_block_indices.global_to_local(j);
   block(row_index.first, col_index.first)
     .add(row_index.second, col_index.second, value);
@@ -1855,18 +1854,18 @@ BlockMatrixBase<MatrixType>::add(const size_type  row,
         if(col_indices[i] <= before)
           Assert(false,
                  ExcMessage("Flag col_indices_are_sorted is set, but "
-                            "indices appear to not be sorted.")) else before
-            = col_indices[i];
+                            "indices appear to not be sorted.")) else before =
+            col_indices[i];
 #  endif
-      const std::pair<unsigned int, size_type> row_index
-        = this->row_block_indices.global_to_local(row);
+      const std::pair<unsigned int, size_type> row_index =
+        this->row_block_indices.global_to_local(row);
 
       if(this->n_block_cols() > 1)
         {
-          const size_type* first_block
-            = Utilities::lower_bound(col_indices,
-                                     col_indices + n_cols,
-                                     this->column_block_indices.block_start(1));
+          const size_type* first_block =
+            Utilities::lower_bound(col_indices,
+                                   col_indices + n_cols,
+                                   this->column_block_indices.block_start(1));
 
           const size_type n_zero_block_indices = first_block - col_indices;
           block(row_index.first, 0)
@@ -1949,14 +1948,14 @@ BlockMatrixBase<MatrixType>::add(const size_type  row,
       if(value == number() && elide_zero_values == true)
         continue;
 
-      const std::pair<unsigned int, size_type> col_index
-        = this->column_block_indices.global_to_local(col_indices[j]);
+      const std::pair<unsigned int, size_type> col_index =
+        this->column_block_indices.global_to_local(col_indices[j]);
 
-      const size_type local_index
-        = temporary_data.counter_within_block[col_index.first]++;
+      const size_type local_index =
+        temporary_data.counter_within_block[col_index.first]++;
 
-      temporary_data.column_indices[col_index.first][local_index]
-        = col_index.second;
+      temporary_data.column_indices[col_index.first][local_index] =
+        col_index.second;
       temporary_data.column_values[col_index.first][local_index] = value;
     }
 
@@ -1974,8 +1973,8 @@ BlockMatrixBase<MatrixType>::add(const size_type  row,
   // where we should start reading out
   // data. Now let's write the data into
   // the individual blocks!
-  const std::pair<unsigned int, size_type> row_index
-    = this->row_block_indices.global_to_local(row);
+  const std::pair<unsigned int, size_type> row_index =
+    this->row_block_indices.global_to_local(row);
   for(unsigned int block_col = 0; block_col < n_block_cols(); ++block_col)
     {
       if(temporary_data.counter_within_block[block_col] == 0)
@@ -2019,8 +2018,8 @@ inline typename BlockMatrixBase<MatrixType>::value_type
 BlockMatrixBase<MatrixType>::operator()(const size_type i,
                                         const size_type j) const
 {
-  const std::pair<unsigned int, size_type> row_index
-    = row_block_indices.global_to_local(i),
+  const std::pair<unsigned int, size_type>
+    row_index = row_block_indices.global_to_local(i),
     col_index = column_block_indices.global_to_local(j);
   return block(row_index.first, col_index.first)(row_index.second,
                                                  col_index.second);
@@ -2030,8 +2029,8 @@ template <class MatrixType>
 inline typename BlockMatrixBase<MatrixType>::value_type
 BlockMatrixBase<MatrixType>::el(const size_type i, const size_type j) const
 {
-  const std::pair<unsigned int, size_type> row_index
-    = row_block_indices.global_to_local(i),
+  const std::pair<unsigned int, size_type>
+    row_index = row_block_indices.global_to_local(i),
     col_index = column_block_indices.global_to_local(j);
   return block(row_index.first, col_index.first)
     .el(row_index.second, col_index.second);
@@ -2043,8 +2042,8 @@ BlockMatrixBase<MatrixType>::diag_element(const size_type i) const
 {
   Assert(n_block_rows() == n_block_cols(), ExcNotQuadratic());
 
-  const std::pair<unsigned int, size_type> index
-    = row_block_indices.global_to_local(i);
+  const std::pair<unsigned int, size_type> index =
+    row_block_indices.global_to_local(i);
   return block(index.first, index.first).diag_element(index.second);
 }
 
@@ -2279,8 +2278,8 @@ BlockMatrixBase<MatrixType>::matrix_norm_square(const BlockVectorType& v) const
       if(row == col)
         norm_sqr += block(row, col).matrix_norm_square(v.block(row));
       else
-        norm_sqr
-          += block(row, col).matrix_scalar_product(v.block(row), v.block(col));
+        norm_sqr +=
+          block(row, col).matrix_scalar_product(v.block(row), v.block(col));
   return norm_sqr;
 }
 
@@ -2299,8 +2298,8 @@ BlockMatrixBase<MatrixType>::matrix_scalar_product(
   value_type result = 0;
   for(unsigned int row = 0; row < n_block_rows(); ++row)
     for(unsigned int col = 0; col < n_block_cols(); ++col)
-      result
-        += block(row, col).matrix_scalar_product(u.block(row), v.block(col));
+      result +=
+        block(row, col).matrix_scalar_product(u.block(row), v.block(col));
   return result;
 }
 

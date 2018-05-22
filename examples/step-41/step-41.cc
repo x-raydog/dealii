@@ -289,8 +289,8 @@ namespace Step41
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -300,9 +300,9 @@ namespace Step41
 
     std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
 
     for(; cell != endc; ++cell)
       {
@@ -314,14 +314,14 @@ namespace Step41
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
             {
               for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                cell_matrix(i, j) += (fe_values.shape_grad(i, q_point)
-                                      * fe_values.shape_grad(j, q_point)
-                                      * fe_values.JxW(q_point));
+                cell_matrix(i, j) +=
+                  (fe_values.shape_grad(i, q_point) *
+                   fe_values.shape_grad(j, q_point) * fe_values.JxW(q_point));
 
-              cell_rhs(i)
-                += (fe_values.shape_value(i, q_point)
-                    * right_hand_side.value(fe_values.quadrature_point(q_point))
-                    * fe_values.JxW(q_point));
+              cell_rhs(i) +=
+                (fe_values.shape_value(i, q_point) *
+                 right_hand_side.value(fe_values.quadrature_point(q_point)) *
+                 fe_values.JxW(q_point));
             }
 
         cell->get_dof_indices(local_dof_indices);
@@ -374,9 +374,9 @@ namespace Step41
     FullMatrix<double> cell_matrix(dofs_per_cell, dofs_per_cell);
     std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
 
     for(; cell != endc; ++cell)
       {
@@ -385,9 +385,9 @@ namespace Step41
 
         for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
-            cell_matrix(i, i)
-              += (fe_values.shape_value(i, q_point)
-                  * fe_values.shape_value(i, q_point) * fe_values.JxW(q_point));
+            cell_matrix(i, i) +=
+              (fe_values.shape_value(i, q_point) *
+               fe_values.shape_value(i, q_point) * fe_values.JxW(q_point));
 
         cell->get_dof_indices(local_dof_indices);
 
@@ -463,14 +463,14 @@ namespace Step41
     const Obstacle<dim> obstacle;
     std::vector<bool>   dof_touched(dof_handler.n_dofs(), false);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       for(unsigned int v = 0; v < GeometryInfo<dim>::vertices_per_cell; ++v)
         {
-          Assert(dof_handler.get_fe().dofs_per_cell
-                   == GeometryInfo<dim>::vertices_per_cell,
+          Assert(dof_handler.get_fe().dofs_per_cell ==
+                   GeometryInfo<dim>::vertices_per_cell,
                  ExcNotImplemented());
 
           const unsigned int dof_index = cell->vertex_dof_index(v, 0);
@@ -502,10 +502,10 @@ namespace Step41
           const double obstacle_value = obstacle.value(cell->vertex(v));
           const double solution_value = solution(dof_index);
 
-          if(lambda(dof_index)
-               + penalty_parameter * diagonal_of_mass_matrix(dof_index)
-                   * (solution_value - obstacle_value)
-             < 0)
+          if(lambda(dof_index) + penalty_parameter *
+                                   diagonal_of_mass_matrix(dof_index) *
+                                   (solution_value - obstacle_value) <
+             0)
             {
               active_set.add_index(dof_index);
               constraints.add_line(dof_index);
@@ -582,8 +582,8 @@ namespace Step41
 
     data_out.build_patches();
 
-    std::ofstream output_vtk(std::string("output_")
-                             + Utilities::int_to_string(iteration, 3) + ".vtk");
+    std::ofstream output_vtk(std::string("output_") +
+                             Utilities::int_to_string(iteration, 3) + ".vtk");
     data_out.write_vtk(output_vtk);
   }
 

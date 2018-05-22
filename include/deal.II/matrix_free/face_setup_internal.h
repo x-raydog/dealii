@@ -154,8 +154,8 @@ namespace internal
       const MFAddData&                                    additional_data,
       std::vector<std::pair<unsigned int, unsigned int>>& cell_levels)
     {
-      use_active_cells
-        = additional_data.level_mg_handler == numbers::invalid_unsigned_int;
+      use_active_cells =
+        additional_data.level_mg_handler == numbers::invalid_unsigned_int;
 
 #  ifdef DEBUG
       // safety check
@@ -183,8 +183,8 @@ namespace internal
         inner_faces_at_proc_boundary;
       if(dynamic_cast<const parallel::Triangulation<dim>*>(&triangulation))
         {
-          const types::subdomain_id my_domain
-            = triangulation.locally_owned_subdomain();
+          const types::subdomain_id my_domain =
+            triangulation.locally_owned_subdomain();
           for(unsigned int i = 0; i < cell_levels.size(); ++i)
             {
               if(i > 0 && cell_levels[i] == cell_levels[i - 1])
@@ -196,8 +196,8 @@ namespace internal
                 {
                   if(dcell->at_boundary(f) && !dcell->has_periodic_neighbor(f))
                     continue;
-                  typename dealii::Triangulation<dim>::cell_iterator neighbor
-                    = dcell->neighbor_or_periodic_neighbor(f);
+                  typename dealii::Triangulation<dim>::cell_iterator neighbor =
+                    dcell->neighbor_or_periodic_neighbor(f);
 
                   // faces at hanging nodes are always treated by the processor
                   // who owns the element on the fine side. but we need to count
@@ -209,12 +209,12 @@ namespace internal
                         ++c)
                       {
                         typename dealii::Triangulation<dim>::cell_iterator
-                          neighbor_c
-                          = dcell->at_boundary(f) ?
+                          neighbor_c =
+                            dcell->at_boundary(f) ?
                               dcell->periodic_neighbor_child_on_subface(f, c) :
                               dcell->neighbor_child_on_subface(f, c);
-                        const types::subdomain_id neigh_domain
-                          = neighbor_c->subdomain_id();
+                        const types::subdomain_id neigh_domain =
+                          neighbor_c->subdomain_id();
                         if(my_domain < neigh_domain)
                           inner_faces_at_proc_boundary[neigh_domain]
                             .n_hanging_faces_larger_subdomain++;
@@ -224,9 +224,9 @@ namespace internal
                       }
                   else
                     {
-                      const types::subdomain_id neigh_domain
-                        = use_active_cells ? neighbor->subdomain_id() :
-                                             neighbor->level_subdomain_id();
+                      const types::subdomain_id neigh_domain =
+                        use_active_cells ? neighbor->subdomain_id() :
+                                           neighbor->level_subdomain_id();
                       if(neighbor->level() < dcell->level() && use_active_cells)
                         {
                           if(my_domain < neigh_domain)
@@ -236,8 +236,8 @@ namespace internal
                             inner_faces_at_proc_boundary[neigh_domain]
                               .n_hanging_faces_larger_subdomain++;
                         }
-                      else if(neighbor->level() == dcell->level()
-                              && my_domain != neigh_domain)
+                      else if(neighbor->level() == dcell->level() &&
+                              my_domain != neigh_domain)
                         {
                           // always list the cell whose owner has the lower
                           // subdomain id first. this applies to both processors
@@ -258,8 +258,8 @@ namespace internal
           // sort the cell ids related to each neighboring processor. This
           // algorithm is symmetric so every processor combination should
           // arrive here and no deadlock should be possible
-          for(std::map<types::subdomain_id, FaceIdentifier>::iterator it
-              = inner_faces_at_proc_boundary.begin();
+          for(std::map<types::subdomain_id, FaceIdentifier>::iterator it =
+                inner_faces_at_proc_boundary.begin();
               it != inner_faces_at_proc_boundary.end();
               ++it)
             {
@@ -277,9 +277,9 @@ namespace internal
               // looking at the length of the lists of faces
 #  if defined(DEAL_II_WITH_MPI) && defined(DEBUG)
               MPI_Comm comm = MPI_COMM_SELF;
-              if(const parallel::Triangulation<dim>* ptria
-                 = dynamic_cast<const parallel::Triangulation<dim>*>(
-                   &triangulation))
+              if(const parallel::Triangulation<dim>* ptria =
+                   dynamic_cast<const parallel::Triangulation<dim>*>(
+                     &triangulation))
                 comm = ptria->get_communicator();
 
               MPI_Status   status;
@@ -346,10 +346,10 @@ namespace internal
               std::vector<std::tuple<CellId, CellId, unsigned int>> other_range(
                 it->second.shared_faces.size());
               for(unsigned int i = 0; i < other_range.size(); ++i)
-                other_range[i]
-                  = std::make_tuple(it->second.shared_faces[i].second,
-                                    it->second.shared_faces[i].first,
-                                    i);
+                other_range[i] =
+                  std::make_tuple(it->second.shared_faces[i].second,
+                                  it->second.shared_faces[i].first,
+                                  i);
               std::sort(other_range.begin(), other_range.end());
 
               // the vector 'assignment' sets whether a particular cell
@@ -367,8 +367,8 @@ namespace internal
                   unsigned int count = 0;
                   for(unsigned int i = 1; i < it->second.shared_faces.size();
                       ++i)
-                    if(it->second.shared_faces[i].first
-                       == it->second.shared_faces[i - 1 - count].first)
+                    if(it->second.shared_faces[i].first ==
+                       it->second.shared_faces[i - 1 - count].first)
                       ++count;
                     else
                       {
@@ -388,8 +388,8 @@ namespace internal
                   // other_range rather than `shared_faces`.
                   count = 0;
                   for(unsigned int i = 1; i < other_range.size(); ++i)
-                    if(std::get<0>(other_range[i])
-                       == std::get<0>(other_range[i - 1 - count]))
+                    if(std::get<0>(other_range[i]) ==
+                       std::get<0>(other_range[i - 1 - count]))
                       ++count;
                     else
                       {
@@ -401,21 +401,19 @@ namespace internal
                                 Assert(it->second
                                            .shared_faces[std::get<2>(
                                              other_range[i - 1])]
-                                           .second
-                                         == it->second
-                                              .shared_faces[std::get<2>(
-                                                other_range[i - 1 - k])]
-                                              .second,
+                                           .second ==
+                                         it->second
+                                           .shared_faces[std::get<2>(
+                                             other_range[i - 1 - k])]
+                                           .second,
                                        ExcInternalError());
                                 // only assign to -1 if higher rank was not
                                 // yet set
                                 if(assignment[std::get<2>(
-                                     other_range[i - 1 - k])]
-                                   == 0)
+                                     other_range[i - 1 - k])] == 0)
                                   {
                                     assignment[std::get<2>(
-                                      other_range[i - 1 - k])]
-                                      = -1;
+                                      other_range[i - 1 - k])] = -1;
                                     ++n_faces_lower_proc;
                                   }
                               }
@@ -429,23 +427,23 @@ namespace internal
               // with larger rank the second half. Adjust for the hanging
               // faces that always get assigned to one side, and the faces we
               // have already assigned due to the criterion above
-              n_faces_lower_proc
-                += it->second.n_hanging_faces_smaller_subdomain;
-              n_faces_higher_proc
-                += it->second.n_hanging_faces_larger_subdomain;
-              const unsigned int n_total_faces_at_proc_boundary
-                = (it->second.shared_faces.size()
-                   + it->second.n_hanging_faces_smaller_subdomain
-                   + it->second.n_hanging_faces_larger_subdomain);
+              n_faces_lower_proc +=
+                it->second.n_hanging_faces_smaller_subdomain;
+              n_faces_higher_proc +=
+                it->second.n_hanging_faces_larger_subdomain;
+              const unsigned int n_total_faces_at_proc_boundary =
+                (it->second.shared_faces.size() +
+                 it->second.n_hanging_faces_smaller_subdomain +
+                 it->second.n_hanging_faces_larger_subdomain);
               unsigned int split_index = n_total_faces_at_proc_boundary / 2;
               if(split_index < n_faces_lower_proc)
                 split_index = 0;
-              else if(split_index
-                      < n_total_faces_at_proc_boundary - n_faces_higher_proc)
+              else if(split_index <
+                      n_total_faces_at_proc_boundary - n_faces_higher_proc)
                 split_index -= n_faces_lower_proc;
               else
-                split_index = n_total_faces_at_proc_boundary
-                              - n_faces_higher_proc - n_faces_lower_proc;
+                split_index = n_total_faces_at_proc_boundary -
+                              n_faces_higher_proc - n_faces_lower_proc;
 
                 // make sure the splitting is consistent between both sides
 #  if defined(DEAL_II_WITH_MPI) && defined(DEBUG)
@@ -499,9 +497,9 @@ namespace internal
                 else if(assignment[i] > 0)
                   owned_faces_higher.push_back(it->second.shared_faces[i]);
               AssertIndexRange(split_index,
-                               it->second.shared_faces.size() + 1
-                                 - owned_faces_lower.size()
-                                 - owned_faces_higher.size());
+                               it->second.shared_faces.size() + 1 -
+                                 owned_faces_lower.size() -
+                                 owned_faces_higher.size());
 
               unsigned int i = 0, c = 0;
               for(; i < assignment.size() && c < split_index; ++i)
@@ -556,35 +554,35 @@ namespace internal
           for(unsigned int f = 0; f < GeometryInfo<dim>::faces_per_cell; ++f)
             {
               if(dcell->at_boundary(f) && !dcell->has_periodic_neighbor(f))
-                face_is_owned[dcell->face(f)->index()]
-                  = FaceCategory::locally_active_at_boundary;
+                face_is_owned[dcell->face(f)->index()] =
+                  FaceCategory::locally_active_at_boundary;
 
               // treat boundaries of cells of different refinement level
               // inside the domain in case of multigrid separately
-              else if((dcell->at_boundary(f) == false
-                       || dcell->has_periodic_neighbor(f))
-                      && additional_data.level_mg_handler
-                           != numbers::invalid_unsigned_int
-                      && dcell->neighbor_or_periodic_neighbor(f)->level()
-                           < dcell->level())
+              else if((dcell->at_boundary(f) == false ||
+                       dcell->has_periodic_neighbor(f)) &&
+                      additional_data.level_mg_handler !=
+                        numbers::invalid_unsigned_int &&
+                      dcell->neighbor_or_periodic_neighbor(f)->level() <
+                        dcell->level())
                 {
-                  face_is_owned[dcell->face(f)->index()]
-                    = FaceCategory::multigrid_refinement_edge;
+                  face_is_owned[dcell->face(f)->index()] =
+                    FaceCategory::multigrid_refinement_edge;
                 }
               else
                 {
-                  typename dealii::Triangulation<dim>::cell_iterator neighbor
-                    = dcell->neighbor_or_periodic_neighbor(f);
+                  typename dealii::Triangulation<dim>::cell_iterator neighbor =
+                    dcell->neighbor_or_periodic_neighbor(f);
 
                   // neighbor is refined -> face will be treated by neighbor
-                  if(use_active_cells && neighbor->has_children()
-                     && additional_data.hold_all_faces_to_owned_cells == false)
+                  if(use_active_cells && neighbor->has_children() &&
+                     additional_data.hold_all_faces_to_owned_cells == false)
                     continue;
 
-                  bool                      add_to_ghost = false;
-                  const types::subdomain_id id1
-                    = use_active_cells ? dcell->subdomain_id() :
-                                         dcell->level_subdomain_id(),
+                  bool add_to_ghost = false;
+                  const types::subdomain_id
+                    id1 = use_active_cells ? dcell->subdomain_id() :
+                                             dcell->level_subdomain_id(),
                     id2 = use_active_cells ?
                             (neighbor->has_children() ?
                                dcell->neighbor_child_on_subface(f, 0)
@@ -597,41 +595,39 @@ namespace internal
                   // side). We process a face locally when we are more refined
                   // (in the active cell case) or when the face is listed in
                   // the `shared_faces` data structure that we built above.
-                  if((id1 == id2
-                      && (use_active_cells == false
-                          || neighbor->has_children() == false))
-                     || dcell->level() > neighbor->level()
-                     || std::binary_search(
-                          inner_faces_at_proc_boundary[id2]
-                            .shared_faces.begin(),
-                          inner_faces_at_proc_boundary[id2].shared_faces.end(),
-                          std::make_pair(
-                            id1 < id2 ? dcell->id() : neighbor->id(),
-                            id1 < id2 ? neighbor->id() : dcell->id())))
+                  if((id1 == id2 && (use_active_cells == false ||
+                                     neighbor->has_children() == false)) ||
+                     dcell->level() > neighbor->level() ||
+                     std::binary_search(
+                       inner_faces_at_proc_boundary[id2].shared_faces.begin(),
+                       inner_faces_at_proc_boundary[id2].shared_faces.end(),
+                       std::make_pair(id1 < id2 ? dcell->id() : neighbor->id(),
+                                      id1 < id2 ? neighbor->id() :
+                                                  dcell->id())))
                     {
-                      face_is_owned[dcell->face(f)->index()]
-                        = FaceCategory::locally_active_done_here;
+                      face_is_owned[dcell->face(f)->index()] =
+                        FaceCategory::locally_active_done_here;
                       if(dcell->level() == neighbor->level())
                         face_is_owned
                           [neighbor
                              ->face(dcell->has_periodic_neighbor(f) ?
                                       dcell->periodic_neighbor_face_no(f) :
                                       dcell->neighbor_face_no(f))
-                             ->index()]
-                          = FaceCategory::locally_active_done_here;
+                             ->index()] =
+                            FaceCategory::locally_active_done_here;
 
                       // If neighbor is a ghost element (i.e. dcell->subdomain_id
                       // ! dcell->neighbor(f)->subdomain_id()), we need to add its
                       // index into cell level list.
                       if(use_active_cells)
-                        add_to_ghost
-                          = (dcell->subdomain_id() != neighbor->subdomain_id());
+                        add_to_ghost =
+                          (dcell->subdomain_id() != neighbor->subdomain_id());
                       else
-                        add_to_ghost = (dcell->level_subdomain_id()
-                                        != neighbor->level_subdomain_id());
+                        add_to_ghost = (dcell->level_subdomain_id() !=
+                                        neighbor->level_subdomain_id());
                     }
-                  else if(additional_data.hold_all_faces_to_owned_cells
-                          == false)
+                  else if(additional_data.hold_all_faces_to_owned_cells ==
+                          false)
                     {
                       // mark the cell to be close to the boundary
                       cells_close_to_boundary.emplace_back(i);
@@ -639,8 +635,8 @@ namespace internal
                   else
                     {
                       // add all cells to ghost layer...
-                      face_is_owned[dcell->face(f)->index()]
-                        = FaceCategory::ghosted;
+                      face_is_owned[dcell->face(f)->index()] =
+                        FaceCategory::ghosted;
                       if(use_active_cells)
                         {
                           if(neighbor->has_children())
@@ -652,24 +648,24 @@ namespace internal
                                   if(dcell
                                        ->periodic_neighbor_child_on_subface(f,
                                                                             s)
-                                       ->subdomain_id()
-                                     != dcell->subdomain_id())
+                                       ->subdomain_id() !=
+                                     dcell->subdomain_id())
                                     add_to_ghost = true;
                                 }
                               else
                                 {
                                   if(dcell->neighbor_child_on_subface(f, s)
-                                       ->subdomain_id()
-                                     != dcell->subdomain_id())
+                                       ->subdomain_id() !=
+                                     dcell->subdomain_id())
                                     add_to_ghost = true;
                                 }
                           else
-                            add_to_ghost = (dcell->subdomain_id()
-                                            != neighbor->subdomain_id());
+                            add_to_ghost = (dcell->subdomain_id() !=
+                                            neighbor->subdomain_id());
                         }
                       else
-                        add_to_ghost = (dcell->level_subdomain_id()
-                                        != neighbor->level_subdomain_id());
+                        add_to_ghost = (dcell->level_subdomain_id() !=
+                                        neighbor->level_subdomain_id());
                     }
 
                   if(add_to_ghost)
@@ -684,8 +680,8 @@ namespace internal
 
       // step 2: append the ghost cells at the end of the locally owned
       // cells
-      for(std::set<std::pair<unsigned int, unsigned int>>::iterator it
-          = ghost_cells.begin();
+      for(std::set<std::pair<unsigned int, unsigned int>>::iterator it =
+            ghost_cells.begin();
           it != ghost_cells.end();
           ++it)
         cell_levels.push_back(*it);
@@ -739,10 +735,10 @@ namespace internal
         {
           unsigned int boundary_counter = 0;
           unsigned int inner_counter    = 0;
-          for(unsigned int cell
-              = task_info.cell_partition_data[partition] * vectorization_length;
-              cell < task_info.cell_partition_data[partition + 1]
-                       * vectorization_length;
+          for(unsigned int cell =
+                task_info.cell_partition_data[partition] * vectorization_length;
+              cell < task_info.cell_partition_data[partition + 1] *
+                       vectorization_length;
               ++cell)
             if(cell == 0 || cell_levels[cell] != cell_levels[cell - 1])
               {
@@ -754,8 +750,8 @@ namespace internal
                     ++f)
                   {
                     // boundary face
-                    if(face_is_owned[dcell->face(f)->index()]
-                       == FaceCategory::locally_active_at_boundary)
+                    if(face_is_owned[dcell->face(f)->index()] ==
+                       FaceCategory::locally_active_at_boundary)
                       {
                         Assert(dcell->at_boundary(f), ExcInternalError());
                         ++boundary_counter;
@@ -764,8 +760,8 @@ namespace internal
                         info.cells_exterior[0] = numbers::invalid_unsigned_int;
                         info.interior_face_no  = f;
                         info.exterior_face_no  = dcell->face(f)->boundary_id();
-                        info.subface_index
-                          = GeometryInfo<dim>::max_children_per_cell;
+                        info.subface_index =
+                          GeometryInfo<dim>::max_children_per_cell;
                         info.face_orientation = 0;
                         boundary_faces.push_back(info);
 
@@ -775,8 +771,7 @@ namespace internal
                     else
                       {
                         typename dealii::Triangulation<dim>::cell_iterator
-                          neighbor
-                          = dcell->neighbor_or_periodic_neighbor(f);
+                          neighbor = dcell->neighbor_or_periodic_neighbor(f);
                         if(use_active_cells && neighbor->has_children())
                           {
                             for(unsigned int c = 0;
@@ -784,29 +779,27 @@ namespace internal
                                 ++c)
                               {
                                 typename dealii::Triangulation<
-                                  dim>::cell_iterator neighbor_c
-                                  = dcell->at_boundary(f) ?
-                                      dcell->periodic_neighbor_child_on_subface(
-                                        f, c) :
-                                      dcell->neighbor_child_on_subface(f, c);
-                                const types::subdomain_id neigh_domain
-                                  = neighbor_c->subdomain_id();
-                                const unsigned int neighbor_face_no
-                                  = dcell->has_periodic_neighbor(f) ?
-                                      dcell->periodic_neighbor_face_no(f) :
-                                      dcell->neighbor_face_no(f);
-                                if(neigh_domain != dcell->subdomain_id()
-                                   || face_visited
-                                          [dcell->face(f)->child(c)->index()]
-                                        == 1)
+                                  dim>::cell_iterator neighbor_c =
+                                  dcell->at_boundary(f) ?
+                                    dcell->periodic_neighbor_child_on_subface(
+                                      f, c) :
+                                    dcell->neighbor_child_on_subface(f, c);
+                                const types::subdomain_id neigh_domain =
+                                  neighbor_c->subdomain_id();
+                                const unsigned int neighbor_face_no =
+                                  dcell->has_periodic_neighbor(f) ?
+                                    dcell->periodic_neighbor_face_no(f) :
+                                    dcell->neighbor_face_no(f);
+                                if(neigh_domain != dcell->subdomain_id() ||
+                                   face_visited
+                                       [dcell->face(f)->child(c)->index()] == 1)
                                   {
                                     std::pair<unsigned int, unsigned int>
                                       level_index(neighbor_c->level(),
                                                   neighbor_c->index());
                                     if(face_is_owned
-                                         [dcell->face(f)->child(c)->index()]
-                                       == FaceCategory::
-                                            locally_active_done_here)
+                                         [dcell->face(f)->child(c)->index()] ==
+                                       FaceCategory::locally_active_done_here)
                                       {
                                         ++inner_counter;
                                         inner_faces.push_back(create_face(
@@ -818,8 +811,8 @@ namespace internal
                                       }
                                     else if(face_is_owned[dcell->face(f)
                                                             ->child(c)
-                                                            ->index()]
-                                            == FaceCategory::ghosted)
+                                                            ->index()] ==
+                                            FaceCategory::ghosted)
                                       {
                                         inner_ghost_faces.push_back(create_face(
                                           neighbor_face_no,
@@ -829,37 +822,35 @@ namespace internal
                                           cell));
                                       }
                                     else
-                                      Assert(
-                                        face_is_owned[dcell->face(f)->index()]
-                                          == FaceCategory::
-                                               locally_active_done_elsewhere,
-                                        ExcInternalError());
+                                      Assert(face_is_owned[dcell->face(f)
+                                                             ->index()] ==
+                                               FaceCategory::
+                                                 locally_active_done_elsewhere,
+                                             ExcInternalError());
                                   }
                                 else
                                   {
                                     face_visited
-                                      [dcell->face(f)->child(c)->index()]
-                                      = 1;
+                                      [dcell->face(f)->child(c)->index()] = 1;
                                   }
                               }
                           }
                         else
                           {
-                            const types::subdomain_id my_domain
-                              = use_active_cells ? dcell->subdomain_id() :
-                                                   dcell->level_subdomain_id();
-                            const types::subdomain_id neigh_domain
-                              = use_active_cells ?
-                                  neighbor->subdomain_id() :
-                                  neighbor->level_subdomain_id();
-                            if(neigh_domain != my_domain
-                               || face_visited[dcell->face(f)->index()] == 1)
+                            const types::subdomain_id my_domain =
+                              use_active_cells ? dcell->subdomain_id() :
+                                                 dcell->level_subdomain_id();
+                            const types::subdomain_id neigh_domain =
+                              use_active_cells ? neighbor->subdomain_id() :
+                                                 neighbor->level_subdomain_id();
+                            if(neigh_domain != my_domain ||
+                               face_visited[dcell->face(f)->index()] == 1)
                               {
                                 std::pair<unsigned int, unsigned int>
                                   level_index(neighbor->level(),
                                               neighbor->index());
-                                if(face_is_owned[dcell->face(f)->index()]
-                                   == FaceCategory::locally_active_done_here)
+                                if(face_is_owned[dcell->face(f)->index()] ==
+                                   FaceCategory::locally_active_done_here)
                                   {
                                     ++inner_counter;
                                     inner_faces.push_back(create_face(
@@ -869,8 +860,9 @@ namespace internal
                                       neighbor,
                                       map_to_vectorized[level_index]));
                                   }
-                                else if(face_is_owned[dcell->face(f)->index()]
-                                        == FaceCategory::ghosted)
+                                else if(face_is_owned[dcell->face(f)
+                                                        ->index()] ==
+                                        FaceCategory::ghosted)
                                   {
                                     inner_ghost_faces.push_back(create_face(
                                       f,
@@ -888,11 +880,10 @@ namespace internal
                                     [neighbor
                                        ->face(
                                          dcell->periodic_neighbor_face_no(f))
-                                       ->index()]
-                                    = 1;
+                                       ->index()] = 1;
                               }
-                            if(face_is_owned[dcell->face(f)->index()]
-                               == FaceCategory::multigrid_refinement_edge)
+                            if(face_is_owned[dcell->face(f)->index()] ==
+                               FaceCategory::multigrid_refinement_edge)
                               {
                                 refinement_edge_faces.push_back(
                                   create_face(f,
@@ -905,18 +896,18 @@ namespace internal
                       }
                   }
               }
-          task_info.face_partition_data[partition + 1]
-            = task_info.face_partition_data[partition] + inner_counter;
-          task_info.boundary_partition_data[partition + 1]
-            = task_info.boundary_partition_data[partition] + boundary_counter;
+          task_info.face_partition_data[partition + 1] =
+            task_info.face_partition_data[partition] + inner_counter;
+          task_info.boundary_partition_data[partition + 1] =
+            task_info.boundary_partition_data[partition] + boundary_counter;
         }
       task_info.ghost_face_partition_data.resize(2);
       task_info.ghost_face_partition_data[0] = 0;
       task_info.ghost_face_partition_data[1] = inner_ghost_faces.size();
       task_info.refinement_edge_face_partition_data.resize(2);
       task_info.refinement_edge_face_partition_data[0] = 0;
-      task_info.refinement_edge_face_partition_data[1]
-        = refinement_edge_faces.size();
+      task_info.refinement_edge_face_partition_data[1] =
+        refinement_edge_faces.size();
     }
 
     template <int dim>
@@ -942,22 +933,22 @@ namespace internal
       if(cell->level() > neighbor->level())
         {
           if(cell->has_periodic_neighbor(face_no))
-            info.subface_index
-              = cell->periodic_neighbor_of_coarser_periodic_neighbor(face_no)
-                  .second;
+            info.subface_index =
+              cell->periodic_neighbor_of_coarser_periodic_neighbor(face_no)
+                .second;
           else
-            info.subface_index
-              = cell->neighbor_of_coarser_neighbor(face_no).second;
+            info.subface_index =
+              cell->neighbor_of_coarser_neighbor(face_no).second;
         }
 
       info.face_orientation = 0;
-      const unsigned int left_face_orientation
-        = !cell->face_orientation(face_no) + 2 * cell->face_flip(face_no)
-          + 4 * cell->face_rotation(face_no);
-      const unsigned int right_face_orientation
-        = !neighbor->face_orientation(info.exterior_face_no)
-          + 2 * neighbor->face_flip(info.exterior_face_no)
-          + 4 * neighbor->face_rotation(info.exterior_face_no);
+      const unsigned int left_face_orientation =
+        !cell->face_orientation(face_no) + 2 * cell->face_flip(face_no) +
+        4 * cell->face_rotation(face_no);
+      const unsigned int right_face_orientation =
+        !neighbor->face_orientation(info.exterior_face_no) +
+        2 * neighbor->face_flip(info.exterior_face_no) +
+        4 * neighbor->face_rotation(info.exterior_face_no);
       if(left_face_orientation != 0)
         {
           info.face_orientation = 8 + left_face_orientation;
@@ -1086,14 +1077,14 @@ namespace internal
             new_faces;
           for(unsigned int type = 0; type < faces_type.size(); ++type)
             {
-              macro_face.interior_face_no
-                = faces_in[faces_type[type][0]].interior_face_no;
-              macro_face.exterior_face_no
-                = faces_in[faces_type[type][0]].exterior_face_no;
-              macro_face.subface_index
-                = faces_in[faces_type[type][0]].subface_index;
-              macro_face.face_orientation
-                = faces_in[faces_type[type][0]].face_orientation;
+              macro_face.interior_face_no =
+                faces_in[faces_type[type][0]].interior_face_no;
+              macro_face.exterior_face_no =
+                faces_in[faces_type[type][0]].exterior_face_no;
+              macro_face.subface_index =
+                faces_in[faces_type[type][0]].subface_index;
+              macro_face.face_orientation =
+                faces_in[faces_type[type][0]].face_orientation;
               unsigned int               no_faces = faces_type[type].size();
               std::vector<unsigned char> touched(no_faces, 0);
 
@@ -1102,18 +1093,18 @@ namespace internal
               // for vectorized read operations, the second picks up all the rest
               unsigned int n_vectorized = 0;
               for(unsigned int f = 0; f < no_faces; ++f)
-                if(faces_in[faces_type[type][f]].cells_interior[0]
-                     % vectorization_width
-                   == 0)
+                if(faces_in[faces_type[type][f]].cells_interior[0] %
+                     vectorization_width ==
+                   0)
                   {
                     bool is_contiguous = true;
                     if(f + vectorization_width > no_faces)
                       is_contiguous = false;
                     else
                       for(unsigned int v = 1; v < vectorization_width; ++v)
-                        if(faces_in[faces_type[type][f + v]].cells_interior[0]
-                           != faces_in[faces_type[type][f]].cells_interior[0]
-                                + v)
+                        if(faces_in[faces_type[type][f + v]]
+                             .cells_interior[0] !=
+                           faces_in[faces_type[type][f]].cells_interior[0] + v)
                           is_contiguous = false;
                     if(is_contiguous)
                       {
@@ -1121,12 +1112,12 @@ namespace internal
                           f, faces_type[type].size() - vectorization_width + 1);
                         for(unsigned int v = 0; v < vectorization_width; ++v)
                           {
-                            macro_face.cells_interior[v]
-                              = faces_in[faces_type[type][f + v]]
-                                  .cells_interior[0];
-                            macro_face.cells_exterior[v]
-                              = faces_in[faces_type[type][f + v]]
-                                  .cells_exterior[0];
+                            macro_face.cells_interior[v] =
+                              faces_in[faces_type[type][f + v]]
+                                .cells_interior[0];
+                            macro_face.cells_exterior[v] =
+                              faces_in[faces_type[type][f + v]]
+                                .cells_exterior[0];
                             touched[f + v] = 1;
                           }
                         new_faces.insert(macro_face);
@@ -1143,10 +1134,10 @@ namespace internal
               unsigned int v = 0;
               for(auto f : untouched)
                 {
-                  macro_face.cells_interior[v]
-                    = faces_in[faces_type[type][f]].cells_interior[0];
-                  macro_face.cells_exterior[v]
-                    = faces_in[faces_type[type][f]].cells_exterior[0];
+                  macro_face.cells_interior[v] =
+                    faces_in[faces_type[type][f]].cells_interior[0];
+                  macro_face.cells_exterior[v] =
+                    faces_in[faces_type[type][f]].cells_exterior[0];
                   ++v;
                   if(v == vectorization_width)
                     {
@@ -1157,16 +1148,16 @@ namespace internal
               if(v > 0 && v < vectorization_width)
                 {
                   // must add non-filled face
-                  if(hard_vectorization_boundary[partition + 1]
-                     || partition == face_partition_data.size() - 2)
+                  if(hard_vectorization_boundary[partition + 1] ||
+                     partition == face_partition_data.size() - 2)
                     {
                       for(; v < vectorization_width; ++v)
                         {
                           // Dummy cell, not used
-                          macro_face.cells_interior[v]
-                            = numbers::invalid_unsigned_int;
-                          macro_face.cells_exterior[v]
-                            = numbers::invalid_unsigned_int;
+                          macro_face.cells_interior[v] =
+                            numbers::invalid_unsigned_int;
+                          macro_face.cells_exterior[v] =
+                            numbers::invalid_unsigned_int;
                         }
                       new_faces.insert(macro_face);
                     }
@@ -1175,8 +1166,8 @@ namespace internal
                       // postpone to the next partition
                       std::vector<unsigned int> untreated(v);
                       for(unsigned int f = 0; f < v; ++f)
-                        untreated[f]
-                          = faces_type[type][*(untouched.end() - 1 - f)];
+                        untreated[f] =
+                          faces_type[type][*(untouched.end() - 1 - f)];
                       new_faces_type.push_back(untreated);
                     }
                 }
@@ -1202,8 +1193,8 @@ namespace internal
           i < face_partition_data.back();
           ++i)
         for(unsigned int v = 0; v < vectorization_width; ++v)
-          nfaces += (faces_out[i].cells_interior[v]
-                     != numbers::invalid_unsigned_int);
+          nfaces +=
+            (faces_out[i].cells_interior[v] != numbers::invalid_unsigned_int);
       AssertDimension(nfaces, faces_in.size());
 
       std::vector<std::pair<unsigned int, unsigned int>> in_faces, out_faces;
@@ -1214,8 +1205,8 @@ namespace internal
           i < face_partition_data.back();
           ++i)
         for(unsigned int v = 0;
-            v < vectorization_width
-            && faces_out[i].cells_interior[v] != numbers::invalid_unsigned_int;
+            v < vectorization_width &&
+            faces_out[i].cells_interior[v] != numbers::invalid_unsigned_int;
             ++v)
           out_faces.emplace_back(faces_out[i].cells_interior[v],
                                  faces_out[i].cells_exterior[v]);

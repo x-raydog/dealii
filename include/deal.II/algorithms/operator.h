@@ -78,8 +78,7 @@ namespace Algorithms
      * The actual operation, which is implemented in a derived class.
      */
     virtual void
-    operator()(AnyData& out, const AnyData& in)
-      = 0;
+    operator()(AnyData& out, const AnyData& in) = 0;
 
     /**
      * Register an event triggered by an outer iteration.

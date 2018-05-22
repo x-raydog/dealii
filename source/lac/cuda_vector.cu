@@ -38,12 +38,12 @@ namespace LinearAlgebra
                 const Number                             a,
                 const typename Vector<Number>::size_type N)
       {
-        const typename Vector<Number>::size_type idx_base
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const typename Vector<Number>::size_type idx_base =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         for(unsigned int i = 0; i < chunk_size; ++i)
           {
-            const typename Vector<Number>::size_type idx
-              = idx_base + i * block_size;
+            const typename Vector<Number>::size_type idx =
+              idx_base + i * block_size;
             if(idx < N)
               val[idx] *= a;
           }
@@ -75,12 +75,12 @@ namespace LinearAlgebra
                     Number*                                  v2,
                     const typename Vector<Number>::size_type N)
       {
-        const typename Vector<Number>::size_type idx_base
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const typename Vector<Number>::size_type idx_base =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         for(unsigned int i = 0; i < chunk_size; ++i)
           {
-            const typename Vector<Number>::size_type idx
-              = idx_base + i * block_size;
+            const typename Vector<Number>::size_type idx =
+              idx_base + i * block_size;
             if(idx < N)
               v1[idx] = Binop::operation(v1[idx], v2[idx]);
           }
@@ -230,8 +230,8 @@ namespace LinearAlgebra
       {
         __shared__ Number result_buffer[block_size];
 
-        const typename Vector<Number>::size_type global_idx
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const typename Vector<Number>::size_type global_idx =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         const typename Vector<Number>::size_type local_idx = threadIdx.x;
 
         if(global_idx < N)
@@ -282,24 +282,24 @@ namespace LinearAlgebra
       {
         __shared__ Number result_buffer[block_size];
 
-        const typename Vector<Number>::size_type global_idx
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const typename Vector<Number>::size_type global_idx =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         const typename Vector<Number>::size_type local_idx = threadIdx.x;
 
         if(global_idx < N)
-          result_buffer[local_idx]
-            = Operation::binary_op(v1[global_idx], v2[global_idx]);
+          result_buffer[local_idx] =
+            Operation::binary_op(v1[global_idx], v2[global_idx]);
         else
           result_buffer[local_idx] = Operation::null_value();
 
         for(unsigned int i = 1; i < chunk_size; ++i)
           {
-            const typename Vector<Number>::size_type idx
-              = global_idx + i * block_size;
+            const typename Vector<Number>::size_type idx =
+              global_idx + i * block_size;
             if(idx < N)
-              result_buffer[local_idx] = Operation::reduction_op(
-                result_buffer[local_idx],
-                Operation::binary_op(v1[idx], v2[idx]));
+              result_buffer[local_idx] =
+                Operation::reduction_op(result_buffer[local_idx],
+                                        Operation::binary_op(v1[idx], v2[idx]));
           }
 
         __syncthreads();
@@ -314,12 +314,12 @@ namespace LinearAlgebra
               const Number                             a,
               const typename Vector<Number>::size_type N)
       {
-        const typename Vector<Number>::size_type idx_base
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const typename Vector<Number>::size_type idx_base =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         for(unsigned int i = 0; i < chunk_size; ++i)
           {
-            const typename Vector<Number>::size_type idx
-              = idx_base + i * block_size;
+            const typename Vector<Number>::size_type idx =
+              idx_base + i * block_size;
             if(idx < N)
               val[idx] += a;
           }
@@ -332,12 +332,12 @@ namespace LinearAlgebra
              Number*                                  V_val,
              const typename Vector<Number>::size_type N)
       {
-        const typename Vector<Number>::size_type idx_base
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const typename Vector<Number>::size_type idx_base =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         for(unsigned int i = 0; i < chunk_size; ++i)
           {
-            const typename Vector<Number>::size_type idx
-              = idx_base + i * block_size;
+            const typename Vector<Number>::size_type idx =
+              idx_base + i * block_size;
             if(idx < N)
               val[idx] += a * V_val[idx];
           }
@@ -352,12 +352,12 @@ namespace LinearAlgebra
                Number*                                  W_val,
                const typename Vector<Number>::size_type N)
       {
-        const typename Vector<Number>::size_type idx_base
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const typename Vector<Number>::size_type idx_base =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         for(unsigned int i = 0; i < chunk_size; ++i)
           {
-            const typename Vector<Number>::size_type idx
-              = idx_base + i * block_size;
+            const typename Vector<Number>::size_type idx =
+              idx_base + i * block_size;
             if(idx < N)
               val[idx] += a * V_val[idx] + b * W_val[idx];
           }
@@ -371,12 +371,12 @@ namespace LinearAlgebra
            const Number*                            V_val,
            const typename Vector<Number>::size_type N)
       {
-        const typename Vector<Number>::size_type idx_base
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const typename Vector<Number>::size_type idx_base =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         for(unsigned int i = 0; i < chunk_size; ++i)
           {
-            const typename Vector<Number>::size_type idx
-              = idx_base + i * block_size;
+            const typename Vector<Number>::size_type idx =
+              idx_base + i * block_size;
             if(idx < N)
               val[idx] = s * val[idx] + a * V_val[idx];
           }
@@ -388,12 +388,12 @@ namespace LinearAlgebra
             const Number*                            V_val,
             const typename Vector<Number>::size_type N)
       {
-        const typename Vector<Number>::size_type idx_base
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const typename Vector<Number>::size_type idx_base =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         for(unsigned int i = 0; i < chunk_size; ++i)
           {
-            const typename Vector<Number>::size_type idx
-              = idx_base + i * block_size;
+            const typename Vector<Number>::size_type idx =
+              idx_base + i * block_size;
             if(idx < N)
               val[idx] *= V_val[idx];
           }
@@ -406,12 +406,12 @@ namespace LinearAlgebra
           const Number*                            V_val,
           const typename Vector<Number>::size_type N)
       {
-        const typename Vector<Number>::size_type idx_base
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const typename Vector<Number>::size_type idx_base =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         for(unsigned int i = 0; i < chunk_size; ++i)
           {
-            const typename Vector<Number>::size_type idx
-              = idx_base + i * block_size;
+            const typename Vector<Number>::size_type idx =
+              idx_base + i * block_size;
             if(idx < N)
               val[idx] = a * V_val[idx];
           }
@@ -428,16 +428,15 @@ namespace LinearAlgebra
       {
         __shared__ Number res_buf[block_size];
 
-        const unsigned int global_idx
-          = threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
+        const unsigned int global_idx =
+          threadIdx.x + blockIdx.x * (blockDim.x * chunk_size);
         const unsigned int local_idx = threadIdx.x;
         if(global_idx < N)
           {
             v1[global_idx] += a * v2[global_idx];
-            res_buf[local_idx]
-              = v1[global_idx]
-                * Number(
-                    numbers::NumberTraits<Number>::conjugate(v3[global_idx]));
+            res_buf[local_idx] =
+              v1[global_idx] *
+              Number(numbers::NumberTraits<Number>::conjugate(v3[global_idx]));
           }
         else
           res_buf[local_idx] = 0.;
@@ -554,8 +553,8 @@ namespace LinearAlgebra
         {
           // Create a temporary vector on the device
           Number*     tmp;
-          cudaError_t error_code
-            = cudaMalloc(&tmp, n_elements * sizeof(Number));
+          cudaError_t error_code =
+            cudaMalloc(&tmp, n_elements * sizeof(Number));
           AssertCuda(error_code);
 
           // Copy the vector from the host to the temporary vector on the device
@@ -697,8 +696,8 @@ namespace LinearAlgebra
                "Cannot add two vectors with different numbers of elements"));
 
       Number*     result_device;
-      cudaError_t error_code
-        = cudaMalloc(&result_device, n_elements * sizeof(Number));
+      cudaError_t error_code =
+        cudaMalloc(&result_device, n_elements * sizeof(Number));
       AssertCuda(error_code);
       error_code = cudaMemset(result_device, Number(), sizeof(Number));
 
@@ -840,8 +839,8 @@ namespace LinearAlgebra
              ExcVectorTypeNotCompatible());
 
       // Downcast V. If fails, throw an exception.
-      const Vector<Number>& down_scaling_factors
-        = dynamic_cast<const Vector<Number>&>(scaling_factors);
+      const Vector<Number>& down_scaling_factors =
+        dynamic_cast<const Vector<Number>&>(scaling_factors);
       Assert(down_scaling_factors.size() == this->size(),
              ExcMessage(
                "Cannot scale two vectors with different numbers of elements."));
@@ -913,8 +912,8 @@ namespace LinearAlgebra
       error_code = cudaFree(result_device);
       AssertCuda(error_code);
 
-      return result
-             / static_cast<typename Vector<Number>::value_type>(n_elements);
+      return result /
+             static_cast<typename Vector<Number>::value_type>(n_elements);
     }
 
     template <typename Number>
@@ -1009,8 +1008,8 @@ namespace LinearAlgebra
         res_d, val, down_V.val, down_W.val, a, n_elements);
 
       Number res;
-      error_code
-        = cudaMemcpy(&res, res_d, sizeof(Number), cudaMemcpyDeviceToHost);
+      error_code =
+        cudaMemcpy(&res, res_d, sizeof(Number), cudaMemcpyDeviceToHost);
       AssertCuda(error_code);
       error_code = cudaFree(res_d);
 

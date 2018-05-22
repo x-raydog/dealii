@@ -162,8 +162,8 @@ namespace Functions
                         const unsigned int component) const
   {
     const Point<dim>              p = p_ - coordinate_system_offset;
-    const std::array<double, dim> sp
-      = GeometricUtilities::Coordinates::to_spherical(p);
+    const std::array<double, dim> sp =
+      GeometricUtilities::Coordinates::to_spherical(p);
     return svalue(sp, component);
   }
 
@@ -183,8 +183,8 @@ namespace Functions
   {
     constexpr int                 dim = 3;
     const Point<dim>              p   = p_ - coordinate_system_offset;
-    const std::array<double, dim> sp
-      = GeometricUtilities::Coordinates::to_spherical(p);
+    const std::array<double, dim> sp =
+      GeometricUtilities::Coordinates::to_spherical(p);
     const std::array<double, dim> sg = sgradient(sp, component);
 
     // somewhat backwards, but we need cos/sin's for unit vectors
@@ -235,8 +235,8 @@ namespace Functions
   {
     constexpr int                 dim = 3;
     const Point<dim>              p   = p_ - coordinate_system_offset;
-    const std::array<double, dim> sp
-      = GeometricUtilities::Coordinates::to_spherical(p);
+    const std::array<double, dim> sp =
+      GeometricUtilities::Coordinates::to_spherical(p);
     const std::array<double, dim> sg = sgradient(sp, component);
     const std::array<double, 6>   sh = shessian(sp, component);
 
@@ -255,17 +255,15 @@ namespace Functions
     const double r2       = r * r;
     Assert(r != 0., ExcDivideByZero());
 
-    const double c_utheta2
-      = sg[0] / r
-        + ((sin_phi != 0.) ?
-             (cos_phi * sg[2]) / (r2 * sin_phi) + sh[1] / (r2 * sin_phi2) :
-             0.);
-    const double c_utheta_ur
-      = ((sin_phi != 0.) ? (r * sh[3] - sg[1]) / (r2 * sin_phi) : 0.);
-    const double c_utheta_uphi
-      = ((sin_phi != 0.) ?
-           (sh[5] * sin_phi - cos_phi * sg[1]) / (r2 * sin_phi2) :
-           0.);
+    const double c_utheta2 =
+      sg[0] / r + ((sin_phi != 0.) ? (cos_phi * sg[2]) / (r2 * sin_phi) +
+                                       sh[1] / (r2 * sin_phi2) :
+                                     0.);
+    const double c_utheta_ur =
+      ((sin_phi != 0.) ? (r * sh[3] - sg[1]) / (r2 * sin_phi) : 0.);
+    const double c_utheta_uphi =
+      ((sin_phi != 0.) ? (sh[5] * sin_phi - cos_phi * sg[1]) / (r2 * sin_phi2) :
+                         0.);
     const double c_ur2     = sh[0];
     const double c_ur_uphi = (r * sh[4] - sg[2]) / r2;
     const double c_uphi2   = (sh[2] + r * sg[0]) / r2;

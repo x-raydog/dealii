@@ -79,9 +79,9 @@ ConstraintMatrix::ConstraintLine::operator==(const ConstraintLine& a) const
 std::size_t
 ConstraintMatrix::ConstraintLine::memory_consumption() const
 {
-  return (MemoryConsumption::memory_consumption(index)
-          + MemoryConsumption::memory_consumption(entries)
-          + MemoryConsumption::memory_consumption(inhomogeneity));
+  return (MemoryConsumption::memory_consumption(index) +
+          MemoryConsumption::memory_consumption(entries) +
+          MemoryConsumption::memory_consumption(inhomogeneity));
 }
 
 const ConstraintMatrix::LineRange
@@ -105,8 +105,8 @@ ConstraintMatrix::is_consistent_in_parallel(
   // we store above.
   auto get_line = [&](const size_type row) -> const ConstraintLine& {
     const size_type line_index = calculate_line_index(row);
-    if(line_index >= lines_cache.size()
-       || lines_cache[line_index] == numbers::invalid_size_type)
+    if(line_index >= lines_cache.size() ||
+       lines_cache[line_index] == numbers::invalid_size_type)
       {
         empty.index = row;
         return empty;
@@ -118,10 +118,10 @@ ConstraintMatrix::is_consistent_in_parallel(
   // identify non-owned rows and send to owner:
   std::map<unsigned int, std::vector<ConstraintLine>> to_send;
 
-  const unsigned int myid
-    = dealii::Utilities::MPI::this_mpi_process(mpi_communicator);
-  const unsigned int nproc
-    = dealii::Utilities::MPI::n_mpi_processes(mpi_communicator);
+  const unsigned int myid =
+    dealii::Utilities::MPI::this_mpi_process(mpi_communicator);
+  const unsigned int nproc =
+    dealii::Utilities::MPI::n_mpi_processes(mpi_communicator);
 
   // We will send all locally active dofs that are not locally owned for checking. Note
   // that we allow constraints to differ on locally_relevant (and not active) DoFs.
@@ -137,8 +137,8 @@ ConstraintMatrix::is_consistent_in_parallel(
         }
     }
 
-  std::map<unsigned int, std::vector<ConstraintLine>> received
-    = Utilities::MPI::some_to_some(mpi_communicator, to_send);
+  std::map<unsigned int, std::vector<ConstraintLine>> received =
+    Utilities::MPI::some_to_some(mpi_communicator, to_send);
 
   unsigned int inconsistent = 0;
 
@@ -171,8 +171,8 @@ ConstraintMatrix::is_consistent_in_parallel(
         }
     }
 
-  const unsigned int total
-    = Utilities::MPI::sum(inconsistent, mpi_communicator);
+  const unsigned int total =
+    Utilities::MPI::sum(inconsistent, mpi_communicator);
   if(verbose && total > 0 && myid == 0)
     std::cout << total << " inconsistent lines discovered!" << std::endl;
   return total == 0;
@@ -217,8 +217,8 @@ ConstraintMatrix::add_entries(
   //
   // in any case: skip this entry if an entry for this column already
   // exists, since we don't want to enter it twice
-  for(std::vector<std::pair<size_type, double>>::const_iterator col_val_pair
-      = col_val_pairs.begin();
+  for(std::vector<std::pair<size_type, double>>::const_iterator col_val_pair =
+        col_val_pairs.begin();
       col_val_pair != col_val_pairs.end();
       ++col_val_pair)
     {
@@ -251,8 +251,8 @@ ConstraintMatrix::add_selected_constraints(const ConstraintMatrix& constraints,
 
   Assert(filter.size() > constraints.lines.back().index,
          ExcMessage("Filter needs to be larger than constraint matrix size."));
-  for(std::vector<ConstraintLine>::const_iterator line
-      = constraints.lines.begin();
+  for(std::vector<ConstraintLine>::const_iterator line =
+        constraints.lines.begin();
       line != constraints.lines.end();
       ++line)
     if(filter.is_element(line->index))
@@ -363,9 +363,9 @@ ConstraintMatrix::close()
           // the current processor
           size_type entry = 0;
           while(entry < line->entries.size())
-            if(((local_lines.size() == 0)
-                || (local_lines.is_element(line->entries[entry].first)))
-               && is_constrained(line->entries[entry].first))
+            if(((local_lines.size() == 0) ||
+                (local_lines.is_element(line->entries[entry].first))) &&
+               is_constrained(line->entries[entry].first))
               {
                 // ok, this entry is further constrained:
                 chained_constraint_replaced = true;
@@ -377,8 +377,8 @@ ConstraintMatrix::close()
                 Assert(dof_index != line->index,
                        ExcMessage("Cycle in constraints detected!"));
 
-                const ConstraintLine* constrained_line
-                  = &lines[lines_cache[calculate_line_index(dof_index)]];
+                const ConstraintLine* constrained_line =
+                  &lines[lines_cache[calculate_line_index(dof_index)]];
                 Assert(constrained_line->index == dof_index,
                        ExcInternalError());
 
@@ -591,37 +591,36 @@ ConstraintMatrix::merge(const ConstraintMatrix&     other_constraints,
         {
           // if the present dof is not stored, or not constrained, or if we won't take the
           // constraint from the other object, then simply copy it over
-          if((other_constraints.local_lines.size() != 0
-              && other_constraints.local_lines.is_element(
-                   line->entries[i].first)
-                   == false)
-             || other_constraints.is_constrained(line->entries[i].first)
-                  == false
-             || ((merge_conflict_behavior != right_object_wins)
-                 && other_constraints.is_constrained(line->entries[i].first)
-                 && this->is_constrained(line->entries[i].first)))
+          if((other_constraints.local_lines.size() != 0 &&
+              other_constraints.local_lines.is_element(
+                line->entries[i].first) == false) ||
+             other_constraints.is_constrained(line->entries[i].first) ==
+               false ||
+             ((merge_conflict_behavior != right_object_wins) &&
+              other_constraints.is_constrained(line->entries[i].first) &&
+              this->is_constrained(line->entries[i].first)))
             tmp.push_back(line->entries[i]);
           else
             // otherwise resolve further constraints by replacing the old
             // entry by a sequence of new entries taken from the other
             // object, but with multiplied weights
             {
-              const ConstraintLine::Entries* other_line
-                = other_constraints.get_constraint_entries(
+              const ConstraintLine::Entries* other_line =
+                other_constraints.get_constraint_entries(
                   line->entries[i].first);
               Assert(other_line != nullptr, ExcInternalError());
 
               const double weight = line->entries[i].second;
 
-              for(ConstraintLine::Entries::const_iterator j
-                  = other_line->begin();
+              for(ConstraintLine::Entries::const_iterator j =
+                    other_line->begin();
                   j != other_line->end();
                   ++j)
                 tmp.emplace_back(j->first, j->second * weight);
 
-              line->inhomogeneity
-                += other_constraints.get_inhomogeneity(line->entries[i].first)
-                   * weight;
+              line->inhomogeneity +=
+                other_constraints.get_inhomogeneity(line->entries[i].first) *
+                weight;
             }
         }
       // finally exchange old and newly resolved line
@@ -650,8 +649,8 @@ ConstraintMatrix::merge(const ConstraintMatrix&     other_constraints,
       }
 
     // Add other_constraints to lines cache and our list of constraints
-    for(std::vector<ConstraintLine>::const_iterator line
-        = other_constraints.lines.begin();
+    for(std::vector<ConstraintLine>::const_iterator line =
+          other_constraints.lines.begin();
         line != other_constraints.lines.end();
         ++line)
       {
@@ -734,8 +733,8 @@ ConstraintMatrix::shift(const size_type offset)
   // make sure that lines, lines_cache and local_lines
   // are still linked correctly
   for(size_type i = 0; i < lines_cache.size(); ++i)
-    Assert(lines_cache[i] == numbers::invalid_size_type
-             || calculate_line_index(lines[lines_cache[i]].index) == i,
+    Assert(lines_cache[i] == numbers::invalid_size_type ||
+             calculate_line_index(lines[lines_cache[i]].index) == i,
            ExcInternalError());
 #endif
 }
@@ -901,8 +900,8 @@ ConstraintMatrix::condense(DynamicSparsityPattern& sparsity) const
                     q != lines[distribute[column]].entries.size();
                     ++q)
                   {
-                    const size_type new_col
-                      = lines[distribute[column]].entries[q].first;
+                    const size_type new_col =
+                      lines[distribute[column]].entries[q].first;
 
                     sparsity.add(row, new_col);
 
@@ -931,9 +930,8 @@ ConstraintMatrix::condense(DynamicSparsityPattern& sparsity) const
               for(size_type p = 0; p != lines[distribute[row]].entries.size();
                   ++p)
                 for(size_type q = 0;
-                    q
-                    != lines[distribute[sparsity.column_number(row, j)]]
-                         .entries.size();
+                    q != lines[distribute[sparsity.column_number(row, j)]]
+                           .entries.size();
                     ++q)
                   sparsity.add(lines[distribute[row]].entries[p].first,
                                lines[distribute[sparsity.column_number(row, j)]]
@@ -971,8 +969,8 @@ ConstraintMatrix::condense(BlockSparsityPattern& sparsity) const
   for(size_type row = 0; row < n_rows; ++row)
     {
       // get index of this row within the blocks
-      const std::pair<size_type, size_type> block_index
-        = index_mapping.global_to_local(row);
+      const std::pair<size_type, size_type> block_index =
+        index_mapping.global_to_local(row);
       const size_type block_row = block_index.first;
 
       if(distribute[row] == numbers::invalid_size_type)
@@ -983,17 +981,17 @@ ConstraintMatrix::condense(BlockSparsityPattern& sparsity) const
           // blocks in this blockrow and the corresponding row therein
           for(size_type block_col = 0; block_col < n_blocks; ++block_col)
             {
-              const SparsityPattern& block_sparsity
-                = sparsity.block(block_row, block_col);
+              const SparsityPattern& block_sparsity =
+                sparsity.block(block_row, block_col);
 
-              for(SparsityPattern::const_iterator entry
-                  = block_sparsity.begin(block_index.second);
-                  (entry != block_sparsity.end(block_index.second))
-                  && entry->is_valid_entry();
+              for(SparsityPattern::const_iterator entry =
+                    block_sparsity.begin(block_index.second);
+                  (entry != block_sparsity.end(block_index.second)) &&
+                  entry->is_valid_entry();
                   ++entry)
                 {
-                  const size_type global_col
-                    = index_mapping.local_to_global(block_col, entry->column());
+                  const size_type global_col =
+                    index_mapping.local_to_global(block_col, entry->column());
 
                   if(distribute[global_col] != numbers::invalid_size_type)
                     // distribute entry at regular row @p{row} and
@@ -1014,17 +1012,17 @@ ConstraintMatrix::condense(BlockSparsityPattern& sparsity) const
           // defined by the blocks
           for(size_type block_col = 0; block_col < n_blocks; ++block_col)
             {
-              const SparsityPattern& block_sparsity
-                = sparsity.block(block_row, block_col);
+              const SparsityPattern& block_sparsity =
+                sparsity.block(block_row, block_col);
 
-              for(SparsityPattern::const_iterator entry
-                  = block_sparsity.begin(block_index.second);
-                  (entry != block_sparsity.end(block_index.second))
-                  && entry->is_valid_entry();
+              for(SparsityPattern::const_iterator entry =
+                    block_sparsity.begin(block_index.second);
+                  (entry != block_sparsity.end(block_index.second)) &&
+                  entry->is_valid_entry();
                   ++entry)
                 {
-                  const size_type global_col
-                    = index_mapping.local_to_global(block_col, entry->column());
+                  const size_type global_col =
+                    index_mapping.local_to_global(block_col, entry->column());
 
                   if(distribute[global_col] == numbers::invalid_size_type)
                     // distribute entry at irregular row @p{row} and
@@ -1085,8 +1083,8 @@ ConstraintMatrix::condense(BlockDynamicSparsityPattern& sparsity) const
   for(size_type row = 0; row < n_rows; ++row)
     {
       // get index of this row within the blocks
-      const std::pair<size_type, size_type> block_index
-        = index_mapping.global_to_local(row);
+      const std::pair<size_type, size_type> block_index =
+        index_mapping.global_to_local(row);
       const size_type block_row = block_index.first;
       const size_type local_row = block_index.second;
 
@@ -1104,8 +1102,8 @@ ConstraintMatrix::condense(BlockDynamicSparsityPattern& sparsity) const
           // blocks in this blockrow and the corresponding row therein
           for(size_type block_col = 0; block_col < n_blocks; ++block_col)
             {
-              const DynamicSparsityPattern& block_sparsity
-                = sparsity.block(block_row, block_col);
+              const DynamicSparsityPattern& block_sparsity =
+                sparsity.block(block_row, block_col);
 
               for(size_type j = 0; j < block_sparsity.row_length(local_row);
                   ++j)
@@ -1132,8 +1130,8 @@ ConstraintMatrix::condense(BlockDynamicSparsityPattern& sparsity) const
           // defined by the blocks
           for(size_type block_col = 0; block_col < n_blocks; ++block_col)
             {
-              const DynamicSparsityPattern& block_sparsity
-                = sparsity.block(block_row, block_col);
+              const DynamicSparsityPattern& block_sparsity =
+                sparsity.block(block_row, block_col);
 
               for(size_type j = 0; j < block_sparsity.row_length(local_row);
                   ++j)
@@ -1191,25 +1189,25 @@ ConstraintMatrix::are_identity_constrained(const size_type index1,
 {
   if(is_constrained(index1) == true)
     {
-      const ConstraintLine& p
-        = lines[lines_cache[calculate_line_index(index1)]];
+      const ConstraintLine& p =
+        lines[lines_cache[calculate_line_index(index1)]];
       Assert(p.index == index1, ExcInternalError());
 
       // return if an entry for this line was found and if it has only one
       // entry equal to 1.0 and that one is index2
-      return ((p.entries.size() == 1) && (p.entries[0].first == index2)
-              && (p.entries[0].second == 1.0));
+      return ((p.entries.size() == 1) && (p.entries[0].first == index2) &&
+              (p.entries[0].second == 1.0));
     }
   else if(is_constrained(index2) == true)
     {
-      const ConstraintLine& p
-        = lines[lines_cache[calculate_line_index(index2)]];
+      const ConstraintLine& p =
+        lines[lines_cache[calculate_line_index(index2)]];
       Assert(p.index == index2, ExcInternalError());
 
       // return if an entry for this line was found and if it has only one
       // entry equal to 1.0 and that one is index1
-      return ((p.entries.size() == 1) && (p.entries[0].first == index1)
-              && (p.entries[0].second == 1.0));
+      return ((p.entries.size() == 1) && (p.entries[0].first == index1) &&
+              (p.entries[0].second == 1.0));
     }
   else
     return false;
@@ -1224,8 +1222,8 @@ ConstraintMatrix::max_constraint_indirections() const
       ++i)
     // use static cast, since typeof(size)==std::size_t, which is !=
     // size_type on AIX
-    return_value
-      = std::max(return_value, static_cast<size_type>(i->entries.size()));
+    return_value =
+      std::max(return_value, static_cast<size_type>(i->entries.size()));
 
   return return_value;
 }
@@ -1295,10 +1293,10 @@ ConstraintMatrix::write_dot(std::ostream& out) const
 std::size_t
 ConstraintMatrix::memory_consumption() const
 {
-  return (MemoryConsumption::memory_consumption(lines)
-          + MemoryConsumption::memory_consumption(lines_cache)
-          + MemoryConsumption::memory_consumption(sorted)
-          + MemoryConsumption::memory_consumption(local_lines));
+  return (MemoryConsumption::memory_consumption(lines) +
+          MemoryConsumption::memory_consumption(lines_cache) +
+          MemoryConsumption::memory_consumption(sorted) +
+          MemoryConsumption::memory_consumption(local_lines));
 }
 
 void

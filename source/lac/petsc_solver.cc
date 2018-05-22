@@ -103,8 +103,8 @@ namespace PETScWrappers
       }
 
     // set the command line option prefix name
-    PetscErrorCode ierr
-      = KSPSetOptionsPrefix(solver_data->ksp, prefix_name.c_str());
+    PetscErrorCode ierr =
+      KSPSetOptionsPrefix(solver_data->ksp, prefix_name.c_str());
     AssertThrow(ierr == 0, ExcPETScError(ierr));
 
     // set the command line options provided
@@ -158,11 +158,11 @@ namespace PETScWrappers
                                KSPConvergedReason* reason,
                                void*               solver_control_x)
   {
-    SolverControl& solver_control
-      = *reinterpret_cast<SolverControl*>(solver_control_x);
+    SolverControl& solver_control =
+      *reinterpret_cast<SolverControl*>(solver_control_x);
 
-    const SolverControl::State state
-      = solver_control.check(iteration, residual_norm);
+    const SolverControl::State state =
+      solver_control.check(iteration, residual_norm);
 
     switch(state)
       {
@@ -647,8 +647,8 @@ namespace PETScWrappers
          * since we use the solver only once anyway
          */
 #    if DEAL_II_PETSC_VERSION_LT(3, 5, 0)
-        ierr
-          = KSPSetOperators(solver_data->ksp, A, A, DIFFERENT_NONZERO_PATTERN);
+        ierr =
+          KSPSetOperators(solver_data->ksp, A, A, DIFFERENT_NONZERO_PATTERN);
 #    else
         ierr = KSPSetOperators(solver_data->ksp, A, A);
 #    endif
@@ -785,11 +785,11 @@ namespace PETScWrappers
                                       KSPConvergedReason* reason,
                                       void*               solver_control_x)
   {
-    SolverControl& solver_control
-      = *reinterpret_cast<SolverControl*>(solver_control_x);
+    SolverControl& solver_control =
+      *reinterpret_cast<SolverControl*>(solver_control_x);
 
-    const SolverControl::State state
-      = solver_control.check(iteration, residual_norm);
+    const SolverControl::State state =
+      solver_control.check(iteration, residual_norm);
 
     switch(state)
       {

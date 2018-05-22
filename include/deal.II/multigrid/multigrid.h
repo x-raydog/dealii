@@ -646,8 +646,8 @@ Multigrid<VectorType>::Multigrid(const DoFHandler<dim>&          mg_dof_handler,
     edge_up(nullptr, typeid(*this).name()),
     debug(0)
 {
-  const unsigned int dof_handler_max_level
-    = mg_dof_handler.get_triangulation().n_global_levels() - 1;
+  const unsigned int dof_handler_max_level =
+    mg_dof_handler.get_triangulation().n_global_levels() - 1;
   if(max_level == numbers::invalid_unsigned_int)
     maxlevel = dof_handler_max_level;
   else
@@ -907,8 +907,8 @@ PreconditionMG<dim, VectorType, TRANSFER>::get_mpi_communicator() const
   // currently parallel GMG works with distributed Triangulation only,
   // so it should be a safe bet to use it to query MPI communicator:
   const Triangulation<dim>& tria = dof_handler_vector[0]->get_triangulation();
-  const parallel::distributed::Triangulation<dim>* ptria
-    = dynamic_cast<const parallel::distributed::Triangulation<dim>*>(&tria);
+  const parallel::distributed::Triangulation<dim>* ptria =
+    dynamic_cast<const parallel::distributed::Triangulation<dim>*>(&tria);
   Assert(ptria != nullptr, ExcInternalError());
   return ptria->get_communicator();
 }

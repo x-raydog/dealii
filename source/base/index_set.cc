@@ -51,8 +51,8 @@ IndexSet::IndexSet(const Epetra_Map& map)
   else
     {
       const size_type n_indices = map.NumMyElements();
-      size_type*      indices
-        = reinterpret_cast<size_type*>(map.MyGlobalElements64());
+      size_type*      indices =
+        reinterpret_cast<size_type*>(map.MyGlobalElements64());
       add_indices(indices, indices + n_indices);
     }
   compress();
@@ -77,8 +77,8 @@ IndexSet::IndexSet(const Epetra_Map& map)
   else
     {
       const size_type n_indices = map.NumMyElements();
-      unsigned int*   indices
-        = reinterpret_cast<unsigned int*>(map.MyGlobalElements());
+      unsigned int*   indices =
+        reinterpret_cast<unsigned int*>(map.MyGlobalElements());
       add_indices(indices, indices + n_indices);
     }
   compress();
@@ -91,8 +91,8 @@ IndexSet::IndexSet(const Epetra_Map& map)
 void
 IndexSet::add_range(const size_type begin, const size_type end)
 {
-  Assert((begin < index_space_size)
-           || ((begin == index_space_size) && (end == index_space_size)),
+  Assert((begin < index_space_size) ||
+           ((begin == index_space_size) && (end == index_space_size)),
          ExcIndexRangeType<size_type>(begin, 0, index_space_size));
   Assert(end <= index_space_size,
          ExcIndexRangeType<size_type>(end, 0, index_space_size + 1));
@@ -199,8 +199,8 @@ IndexSet IndexSet::operator&(const IndexSet& is) const
       else
         {
           // the ranges must overlap somehow
-          Assert(((r1->begin <= r2->begin) && (r1->end > r2->begin))
-                   || ((r2->begin <= r1->begin) && (r2->end > r1->begin)),
+          Assert(((r1->begin <= r2->begin) && (r1->end > r2->begin)) ||
+                   ((r2->begin <= r1->begin) && (r2->end > r1->begin)),
                  ExcInternalError());
 
           // add the overlapping range to the result
@@ -359,8 +359,8 @@ IndexSet::add_indices(const IndexSet& other, const unsigned int offset)
   if((this == &other) && (offset == 0))
     return;
 
-  Assert(other.ranges.size() == 0
-           || other.ranges.back().end - 1 < index_space_size,
+  Assert(other.ranges.size() == 0 ||
+           other.ranges.back().end - 1 < index_space_size,
          ExcIndexRangeType<size_type>(
            other.ranges.back().end - 1, 0, index_space_size));
 
@@ -377,8 +377,8 @@ IndexSet::add_indices(const IndexSet& other, const unsigned int offset)
     {
       // the two ranges do not overlap or we are at the end of one of the
       // ranges
-      if(r2 == other.ranges.end()
-         || (r1 != ranges.end() && r1->end < (r2->begin + offset)))
+      if(r2 == other.ranges.end() ||
+         (r1 != ranges.end() && r1->end < (r2->begin + offset)))
         {
           new_ranges.push_back(*r1);
           ++r1;
@@ -499,8 +499,8 @@ IndexSet::make_trilinos_map(const MPI_Comm& communicator,
 #  ifdef DEBUG
   if(!overlapping)
     {
-      const size_type n_global_elements
-        = Utilities::MPI::sum(n_elements(), communicator);
+      const size_type n_global_elements =
+        Utilities::MPI::sum(n_elements(), communicator);
       Assert(n_global_elements == size(),
              ExcMessage("You are trying to create an Epetra_Map object "
                         "that partitions elements of an index set "
@@ -508,22 +508,22 @@ IndexSet::make_trilinos_map(const MPI_Comm& communicator,
                         "index sets on different processors does not "
                         "contain all indices exactly once: the sum of "
                         "the number of entries the various processors "
-                        "want to store locally is "
-                        + Utilities::to_string(n_global_elements)
-                        + " whereas the total size of the object to be "
-                          "allocated is "
-                        + Utilities::to_string(size())
-                        + ". In other words, there are "
-                          "either indices that are not spoken for "
-                          "by any processor, or there are indices that are "
-                          "claimed by multiple processors."));
+                        "want to store locally is " +
+                        Utilities::to_string(n_global_elements) +
+                        " whereas the total size of the object to be "
+                        "allocated is " +
+                        Utilities::to_string(size()) +
+                        ". In other words, there are "
+                        "either indices that are not spoken for "
+                        "by any processor, or there are indices that are "
+                        "claimed by multiple processors."));
     }
 #  endif
 
   // Find out if the IndexSet is ascending and 1:1. This corresponds to a
   // linear EpetraMap. Overlapping IndexSets are never 1:1.
-  const bool linear
-    = overlapping ? false : is_ascending_and_one_to_one(communicator);
+  const bool linear =
+    overlapping ? false : is_ascending_and_one_to_one(communicator);
 
   if(linear)
     return Epetra_Map(TrilinosWrappers::types::int_type(size()),
@@ -561,15 +561,15 @@ IndexSet::is_ascending_and_one_to_one(const MPI_Comm& communicator) const
 {
   // If the sum of local elements does not add up to the total size,
   // the IndexSet can't be complete.
-  const size_type n_global_elements
-    = Utilities::MPI::sum(n_elements(), communicator);
+  const size_type n_global_elements =
+    Utilities::MPI::sum(n_elements(), communicator);
   if(n_global_elements != size())
     return false;
 
 #ifdef DEAL_II_WITH_MPI
   // Non-contiguous IndexSets can't be linear.
-  const bool all_contiguous
-    = (Utilities::MPI::min(is_contiguous() ? 1 : 0, communicator) == 1);
+  const bool all_contiguous =
+    (Utilities::MPI::min(is_contiguous() ? 1 : 0, communicator) == 1);
   if(!all_contiguous)
     return false;
 
@@ -580,8 +580,8 @@ IndexSet::is_ascending_and_one_to_one(const MPI_Comm& communicator) const
                                               numbers::invalid_dof_index;
 
   const unsigned int my_rank = Utilities::MPI::this_mpi_process(communicator);
-  const std::vector<types::global_dof_index> global_dofs
-    = Utilities::MPI::gather(communicator, first_local_dof, 0);
+  const std::vector<types::global_dof_index> global_dofs =
+    Utilities::MPI::gather(communicator, first_local_dof, 0);
 
   if(my_rank == 0)
     {
@@ -620,10 +620,10 @@ IndexSet::is_ascending_and_one_to_one(const MPI_Comm& communicator) const
 std::size_t
 IndexSet::memory_consumption() const
 {
-  return (MemoryConsumption::memory_consumption(ranges)
-          + MemoryConsumption::memory_consumption(is_compressed)
-          + MemoryConsumption::memory_consumption(index_space_size)
-          + sizeof(compress_mutex));
+  return (MemoryConsumption::memory_consumption(ranges) +
+          MemoryConsumption::memory_consumption(is_compressed) +
+          MemoryConsumption::memory_consumption(index_space_size) +
+          sizeof(compress_mutex));
 }
 
 DEAL_II_NAMESPACE_CLOSE

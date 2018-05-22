@@ -164,8 +164,8 @@ FiniteElementDomination::Domination
 FE_TraceQ<dim, spacedim>::compare_for_face_domination(
   const FiniteElement<dim, spacedim>& fe_other) const
 {
-  if(const FE_TraceQ<dim, spacedim>* fe_q_other
-     = dynamic_cast<const FE_TraceQ<dim, spacedim>*>(&fe_other))
+  if(const FE_TraceQ<dim, spacedim>* fe_q_other =
+       dynamic_cast<const FE_TraceQ<dim, spacedim>*>(&fe_other))
     {
       if(this->degree < fe_q_other->degree)
         return FiniteElementDomination::this_element_dominates;
@@ -174,8 +174,8 @@ FE_TraceQ<dim, spacedim>::compare_for_face_domination(
       else
         return FiniteElementDomination::other_element_dominates;
     }
-  else if(const FE_Nothing<dim>* fe_nothing
-          = dynamic_cast<const FE_Nothing<dim>*>(&fe_other))
+  else if(const FE_Nothing<dim>* fe_nothing =
+            dynamic_cast<const FE_Nothing<dim>*>(&fe_other))
     {
       if(fe_nothing->is_dominating())
         {
@@ -218,8 +218,8 @@ FE_TraceQ<dim, spacedim>::get_subface_interpolation_matrix(
     ExcDimensionMismatch(interpolation_matrix.m(), x_source_fe.dofs_per_face));
 
   // see if source is a FaceQ element
-  if(const FE_TraceQ<dim, spacedim>* source_fe
-     = dynamic_cast<const FE_TraceQ<dim, spacedim>*>(&x_source_fe))
+  if(const FE_TraceQ<dim, spacedim>* source_fe =
+       dynamic_cast<const FE_TraceQ<dim, spacedim>*>(&x_source_fe))
     {
       fe_q.get_subface_interpolation_matrix(
         source_fe->fe_q, subface, interpolation_matrix);

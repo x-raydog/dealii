@@ -312,9 +312,9 @@ SolverCG<VectorType>::solve(const MatrixType&         A,
   VectorType& h = *h_pointer;
 
   // Should we build the matrix for eigenvalue computations?
-  const bool do_eigenvalues
-    = !condition_number_signal.empty() || !all_condition_numbers_signal.empty()
-      || !eigenvalues_signal.empty() || !all_eigenvalues_signal.empty();
+  const bool do_eigenvalues =
+    !condition_number_signal.empty() || !all_condition_numbers_signal.empty() ||
+    !eigenvalues_signal.empty() || !all_eigenvalues_signal.empty();
 
   // vectors used for eigenvalue
   // computations

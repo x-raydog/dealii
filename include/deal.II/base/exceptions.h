@@ -67,8 +67,7 @@ public:
    * are not copyable.
    */
   ExceptionBase
-  operator=(const ExceptionBase&)
-    = delete;
+  operator=(const ExceptionBase&) = delete;
 
   /**
    * Set the file name and line of where the exception appeared as well as the

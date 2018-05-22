@@ -92,10 +92,10 @@ namespace CUDAWrappers
 
     struct AdditionalData
     {
-      AdditionalData(const ParallelizationScheme parallelization_scheme
-                     = parallel_in_elem,
-                     const UpdateFlags mapping_update_flags
-                     = update_gradients | update_JxW_values)
+      AdditionalData(
+        const ParallelizationScheme parallelization_scheme = parallel_in_elem,
+        const UpdateFlags           mapping_update_flags   = update_gradients |
+                                                 update_JxW_values)
         : parallelization_scheme(parallelization_scheme),
           mapping_update_flags(mapping_update_flags)
       {}

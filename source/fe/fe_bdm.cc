@@ -147,8 +147,9 @@ FE_BDM<dim>::convert_generalized_support_point_values_to_dof_values(
       if(test_values_face.size() == 0)
         {
           for(unsigned int i = 0; i < this->dofs_per_face; ++i)
-            nodal_values[dbase + i] = support_point_values
-              [pbase + i][GeometryInfo<dim>::unit_normal_direction[f]];
+            nodal_values[dbase + i] =
+              support_point_values[pbase + i]
+                                  [GeometryInfo<dim>::unit_normal_direction[f]];
           pbase += this->dofs_per_face;
         }
       else
@@ -157,9 +158,10 @@ FE_BDM<dim>::convert_generalized_support_point_values_to_dof_values(
             {
               double s = 0.;
               for(unsigned int k = 0; k < test_values_face.size(); ++k)
-                s += support_point_values
-                       [pbase + k][GeometryInfo<dim>::unit_normal_direction[f]]
-                     * test_values_face[k][i];
+                s +=
+                  support_point_values
+                    [pbase + k][GeometryInfo<dim>::unit_normal_direction[f]] *
+                  test_values_face[k][i];
               nodal_values[dbase + i] = s;
             }
           pbase += test_values_face.size();
@@ -211,8 +213,8 @@ FE_BDM<dim>::get_dpo_vector(const unsigned int deg)
   // PolynomialSpace::compute_n_pols()!
 
   std::vector<unsigned int> dpo(dim + 1, 0u);
-  dpo[dim]
-    = (deg > 1 ? dim * PolynomialSpace<dim>::compute_n_pols(deg - 1) : 0u);
+  dpo[dim] =
+    (deg > 1 ? dim * PolynomialSpace<dim>::compute_n_pols(deg - 1) : 0u);
   dpo[dim - 1] = PolynomialSpace<dim - 1>::compute_n_pols(deg + 1);
 
   return dpo;
@@ -229,8 +231,8 @@ FE_BDM<dim>::get_ria_vector(const unsigned int deg)
     }
 
   const unsigned int dofs_per_cell = PolynomialsBDM<dim>::compute_n_pols(deg);
-  const unsigned int dofs_per_face
-    = PolynomialSpace<dim - 1>::compute_n_pols(deg + 1);
+  const unsigned int dofs_per_face =
+    PolynomialSpace<dim - 1>::compute_n_pols(deg + 1);
 
   Assert(GeometryInfo<dim>::faces_per_cell * dofs_per_face <= dofs_per_cell,
          ExcInternalError());
@@ -326,9 +328,8 @@ FE_BDM<dim>::initialize_support_points(const unsigned int deg)
   QGauss<dim> cell_points(deg == 1 ? 0 : deg);
 
   // Compute the size of the whole support point set
-  const unsigned int npoints
-    = cell_points.size()
-      + GeometryInfo<dim>::faces_per_cell * face_points.size();
+  const unsigned int npoints =
+    cell_points.size() + GeometryInfo<dim>::faces_per_cell * face_points.size();
 
   this->generalized_support_points.resize(npoints);
 
@@ -336,9 +337,8 @@ FE_BDM<dim>::initialize_support_points(const unsigned int deg)
   for(unsigned int k = 0;
       k < face_points.size() * GeometryInfo<dim>::faces_per_cell;
       ++k)
-    this->generalized_support_points[k]
-      = faces.point(k
-                    + QProjector<dim>::DataSetDescriptor::face(
+    this->generalized_support_points[k] =
+      faces.point(k + QProjector<dim>::DataSetDescriptor::face(
                         0, true, false, false, this->dofs_per_face));
 
   // Currently, for backward compatibility, we do not use moments, but
@@ -352,8 +352,8 @@ FE_BDM<dim>::initialize_support_points(const unsigned int deg)
     return;
 
   // Remember where interior points start
-  const unsigned int ibase
-    = face_points.size() * GeometryInfo<dim>::faces_per_cell;
+  const unsigned int ibase =
+    face_points.size() * GeometryInfo<dim>::faces_per_cell;
   for(unsigned int k = 0; k < cell_points.size(); ++k)
     {
       this->generalized_support_points[ibase + k] = cell_points.point(k);

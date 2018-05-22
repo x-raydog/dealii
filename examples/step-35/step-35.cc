@@ -909,10 +909,10 @@ namespace Step35
       {
         for(unsigned int i = 0; i < data.vel_dpc; ++i)
           for(unsigned int j = 0; j < data.pres_dpc; ++j)
-            data.local_grad(i, j)
-              += -scratch.fe_val_vel.JxW(q)
-                 * scratch.fe_val_vel.shape_grad(i, q)[data.d]
-                 * scratch.fe_val_pres.shape_value(j, q);
+            data.local_grad(i, j) +=
+              -scratch.fe_val_vel.JxW(q) *
+              scratch.fe_val_vel.shape_grad(i, q)[data.d] *
+              scratch.fe_val_pres.shape_value(j, q);
       }
   }
 
@@ -1033,8 +1033,8 @@ namespace Step35
 
         vel_exact.set_component(d);
         boundary_values.clear();
-        for(std::vector<types::boundary_id>::const_iterator boundaries
-            = boundary_ids.begin();
+        for(std::vector<types::boundary_id>::const_iterator boundaries =
+              boundary_ids.begin();
             boundaries != boundary_ids.end();
             ++boundaries)
           {
@@ -1114,8 +1114,8 @@ namespace Step35
     AdvectionPerTaskData data(fe_velocity.dofs_per_cell);
     AdvectionScratchData scratch(fe_velocity,
                                  quadrature_velocity,
-                                 update_values | update_JxW_values
-                                   | update_gradients);
+                                 update_values | update_JxW_values |
+                                   update_gradients);
     WorkStream::run(
       dof_handler_velocity.begin_active(),
       dof_handler_velocity.end(),
@@ -1157,12 +1157,12 @@ namespace Step35
     for(unsigned int q = 0; q < scratch.nqp; ++q)
       for(unsigned int i = 0; i < scratch.dpc; ++i)
         for(unsigned int j = 0; j < scratch.dpc; ++j)
-          data.local_advection(i, j)
-            += (scratch.u_star_local[q] * scratch.fe_val.shape_grad(j, q)
-                  * scratch.fe_val.shape_value(i, q)
-                + 0.5 * scratch.u_star_tmp[q] * scratch.fe_val.shape_value(i, q)
-                    * scratch.fe_val.shape_value(j, q))
-               * scratch.fe_val.JxW(q);
+          data.local_advection(i, j) +=
+            (scratch.u_star_local[q] * scratch.fe_val.shape_grad(j, q) *
+               scratch.fe_val.shape_value(i, q) +
+             0.5 * scratch.u_star_tmp[q] * scratch.fe_val.shape_value(i, q) *
+               scratch.fe_val.shape_value(j, q)) *
+            scratch.fe_val.JxW(q);
   }
 
   template <int dim>
@@ -1270,17 +1270,17 @@ namespace Step35
       fe_velocity, dim, fe_pressure, 1, fe_velocity, 1);
     DoFHandler<dim> joint_dof_handler(triangulation);
     joint_dof_handler.distribute_dofs(joint_fe);
-    Assert(joint_dof_handler.n_dofs()
-             == ((dim + 1) * dof_handler_velocity.n_dofs()
-                 + dof_handler_pressure.n_dofs()),
+    Assert(joint_dof_handler.n_dofs() ==
+             ((dim + 1) * dof_handler_velocity.n_dofs() +
+              dof_handler_pressure.n_dofs()),
            ExcInternalError());
     Vector<double> joint_solution(joint_dof_handler.n_dofs());
     std::vector<types::global_dof_index> loc_joint_dof_indices(
       joint_fe.dofs_per_cell),
       loc_vel_dof_indices(fe_velocity.dofs_per_cell),
       loc_pres_dof_indices(fe_pressure.dofs_per_cell);
-    typename DoFHandler<dim>::active_cell_iterator joint_cell
-      = joint_dof_handler.begin_active(),
+    typename DoFHandler<dim>::active_cell_iterator
+      joint_cell = joint_dof_handler.begin_active(),
       joint_endc = joint_dof_handler.end(),
       vel_cell   = dof_handler_velocity.begin_active(),
       pres_cell  = dof_handler_pressure.begin_active();
@@ -1295,17 +1295,17 @@ namespace Step35
               case 0:
                 Assert(joint_fe.system_to_base_index(i).first.second < dim,
                        ExcInternalError());
-                joint_solution(loc_joint_dof_indices[i])
-                  = u_n[joint_fe.system_to_base_index(i).first.second](
+                joint_solution(loc_joint_dof_indices[i]) =
+                  u_n[joint_fe.system_to_base_index(i).first.second](
                     loc_vel_dof_indices[joint_fe.system_to_base_index(i)
                                           .second]);
                 break;
               case 1:
                 Assert(joint_fe.system_to_base_index(i).first.second == 0,
                        ExcInternalError());
-                joint_solution(loc_joint_dof_indices[i])
-                  = pres_n(loc_pres_dof_indices[joint_fe.system_to_base_index(i)
-                                                  .second]);
+                joint_solution(loc_joint_dof_indices[i]) =
+                  pres_n(loc_pres_dof_indices[joint_fe.system_to_base_index(i)
+                                                .second]);
                 break;
               case 2:
                 Assert(joint_fe.system_to_base_index(i).first.second == 0,
@@ -1325,17 +1325,17 @@ namespace Step35
     std::vector<DataComponentInterpretation::DataComponentInterpretation>
       component_interpretation(
         dim + 2, DataComponentInterpretation::component_is_part_of_vector);
-    component_interpretation[dim]
-      = DataComponentInterpretation::component_is_scalar;
-    component_interpretation[dim + 1]
-      = DataComponentInterpretation::component_is_scalar;
+    component_interpretation[dim] =
+      DataComponentInterpretation::component_is_scalar;
+    component_interpretation[dim + 1] =
+      DataComponentInterpretation::component_is_scalar;
     data_out.add_data_vector(joint_solution,
                              joint_solution_names,
                              DataOut<dim>::type_dof_data,
                              component_interpretation);
     data_out.build_patches(deg + 1);
-    std::ofstream output("solution-" + Utilities::int_to_string(step, 5)
-                         + ".vtk");
+    std::ofstream output("solution-" + Utilities::int_to_string(step, 5) +
+                         ".vtk");
     data_out.write_vtk(output);
   }
 
@@ -1357,8 +1357,8 @@ namespace Step35
 
     FEValues<dim>      fe_val_vel(fe_velocity,
                              quadrature_velocity,
-                             update_gradients | update_JxW_values
-                               | update_values);
+                             update_gradients | update_JxW_values |
+                               update_values);
     const unsigned int dpc = fe_velocity.dofs_per_cell,
                        nqp = quadrature_velocity.size();
     std::vector<types::global_dof_index> ldi(dpc);
@@ -1367,9 +1367,10 @@ namespace Step35
     std::vector<Tensor<1, dim>> grad_u1(nqp), grad_u2(nqp);
     rot_u = 0.;
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler_velocity.begin_active(),
-      end = dof_handler_velocity.end();
+    typename DoFHandler<dim>::active_cell_iterator cell = dof_handler_velocity
+                                                            .begin_active(),
+                                                   end =
+                                                     dof_handler_velocity.end();
     for(; cell != end; ++cell)
       {
         fe_val_vel.reinit(cell);
@@ -1379,8 +1380,8 @@ namespace Step35
         loc_rot = 0.;
         for(unsigned int q = 0; q < nqp; ++q)
           for(unsigned int i = 0; i < dpc; ++i)
-            loc_rot(i) += (grad_u2[q][0] - grad_u1[q][1])
-                          * fe_val_vel.shape_value(i, q) * fe_val_vel.JxW(q);
+            loc_rot(i) += (grad_u2[q][0] - grad_u1[q][1]) *
+                          fe_val_vel.shape_value(i, q) * fe_val_vel.JxW(q);
 
         for(unsigned int i = 0; i < dpc; ++i)
           rot_u(ldi[i]) += loc_rot(i);

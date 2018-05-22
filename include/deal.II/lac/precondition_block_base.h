@@ -607,8 +607,8 @@ PreconditionBlockBase<number>::log_statistics() const
         {
           const LAPACKFullMatrix<number>& matrix = inverse_svd(b);
           size_type                       k      = 1;
-          while(k <= matrix.n_cols()
-                && matrix.singular_value(matrix.n_cols() - k) == 0)
+          while(k <= matrix.n_cols() &&
+                matrix.singular_value(matrix.n_cols() - k) == 0)
             ++k;
           const double s0 = matrix.singular_value(0);
           const double sm = matrix.singular_value(matrix.n_cols() - k);

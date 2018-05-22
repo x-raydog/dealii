@@ -237,8 +237,8 @@ public:
    * an empty function.
    */
   void
-  compress(::dealii::VectorOperation::values operation
-           = ::dealii::VectorOperation::unknown) const;
+  compress(::dealii::VectorOperation::values operation =
+             ::dealii::VectorOperation::unknown) const;
 
   /**
    * Change the dimension of the vector to @p N. The reserved memory for this

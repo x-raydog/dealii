@@ -111,8 +111,8 @@ public:
                      const unsigned int             face_no,
                      const unsigned int             subface_no,
                      std::vector<Point<dim>>&       q_points,
-                     const RefinementCase<dim - 1>& ref_case
-                     = RefinementCase<dim - 1>::isotropic_refinement);
+                     const RefinementCase<dim - 1>& ref_case =
+                       RefinementCase<dim - 1>::isotropic_refinement);
 
   /**
    * Compute the cell quadrature formula corresponding to using
@@ -127,8 +127,8 @@ public:
   project_to_subface(const SubQuadrature&           quadrature,
                      const unsigned int             face_no,
                      const unsigned int             subface_no,
-                     const RefinementCase<dim - 1>& ref_case
-                     = RefinementCase<dim - 1>::isotropic_refinement);
+                     const RefinementCase<dim - 1>& ref_case =
+                       RefinementCase<dim - 1>::isotropic_refinement);
 
   /**
    * Take a face quadrature formula and generate a cell quadrature formula
@@ -267,8 +267,8 @@ public:
             const bool                       face_flip,
             const bool                       face_rotation,
             const unsigned int               n_quadrature_points,
-            const internal::SubfaceCase<dim> ref_case
-            = internal::SubfaceCase<dim>::case_isotropic);
+            const internal::SubfaceCase<dim> ref_case =
+              internal::SubfaceCase<dim>::case_isotropic);
 
     /**
      * Conversion operator to an integer denoting the offset of the first

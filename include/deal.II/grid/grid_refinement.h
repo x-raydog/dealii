@@ -154,12 +154,12 @@ namespace GridRefinement
    */
   template <int dim, typename Number, int spacedim>
   void
-  refine_and_coarsen_fixed_number(Triangulation<dim, spacedim>& triangulation,
-                                  const Vector<Number>&         criteria,
-                                  const double       top_fraction_of_cells,
-                                  const double       bottom_fraction_of_cells,
-                                  const unsigned int max_n_cells
-                                  = std::numeric_limits<unsigned int>::max());
+  refine_and_coarsen_fixed_number(
+    Triangulation<dim, spacedim>& triangulation,
+    const Vector<Number>&         criteria,
+    const double                  top_fraction_of_cells,
+    const double                  bottom_fraction_of_cells,
+    const unsigned int max_n_cells = std::numeric_limits<unsigned int>::max());
 
   /**
    * This function provides a strategy to mark cells for refinement and
@@ -219,12 +219,12 @@ namespace GridRefinement
    */
   template <int dim, typename Number, int spacedim>
   void
-  refine_and_coarsen_fixed_fraction(Triangulation<dim, spacedim>& tria,
-                                    const Vector<Number>&         criteria,
-                                    const double                  top_fraction,
-                                    const double       bottom_fraction,
-                                    const unsigned int max_n_cells
-                                    = std::numeric_limits<unsigned int>::max());
+  refine_and_coarsen_fixed_fraction(
+    Triangulation<dim, spacedim>& tria,
+    const Vector<Number>&         criteria,
+    const double                  top_fraction,
+    const double                  bottom_fraction,
+    const unsigned int max_n_cells = std::numeric_limits<unsigned int>::max());
 
   /**
    * This function flags cells of a triangulation for refinement with the

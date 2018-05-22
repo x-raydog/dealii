@@ -68,33 +68,32 @@ namespace internal
     std::string policy_name;
     if(dynamic_cast<const typename dealii::internal::DoFHandlerImplementation::
                       Policy::Sequential<dealii::DoFHandler<dim, spacedim>>*>(
-         &policy)
-       || dynamic_cast<
-            const typename dealii::internal::DoFHandlerImplementation::Policy::
-              Sequential<dealii::hp::DoFHandler<dim, spacedim>>*>(&policy))
+         &policy) ||
+       dynamic_cast<
+         const typename dealii::internal::DoFHandlerImplementation::Policy::
+           Sequential<dealii::hp::DoFHandler<dim, spacedim>>*>(&policy))
       policy_name = "Policy::Sequential<";
     else if(
       dynamic_cast<
         const typename dealii::internal::DoFHandlerImplementation::Policy::
-          ParallelDistributed<dealii::DoFHandler<dim, spacedim>>*>(&policy)
-      || dynamic_cast<
-           const typename dealii::internal::DoFHandlerImplementation::Policy::
-             ParallelDistributed<dealii::hp::DoFHandler<dim, spacedim>>*>(
-           &policy))
+          ParallelDistributed<dealii::DoFHandler<dim, spacedim>>*>(&policy) ||
+      dynamic_cast<
+        const typename dealii::internal::DoFHandlerImplementation::Policy::
+          ParallelDistributed<dealii::hp::DoFHandler<dim, spacedim>>*>(&policy))
       policy_name = "Policy::ParallelDistributed<";
     else if(dynamic_cast<
               const typename dealii::internal::DoFHandlerImplementation::
                 Policy::ParallelShared<dealii::DoFHandler<dim, spacedim>>*>(
-              &policy)
-            || dynamic_cast<const typename dealii::internal::
-                              DoFHandlerImplementation::Policy::ParallelShared<
-                                dealii::hp::DoFHandler<dim, spacedim>>*>(
-                 &policy))
+              &policy) ||
+            dynamic_cast<
+              const typename dealii::internal::DoFHandlerImplementation::
+                Policy::ParallelShared<dealii::hp::DoFHandler<dim, spacedim>>*>(
+              &policy))
       policy_name = "Policy::ParallelShared<";
     else
       AssertThrow(false, ExcNotImplemented());
-    policy_name += Utilities::int_to_string(dim) + ","
-                   + Utilities::int_to_string(spacedim) + ">";
+    policy_name += Utilities::int_to_string(dim) + "," +
+                   Utilities::int_to_string(spacedim) + ">";
     return policy_name;
   }
 
@@ -120,8 +119,8 @@ namespace internal
       max_couplings_between_dofs(const DoFHandler<1, spacedim>& dof_handler)
       {
         return std::min(static_cast<types::global_dof_index>(
-                          3 * dof_handler.get_fe().dofs_per_vertex
-                          + 2 * dof_handler.get_fe().dofs_per_line),
+                          3 * dof_handler.get_fe().dofs_per_vertex +
+                          2 * dof_handler.get_fe().dofs_per_line),
                         dof_handler.n_dofs());
       }
 
@@ -154,29 +153,29 @@ namespace internal
         switch(dof_handler.tria->max_adjacent_cells())
           {
             case 4:
-              max_couplings = 19 * dof_handler.get_fe().dofs_per_vertex
-                              + 28 * dof_handler.get_fe().dofs_per_line
-                              + 8 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 19 * dof_handler.get_fe().dofs_per_vertex +
+                              28 * dof_handler.get_fe().dofs_per_line +
+                              8 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 5:
-              max_couplings = 21 * dof_handler.get_fe().dofs_per_vertex
-                              + 31 * dof_handler.get_fe().dofs_per_line
-                              + 9 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 21 * dof_handler.get_fe().dofs_per_vertex +
+                              31 * dof_handler.get_fe().dofs_per_line +
+                              9 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 6:
-              max_couplings = 28 * dof_handler.get_fe().dofs_per_vertex
-                              + 42 * dof_handler.get_fe().dofs_per_line
-                              + 12 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 28 * dof_handler.get_fe().dofs_per_vertex +
+                              42 * dof_handler.get_fe().dofs_per_line +
+                              12 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 7:
-              max_couplings = 30 * dof_handler.get_fe().dofs_per_vertex
-                              + 45 * dof_handler.get_fe().dofs_per_line
-                              + 13 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 30 * dof_handler.get_fe().dofs_per_vertex +
+                              45 * dof_handler.get_fe().dofs_per_line +
+                              13 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 8:
-              max_couplings = 37 * dof_handler.get_fe().dofs_per_vertex
-                              + 56 * dof_handler.get_fe().dofs_per_line
-                              + 16 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 37 * dof_handler.get_fe().dofs_per_vertex +
+                              56 * dof_handler.get_fe().dofs_per_line +
+                              16 * dof_handler.get_fe().dofs_per_quad;
               break;
 
             // the following numbers are not based on actual counting but by
@@ -184,44 +183,44 @@ namespace internal
             // example, for dofs_per_vertex, the sequence above is 19, 21, 28,
             // 30, 37, and is continued as follows):
             case 9:
-              max_couplings = 39 * dof_handler.get_fe().dofs_per_vertex
-                              + 59 * dof_handler.get_fe().dofs_per_line
-                              + 17 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 39 * dof_handler.get_fe().dofs_per_vertex +
+                              59 * dof_handler.get_fe().dofs_per_line +
+                              17 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 10:
-              max_couplings = 46 * dof_handler.get_fe().dofs_per_vertex
-                              + 70 * dof_handler.get_fe().dofs_per_line
-                              + 20 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 46 * dof_handler.get_fe().dofs_per_vertex +
+                              70 * dof_handler.get_fe().dofs_per_line +
+                              20 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 11:
-              max_couplings = 48 * dof_handler.get_fe().dofs_per_vertex
-                              + 73 * dof_handler.get_fe().dofs_per_line
-                              + 21 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 48 * dof_handler.get_fe().dofs_per_vertex +
+                              73 * dof_handler.get_fe().dofs_per_line +
+                              21 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 12:
-              max_couplings = 55 * dof_handler.get_fe().dofs_per_vertex
-                              + 84 * dof_handler.get_fe().dofs_per_line
-                              + 24 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 55 * dof_handler.get_fe().dofs_per_vertex +
+                              84 * dof_handler.get_fe().dofs_per_line +
+                              24 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 13:
-              max_couplings = 57 * dof_handler.get_fe().dofs_per_vertex
-                              + 87 * dof_handler.get_fe().dofs_per_line
-                              + 25 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 57 * dof_handler.get_fe().dofs_per_vertex +
+                              87 * dof_handler.get_fe().dofs_per_line +
+                              25 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 14:
-              max_couplings = 63 * dof_handler.get_fe().dofs_per_vertex
-                              + 98 * dof_handler.get_fe().dofs_per_line
-                              + 28 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 63 * dof_handler.get_fe().dofs_per_vertex +
+                              98 * dof_handler.get_fe().dofs_per_line +
+                              28 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 15:
-              max_couplings = 65 * dof_handler.get_fe().dofs_per_vertex
-                              + 103 * dof_handler.get_fe().dofs_per_line
-                              + 29 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 65 * dof_handler.get_fe().dofs_per_vertex +
+                              103 * dof_handler.get_fe().dofs_per_line +
+                              29 * dof_handler.get_fe().dofs_per_quad;
               break;
             case 16:
-              max_couplings = 72 * dof_handler.get_fe().dofs_per_vertex
-                              + 114 * dof_handler.get_fe().dofs_per_line
-                              + 32 * dof_handler.get_fe().dofs_per_quad;
+              max_couplings = 72 * dof_handler.get_fe().dofs_per_vertex +
+                              114 * dof_handler.get_fe().dofs_per_line +
+                              32 * dof_handler.get_fe().dofs_per_quad;
               break;
 
             default:
@@ -248,15 +247,15 @@ namespace internal
         //
         // can anyone give better estimate
         // here?
-        const unsigned int max_adjacent_cells
-          = dof_handler.tria->max_adjacent_cells();
+        const unsigned int max_adjacent_cells =
+          dof_handler.tria->max_adjacent_cells();
 
         types::global_dof_index max_couplings;
         if(max_adjacent_cells <= 8)
-          max_couplings = 7 * 7 * 7 * dof_handler.get_fe().dofs_per_vertex
-                          + 7 * 6 * 7 * 3 * dof_handler.get_fe().dofs_per_line
-                          + 9 * 4 * 7 * 3 * dof_handler.get_fe().dofs_per_quad
-                          + 27 * dof_handler.get_fe().dofs_per_hex;
+          max_couplings = 7 * 7 * 7 * dof_handler.get_fe().dofs_per_vertex +
+                          7 * 6 * 7 * 3 * dof_handler.get_fe().dofs_per_line +
+                          9 * 4 * 7 * 3 * dof_handler.get_fe().dofs_per_quad +
+                          27 * dof_handler.get_fe().dofs_per_hex;
         else
           {
             Assert(false, ExcNotImplemented());
@@ -278,8 +277,8 @@ namespace internal
       template <int spacedim>
       static void reserve_space(DoFHandler<1, spacedim>& dof_handler)
       {
-        dof_handler.vertex_dofs.resize(dof_handler.tria->n_vertices()
-                                         * dof_handler.get_fe().dofs_per_vertex,
+        dof_handler.vertex_dofs.resize(dof_handler.tria->n_vertices() *
+                                         dof_handler.get_fe().dofs_per_vertex,
                                        numbers::invalid_dof_index);
 
         for(unsigned int i = 0; i < dof_handler.tria->n_levels(); ++i)
@@ -288,13 +287,13 @@ namespace internal
               new internal::DoFHandlerImplementation::DoFLevel<1>);
 
             dof_handler.levels.back()->dof_object.dofs.resize(
-              dof_handler.tria->n_raw_cells(i)
-                * dof_handler.get_fe().dofs_per_line,
+              dof_handler.tria->n_raw_cells(i) *
+                dof_handler.get_fe().dofs_per_line,
               numbers::invalid_dof_index);
 
             dof_handler.levels.back()->cell_dof_indices_cache.resize(
-              dof_handler.tria->n_raw_cells(i)
-                * dof_handler.get_fe().dofs_per_cell,
+              dof_handler.tria->n_raw_cells(i) *
+                dof_handler.get_fe().dofs_per_cell,
               numbers::invalid_dof_index);
           }
       }
@@ -302,8 +301,8 @@ namespace internal
       template <int spacedim>
       static void reserve_space(DoFHandler<2, spacedim>& dof_handler)
       {
-        dof_handler.vertex_dofs.resize(dof_handler.tria->n_vertices()
-                                         * dof_handler.get_fe().dofs_per_vertex,
+        dof_handler.vertex_dofs.resize(dof_handler.tria->n_vertices() *
+                                         dof_handler.get_fe().dofs_per_vertex,
                                        numbers::invalid_dof_index);
 
         for(unsigned int i = 0; i < dof_handler.tria->n_levels(); ++i)
@@ -312,13 +311,13 @@ namespace internal
               new internal::DoFHandlerImplementation::DoFLevel<2>);
 
             dof_handler.levels.back()->dof_object.dofs.resize(
-              dof_handler.tria->n_raw_cells(i)
-                * dof_handler.get_fe().dofs_per_quad,
+              dof_handler.tria->n_raw_cells(i) *
+                dof_handler.get_fe().dofs_per_quad,
               numbers::invalid_dof_index);
 
             dof_handler.levels.back()->cell_dof_indices_cache.resize(
-              dof_handler.tria->n_raw_cells(i)
-                * dof_handler.get_fe().dofs_per_cell,
+              dof_handler.tria->n_raw_cells(i) *
+                dof_handler.get_fe().dofs_per_cell,
               numbers::invalid_dof_index);
           }
 
@@ -328,8 +327,8 @@ namespace internal
         if(dof_handler.tria->n_cells() > 0)
           {
             dof_handler.faces->lines.dofs.resize(
-              dof_handler.tria->n_raw_lines()
-                * dof_handler.get_fe().dofs_per_line,
+              dof_handler.tria->n_raw_lines() *
+                dof_handler.get_fe().dofs_per_line,
               numbers::invalid_dof_index);
           }
       }
@@ -337,8 +336,8 @@ namespace internal
       template <int spacedim>
       static void reserve_space(DoFHandler<3, spacedim>& dof_handler)
       {
-        dof_handler.vertex_dofs.resize(dof_handler.tria->n_vertices()
-                                         * dof_handler.get_fe().dofs_per_vertex,
+        dof_handler.vertex_dofs.resize(dof_handler.tria->n_vertices() *
+                                         dof_handler.get_fe().dofs_per_vertex,
                                        numbers::invalid_dof_index);
 
         for(unsigned int i = 0; i < dof_handler.tria->n_levels(); ++i)
@@ -347,13 +346,13 @@ namespace internal
               new internal::DoFHandlerImplementation::DoFLevel<3>);
 
             dof_handler.levels.back()->dof_object.dofs.resize(
-              dof_handler.tria->n_raw_cells(i)
-                * dof_handler.get_fe().dofs_per_hex,
+              dof_handler.tria->n_raw_cells(i) *
+                dof_handler.get_fe().dofs_per_hex,
               numbers::invalid_dof_index);
 
             dof_handler.levels.back()->cell_dof_indices_cache.resize(
-              dof_handler.tria->n_raw_cells(i)
-                * dof_handler.get_fe().dofs_per_cell,
+              dof_handler.tria->n_raw_cells(i) *
+                dof_handler.get_fe().dofs_per_cell,
               numbers::invalid_dof_index);
           }
         dof_handler.faces = std_cxx14::make_unique<
@@ -363,12 +362,12 @@ namespace internal
         if(dof_handler.tria->n_cells() > 0)
           {
             dof_handler.faces->lines.dofs.resize(
-              dof_handler.tria->n_raw_lines()
-                * dof_handler.get_fe().dofs_per_line,
+              dof_handler.tria->n_raw_lines() *
+                dof_handler.get_fe().dofs_per_line,
               numbers::invalid_dof_index);
             dof_handler.faces->quads.dofs.resize(
-              dof_handler.tria->n_raw_quads()
-                * dof_handler.get_fe().dofs_per_quad,
+              dof_handler.tria->n_raw_quads() *
+                dof_handler.get_fe().dofs_per_quad,
               numbers::invalid_dof_index);
           }
       }
@@ -380,8 +379,8 @@ namespace internal
                ExcMessage("Invalid triangulation"));
         dof_handler.clear_mg_space();
 
-        const dealii::Triangulation<1, spacedim>& tria
-          = dof_handler.get_triangulation();
+        const dealii::Triangulation<1, spacedim>& tria =
+          dof_handler.get_triangulation();
         const unsigned int& dofs_per_line = dof_handler.get_fe().dofs_per_line;
         const unsigned int& n_levels      = tria.n_levels();
 
@@ -389,10 +388,10 @@ namespace internal
           {
             dof_handler.mg_levels.emplace_back(
               new internal::DoFHandlerImplementation::DoFLevel<1>);
-            dof_handler.mg_levels.back()->dof_object.dofs
-              = std::vector<types::global_dof_index>(
-                tria.n_raw_lines(i) * dofs_per_line,
-                numbers::invalid_dof_index);
+            dof_handler.mg_levels.back()->dof_object.dofs =
+              std::vector<types::global_dof_index>(tria.n_raw_lines(i) *
+                                                     dofs_per_line,
+                                                   numbers::invalid_dof_index);
           }
 
         const unsigned int& n_vertices = tria.n_vertices();
@@ -402,8 +401,8 @@ namespace internal
         std::vector<unsigned int> max_level(n_vertices, 0);
         std::vector<unsigned int> min_level(n_vertices, n_levels);
 
-        for(typename dealii::Triangulation<1, spacedim>::cell_iterator cell
-            = tria.begin();
+        for(typename dealii::Triangulation<1, spacedim>::cell_iterator cell =
+              tria.begin();
             cell != tria.end();
             ++cell)
           {
@@ -451,8 +450,8 @@ namespace internal
         dof_handler.clear_mg_space();
 
         const dealii::FiniteElement<2, spacedim>& fe = dof_handler.get_fe();
-        const dealii::Triangulation<2, spacedim>& tria
-          = dof_handler.get_triangulation();
+        const dealii::Triangulation<2, spacedim>& tria =
+          dof_handler.get_triangulation();
         const unsigned int& n_levels = tria.n_levels();
 
         for(unsigned int i = 0; i < n_levels; ++i)
@@ -460,10 +459,10 @@ namespace internal
             dof_handler.mg_levels.emplace_back(
               std_cxx14::make_unique<
                 internal::DoFHandlerImplementation::DoFLevel<2>>());
-            dof_handler.mg_levels.back()->dof_object.dofs
-              = std::vector<types::global_dof_index>(
-                tria.n_raw_quads(i) * fe.dofs_per_quad,
-                numbers::invalid_dof_index);
+            dof_handler.mg_levels.back()->dof_object.dofs =
+              std::vector<types::global_dof_index>(tria.n_raw_quads(i) *
+                                                     fe.dofs_per_quad,
+                                                   numbers::invalid_dof_index);
           }
 
         dof_handler.mg_faces = std_cxx14::make_unique<
@@ -478,8 +477,8 @@ namespace internal
         std::vector<unsigned int> max_level(n_vertices, 0);
         std::vector<unsigned int> min_level(n_vertices, n_levels);
 
-        for(typename dealii::Triangulation<2, spacedim>::cell_iterator cell
-            = tria.begin();
+        for(typename dealii::Triangulation<2, spacedim>::cell_iterator cell =
+              tria.begin();
             cell != tria.end();
             ++cell)
           {
@@ -525,8 +524,8 @@ namespace internal
         dof_handler.clear_mg_space();
 
         const dealii::FiniteElement<3, spacedim>& fe = dof_handler.get_fe();
-        const dealii::Triangulation<3, spacedim>& tria
-          = dof_handler.get_triangulation();
+        const dealii::Triangulation<3, spacedim>& tria =
+          dof_handler.get_triangulation();
         const unsigned int& n_levels = tria.n_levels();
 
         for(unsigned int i = 0; i < n_levels; ++i)
@@ -534,10 +533,10 @@ namespace internal
             dof_handler.mg_levels.emplace_back(
               std_cxx14::make_unique<
                 internal::DoFHandlerImplementation::DoFLevel<3>>());
-            dof_handler.mg_levels.back()->dof_object.dofs
-              = std::vector<types::global_dof_index>(
-                tria.n_raw_hexs(i) * fe.dofs_per_hex,
-                numbers::invalid_dof_index);
+            dof_handler.mg_levels.back()->dof_object.dofs =
+              std::vector<types::global_dof_index>(tria.n_raw_hexs(i) *
+                                                     fe.dofs_per_hex,
+                                                   numbers::invalid_dof_index);
           }
 
         dof_handler.mg_faces = std_cxx14::make_unique<
@@ -554,8 +553,8 @@ namespace internal
         std::vector<unsigned int> max_level(n_vertices, 0);
         std::vector<unsigned int> min_level(n_vertices, n_levels);
 
-        for(typename dealii::Triangulation<3, spacedim>::cell_iterator cell
-            = tria.begin();
+        for(typename dealii::Triangulation<3, spacedim>::cell_iterator cell =
+              tria.begin();
             cell != tria.end();
             ++cell)
           {
@@ -799,22 +798,23 @@ DoFHandler<dim, spacedim>::DoFHandler(const Triangulation<dim, spacedim>& tria)
   : tria(&tria, typeid(*this).name()), faces(nullptr), mg_faces(nullptr)
 {
   // decide whether we need a sequential or a parallel distributed policy
-  if(dynamic_cast<const parallel::shared::Triangulation<dim, spacedim>*>(&tria)
-     != nullptr)
-    policy
-      = std_cxx14::make_unique<internal::DoFHandlerImplementation::Policy::
-                                 ParallelShared<DoFHandler<dim, spacedim>>>(
+  if(dynamic_cast<const parallel::shared::Triangulation<dim, spacedim>*>(
+       &tria) != nullptr)
+    policy =
+      std_cxx14::make_unique<internal::DoFHandlerImplementation::Policy::
+                               ParallelShared<DoFHandler<dim, spacedim>>>(
         *this);
   else if(dynamic_cast<
-            const parallel::distributed::Triangulation<dim, spacedim>*>(&tria)
-          == nullptr)
-    policy
-      = std_cxx14::make_unique<internal::DoFHandlerImplementation::Policy::
-                                 Sequential<DoFHandler<dim, spacedim>>>(*this);
+            const parallel::distributed::Triangulation<dim, spacedim>*>(
+            &tria) == nullptr)
+    policy =
+      std_cxx14::make_unique<internal::DoFHandlerImplementation::Policy::
+                               Sequential<DoFHandler<dim, spacedim>>>(*this);
   else
-    policy = std_cxx14::make_unique<
-      internal::DoFHandlerImplementation::Policy::ParallelDistributed<
-        DoFHandler<dim, spacedim>>>(*this);
+    policy =
+      std_cxx14::make_unique<internal::DoFHandlerImplementation::Policy::
+                               ParallelDistributed<DoFHandler<dim, spacedim>>>(
+        *this);
 }
 
 template <int dim, int spacedim>
@@ -846,22 +846,23 @@ DoFHandler<dim, spacedim>::initialize(const Triangulation<dim, spacedim>& t,
   number_cache.n_global_dofs = 0;
 
   // decide whether we need a sequential or a parallel distributed policy
-  if(dynamic_cast<const parallel::shared::Triangulation<dim, spacedim>*>(&t)
-     != nullptr)
-    policy
-      = std_cxx14::make_unique<internal::DoFHandlerImplementation::Policy::
-                                 ParallelShared<DoFHandler<dim, spacedim>>>(
+  if(dynamic_cast<const parallel::shared::Triangulation<dim, spacedim>*>(&t) !=
+     nullptr)
+    policy =
+      std_cxx14::make_unique<internal::DoFHandlerImplementation::Policy::
+                               ParallelShared<DoFHandler<dim, spacedim>>>(
         *this);
   else if(dynamic_cast<
-            const parallel::distributed::Triangulation<dim, spacedim>*>(&t)
-          != nullptr)
-    policy = std_cxx14::make_unique<
-      internal::DoFHandlerImplementation::Policy::ParallelDistributed<
-        DoFHandler<dim, spacedim>>>(*this);
+            const parallel::distributed::Triangulation<dim, spacedim>*>(&t) !=
+          nullptr)
+    policy =
+      std_cxx14::make_unique<internal::DoFHandlerImplementation::Policy::
+                               ParallelDistributed<DoFHandler<dim, spacedim>>>(
+        *this);
   else
-    policy
-      = std_cxx14::make_unique<internal::DoFHandlerImplementation::Policy::
-                                 Sequential<DoFHandler<dim, spacedim>>>(*this);
+    policy =
+      std_cxx14::make_unique<internal::DoFHandlerImplementation::Policy::
+                               Sequential<DoFHandler<dim, spacedim>>>(*this);
 
   distribute_dofs(fe);
 }
@@ -872,8 +873,8 @@ template <int dim, int spacedim>
 typename DoFHandler<dim, spacedim>::cell_iterator
 DoFHandler<dim, spacedim>::begin(const unsigned int level) const
 {
-  typename Triangulation<dim, spacedim>::cell_iterator cell
-    = this->get_triangulation().begin(level);
+  typename Triangulation<dim, spacedim>::cell_iterator cell =
+    this->get_triangulation().begin(level);
   if(cell == this->get_triangulation().end(level))
     return end(level);
   return cell_iterator(*cell, this);
@@ -904,8 +905,8 @@ template <int dim, int spacedim>
 typename DoFHandler<dim, spacedim>::cell_iterator
 DoFHandler<dim, spacedim>::end(const unsigned int level) const
 {
-  typename Triangulation<dim, spacedim>::cell_iterator cell
-    = this->get_triangulation().end(level);
+  typename Triangulation<dim, spacedim>::cell_iterator cell =
+    this->get_triangulation().end(level);
   if(cell.state() != IteratorState::valid)
     return end();
   return cell_iterator(*cell, this);
@@ -915,8 +916,8 @@ template <int dim, int spacedim>
 typename DoFHandler<dim, spacedim>::active_cell_iterator
 DoFHandler<dim, spacedim>::end_active(const unsigned int level) const
 {
-  typename Triangulation<dim, spacedim>::cell_iterator cell
-    = this->get_triangulation().end_active(level);
+  typename Triangulation<dim, spacedim>::cell_iterator cell =
+    this->get_triangulation().end_active(level);
   if(cell.state() != IteratorState::valid)
     return active_cell_iterator(end());
   return active_cell_iterator(*cell, this);
@@ -928,8 +929,8 @@ DoFHandler<dim, spacedim>::begin_mg(const unsigned int level) const
 {
   // Assert(this->has_level_dofs(), ExcMessage("You can only iterate over mg "
   //     "levels if mg dofs got distributed."));
-  typename Triangulation<dim, spacedim>::cell_iterator cell
-    = this->get_triangulation().begin(level);
+  typename Triangulation<dim, spacedim>::cell_iterator cell =
+    this->get_triangulation().begin(level);
   if(cell == this->get_triangulation().end(level))
     return end_mg(level);
   return level_cell_iterator(*cell, this);
@@ -941,8 +942,8 @@ DoFHandler<dim, spacedim>::end_mg(const unsigned int level) const
 {
   // Assert(this->has_level_dofs(), ExcMessage("You can only iterate over mg "
   //     "levels if mg dofs got distributed."));
-  typename Triangulation<dim, spacedim>::cell_iterator cell
-    = this->get_triangulation().end(level);
+  typename Triangulation<dim, spacedim>::cell_iterator cell =
+    this->get_triangulation().end(level);
   if(cell.state() != IteratorState::valid)
     return end();
   return level_cell_iterator(*cell, this);
@@ -1051,8 +1052,8 @@ types::global_dof_index
 DoFHandler<dim, spacedim>::n_boundary_dofs(
   const std::set<types::boundary_id>& boundary_ids) const
 {
-  Assert(boundary_ids.find(numbers::internal_face_boundary_id)
-           == boundary_ids.end(),
+  Assert(boundary_ids.find(numbers::internal_face_boundary_id) ==
+           boundary_ids.end(),
          ExcInvalidBoundaryIndicator());
 
   std::set<types::global_dof_index> boundary_dofs;
@@ -1066,11 +1067,10 @@ DoFHandler<dim, spacedim>::n_boundary_dofs(
   active_cell_iterator cell = begin_active(), endc = end();
   for(; cell != endc; ++cell)
     for(unsigned int f = 0; f < GeometryInfo<dim>::faces_per_cell; ++f)
-      if(cell->at_boundary(f)
-         && (std::find(boundary_ids.begin(),
-                       boundary_ids.end(),
-                       cell->face(f)->boundary_id())
-             != boundary_ids.end()))
+      if(cell->at_boundary(f) &&
+         (std::find(boundary_ids.begin(),
+                    boundary_ids.end(),
+                    cell->face(f)->boundary_id()) != boundary_ids.end()))
         {
           cell->face(f)->get_dof_indices(dofs_on_face);
           for(unsigned int i = 0; i < dofs_per_face; ++i)
@@ -1084,15 +1084,15 @@ template <int dim, int spacedim>
 std::size_t
 DoFHandler<dim, spacedim>::memory_consumption() const
 {
-  std::size_t mem
-    = (MemoryConsumption::memory_consumption(tria)
-       + MemoryConsumption::memory_consumption(fe_collection)
-       + MemoryConsumption::memory_consumption(block_info_object)
-       + MemoryConsumption::memory_consumption(levels)
-       + MemoryConsumption::memory_consumption(*faces)
-       + MemoryConsumption::memory_consumption(faces) + sizeof(number_cache)
-       + MemoryConsumption::memory_consumption(mg_number_cache)
-       + MemoryConsumption::memory_consumption(vertex_dofs));
+  std::size_t mem =
+    (MemoryConsumption::memory_consumption(tria) +
+     MemoryConsumption::memory_consumption(fe_collection) +
+     MemoryConsumption::memory_consumption(block_info_object) +
+     MemoryConsumption::memory_consumption(levels) +
+     MemoryConsumption::memory_consumption(*faces) +
+     MemoryConsumption::memory_consumption(faces) + sizeof(number_cache) +
+     MemoryConsumption::memory_consumption(mg_number_cache) +
+     MemoryConsumption::memory_consumption(vertex_dofs));
   for(unsigned int i = 0; i < levels.size(); ++i)
     mem += MemoryConsumption::memory_consumption(*levels[i]);
 
@@ -1103,10 +1103,9 @@ DoFHandler<dim, spacedim>::memory_consumption() const
     mem += MemoryConsumption::memory_consumption(*mg_faces);
 
   for(unsigned int i = 0; i < mg_vertex_dofs.size(); ++i)
-    mem += sizeof(MGVertexDoFs)
-           + (1 + mg_vertex_dofs[i].get_finest_level()
-              - mg_vertex_dofs[i].get_coarsest_level())
-               * sizeof(types::global_dof_index);
+    mem += sizeof(MGVertexDoFs) + (1 + mg_vertex_dofs[i].get_finest_level() -
+                                   mg_vertex_dofs[i].get_coarsest_level()) *
+                                    sizeof(types::global_dof_index);
 
   return mem;
 }
@@ -1156,8 +1155,7 @@ DoFHandler<dim, spacedim>::distribute_dofs(
   // triangulation. it doesn't work
   // correctly yet if it is parallel
   if(dynamic_cast<const parallel::distributed::Triangulation<dim, spacedim>*>(
-       &*tria)
-     == nullptr)
+       &*tria) == nullptr)
     block_info_object.initialize(*this, false, true);
 }
 
@@ -1179,9 +1177,9 @@ DoFHandler<dim, spacedim>::distribute_mg_dofs()
       "Distribute active DoFs using distribute_dofs() before calling distribute_mg_dofs()."));
 
   Assert(
-    ((tria->get_mesh_smoothing()
-      & Triangulation<dim, spacedim>::limit_level_difference_at_vertices)
-     != Triangulation<dim, spacedim>::none),
+    ((tria->get_mesh_smoothing() &
+      Triangulation<dim, spacedim>::limit_level_difference_at_vertices) !=
+     Triangulation<dim, spacedim>::none),
     ExcMessage(
       "The mesh smoothing requirement 'limit_level_difference_at_vertices' has to be set for using multigrid!"));
 
@@ -1195,8 +1193,7 @@ DoFHandler<dim, spacedim>::distribute_mg_dofs()
   // triangulation. it doesn't work
   // correctly yet if it is parallel
   if(dynamic_cast<const parallel::distributed::Triangulation<dim, spacedim>*>(
-       &*tria)
-     == nullptr)
+       &*tria) == nullptr)
     block_info_object.initialize(*this, true, false);
 }
 
@@ -1240,16 +1237,16 @@ DoFHandler<dim, spacedim>::renumber_dofs(
     ExcMessage("You need to distribute DoFs before you can renumber them."));
 
 #ifdef DEBUG
-  if(dynamic_cast<const parallel::shared::Triangulation<dim, spacedim>*>(&*tria)
-     != nullptr)
+  if(dynamic_cast<const parallel::shared::Triangulation<dim, spacedim>*>(
+       &*tria) != nullptr)
     {
-      Assert(new_numbers.size() == n_dofs()
-               || new_numbers.size() == n_locally_owned_dofs(),
+      Assert(new_numbers.size() == n_dofs() ||
+               new_numbers.size() == n_locally_owned_dofs(),
              ExcMessage("Incorrect size of the input array."));
     }
   else if(dynamic_cast<
-            const parallel::distributed::Triangulation<dim, spacedim>*>(&*tria)
-          != nullptr)
+            const parallel::distributed::Triangulation<dim, spacedim>*>(
+            &*tria) != nullptr)
     {
       AssertDimension(new_numbers.size(), n_locally_owned_dofs());
     }
@@ -1359,8 +1356,8 @@ DoFHandler<dim, spacedim>::max_couplings_between_boundary_dofs() const
         // harm since the matrix will cry
         // foul if its requirements are
         // not satisfied
-        return (19 * get_fe().dofs_per_vertex + 28 * get_fe().dofs_per_line
-                + 8 * get_fe().dofs_per_quad);
+        return (19 * get_fe().dofs_per_vertex + 28 * get_fe().dofs_per_line +
+                8 * get_fe().dofs_per_quad);
       default:
         Assert(false, ExcNotImplemented());
         return numbers::invalid_unsigned_int;

@@ -106,8 +106,8 @@ namespace MatrixTools
           break;
         }
 
-    typename std::map<types::global_dof_index, number>::const_iterator dof
-      = boundary_values.begin(),
+    typename std::map<types::global_dof_index, number>::const_iterator
+      dof  = boundary_values.begin(),
       endd = boundary_values.end();
     for(; dof != endd; ++dof)
       {
@@ -118,8 +118,8 @@ namespace MatrixTools
 
         // set entries of this line to zero except for the diagonal
         // entry
-        for(typename SparseMatrix<number>::iterator p
-            = matrix.begin(dof_number);
+        for(typename SparseMatrix<number>::iterator p =
+              matrix.begin(dof_number);
             p != matrix.end(dof_number);
             ++p)
           if(p->column() != dof_number)
@@ -173,8 +173,8 @@ namespace MatrixTools
             // row. we need not look at the first entry of each row,
             // since that is the diagonal element and thus the present
             // row
-            for(typename SparseMatrix<number>::iterator q
-                = matrix.begin(dof_number) + 1;
+            for(typename SparseMatrix<number>::iterator q =
+                  matrix.begin(dof_number) + 1;
                 q != matrix.end(dof_number);
                 ++q)
               {
@@ -185,10 +185,10 @@ namespace MatrixTools
                 // (row,dof_number)
                 bool (*comp)(
                   const typename SparseMatrix<number>::iterator::value_type p,
-                  const unsigned int column)
-                  = &column_less_than<typename SparseMatrix<number>::iterator>;
-                const typename SparseMatrix<number>::iterator p
-                  = Utilities::lower_bound(
+                  const unsigned int column) =
+                  &column_less_than<typename SparseMatrix<number>::iterator>;
+                const typename SparseMatrix<number>::iterator p =
+                  Utilities::lower_bound(
                     matrix.begin(row) + 1, matrix.end(row), dof_number, comp);
 
                 // check whether this line has an entry in the
@@ -210,8 +210,8 @@ namespace MatrixTools
                          "function, see the documentation."));
 
                 // correct right hand side
-                right_hand_side(row)
-                  -= static_cast<number>(p->value()) / diagonal_entry * new_rhs;
+                right_hand_side(row) -=
+                  static_cast<number>(p->value()) / diagonal_entry * new_rhs;
 
                 // set matrix entry to zero
                 p->value() = 0.;
@@ -239,14 +239,14 @@ namespace MatrixTools
     Assert(matrix.n() == solution.size(),
            ExcDimensionMismatch(matrix.n(), solution.size()));
     Assert(matrix.n_block_rows() == matrix.n_block_cols(), ExcNotQuadratic());
-    Assert(matrix.get_sparsity_pattern().get_row_indices()
-             == matrix.get_sparsity_pattern().get_column_indices(),
+    Assert(matrix.get_sparsity_pattern().get_row_indices() ==
+             matrix.get_sparsity_pattern().get_column_indices(),
            ExcNotQuadratic());
-    Assert(matrix.get_sparsity_pattern().get_column_indices()
-             == solution.get_block_indices(),
+    Assert(matrix.get_sparsity_pattern().get_column_indices() ==
+             solution.get_block_indices(),
            ExcBlocksDontMatch());
-    Assert(matrix.get_sparsity_pattern().get_row_indices()
-             == right_hand_side.get_block_indices(),
+    Assert(matrix.get_sparsity_pattern().get_row_indices() ==
+             right_hand_side.get_block_indices(),
            ExcBlocksDontMatch());
 
     // if no boundary values are to be applied
@@ -269,8 +269,8 @@ namespace MatrixTools
             ++i)
           if(matrix.block(diag_block, diag_block).diag_element(i) != 0)
             {
-              first_nonzero_diagonal_entry
-                = matrix.block(diag_block, diag_block).diag_element(i);
+              first_nonzero_diagonal_entry =
+                matrix.block(diag_block, diag_block).diag_element(i);
               break;
             }
         // check whether we have found
@@ -284,11 +284,11 @@ namespace MatrixTools
     if(first_nonzero_diagonal_entry == 0)
       first_nonzero_diagonal_entry = 1;
 
-    typename std::map<types::global_dof_index, number>::const_iterator dof
-      = boundary_values.begin(),
+    typename std::map<types::global_dof_index, number>::const_iterator
+      dof  = boundary_values.begin(),
       endd = boundary_values.end();
-    const BlockSparsityPattern& sparsity_pattern
-      = matrix.get_sparsity_pattern();
+    const BlockSparsityPattern& sparsity_pattern =
+      matrix.get_sparsity_pattern();
 
     // pointer to the mapping between
     // global and block indices. since
@@ -307,8 +307,8 @@ namespace MatrixTools
         // in the block in which this
         // dof is located
         const types::global_dof_index dof_number = dof->first;
-        const std::pair<unsigned int, types::global_dof_index> block_index
-          = index_mapping.global_to_local(dof_number);
+        const std::pair<unsigned int, types::global_dof_index> block_index =
+          index_mapping.global_to_local(dof_number);
 
         // for each boundary dof:
 
@@ -318,16 +318,15 @@ namespace MatrixTools
         // entry is always the first one
         // in a row for square matrices
         for(unsigned int block_col = 0; block_col < blocks; ++block_col)
-          for(typename SparseMatrix<number>::iterator p
-              = (block_col == block_index.first ?
+          for(typename SparseMatrix<number>::iterator p =
+                (block_col == block_index.first ?
                    matrix.block(block_index.first, block_col)
-                       .begin(block_index.second)
-                     + 1 :
+                       .begin(block_index.second) +
+                     1 :
                    matrix.block(block_index.first, block_col)
                      .begin(block_index.second));
-              p
-              != matrix.block(block_index.first, block_col)
-                   .end(block_index.second);
+              p != matrix.block(block_index.first, block_col)
+                     .end(block_index.second);
               ++p)
             p->value() = 0;
 
@@ -346,16 +345,14 @@ namespace MatrixTools
         // the gauss step more efficient
         number new_rhs;
         if(matrix.block(block_index.first, block_index.first)
-             .diag_element(block_index.second)
-           != 0.0)
-          new_rhs = dof->second
-                    * matrix.block(block_index.first, block_index.first)
-                        .diag_element(block_index.second);
+             .diag_element(block_index.second) != 0.0)
+          new_rhs =
+            dof->second * matrix.block(block_index.first, block_index.first)
+                            .diag_element(block_index.second);
         else
           {
             matrix.block(block_index.first, block_index.first)
-              .diag_element(block_index.second)
-              = first_nonzero_diagonal_entry;
+              .diag_element(block_index.second) = first_nonzero_diagonal_entry;
             new_rhs = dof->second * first_nonzero_diagonal_entry;
           }
         right_hand_side.block(block_index.first)(block_index.second) = new_rhs;
@@ -374,9 +371,9 @@ namespace MatrixTools
             // store the only nonzero entry
             // of this line for the Gauss
             // elimination step
-            const number diagonal_entry
-              = matrix.block(block_index.first, block_index.first)
-                  .diag_element(block_index.second);
+            const number diagonal_entry =
+              matrix.block(block_index.first, block_index.first)
+                .diag_element(block_index.second);
 
             // we have to loop over all
             // rows of the matrix which
@@ -403,19 +400,19 @@ namespace MatrixTools
               {
                 // get pointers to the sparsity patterns of this block and of
                 // the transpose one
-                const SparsityPattern& this_sparsity
-                  = sparsity_pattern.block(block_row, block_index.first);
+                const SparsityPattern& this_sparsity =
+                  sparsity_pattern.block(block_row, block_index.first);
 
-                SparseMatrix<number>& this_matrix
-                  = matrix.block(block_row, block_index.first);
-                SparseMatrix<number>& transpose_matrix
-                  = matrix.block(block_index.first, block_row);
+                SparseMatrix<number>& this_matrix =
+                  matrix.block(block_row, block_index.first);
+                SparseMatrix<number>& transpose_matrix =
+                  matrix.block(block_index.first, block_row);
 
                 // traverse the row of the transpose block to find the
                 // interesting rows in the present block.  don't use the
                 // diagonal element of the diagonal block
-                for(typename SparseMatrix<number>::iterator q
-                    = (block_index.first == block_row ?
+                for(typename SparseMatrix<number>::iterator q =
+                      (block_index.first == block_row ?
                          transpose_matrix.begin(block_index.second) + 1 :
                          transpose_matrix.begin(block_index.second));
                     q != transpose_matrix.end(block_index.second);
@@ -431,17 +428,17 @@ namespace MatrixTools
                     // take care of special cases with square sub-matrices
                     bool (*comp)(
                       typename SparseMatrix<number>::iterator::value_type p,
-                      const unsigned int column)
-                      = &column_less_than<
+                      const unsigned int column) =
+                      &column_less_than<
                         typename SparseMatrix<number>::iterator>;
 
-                    typename SparseMatrix<number>::iterator p
-                      = this_matrix.end();
+                    typename SparseMatrix<number>::iterator p =
+                      this_matrix.end();
 
                     if(this_sparsity.n_rows() == this_sparsity.n_cols())
                       {
-                        if(this_matrix.begin(row)->column()
-                           == block_index.second)
+                        if(this_matrix.begin(row)->column() ==
+                           block_index.second)
                           p = this_matrix.begin(row);
                         else
                           p = Utilities::lower_bound(this_matrix.begin(row) + 1,
@@ -465,13 +462,13 @@ namespace MatrixTools
                     // we have assumed that the sparsity pattern is
                     // symmetric and we only walk over those rows for
                     // which the current row has a column entry
-                    Assert((p->column() == block_index.second)
-                             && (p != this_matrix.end(row)),
+                    Assert((p->column() == block_index.second) &&
+                             (p != this_matrix.end(row)),
                            ExcInternalError());
 
                     // correct right hand side
-                    right_hand_side.block(block_row)(row)
-                      -= p->value() / diagonal_entry * new_rhs;
+                    right_hand_side.block(block_row)(row) -=
+                      p->value() / diagonal_entry * new_rhs;
 
                     // set matrix entry to zero
                     p->value() = 0.;
@@ -533,8 +530,7 @@ namespace MatrixTools
     for(unsigned int i = 0; i < n_local_dofs; ++i)
       {
         const typename std::map<types::global_dof_index, number>::const_iterator
-          boundary_value
-          = boundary_values.find(local_dof_indices[i]);
+          boundary_value = boundary_values.find(local_dof_indices[i]);
         if(boundary_value != boundary_values.end())
           {
             // remove this row, except for the
@@ -589,8 +585,8 @@ namespace MatrixTools
                 for(unsigned int row = 0; row < n_local_dofs; ++row)
                   if(row != i)
                     {
-                      local_rhs(row)
-                        -= local_matrix(row, i) * boundary_value->second;
+                      local_rhs(row) -=
+                        local_matrix(row, i) * boundary_value->second;
                       local_matrix(row, i) = 0;
                     }
               }

@@ -114,8 +114,7 @@ namespace TrilinosWrappers
      * matrices need to be the same.
      */
     BlockSparseMatrix&
-    operator=(const BlockSparseMatrix&)
-      = default;
+    operator=(const BlockSparseMatrix&) = default;
 
     /**
      * This operator assigns a scalar to a matrix. Since this does usually not
@@ -614,9 +613,8 @@ namespace TrilinosWrappers
         TrilinosBlockPayload(const Args&...)
         {
           static_assert(
-            typeid(PayloadBlockType)
-              == typeid(
-                   internal::LinearOperatorImplementation::TrilinosPayload),
+            typeid(PayloadBlockType) ==
+              typeid(internal::LinearOperatorImplementation::TrilinosPayload),
             "TrilinosBlockPayload can only accept a payload of type TrilinosPayload.");
         }
       };

@@ -492,11 +492,10 @@ namespace Particles
         types::subdomain_id,
         std::vector<
           typename Triangulation<dim, spacedim>::active_cell_iterator>>&
-        new_cells_for_particles
-      = std::map<
-        types::subdomain_id,
-        std::vector<
-          typename Triangulation<dim, spacedim>::active_cell_iterator>>());
+        new_cells_for_particles = std::map<
+          types::subdomain_id,
+          std::vector<
+            typename Triangulation<dim, spacedim>::active_cell_iterator>>());
 #  endif
 
     /**

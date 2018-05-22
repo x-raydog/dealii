@@ -213,16 +213,16 @@ namespace internal
             }
           if(fe_values.get_update_flags() & update_quadrature_points)
             for(unsigned int d = 0; d < dim; ++d)
-              mapping_info_storage.quadrature_points[q][d]
-                = fe_values.quadrature_point(q)[d];
+              mapping_info_storage.quadrature_points[q][d] =
+                fe_values.quadrature_point(q)[d];
           if(fe_values.get_update_flags() & update_normal_vectors)
             {
               for(unsigned int d = 0; d < dim; ++d)
-                mapping_info_storage.normal_vectors[q][d]
-                  = fe_values.normal_vector(q)[d];
-              mapping_info_storage.normals_times_jacobians[0][q]
-                = mapping_info_storage.normal_vectors[q]
-                  * mapping_info_storage.jacobians[0][q];
+                mapping_info_storage.normal_vectors[q][d] =
+                  fe_values.normal_vector(q)[d];
+              mapping_info_storage.normals_times_jacobians[0][q] =
+                mapping_info_storage.normal_vectors[q] *
+                mapping_info_storage.jacobians[0][q];
             }
         }
     }

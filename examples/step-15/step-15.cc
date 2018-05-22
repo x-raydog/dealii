@@ -243,8 +243,8 @@ namespace Step15
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_gradients | update_quadrature_points
-                              | update_JxW_values);
+                            update_gradients | update_quadrature_points |
+                              update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -256,9 +256,9 @@ namespace Step15
 
     std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         cell_matrix = 0;
@@ -287,30 +287,28 @@ namespace Step15
         // the local objects into the global ones:
         for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
           {
-            const double coeff
-              = 1.0
-                / std::sqrt(1
-                            + old_solution_gradients[q_point]
-                                * old_solution_gradients[q_point]);
+            const double coeff =
+              1.0 / std::sqrt(1 + old_solution_gradients[q_point] *
+                                    old_solution_gradients[q_point]);
 
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
               {
                 for(unsigned int j = 0; j < dofs_per_cell; ++j)
                   {
-                    cell_matrix(i, j)
-                      += (((fe_values.shape_grad(i, q_point) * coeff
-                            * fe_values.shape_grad(j, q_point))
-                           - (fe_values.shape_grad(i, q_point) * coeff * coeff
-                              * coeff
-                              * (fe_values.shape_grad(j, q_point)
-                                 * old_solution_gradients[q_point])
-                              * old_solution_gradients[q_point]))
-                          * fe_values.JxW(q_point));
+                    cell_matrix(i, j) +=
+                      (((fe_values.shape_grad(i, q_point) * coeff *
+                         fe_values.shape_grad(j, q_point)) -
+                        (fe_values.shape_grad(i, q_point) * coeff * coeff *
+                         coeff *
+                         (fe_values.shape_grad(j, q_point) *
+                          old_solution_gradients[q_point]) *
+                         old_solution_gradients[q_point])) *
+                       fe_values.JxW(q_point));
                   }
 
-                cell_rhs(i) -= (fe_values.shape_grad(i, q_point) * coeff
-                                * old_solution_gradients[q_point]
-                                * fe_values.JxW(q_point));
+                cell_rhs(i) -=
+                  (fe_values.shape_grad(i, q_point) * coeff *
+                   old_solution_gradients[q_point] * fe_values.JxW(q_point));
               }
           }
 
@@ -467,8 +465,8 @@ namespace Step15
     std::map<types::global_dof_index, double> boundary_values;
     VectorTools::interpolate_boundary_values(
       dof_handler, 0, BoundaryValues<dim>(), boundary_values);
-    for(std::map<types::global_dof_index, double>::const_iterator p
-        = boundary_values.begin();
+    for(std::map<types::global_dof_index, double>::const_iterator p =
+          boundary_values.begin();
         p != boundary_values.end();
         ++p)
       present_solution(p->first) = p->second;
@@ -504,8 +502,8 @@ namespace Step15
     const QGauss<dim> quadrature_formula(3);
     FEValues<dim>     fe_values(fe,
                             quadrature_formula,
-                            update_gradients | update_quadrature_points
-                              | update_JxW_values);
+                            update_gradients | update_quadrature_points |
+                              update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -515,9 +513,9 @@ namespace Step15
 
     std::vector<types::global_dof_index> local_dof_indices(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         cell_residual = 0;
@@ -532,13 +530,12 @@ namespace Step15
 
         for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
           {
-            const double coeff
-              = 1 / std::sqrt(1 + gradients[q_point] * gradients[q_point]);
+            const double coeff =
+              1 / std::sqrt(1 + gradients[q_point] * gradients[q_point]);
 
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
-              cell_residual(i)
-                -= (fe_values.shape_grad(i, q_point) * coeff
-                    * gradients[q_point] * fe_values.JxW(q_point));
+              cell_residual(i) -= (fe_values.shape_grad(i, q_point) * coeff *
+                                   gradients[q_point] * fe_values.JxW(q_point));
           }
 
         cell->get_dof_indices(local_dof_indices);
@@ -676,12 +673,12 @@ namespace Step15
         data_out.add_data_vector(present_solution, "solution");
         data_out.add_data_vector(newton_update, "update");
         data_out.build_patches();
-        const std::string filename
-          = "solution-" + Utilities::int_to_string(refinement, 2) + ".vtk";
+        const std::string filename =
+          "solution-" + Utilities::int_to_string(refinement, 2) + ".vtk";
         std::ofstream         output(filename);
         DataOutBase::VtkFlags vtk_flags;
-        vtk_flags.compression_level
-          = DataOutBase::VtkFlags::ZlibCompressionLevel::best_speed;
+        vtk_flags.compression_level =
+          DataOutBase::VtkFlags::ZlibCompressionLevel::best_speed;
         data_out.set_flags(vtk_flags);
         data_out.write_vtu(output);
       }

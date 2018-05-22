@@ -34,8 +34,8 @@ namespace CUDAWrappers
           const Number                                   a,
           const typename SparseMatrix<Number>::size_type N)
     {
-      const typename SparseMatrix<Number>::size_type idx
-        = threadIdx.x + blockIdx.x * blockDim.x;
+      const typename SparseMatrix<Number>::size_type idx =
+        threadIdx.x + blockIdx.x * blockDim.x;
       if(idx < N)
         val[idx] *= a;
     }
@@ -56,9 +56,9 @@ namespace CUDAWrappers
     {
       float               alpha = 1.;
       float               beta  = add ? 1. : 0.;
-      cusparseOperation_t cusparse_operation
-        = transpose ? CUSPARSE_OPERATION_TRANSPOSE :
-                      CUSPARSE_OPERATION_NON_TRANSPOSE;
+      cusparseOperation_t cusparse_operation =
+        transpose ? CUSPARSE_OPERATION_TRANSPOSE :
+                    CUSPARSE_OPERATION_NON_TRANSPOSE;
 
       // This function performs y = alpha*op(A)*x + beta*y
       cusparseStatus_t error_code = cusparseScsrmv(handle,
@@ -93,9 +93,9 @@ namespace CUDAWrappers
     {
       double              alpha = 1.;
       double              beta  = add ? 1. : 0.;
-      cusparseOperation_t cusparse_operation
-        = transpose ? CUSPARSE_OPERATION_TRANSPOSE :
-                      CUSPARSE_OPERATION_NON_TRANSPOSE;
+      cusparseOperation_t cusparse_operation =
+        transpose ? CUSPARSE_OPERATION_TRANSPOSE :
+                    CUSPARSE_OPERATION_NON_TRANSPOSE;
 
       // This function performs y = alpha*op(A)*x + beta*y
       cusparseStatus_t error_code = cusparseDcsrmv(handle,
@@ -122,8 +122,8 @@ namespace CUDAWrappers
             const int*                                     row_ptr_dev,
             Number*                                        sums)
     {
-      const typename SparseMatrix<Number>::size_type row
-        = threadIdx.x + blockIdx.x * blockDim.x;
+      const typename SparseMatrix<Number>::size_type row =
+        threadIdx.x + blockIdx.x * blockDim.x;
 
       if(row < n_rows)
         {
@@ -141,8 +141,8 @@ namespace CUDAWrappers
                 const int*                                     row_ptr_dev,
                 Number*                                        sums)
     {
-      const typename SparseMatrix<Number>::size_type row
-        = threadIdx.x + blockIdx.x * blockDim.x;
+      const typename SparseMatrix<Number>::size_type row =
+        threadIdx.x + blockIdx.x * blockDim.x;
 
       if(row < n_rows)
         {
@@ -305,11 +305,11 @@ namespace CUDAWrappers
     // Create the matrix descriptor
     cusparseStatus_t cusparse_error_code = cusparseCreateMatDescr(&descr);
     AssertCusparse(cusparse_error_code);
-    cusparse_error_code
-      = cusparseSetMatType(descr, CUSPARSE_MATRIX_TYPE_GENERAL);
+    cusparse_error_code =
+      cusparseSetMatType(descr, CUSPARSE_MATRIX_TYPE_GENERAL);
     AssertCusparse(cusparse_error_code);
-    cusparse_error_code
-      = cusparseSetMatIndexBase(descr, CUSPARSE_INDEX_BASE_ZERO);
+    cusparse_error_code =
+      cusparseSetMatIndexBase(descr, CUSPARSE_INDEX_BASE_ZERO);
     AssertCusparse(cusparse_error_code);
   }
 

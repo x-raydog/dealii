@@ -215,11 +215,11 @@ ExceptionBase::print_stack_trace(std::ostream& out) const
   // correspond to the exception raising mechanism themselves, rather than
   // the place where the exception was triggered
   int frame = 0;
-  while((frame < n_stacktrace_frames)
-        && ((std::string(stacktrace[frame]).find("ExceptionBase")
-             != std::string::npos)
-            || (std::string(stacktrace[frame]).find("deal_II_exceptions")
-                != std::string::npos)))
+  while((frame < n_stacktrace_frames) &&
+        ((std::string(stacktrace[frame]).find("ExceptionBase") !=
+          std::string::npos) ||
+         (std::string(stacktrace[frame]).find("deal_II_exceptions") !=
+          std::string::npos)))
     ++frame;
 
   // output the rest
@@ -234,8 +234,8 @@ ExceptionBase::print_stack_trace(std::ostream& out) const
       std::string        stacktrace_entry(stacktrace[frame]);
       const unsigned int pos_start = stacktrace_entry.find('('),
                          pos_end   = stacktrace_entry.find('+');
-      std::string functionname
-        = stacktrace_entry.substr(pos_start + 1, pos_end - pos_start - 1);
+      std::string functionname =
+        stacktrace_entry.substr(pos_start + 1, pos_end - pos_start - 1);
 
       stacktrace_entry = stacktrace_entry.substr(0, pos_start);
       stacktrace_entry += ": ";
@@ -246,8 +246,8 @@ ExceptionBase::print_stack_trace(std::ostream& out) const
       // for unknown reasons :-) if we can, demangle the function name
 #ifdef DEAL_II_HAVE_LIBSTDCXX_DEMANGLER
       int   status;
-      char* p
-        = abi::__cxa_demangle(functionname.c_str(), nullptr, nullptr, &status);
+      char* p =
+        abi::__cxa_demangle(functionname.c_str(), nullptr, nullptr, &status);
 
       if((status == 0) && (functionname != "main"))
         {
@@ -258,8 +258,8 @@ ExceptionBase::print_stack_trace(std::ostream& out) const
           // tuples are actually unused boost::tuples::null_type, so we
           // should split them off if they are trailing a template argument
           // list
-          while(realname.find(", boost::tuples::null_type>")
-                != std::string::npos)
+          while(realname.find(", boost::tuples::null_type>") !=
+                std::string::npos)
             realname.erase(realname.find(", boost::tuples::null_type>"),
                            std::string(", boost::tuples::null_type").size());
 

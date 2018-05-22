@@ -44,17 +44,17 @@ namespace internal
           {
             // find the next cell active on this level
             unsigned int next_cell = cell + 1;
-            while((next_cell < dof_offsets.size())
-                  && (dof_offsets[next_cell] == (offset_type)(-1)))
+            while((next_cell < dof_offsets.size()) &&
+                  (dof_offsets[next_cell] == (offset_type)(-1)))
               ++next_cell;
 
-            const unsigned int next_offset
-              = (next_cell < dof_offsets.size() ? dof_offsets[next_cell] :
-                                                  dof_indices.size());
+            const unsigned int next_offset =
+              (next_cell < dof_offsets.size() ? dof_offsets[next_cell] :
+                                                dof_indices.size());
 
-            Assert(next_offset - dof_offsets[cell]
-                     == fe_collection[active_fe_indices[cell]]
-                          .template n_dofs_per_object<dim>(),
+            Assert(next_offset - dof_offsets[cell] ==
+                     fe_collection[active_fe_indices[cell]]
+                       .template n_dofs_per_object<dim>(),
                    ExcInternalError());
 
             // see if the range of dofs for this cell can be compressed and if so
@@ -92,17 +92,17 @@ namespace internal
           {
             // find the next cell active on this level
             unsigned int next_cell = cell + 1;
-            while((next_cell < dof_offsets.size())
-                  && (dof_offsets[next_cell] == (offset_type)(-1)))
+            while((next_cell < dof_offsets.size()) &&
+                  (dof_offsets[next_cell] == (offset_type)(-1)))
               ++next_cell;
 
-            const unsigned int next_offset
-              = (next_cell < dof_offsets.size() ? dof_offsets[next_cell] :
-                                                  dof_indices.size());
+            const unsigned int next_offset =
+              (next_cell < dof_offsets.size() ? dof_offsets[next_cell] :
+                                                dof_indices.size());
 
-            Assert(next_offset - dof_offsets[cell]
-                     == fe_collection[active_fe_indices[cell]]
-                          .template n_dofs_per_object<dim>(),
+            Assert(next_offset - dof_offsets[cell] ==
+                     fe_collection[active_fe_indices[cell]]
+                       .template n_dofs_per_object<dim>(),
                    ExcInternalError());
 
             new_dof_offsets[cell] = new_dof_indices.size();
@@ -128,13 +128,13 @@ namespace internal
 
                     // make sure that the current active_fe_index indicates
                     // that this entry hasn't been compressed yet
-                    Assert(is_compressed_entry(active_fe_indices[cell])
-                             == false,
+                    Assert(is_compressed_entry(active_fe_indices[cell]) ==
+                             false,
                            ExcInternalError());
 
                     // then mark the compression
-                    active_fe_indices[cell]
-                      = get_toggled_compression_state(active_fe_indices[cell]);
+                    active_fe_indices[cell] =
+                      get_toggled_compression_state(active_fe_indices[cell]);
                   }
                 else
                   for(unsigned int i = dof_offsets[cell]; i < next_offset; ++i)
@@ -184,13 +184,13 @@ namespace internal
           {
             // find the next cell active on this level
             unsigned int next_cell = cell + 1;
-            while((next_cell < dof_offsets.size())
-                  && (dof_offsets[next_cell] == (offset_type)(-1)))
+            while((next_cell < dof_offsets.size()) &&
+                  (dof_offsets[next_cell] == (offset_type)(-1)))
               ++next_cell;
 
-            const unsigned int next_offset
-              = (next_cell < dof_offsets.size() ? dof_offsets[next_cell] :
-                                                  dof_indices.size());
+            const unsigned int next_offset =
+              (next_cell < dof_offsets.size() ? dof_offsets[next_cell] :
+                                                dof_indices.size());
 
             // set offset for this cell
             new_dof_offsets[cell] = new_dof_indices.size();
@@ -199,9 +199,9 @@ namespace internal
             if(is_compressed_entry(active_fe_indices[cell]) == false)
               {
                 // apparently not. simply copy them
-                Assert(next_offset - dof_offsets[cell]
-                         == fe_collection[active_fe_indices[cell]]
-                              .template n_dofs_per_object<dim>(),
+                Assert(next_offset - dof_offsets[cell] ==
+                         fe_collection[active_fe_indices[cell]]
+                           .template n_dofs_per_object<dim>(),
                        ExcInternalError());
                 for(unsigned int i = dof_offsets[cell]; i < next_offset; ++i)
                   new_dof_indices.push_back(dof_indices[i]);
@@ -211,16 +211,16 @@ namespace internal
                 // apparently so. uncompress
                 Assert(next_offset - dof_offsets[cell] == 1,
                        ExcInternalError());
-                const unsigned int dofs_per_object
-                  = fe_collection[get_toggled_compression_state(
-                                    active_fe_indices[cell])]
-                      .template n_dofs_per_object<dim>();
+                const unsigned int dofs_per_object =
+                  fe_collection[get_toggled_compression_state(
+                                  active_fe_indices[cell])]
+                    .template n_dofs_per_object<dim>();
                 for(unsigned int i = 0; i < dofs_per_object; ++i)
                   new_dof_indices.push_back(dof_indices[dof_offsets[cell]] + i);
 
                 // then mark the uncompression
-                active_fe_indices[cell]
-                  = get_toggled_compression_state(active_fe_indices[cell]);
+                active_fe_indices[cell] =
+                  get_toggled_compression_state(active_fe_indices[cell]);
               }
 
             // then move on to the next cell
@@ -238,11 +238,11 @@ namespace internal
     std::size_t
     DoFLevel::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(active_fe_indices)
-              + MemoryConsumption::memory_consumption(dof_indices)
-              + MemoryConsumption::memory_consumption(dof_offsets)
-              + MemoryConsumption::memory_consumption(cell_cache_offsets)
-              + MemoryConsumption::memory_consumption(cell_dof_indices_cache));
+      return (MemoryConsumption::memory_consumption(active_fe_indices) +
+              MemoryConsumption::memory_consumption(dof_indices) +
+              MemoryConsumption::memory_consumption(dof_offsets) +
+              MemoryConsumption::memory_consumption(cell_cache_offsets) +
+              MemoryConsumption::memory_consumption(cell_dof_indices_cache));
     }
 
     void
@@ -250,8 +250,8 @@ namespace internal
     {
       for(unsigned int i = 0; i < active_fe_indices.size(); ++i)
         if(is_compressed_entry(active_fe_indices[i]))
-          active_fe_indices[i]
-            = get_toggled_compression_state(active_fe_indices[i]);
+          active_fe_indices[i] =
+            get_toggled_compression_state(active_fe_indices[i]);
     }
 
     // explicit instantiations

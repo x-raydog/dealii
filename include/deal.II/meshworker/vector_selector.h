@@ -446,8 +446,8 @@ namespace MeshWorker
   inline bool
   VectorSelector::empty() const
   {
-    return (value_selection.size() == 0 && gradient_selection.size() == 0
-            && hessian_selection.size() == 0);
+    return (value_selection.size() == 0 && gradient_selection.size() == 0 &&
+            hessian_selection.size() == 0);
   }
 
   inline bool

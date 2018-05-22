@@ -117,8 +117,8 @@ namespace GraphColoring
         indices_to_iterators;
       for(Iterator it = begin; it != end; ++it)
         {
-          const std::vector<types::global_dof_index> conflict_indices
-            = get_conflict_indices(it);
+          const std::vector<types::global_dof_index> conflict_indices =
+            get_conflict_indices(it);
           const unsigned int n_conflict_indices = conflict_indices.size();
           for(unsigned int i = 0; i < n_conflict_indices; ++i)
             indices_to_iterators[conflict_indices[i]].push_back(it);
@@ -144,14 +144,14 @@ namespace GraphColoring
           std::vector<Iterator> new_zone;
           for(; previous_zone_it != previous_zone_end; ++previous_zone_it)
             {
-              const std::vector<types::global_dof_index> conflict_indices
-                = get_conflict_indices(*previous_zone_it);
+              const std::vector<types::global_dof_index> conflict_indices =
+                get_conflict_indices(*previous_zone_it);
 
               const unsigned int n_conflict_indices(conflict_indices.size());
               for(unsigned int i = 0; i < n_conflict_indices; ++i)
                 {
-                  const std::vector<Iterator>& conflicting_elements
-                    = indices_to_iterators[conflict_indices[i]];
+                  const std::vector<Iterator>& conflicting_elements =
+                    indices_to_iterators[conflict_indices[i]];
                   for(unsigned int j = 0; j < conflicting_elements.size(); ++j)
                     {
                       // check that the iterator conflicting with the current one is not
@@ -160,8 +160,8 @@ namespace GraphColoring
                       //
                       // we can shortcut this test if the conflicting iterator is the
                       // current iterator
-                      if((conflicting_elements[j] != *previous_zone_it)
-                         && (used_it.count(conflicting_elements[j]) == 0))
+                      if((conflicting_elements[j] != *previous_zone_it) &&
+                         (used_it.count(conflicting_elements[j]) == 0))
                         {
                           new_zone.push_back(conflicting_elements[j]);
                           used_it.insert(conflicting_elements[j]);
@@ -534,8 +534,8 @@ namespace GraphColoring
       ExcMessage("GraphColoring is not prepared to deal with empty ranges!"));
 
     // Create the partitioning.
-    std::vector<std::vector<Iterator>> partitioning
-      = internal::create_partitioning(begin, end, get_conflict_indices);
+    std::vector<std::vector<Iterator>> partitioning =
+      internal::create_partitioning(begin, end, get_conflict_indices);
 
     // Color the iterators within each partition.
     // Run the coloring algorithm on each zone in parallel

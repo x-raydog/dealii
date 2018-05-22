@@ -105,11 +105,11 @@ SparseVanka<number>::compute_inverses()
 #ifndef DEAL_II_WITH_THREADS
   compute_inverses(0, matrix->m());
 #else
-  const size_type n_inverses
-    = std::count(selected->begin(), selected->end(), true);
+  const size_type n_inverses =
+    std::count(selected->begin(), selected->end(), true);
 
-  const size_type n_inverses_per_thread
-    = std::max(n_inverses / n_threads, static_cast<size_type>(1U));
+  const size_type n_inverses_per_thread =
+    std::max(n_inverses / n_threads, static_cast<size_type>(1U));
 
   // set up start and end index
   // for each of the
@@ -265,8 +265,8 @@ SparseVanka<number>::apply_preconditioner(
   // which are selected
   const size_type n = matrix->m();
   for(size_type row = 0; row < n; ++row)
-    if(((*selected)[row] == true)
-       && ((range_is_restricted == false) || ((*dof_mask)[row] == true)))
+    if(((*selected)[row] == true) &&
+       ((range_is_restricted == false) || ((*dof_mask)[row] == true)))
       {
         const size_type row_length = structure.row_length(row);
 
@@ -302,8 +302,8 @@ SparseVanka<number>::apply_preconditioner(
             structure.column_number(row, i), i));
 
         // Build local matrix and rhs
-        for(std::map<size_type, size_type>::const_iterator is
-            = local_index.begin();
+        for(std::map<size_type, size_type>::const_iterator is =
+              local_index.begin();
             is != local_index.end();
             ++is)
           {
@@ -322,8 +322,8 @@ SparseVanka<number>::apply_preconditioner(
             // couples with
             // number of DoFs coupling to
             // irow (including irow itself)
-            for(typename SparseMatrix<number>::const_iterator p
-                = matrix->begin(irow);
+            for(typename SparseMatrix<number>::const_iterator p =
+                  matrix->begin(irow);
                 p != matrix->end(irow);
                 ++p)
               {
@@ -332,8 +332,8 @@ SparseVanka<number>::apply_preconditioner(
                 // which itself couples with
                 // @p row) also couples with
                 // @p row.
-                const std::map<size_type, size_type>::const_iterator js
-                  = local_index.find(p->column());
+                const std::map<size_type, size_type>::const_iterator js =
+                  local_index.find(p->column());
                 // if not, then still use
                 // this dof to modify the rhs
                 //
@@ -341,8 +341,8 @@ SparseVanka<number>::apply_preconditioner(
                 // have copied the entry above
                 if(js == local_index.end())
                   {
-                    if(!range_is_restricted
-                       || ((*dof_mask)[p->column()] == true))
+                    if(!range_is_restricted ||
+                       ((*dof_mask)[p->column()] == true))
                       b(i) -= p->value() * dst(p->column());
                   }
                 else
@@ -361,8 +361,8 @@ SparseVanka<number>::apply_preconditioner(
         inverses[row]->vmult(x, b);
 
         // Distribute new values
-        for(std::map<size_type, size_type>::const_iterator is
-            = local_index.begin();
+        for(std::map<size_type, size_type>::const_iterator is =
+              local_index.begin();
             is != local_index.end();
             ++is)
           {
@@ -387,8 +387,8 @@ template <typename number>
 std::size_t
 SparseVanka<number>::memory_consumption() const
 {
-  std::size_t mem
-    = (sizeof(*this) + MemoryConsumption::memory_consumption(*selected));
+  std::size_t mem =
+    (sizeof(*this) + MemoryConsumption::memory_consumption(*selected));
   for(size_type i = 0; i < inverses.size(); ++i)
     mem += MemoryConsumption::memory_consumption(*inverses[i]);
 
@@ -429,11 +429,11 @@ SparseBlockVanka<number>::compute_dof_masks(
 {
   Assert(n_blocks > 0, ExcInternalError());
 
-  const size_type n_inverses
-    = std::count(selected.begin(), selected.end(), true);
+  const size_type n_inverses =
+    std::count(selected.begin(), selected.end(), true);
 
-  const size_type n_inverses_per_block
-    = std::max(n_inverses / n_blocks, static_cast<size_type>(1U));
+  const size_type n_inverses_per_block =
+    std::max(n_inverses / n_blocks, static_cast<size_type>(1U));
 
   // precompute the splitting points
   std::vector<std::pair<size_type, size_type>> intervals(n_blocks);
@@ -614,16 +614,16 @@ SparseBlockVanka<number>::vmult(Vector<number2>&       dst,
         Vector<number2>&,
         const Vector<number2>&,
         const std::vector<bool>* const) const;
-      const mem_fun_p comp
-        = &SparseVanka<number>::template apply_preconditioner<number2>;
+      const mem_fun_p comp =
+        &SparseVanka<number>::template apply_preconditioner<number2>;
       Threads::ThreadGroup<> threads;
       for(unsigned int block = 0; block < n_blocks; ++block)
-        threads
-          += Threads::new_thread(comp,
-                                 *static_cast<const SparseVanka<number>*>(this),
-                                 dst,
-                                 src,
-                                 &dof_masks[block]);
+        threads +=
+          Threads::new_thread(comp,
+                              *static_cast<const SparseVanka<number>*>(this),
+                              dst,
+                              src,
+                              &dof_masks[block]);
       threads.join_all();
 #else
       for(unsigned int block = 0; block < n_blocks; ++block)

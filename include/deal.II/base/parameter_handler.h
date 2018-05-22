@@ -807,8 +807,7 @@ private:
    * Inhibit automatic assignment operator.
    */
   ParameterHandler&
-  operator=(const ParameterHandler&)
-    = delete;
+  operator=(const ParameterHandler&) = delete;
 
 public:
   /**
@@ -1065,8 +1064,8 @@ public:
   add_parameter(const std::string&           entry,
                 ParameterType&               parameter,
                 const std::string&           documentation = std::string(),
-                const Patterns::PatternBase& pattern
-                = *Patterns::Tools::Convert<ParameterType>::to_pattern());
+                const Patterns::PatternBase& pattern =
+                  *Patterns::Tools::Convert<ParameterType>::to_pattern());
 
   /**
    * Create an alias for an existing entry. This provides a way to refer to a
@@ -1832,15 +1831,13 @@ public:
      * new one or by cleaning an old one.
      */
     virtual void
-    create_new(const unsigned int run_no)
-      = 0;
+    create_new(const unsigned int run_no) = 0;
 
     /**
      * Get the parameters and run any necessary action.
      */
     virtual void
-    run(ParameterHandler& prm)
-      = 0;
+    run(ParameterHandler& prm) = 0;
   };
 
   /**
@@ -2063,8 +2060,8 @@ ParameterHandler::add_parameter(const std::string&           entry,
                 documentation);
 
   std::string        path = get_current_full_path(entry);
-  const unsigned int pattern_index
-    = entries->get<unsigned int>(path + path_separator + "pattern");
+  const unsigned int pattern_index =
+    entries->get<unsigned int>(path + path_separator + "pattern");
 
   auto action = [&, pattern_index](const std::string& val) {
     parameter = Patterns::Tools::Convert<ParameterType>::to_value(

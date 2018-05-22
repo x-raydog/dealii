@@ -43,8 +43,8 @@ namespace hp
     // first loop over all FEs and check which can dominate those given in @p fes:
     for(unsigned int cur_fe = 0; cur_fe < fe_collection.size(); cur_fe++)
       {
-        FiniteElementDomination::Domination domination
-          = FiniteElementDomination::no_requirements;
+        FiniteElementDomination::Domination domination =
+          FiniteElementDomination::no_requirements;
         // check if cur_fe can dominate all FEs in @p fes:
         for(std::set<unsigned int>::const_iterator it = fes.begin();
             it != fes.end();
@@ -53,17 +53,17 @@ namespace hp
             Assert(
               *it < fe_collection.size(),
               ExcIndexRangeType<unsigned int>(*it, 0, fe_collection.size()));
-            domination = domination
-                         & fe_collection[cur_fe].compare_for_face_domination(
+            domination =
+              domination & fe_collection[cur_fe].compare_for_face_domination(
                              fe_collection[*it]);
           }
 
         // if we found dominating element, keep them in a set.
         if(
-          domination == FiniteElementDomination::this_element_dominates
-          || domination
-               == FiniteElementDomination::
-                    either_element_can_dominate /*covers cases like {Q2,Q3,Q1,Q1} with fes={2,3}*/)
+          domination == FiniteElementDomination::this_element_dominates ||
+          domination ==
+            FiniteElementDomination::
+              either_element_can_dominate /*covers cases like {Q2,Q3,Q1,Q1} with fes={2,3}*/)
           candidate_fes.insert(cur_fe);
       }
 
@@ -78,24 +78,24 @@ namespace hp
           it != candidate_fes.end();
           ++it)
         {
-          FiniteElementDomination::Domination domination
-            = FiniteElementDomination::no_requirements;
-          for(std::set<unsigned int>::const_iterator ito
-              = candidate_fes.begin();
+          FiniteElementDomination::Domination domination =
+            FiniteElementDomination::no_requirements;
+          for(std::set<unsigned int>::const_iterator ito =
+                candidate_fes.begin();
               ito != candidate_fes.end();
               ++ito)
             if(it != ito)
               {
-                domination = domination
-                             & fe_collection[*it].compare_for_face_domination(
+                domination =
+                  domination & fe_collection[*it].compare_for_face_domination(
                                  fe_collection[*ito]);
               }
 
           if(
-            domination == FiniteElementDomination::other_element_dominates
-            || domination
-                 == FiniteElementDomination::
-                      either_element_can_dominate /*covers cases like candidate_fes={Q1,Q1}*/)
+            domination == FiniteElementDomination::other_element_dominates ||
+            domination ==
+              FiniteElementDomination::
+                either_element_can_dominate /*covers cases like candidate_fes={Q1,Q1}*/)
             return *it;
         }
     // We couldn't find the FE, return invalid_unsigned_int :
@@ -318,9 +318,8 @@ namespace hp
   std::size_t
   FECollection<dim, spacedim>::memory_consumption() const
   {
-    std::size_t mem
-      = (sizeof(*this)
-         + MemoryConsumption::memory_consumption(finite_elements));
+    std::size_t mem =
+      (sizeof(*this) + MemoryConsumption::memory_consumption(finite_elements));
     for(unsigned int i = 0; i < finite_elements.size(); ++i)
       mem += finite_elements[i]->memory_consumption();
 

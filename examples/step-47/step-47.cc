@@ -226,8 +226,8 @@ namespace Step47
   void
   LaplaceProblem<dim>::setup_system()
   {
-    for(typename hp::DoFHandler<dim>::cell_iterator cell
-        = dof_handler.begin_active();
+    for(typename hp::DoFHandler<dim>::cell_iterator cell =
+          dof_handler.begin_active();
         cell != dof_handler.end();
         ++cell)
       if(interface_intersects_cell(cell) == false)
@@ -265,9 +265,9 @@ namespace Step47
 
     FEValues<dim> plain_fe_values(fe_collection[0],
                                   quadrature_formula,
-                                  update_values | update_gradients
-                                    | update_quadrature_points
-                                    | update_JxW_values);
+                                  update_values | update_gradients |
+                                    update_quadrature_points |
+                                    update_JxW_values);
 
     const unsigned int n_q_points = quadrature_formula.size();
 
@@ -279,9 +279,9 @@ namespace Step47
     const Coefficient<dim> coefficient;
     std::vector<double>    coefficient_values(n_q_points);
 
-    typename hp::DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename hp::DoFHandler<dim>::active_cell_iterator cell = dof_handler
+                                                                .begin_active(),
+                                                       endc = dof_handler.end();
 
     for(; cell != endc; ++cell)
       {
@@ -304,14 +304,14 @@ namespace Step47
               for(unsigned int i = 0; i < dofs_per_cell; ++i)
                 {
                   for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                    cell_matrix(i, j)
-                      += (coefficient_values[q_point]
-                          * plain_fe_values.shape_grad(i, q_point)
-                          * plain_fe_values.shape_grad(j, q_point)
-                          * plain_fe_values.JxW(q_point));
+                    cell_matrix(i, j) +=
+                      (coefficient_values[q_point] *
+                       plain_fe_values.shape_grad(i, q_point) *
+                       plain_fe_values.shape_grad(j, q_point) *
+                       plain_fe_values.JxW(q_point));
 
-                  cell_rhs(i) += (plain_fe_values.shape_value(i, q_point) * 1.0
-                                  * plain_fe_values.JxW(q_point));
+                  cell_rhs(i) += (plain_fe_values.shape_value(i, q_point) *
+                                  1.0 * plain_fe_values.JxW(q_point));
                 }
           }
         else
@@ -331,8 +331,8 @@ namespace Step47
               fe_collection[1],
               compute_quadrature(quadrature_formula, cell, level_set_values)
                 .second,
-              update_values | update_gradients | update_quadrature_points
-                | update_JxW_values);
+              update_values | update_gradients | update_quadrature_points |
+                update_JxW_values);
 
             this_fe_values.reinit(cell);
 
@@ -348,94 +348,90 @@ namespace Step47
                   {
                     for(unsigned int j = 0; j < dofs_per_cell; ++j)
                       if(cell->get_fe().system_to_component_index(j).first == 0)
-                        cell_matrix(i, j)
-                          += (coefficient_values[q_point]
-                              * this_fe_values.shape_grad(i, q_point)
-                              * this_fe_values.shape_grad(j, q_point)
-                              * this_fe_values.JxW(q_point));
+                        cell_matrix(i, j) +=
+                          (coefficient_values[q_point] *
+                           this_fe_values.shape_grad(i, q_point) *
+                           this_fe_values.shape_grad(j, q_point) *
+                           this_fe_values.JxW(q_point));
                       else
-                        cell_matrix(i, j)
-                          += (coefficient_values[q_point]
-                              * this_fe_values.shape_grad(i, q_point)
-                              * ((std::fabs(level_set(
-                                    this_fe_values.quadrature_point(q_point)))
-                                  - std::fabs(level_set(cell->vertex(
-                                      cell->get_fe()
-                                        .system_to_component_index(j)
-                                        .second))))
-                                   * this_fe_values.shape_grad(j, q_point)
-                                 + grad_level_set(
-                                     this_fe_values.quadrature_point(q_point))
-                                     * sign(level_set(
-                                         this_fe_values.quadrature_point(
-                                           q_point)))
-                                     * this_fe_values.shape_value(j, q_point))
-                              * this_fe_values.JxW(q_point));
+                        cell_matrix(i, j) +=
+                          (coefficient_values[q_point] *
+                           this_fe_values.shape_grad(i, q_point) *
+                           ((std::fabs(level_set(
+                               this_fe_values.quadrature_point(q_point))) -
+                             std::fabs(level_set(
+                               cell->vertex(cell->get_fe()
+                                              .system_to_component_index(j)
+                                              .second)))) *
+                              this_fe_values.shape_grad(j, q_point) +
+                            grad_level_set(
+                              this_fe_values.quadrature_point(q_point)) *
+                              sign(level_set(
+                                this_fe_values.quadrature_point(q_point))) *
+                              this_fe_values.shape_value(j, q_point)) *
+                           this_fe_values.JxW(q_point));
 
-                    cell_rhs(i) += (this_fe_values.shape_value(i, q_point) * 1.0
-                                    * this_fe_values.JxW(q_point));
+                    cell_rhs(i) += (this_fe_values.shape_value(i, q_point) *
+                                    1.0 * this_fe_values.JxW(q_point));
                   }
                 else
                   {
                     for(unsigned int j = 0; j < dofs_per_cell; ++j)
                       if(cell->get_fe().system_to_component_index(j).first == 0)
-                        cell_matrix(i, j)
-                          += (coefficient_values[q_point]
-                              * ((std::fabs(level_set(
-                                    this_fe_values.quadrature_point(q_point)))
-                                  - std::fabs(level_set(cell->vertex(
-                                      cell->get_fe()
-                                        .system_to_component_index(i)
-                                        .second))))
-                                   * this_fe_values.shape_grad(i, q_point)
-                                 + grad_level_set(
-                                     this_fe_values.quadrature_point(q_point))
-                                     * sign(level_set(
-                                         this_fe_values.quadrature_point(
-                                           q_point)))
-                                     * this_fe_values.shape_value(i, q_point))
-                              * this_fe_values.shape_grad(j, q_point)
-                              * this_fe_values.JxW(q_point));
-                      else
-                        cell_matrix(i, j)
-                          += (coefficient_values[q_point]
-                              * ((std::fabs(level_set(
-                                    this_fe_values.quadrature_point(q_point)))
-                                  - std::fabs(level_set(cell->vertex(
-                                      cell->get_fe()
-                                        .system_to_component_index(i)
-                                        .second))))
-                                   * this_fe_values.shape_grad(i, q_point)
-                                 + grad_level_set(
-                                     this_fe_values.quadrature_point(q_point))
-                                     * sign(level_set(
-                                         this_fe_values.quadrature_point(
-                                           q_point)))
-                                     * this_fe_values.shape_value(i, q_point))
-                              * ((std::fabs(level_set(
-                                    this_fe_values.quadrature_point(q_point)))
-                                  - std::fabs(level_set(cell->vertex(
-                                      cell->get_fe()
-                                        .system_to_component_index(j)
-                                        .second))))
-                                   * this_fe_values.shape_grad(j, q_point)
-                                 + grad_level_set(
-                                     this_fe_values.quadrature_point(q_point))
-                                     * sign(level_set(
-                                         this_fe_values.quadrature_point(
-                                           q_point)))
-                                     * this_fe_values.shape_value(j, q_point))
-                              * this_fe_values.JxW(q_point));
-
-                    cell_rhs(i)
-                      += ((std::fabs(level_set(
-                             this_fe_values.quadrature_point(q_point)))
-                           - std::fabs(level_set(
+                        cell_matrix(i, j) +=
+                          (coefficient_values[q_point] *
+                           ((std::fabs(level_set(
+                               this_fe_values.quadrature_point(q_point))) -
+                             std::fabs(level_set(
                                cell->vertex(cell->get_fe()
                                               .system_to_component_index(i)
-                                              .second))))
-                          * this_fe_values.shape_value(i, q_point) * 1.0
-                          * this_fe_values.JxW(q_point));
+                                              .second)))) *
+                              this_fe_values.shape_grad(i, q_point) +
+                            grad_level_set(
+                              this_fe_values.quadrature_point(q_point)) *
+                              sign(level_set(
+                                this_fe_values.quadrature_point(q_point))) *
+                              this_fe_values.shape_value(i, q_point)) *
+                           this_fe_values.shape_grad(j, q_point) *
+                           this_fe_values.JxW(q_point));
+                      else
+                        cell_matrix(i, j) +=
+                          (coefficient_values[q_point] *
+                           ((std::fabs(level_set(
+                               this_fe_values.quadrature_point(q_point))) -
+                             std::fabs(level_set(
+                               cell->vertex(cell->get_fe()
+                                              .system_to_component_index(i)
+                                              .second)))) *
+                              this_fe_values.shape_grad(i, q_point) +
+                            grad_level_set(
+                              this_fe_values.quadrature_point(q_point)) *
+                              sign(level_set(
+                                this_fe_values.quadrature_point(q_point))) *
+                              this_fe_values.shape_value(i, q_point)) *
+                           ((std::fabs(level_set(
+                               this_fe_values.quadrature_point(q_point))) -
+                             std::fabs(level_set(
+                               cell->vertex(cell->get_fe()
+                                              .system_to_component_index(j)
+                                              .second)))) *
+                              this_fe_values.shape_grad(j, q_point) +
+                            grad_level_set(
+                              this_fe_values.quadrature_point(q_point)) *
+                              sign(level_set(
+                                this_fe_values.quadrature_point(q_point))) *
+                              this_fe_values.shape_value(j, q_point)) *
+                           this_fe_values.JxW(q_point));
+
+                    cell_rhs(i) +=
+                      ((std::fabs(
+                          level_set(this_fe_values.quadrature_point(q_point))) -
+                        std::fabs(
+                          level_set(cell->vertex(cell->get_fe()
+                                                   .system_to_component_index(i)
+                                                   .second)))) *
+                       this_fe_values.shape_value(i, q_point) * 1.0 *
+                       this_fe_values.JxW(q_point));
                   }
           }
 
@@ -490,8 +486,8 @@ namespace Step47
     // ++++, ---- type 2: -+++, +-++, ++-+, +++-, +---, -+--, --+-, ---+ type
     // 3: +--+, ++--, +-+-, -++-, --++, -+-+
 
-    if(sign_ls[0] == sign_ls[1] && sign_ls[0] == sign_ls[2]
-       && sign_ls[0] == sign_ls[3])
+    if(sign_ls[0] == sign_ls[1] && sign_ls[0] == sign_ls[2] &&
+       sign_ls[0] == sign_ls[3])
       type = 1;
     else if(sign_ls[0] * sign_ls[1] * sign_ls[2] * sign_ls[3] < 0)
       type = 2;
@@ -526,17 +522,17 @@ namespace Step47
 
         std::vector<Point<dim>> v(GeometryInfo<dim>::vertices_per_cell);
 
-        if(sign_ls[0] != sign_ls[1] && sign_ls[0] != sign_ls[2]
-           && sign_ls[0] != sign_ls[3])
+        if(sign_ls[0] != sign_ls[1] && sign_ls[0] != sign_ls[2] &&
+           sign_ls[0] != sign_ls[3])
           Pos = 0;
-        else if(sign_ls[1] != sign_ls[0] && sign_ls[1] != sign_ls[2]
-                && sign_ls[1] != sign_ls[3])
+        else if(sign_ls[1] != sign_ls[0] && sign_ls[1] != sign_ls[2] &&
+                sign_ls[1] != sign_ls[3])
           Pos = 1;
-        else if(sign_ls[2] != sign_ls[0] && sign_ls[2] != sign_ls[1]
-                && sign_ls[2] != sign_ls[3])
+        else if(sign_ls[2] != sign_ls[0] && sign_ls[2] != sign_ls[1] &&
+                sign_ls[2] != sign_ls[3])
           Pos = 2;
-        else if(sign_ls[3] != sign_ls[0] && sign_ls[3] != sign_ls[1]
-                && sign_ls[3] != sign_ls[2])
+        else if(sign_ls[3] != sign_ls[0] && sign_ls[3] != sign_ls[1] &&
+                sign_ls[3] != sign_ls[2])
           Pos = 3;
         else
           assert(0); // error message
@@ -549,12 +545,10 @@ namespace Step47
 
         if(Pos == 0)
           {
-            A[0] = 1.
-                   - level_set_values[1]
-                       / (level_set_values[1] - level_set_values[0]);
-            B[1] = 1.
-                   - level_set_values[2]
-                       / (level_set_values[2] - level_set_values[0]);
+            A[0] = 1. - level_set_values[1] /
+                          (level_set_values[1] - level_set_values[0]);
+            B[1] = 1. - level_set_values[2] /
+                          (level_set_values[2] - level_set_values[0]);
             A(1) = 0.;
             B(0) = 0.;
             C(0) = 0.5 * (A(0) + B(0));
@@ -568,11 +562,10 @@ namespace Step47
           }
         else if(Pos == 1)
           {
-            A[0] = level_set_values[0]
-                   / (level_set_values[0] - level_set_values[1]);
-            B[1] = 1
-                   - level_set_values[3]
-                       / (level_set_values[3] - level_set_values[1]);
+            A[0] =
+              level_set_values[0] / (level_set_values[0] - level_set_values[1]);
+            B[1] = 1 - level_set_values[3] /
+                         (level_set_values[3] - level_set_values[1]);
             A(1) = 0.;
             B(0) = 1.;
             C(0) = 0.5 * (A(0) + B(0));
@@ -586,11 +579,10 @@ namespace Step47
           }
         else if(Pos == 2)
           {
-            A[0] = 1
-                   - level_set_values[3]
-                       / (level_set_values[3] - level_set_values[2]);
-            B[1] = level_set_values[0]
-                   / (level_set_values[0] - level_set_values[2]);
+            A[0] = 1 - level_set_values[3] /
+                         (level_set_values[3] - level_set_values[2]);
+            B[1] =
+              level_set_values[0] / (level_set_values[0] - level_set_values[2]);
             A(1) = 1.;
             B(0) = 0.;
             C(0) = 0.5 * (A(0) + B(0));
@@ -604,10 +596,10 @@ namespace Step47
           }
         else if(Pos == 3)
           {
-            A[0] = level_set_values[2]
-                   / (level_set_values[2] - level_set_values[3]);
-            B[1] = level_set_values[1]
-                   / (level_set_values[1] - level_set_values[3]);
+            A[0] =
+              level_set_values[2] / (level_set_values[2] - level_set_values[3]);
+            B[1] =
+              level_set_values[1] / (level_set_values[1] - level_set_values[3]);
             A(1) = 1.;
             B(0) = 1.;
             C(0) = 0.5 * (A(0) + B(0));
@@ -739,20 +731,20 @@ namespace Step47
           {
             Pos  = 0;
             A(0) = 0.;
-            A(1) = level_set_values[0]
-                   / ((level_set_values[0] - level_set_values[2]));
+            A(1) = level_set_values[0] /
+                   ((level_set_values[0] - level_set_values[2]));
             B(0) = 1.;
-            B(1) = level_set_values[1]
-                   / ((level_set_values[1] - level_set_values[3]));
+            B(1) = level_set_values[1] /
+                   ((level_set_values[1] - level_set_values[3]));
           }
         else if(sign_ls[0] == sign_ls[2] && sign_ls[1] == sign_ls[3])
           {
             Pos  = 1;
-            A(0) = level_set_values[0]
-                   / ((level_set_values[0] - level_set_values[1]));
+            A(0) = level_set_values[0] /
+                   ((level_set_values[0] - level_set_values[1]));
             A(1) = 0.;
-            B(0) = level_set_values[2]
-                   / ((level_set_values[2] - level_set_values[3]));
+            B(0) = level_set_values[2] /
+                   ((level_set_values[2] - level_set_values[3]));
             B(1) = 1.;
           }
         else if(sign_ls[0] == sign_ls[3] && sign_ls[1] == sign_ls[2])
@@ -792,8 +784,8 @@ namespace Step47
 
         if(dim == 2)
           {
-            unsigned int subcell_v_indices[2][2][4]
-              = {{{0, 1, 4, 5}, {4, 5, 2, 3}}, {{0, 4, 2, 5}, {4, 1, 5, 3}}};
+            unsigned int subcell_v_indices[2][2][4] = {
+              {{0, 1, 4, 5}, {4, 5, 2, 3}}, {{0, 4, 2, 5}, {4, 1, 5, 3}}};
 
             //std::cout << "Pos : " << Pos << std::endl;
             for(unsigned int subcell = 0; subcell < 2; subcell++)
@@ -1005,14 +997,14 @@ namespace Step47
 
     for(unsigned int q = 0; q < n_quadrature_points; ++q)
       {
-        computed_quantities[q](0)
-          = (inputs.solution_values[q](0) +
-             //TODO: shift in weight function is missing!
-             inputs.solution_values[q](1)
-               * std::fabs(level_set(inputs.evaluation_points[q])));
-        computed_quantities[q](1)
-          = (computed_quantities[q](0)
-             - exact_solution(inputs.evaluation_points[q]));
+        computed_quantities[q](0) =
+          (inputs.solution_values[q](0) +
+           //TODO: shift in weight function is missing!
+           inputs.solution_values[q](1) *
+             std::fabs(level_set(inputs.evaluation_points[q])));
+        computed_quantities[q](1) =
+          (computed_quantities[q](0) -
+           exact_solution(inputs.evaluation_points[q]));
       }
   }
 
@@ -1049,16 +1041,16 @@ namespace Step47
 
     hp::FEValues<dim> hp_fe_values(fe_collection,
                                    q_collection,
-                                   update_values | update_q_points
-                                     | update_JxW_values);
+                                   update_values | update_q_points |
+                                     update_JxW_values);
 
     double l2_error_square = 0;
 
     std::vector<Vector<double>> solution_values;
 
-    typename hp::DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename hp::DoFHandler<dim>::active_cell_iterator cell = dof_handler
+                                                                .begin_active(),
+                                                       endc = dof_handler.end();
 
     for(; cell != endc; ++cell)
       {
@@ -1072,11 +1064,11 @@ namespace Step47
 
         for(unsigned int q = 0; q < fe_values.n_quadrature_points; ++q)
           {
-            const double local_error
-              = (solution_values[q](0)
-                 + std::fabs(level_set(fe_values.quadrature_point(q)))
-                     * solution_values[q](1)
-                 - exact_solution(fe_values.quadrature_point(q)));
+            const double local_error =
+              (solution_values[q](0) +
+               std::fabs(level_set(fe_values.quadrature_point(q))) *
+                 solution_values[q](1) -
+               exact_solution(fe_values.quadrature_point(q)));
             l2_error_square += local_error * local_error * fe_values.JxW(q);
           }
       }

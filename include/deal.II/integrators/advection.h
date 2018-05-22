@@ -107,11 +107,11 @@ namespace LocalIntegrators
             for(unsigned i = 0; i < t_dofs; ++i)
               for(unsigned int c = 0; c < n_components; ++c)
                 {
-                  double wgradv
-                    = velocity[0][vindex] * fe.shape_grad_component(i, k, c)[0];
+                  double wgradv =
+                    velocity[0][vindex] * fe.shape_grad_component(i, k, c)[0];
                   for(unsigned int d = 1; d < dim; ++d)
-                    wgradv += velocity[d][vindex]
-                              * fe.shape_grad_component(i, k, c)[d];
+                    wgradv +=
+                      velocity[d][vindex] * fe.shape_grad_component(i, k, c)[d];
                   M(i, j) -= dx * wgradv * fe.shape_value_component(j, k, c);
                 }
         }
@@ -152,8 +152,8 @@ namespace LocalIntegrators
           const double dx = factor * fe.JxW(k);
           for(unsigned i = 0; i < n_dofs; ++i)
             for(unsigned int d = 0; d < dim; ++d)
-              result(i) += dx * input[k][d] * fe.shape_value(i, k)
-                           * velocity[d][k * v_increment];
+              result(i) += dx * input[k][d] * fe.shape_value(i, k) *
+                           velocity[d][k * v_increment];
         }
     }
 
@@ -197,9 +197,9 @@ namespace LocalIntegrators
           for(unsigned i = 0; i < n_dofs; ++i)
             for(unsigned int c = 0; c < n_comp; ++c)
               for(unsigned int d = 0; d < dim; ++d)
-                result(i) += dx * input[c][k][d]
-                             * fe.shape_value_component(i, k, c)
-                             * velocity[d][k * v_increment];
+                result(i) += dx * input[c][k][d] *
+                             fe.shape_value_component(i, k, c) *
+                             velocity[d][k * v_increment];
         }
     }
 
@@ -235,8 +235,8 @@ namespace LocalIntegrators
           const double dx = factor * fe.JxW(k);
           for(unsigned i = 0; i < n_dofs; ++i)
             for(unsigned int d = 0; d < dim; ++d)
-              result(i) -= dx * input[k] * fe.shape_grad(i, k)[d]
-                           * velocity[d][k * v_increment];
+              result(i) -= dx * input[k] * fe.shape_grad(i, k)[d] *
+                           velocity[d][k * v_increment];
         }
     }
 
@@ -277,9 +277,9 @@ namespace LocalIntegrators
           for(unsigned i = 0; i < n_dofs; ++i)
             for(unsigned int c = 0; c < n_comp; ++c)
               for(unsigned int d = 0; d < dim; ++d)
-                result(i) -= dx * input[c][k]
-                             * fe.shape_grad_component(i, k, c)[d]
-                             * velocity[d][k * v_increment];
+                result(i) -= dx * input[c][k] *
+                             fe.shape_grad_component(i, k, c)[d] *
+                             velocity[d][k * v_increment];
         }
     }
 
@@ -336,13 +336,13 @@ namespace LocalIntegrators
                 for(unsigned j = 0; j < n_dofs; ++j)
                   {
                     if(fe.get_fe().is_primitive())
-                      M(i, j) += dx * nv * fe.shape_value(i, k)
-                                 * fe.shape_value(j, k);
+                      M(i, j) +=
+                        dx * nv * fe.shape_value(i, k) * fe.shape_value(j, k);
                     else
                       for(unsigned int c = 0; c < n_components; ++c)
-                        M(i, j) += dx * nv
-                                   * fetest.shape_value_component(i, k, c)
-                                   * fe.shape_value_component(j, k, c);
+                        M(i, j) += dx * nv *
+                                   fetest.shape_value_component(i, k, c) *
+                                   fe.shape_value_component(j, k, c);
                   }
             }
         }
@@ -544,20 +544,22 @@ namespace LocalIntegrators
               {
                 if(fe1.get_fe().is_primitive())
                   {
-                    M1(i, j) += dx_nbeta * fe.shape_value(j, k)
-                                * fetest.shape_value(i, k);
-                    M2(i, j) -= dx_nbeta * fe.shape_value(j, k)
-                                * fetestn.shape_value(i, k);
+                    M1(i, j) += dx_nbeta * fe.shape_value(j, k) *
+                                fetest.shape_value(i, k);
+                    M2(i, j) -= dx_nbeta * fe.shape_value(j, k) *
+                                fetestn.shape_value(i, k);
                   }
                 else
                   {
                     for(unsigned int d = 0; d < fe1.get_fe().n_components();
                         ++d)
                       {
-                        M1(i, j) += dx_nbeta * fe.shape_value_component(j, k, d)
-                                    * fetest.shape_value_component(i, k, d);
-                        M2(i, j) -= dx_nbeta * fe.shape_value_component(j, k, d)
-                                    * fetestn.shape_value_component(i, k, d);
+                        M1(i, j) += dx_nbeta *
+                                    fe.shape_value_component(j, k, d) *
+                                    fetest.shape_value_component(i, k, d);
+                        M2(i, j) -= dx_nbeta *
+                                    fe.shape_value_component(j, k, d) *
+                                    fetestn.shape_value_component(i, k, d);
                       }
                   }
               }

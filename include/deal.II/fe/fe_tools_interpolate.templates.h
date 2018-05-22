@@ -120,11 +120,11 @@ namespace FETools
                       std::unique_ptr<FullMatrix<double>>>>
       interpolation_matrices;
 
-    typename DoFHandlerType1<dim, spacedim>::active_cell_iterator cell1
-      = dof1.begin_active(),
+    typename DoFHandlerType1<dim, spacedim>::active_cell_iterator
+      cell1 = dof1.begin_active(),
       endc1 = dof1.end();
-    typename DoFHandlerType2<dim, spacedim>::active_cell_iterator cell2
-      = dof2.begin_active(),
+    typename DoFHandlerType2<dim, spacedim>::active_cell_iterator
+      cell2 = dof2.begin_active(),
       endc2 = dof2.end();
     (void) endc2;
 
@@ -139,15 +139,15 @@ namespace FETools
     // we can only interpolate u1 on
     // a cell, which this processor owns,
     // so we have to know the subdomain_id
-    const types::subdomain_id subdomain_id
-      = dof1.get_triangulation().locally_owned_subdomain();
+    const types::subdomain_id subdomain_id =
+      dof1.get_triangulation().locally_owned_subdomain();
 
     for(; cell1 != endc1; ++cell1, ++cell2)
-      if((cell1->subdomain_id() == subdomain_id)
-         || (subdomain_id == numbers::invalid_subdomain_id))
+      if((cell1->subdomain_id() == subdomain_id) ||
+         (subdomain_id == numbers::invalid_subdomain_id))
         {
-          Assert(cell1->get_fe().n_components()
-                   == cell2->get_fe().n_components(),
+          Assert(cell1->get_fe().n_components() ==
+                   cell2->get_fe().n_components(),
                  ExcDimensionMismatch(cell1->get_fe().n_components(),
                                       cell2->get_fe().n_components()));
 
@@ -158,15 +158,15 @@ namespace FETools
           // if there are no constraints
           // then hanging nodes are not
           // allowed.
-          const bool hanging_nodes_not_allowed
-            = ((cell2->get_fe().dofs_per_vertex != 0)
-               && (constraints.n_constraints() == 0));
+          const bool hanging_nodes_not_allowed =
+            ((cell2->get_fe().dofs_per_vertex != 0) &&
+             (constraints.n_constraints() == 0));
 
           if(hanging_nodes_not_allowed)
             for(unsigned int face = 0; face < GeometryInfo<dim>::faces_per_cell;
                 ++face)
-              Assert(cell1->at_boundary(face)
-                       || cell1->neighbor(face)->level() == cell1->level(),
+              Assert(cell1->at_boundary(face) ||
+                       cell1->neighbor(face)->level() == cell1->level(),
                      ExcHangingNodesNotAllowed(0));
 
           const unsigned int dofs_per_cell1 = cell1->get_fe().dofs_per_cell;
@@ -178,18 +178,18 @@ namespace FETools
           // matrix for this particular
           // pair of elements is already
           // there
-          if(interpolation_matrices[&cell1->get_fe()][&cell2->get_fe()].get()
-             == nullptr)
+          if(interpolation_matrices[&cell1->get_fe()][&cell2->get_fe()].get() ==
+             nullptr)
             {
-              auto interpolation_matrix
-                = std_cxx14::make_unique<FullMatrix<double>>(dofs_per_cell2,
-                                                             dofs_per_cell1);
+              auto interpolation_matrix =
+                std_cxx14::make_unique<FullMatrix<double>>(dofs_per_cell2,
+                                                           dofs_per_cell1);
 
               get_interpolation_matrix(
                 cell1->get_fe(), cell2->get_fe(), *interpolation_matrix);
 
-              interpolation_matrices[&cell1->get_fe()][&cell2->get_fe()]
-                = std::move(interpolation_matrix);
+              interpolation_matrices[&cell1->get_fe()][&cell2->get_fe()] =
+                std::move(interpolation_matrix);
             }
 
           cell1->get_dof_values(u1, u1_local);
@@ -233,18 +233,16 @@ namespace FETools
     for(types::global_dof_index i = 0; i < dof2.n_dofs(); ++i)
       if(locally_owned_dofs.is_element(i))
         {
-          Assert(
-            static_cast<typename OutVector::value_type>(
-              ::dealii::internal::ElementAccess<OutVector>::get(touch_count, i))
-              != typename OutVector::value_type(0),
-            ExcInternalError());
+          Assert(static_cast<typename OutVector::value_type>(
+                   ::dealii::internal::ElementAccess<OutVector>::get(
+                     touch_count, i)) != typename OutVector::value_type(0),
+                 ExcInternalError());
 
-          const typename OutVector::value_type val
-            = ::dealii::internal::ElementAccess<OutVector>::get(u2, i);
+          const typename OutVector::value_type val =
+            ::dealii::internal::ElementAccess<OutVector>::get(u2, i);
           ::dealii::internal::ElementAccess<OutVector>::set(
-            val
-              / ::dealii::internal::ElementAccess<OutVector>::get(touch_count,
-                                                                  i),
+            val /
+              ::dealii::internal::ElementAccess<OutVector>::get(touch_count, i),
             i,
             u2);
         }
@@ -277,8 +275,8 @@ namespace FETools
 #ifdef DEBUG
     const IndexSet& dof1_local_dofs = dof1.locally_owned_dofs();
     const IndexSet  u1_elements     = u1.locally_owned_elements();
-    const IndexSet  u1_interpolated_elements
-      = u1_interpolated.locally_owned_elements();
+    const IndexSet  u1_interpolated_elements =
+      u1_interpolated.locally_owned_elements();
     Assert(u1_elements == dof1_local_dofs,
            ExcMessage("The provided vector and DoF handler should have the same"
                       " index sets."));
@@ -292,11 +290,11 @@ namespace FETools
     Vector<typename OutVector::value_type> u1_int_local(
       DoFTools::max_dofs_per_cell(dof1));
 
-    const types::subdomain_id subdomain_id
-      = dof1.get_triangulation().locally_owned_subdomain();
+    const types::subdomain_id subdomain_id =
+      dof1.get_triangulation().locally_owned_subdomain();
 
-    typename DoFHandlerType<dim, spacedim>::active_cell_iterator cell
-      = dof1.begin_active(),
+    typename DoFHandlerType<dim, spacedim>::active_cell_iterator
+      cell = dof1.begin_active(),
       endc = dof1.end();
 
     // map from possible fe objects in
@@ -306,8 +304,8 @@ namespace FETools
       interpolation_matrices;
 
     for(; cell != endc; ++cell)
-      if((cell->subdomain_id() == subdomain_id)
-         || (subdomain_id == numbers::invalid_subdomain_id))
+      if((cell->subdomain_id() == subdomain_id) ||
+         (subdomain_id == numbers::invalid_subdomain_id))
         {
           // For continuous elements on
           // grids with hanging nodes we
@@ -316,15 +314,14 @@ namespace FETools
           // when the elements are
           // continuous no hanging node
           // constraints are allowed.
-          const bool hanging_nodes_not_allowed
-            = (cell->get_fe().dofs_per_vertex != 0)
-              || (fe2.dofs_per_vertex != 0);
+          const bool hanging_nodes_not_allowed =
+            (cell->get_fe().dofs_per_vertex != 0) || (fe2.dofs_per_vertex != 0);
 
           if(hanging_nodes_not_allowed)
             for(unsigned int face = 0; face < GeometryInfo<dim>::faces_per_cell;
                 ++face)
-              Assert(cell->at_boundary(face)
-                       || cell->neighbor(face)->level() == cell->level(),
+              Assert(cell->at_boundary(face) ||
+                       cell->neighbor(face)->level() == cell->level(),
                      ExcHangingNodesNotAllowed(0));
 
           const unsigned int dofs_per_cell1 = cell->get_fe().dofs_per_cell;
@@ -333,9 +330,9 @@ namespace FETools
           // matrix is available
           if(interpolation_matrices[&cell->get_fe()] == nullptr)
             {
-              interpolation_matrices[&cell->get_fe()]
-                = std_cxx14::make_unique<FullMatrix<double>>(dofs_per_cell1,
-                                                             dofs_per_cell1);
+              interpolation_matrices[&cell->get_fe()] =
+                std_cxx14::make_unique<FullMatrix<double>>(dofs_per_cell1,
+                                                           dofs_per_cell1);
               get_back_interpolation_matrix(
                 cell->get_fe(), fe2, *interpolation_matrices[&cell->get_fe()]);
             }
@@ -470,9 +467,9 @@ namespace FETools
   {
     // For discontinuous elements without constraints take the simpler version
     // of the back_interpolate function.
-    if(dof1.get_fe().dofs_per_vertex == 0 && dof2.get_fe().dofs_per_vertex == 0
-       && constraints1.n_constraints() == 0
-       && constraints2.n_constraints() == 0)
+    if(dof1.get_fe().dofs_per_vertex == 0 &&
+       dof2.get_fe().dofs_per_vertex == 0 &&
+       constraints1.n_constraints() == 0 && constraints2.n_constraints() == 0)
       back_interpolate(dof1, u1, dof2.get_fe(), u1_interpolated);
     else
       {
@@ -510,8 +507,8 @@ namespace FETools
 #ifdef DEBUG
     const IndexSet& dof1_local_dofs = dof1.locally_owned_dofs();
     const IndexSet  u1_elements     = u1.locally_owned_elements();
-    const IndexSet  u1_difference_elements
-      = u1_difference.locally_owned_elements();
+    const IndexSet  u1_difference_elements =
+      u1_difference.locally_owned_elements();
     Assert(u1_elements == dof1_local_dofs,
            ExcMessage("The provided vector and DoF handler should have the same"
                       " index sets."));
@@ -527,33 +524,33 @@ namespace FETools
     // the elements are continuous no
     // hanging node constraints are
     // allowed.
-    const bool hanging_nodes_not_allowed
-      = (dof1.get_fe().dofs_per_vertex != 0) || (fe2.dofs_per_vertex != 0);
+    const bool hanging_nodes_not_allowed =
+      (dof1.get_fe().dofs_per_vertex != 0) || (fe2.dofs_per_vertex != 0);
 
     const unsigned int dofs_per_cell = dof1.get_fe().dofs_per_cell;
 
     Vector<typename OutVector::value_type> u1_local(dofs_per_cell);
     Vector<typename OutVector::value_type> u1_diff_local(dofs_per_cell);
 
-    const types::subdomain_id subdomain_id
-      = dof1.get_triangulation().locally_owned_subdomain();
+    const types::subdomain_id subdomain_id =
+      dof1.get_triangulation().locally_owned_subdomain();
 
     FullMatrix<double> difference_matrix(dofs_per_cell, dofs_per_cell);
     get_interpolation_difference_matrix(dof1.get_fe(), fe2, difference_matrix);
 
-    typename DoFHandler<dim, spacedim>::active_cell_iterator cell
-      = dof1.begin_active(),
+    typename DoFHandler<dim, spacedim>::active_cell_iterator
+      cell = dof1.begin_active(),
       endc = dof1.end();
 
     for(; cell != endc; ++cell)
-      if((cell->subdomain_id() == subdomain_id)
-         || (subdomain_id == numbers::invalid_subdomain_id))
+      if((cell->subdomain_id() == subdomain_id) ||
+         (subdomain_id == numbers::invalid_subdomain_id))
         {
           if(hanging_nodes_not_allowed)
             for(unsigned int face = 0; face < GeometryInfo<dim>::faces_per_cell;
                 ++face)
-              Assert(cell->at_boundary(face)
-                       || cell->neighbor(face)->level() == cell->level(),
+              Assert(cell->at_boundary(face) ||
+                       cell->neighbor(face)->level() == cell->level(),
                      ExcHangingNodesNotAllowed(0));
 
           cell->get_dof_values(u1, u1_local);
@@ -626,9 +623,9 @@ namespace FETools
     // without constraints take the
     // cheaper version of the
     // interpolation_difference function.
-    if(dof1.get_fe().dofs_per_vertex == 0 && dof2.get_fe().dofs_per_vertex == 0
-       && constraints1.n_constraints() == 0
-       && constraints2.n_constraints() == 0)
+    if(dof1.get_fe().dofs_per_vertex == 0 &&
+       dof2.get_fe().dofs_per_vertex == 0 &&
+       constraints1.n_constraints() == 0 && constraints2.n_constraints() == 0)
       interpolation_difference(dof1, u1, dof2.get_fe(), u1_difference);
     else
       {
@@ -654,10 +651,10 @@ namespace FETools
     Assert(u2.size() == dof2.n_dofs(),
            ExcDimensionMismatch(u2.size(), dof2.n_dofs()));
 
-    typename DoFHandler<dim, spacedim>::active_cell_iterator cell1
-      = dof1.begin_active();
-    typename DoFHandler<dim, spacedim>::active_cell_iterator cell2
-      = dof2.begin_active();
+    typename DoFHandler<dim, spacedim>::active_cell_iterator cell1 =
+      dof1.begin_active();
+    typename DoFHandler<dim, spacedim>::active_cell_iterator cell2 =
+      dof2.begin_active();
     typename DoFHandler<dim, spacedim>::active_cell_iterator end = dof2.end();
 
     const unsigned int n1 = dof1.get_fe().dofs_per_cell;

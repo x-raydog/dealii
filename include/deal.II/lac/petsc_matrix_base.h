@@ -312,8 +312,7 @@ namespace PETScWrappers
      * miss important details and be expensive if the matrix is large.
      */
     MatrixBase&
-    operator=(const MatrixBase&)
-      = delete;
+    operator=(const MatrixBase&) = delete;
 
     /**
      * Destructor. Made virtual so that one can use pointers to this class.
@@ -1128,9 +1127,9 @@ namespace PETScWrappers
           accessor.a_index = 0;
           ++accessor.a_row;
 
-          while((accessor.a_row < accessor.matrix->m())
-                && (accessor.a_row < accessor.matrix->local_range().second)
-                && (accessor.matrix->row_length(accessor.a_row) == 0))
+          while((accessor.a_row < accessor.matrix->m()) &&
+                (accessor.a_row < accessor.matrix->local_range().second) &&
+                (accessor.matrix->row_length(accessor.a_row) == 0))
             ++accessor.a_row;
 
           accessor.visit_present_row();
@@ -1159,8 +1158,8 @@ namespace PETScWrappers
     inline bool
     const_iterator::operator==(const const_iterator& other) const
     {
-      return (accessor.a_row == other.accessor.a_row
-              && accessor.a_index == other.accessor.a_index);
+      return (accessor.a_row == other.accessor.a_row &&
+              accessor.a_index == other.accessor.a_index);
     }
 
     inline bool
@@ -1172,9 +1171,9 @@ namespace PETScWrappers
     inline bool
     const_iterator::operator<(const const_iterator& other) const
     {
-      return (accessor.row() < other.accessor.row()
-              || (accessor.row() == other.accessor.row()
-                  && accessor.index() < other.accessor.index()));
+      return (accessor.row() < other.accessor.row() ||
+              (accessor.row() == other.accessor.row() &&
+               accessor.index() < other.accessor.index()));
     }
 
   } // namespace MatrixIterators
@@ -1495,12 +1494,12 @@ namespace PETScWrappers
   {
     PetscInt begin, end;
 
-    const PetscErrorCode ierr
-      = MatGetOwnershipRange(static_cast<const Mat&>(matrix), &begin, &end);
+    const PetscErrorCode ierr =
+      MatGetOwnershipRange(static_cast<const Mat&>(matrix), &begin, &end);
     AssertThrow(ierr == 0, ExcPETScError(ierr));
 
-    return ((index >= static_cast<size_type>(begin))
-            && (index < static_cast<size_type>(end)));
+    return ((index >= static_cast<size_type>(begin)) &&
+            (index < static_cast<size_type>(end)));
   }
 
   inline void

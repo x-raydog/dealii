@@ -99,12 +99,12 @@ namespace MatrixTools
         // figure out which rows of the matrix we
         // have to eliminate on this processor
         std::vector<types::global_dof_index> constrained_rows;
-        for(std::map<types::global_dof_index, PetscScalar>::const_iterator dof
-            = boundary_values.begin();
+        for(std::map<types::global_dof_index, PetscScalar>::const_iterator dof =
+              boundary_values.begin();
             dof != boundary_values.end();
             ++dof)
-          if((dof->first >= local_range.first)
-             && (dof->first < local_range.second))
+          if((dof->first >= local_range.first) &&
+             (dof->first < local_range.second))
             constrained_rows.push_back(dof->first);
 
         // then eliminate these rows and set
@@ -122,12 +122,12 @@ namespace MatrixTools
 
         std::vector<types::global_dof_index> indices;
         std::vector<PetscScalar>             solution_values;
-        for(std::map<types::global_dof_index, PetscScalar>::const_iterator dof
-            = boundary_values.begin();
+        for(std::map<types::global_dof_index, PetscScalar>::const_iterator dof =
+              boundary_values.begin();
             dof != boundary_values.end();
             ++dof)
-          if((dof->first >= local_range.first)
-             && (dof->first < local_range.second))
+          if((dof->first >= local_range.first) &&
+             (dof->first < local_range.second))
             {
               indices.push_back(dof->first);
               solution_values.push_back(dof->second);
@@ -179,8 +179,8 @@ namespace MatrixTools
     {
       int                             block  = 0;
       dealii::types::global_dof_index offset = 0;
-      for(std::map<types::global_dof_index, PetscScalar>::const_iterator dof
-          = boundary_values.begin();
+      for(std::map<types::global_dof_index, PetscScalar>::const_iterator dof =
+            boundary_values.begin();
           dof != boundary_values.end();
           ++dof)
         {
@@ -216,12 +216,12 @@ namespace MatrixTools
           local_range = matrix.block(block_m, 0).local_range();
 
         std::vector<types::global_dof_index> constrained_rows;
-        for(std::map<types::global_dof_index, PetscScalar>::const_iterator dof
-            = block_boundary_values[block_m].begin();
+        for(std::map<types::global_dof_index, PetscScalar>::const_iterator dof =
+              block_boundary_values[block_m].begin();
             dof != block_boundary_values[block_m].end();
             ++dof)
-          if((dof->first >= local_range.first)
-             && (dof->first < local_range.second))
+          if((dof->first >= local_range.first) &&
+             (dof->first < local_range.second))
             constrained_rows.push_back(dof->first);
 
         for(unsigned int block_n = 0; block_n < n_blocks; ++block_n)
@@ -276,8 +276,8 @@ namespace MatrixTools
                 ++i)
               if(matrix.diag_element(i) != 0)
                 {
-                  average_nonzero_diagonal_entry
-                    = std::fabs(matrix.diag_element(i));
+                  average_nonzero_diagonal_entry =
+                    std::fabs(matrix.diag_element(i));
                   break;
                 }
 
@@ -285,12 +285,12 @@ namespace MatrixTools
             // have to eliminate on this processor
             std::vector<types::global_dof_index> constrained_rows;
             for(std::map<types::global_dof_index,
-                         TrilinosScalar>::const_iterator dof
-                = boundary_values.begin();
+                         TrilinosScalar>::const_iterator dof =
+                  boundary_values.begin();
                 dof != boundary_values.end();
                 ++dof)
-              if((dof->first >= local_range.first)
-                 && (dof->first < local_range.second))
+              if((dof->first >= local_range.first) &&
+                 (dof->first < local_range.second))
                 constrained_rows.push_back(dof->first);
 
             // then eliminate these rows and
@@ -305,12 +305,12 @@ namespace MatrixTools
             std::vector<types::global_dof_index> indices;
             std::vector<TrilinosScalar>          solution_values;
             for(std::map<types::global_dof_index,
-                         TrilinosScalar>::const_iterator dof
-                = boundary_values.begin();
+                         TrilinosScalar>::const_iterator dof =
+                  boundary_values.begin();
                 dof != boundary_values.end();
                 ++dof)
-              if((dof->first >= local_range.first)
-                 && (dof->first < local_range.second))
+              if((dof->first >= local_range.first) &&
+                 (dof->first < local_range.second))
                 {
                   indices.push_back(dof->first);
                   solution_values.push_back(dof->second);
@@ -369,8 +369,7 @@ namespace MatrixTools
           int                     block  = 0;
           types::global_dof_index offset = 0;
           for(std::map<types::global_dof_index, TrilinosScalar>::const_iterator
-                dof
-              = boundary_values.begin();
+                dof = boundary_values.begin();
               dof != boundary_values.end();
               ++dof)
             {
@@ -407,12 +406,12 @@ namespace MatrixTools
 
             std::vector<types::global_dof_index> constrained_rows;
             for(std::map<types::global_dof_index,
-                         TrilinosScalar>::const_iterator dof
-                = block_boundary_values[block_m].begin();
+                         TrilinosScalar>::const_iterator dof =
+                  block_boundary_values[block_m].begin();
                 dof != block_boundary_values[block_m].end();
                 ++dof)
-              if((dof->first >= local_range.first)
-                 && (dof->first < local_range.second))
+              if((dof->first >= local_range.first) &&
+                 (dof->first < local_range.second))
                 constrained_rows.push_back(dof->first);
 
             for(unsigned int block_n = 0; block_n < n_blocks; ++block_n)

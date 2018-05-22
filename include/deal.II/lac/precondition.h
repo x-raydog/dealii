@@ -666,8 +666,8 @@ public:
    */
   void
   initialize(const MatrixType&                         A,
-             const typename BaseClass::AdditionalData& parameters
-             = typename BaseClass::AdditionalData());
+             const typename BaseClass::AdditionalData& parameters =
+               typename BaseClass::AdditionalData());
 
   /**
    * Apply preconditioner.
@@ -767,8 +767,8 @@ public:
       const std::vector<size_type>& permutation,
       const std::vector<size_type>& inverse_permutation,
       const typename PreconditionRelaxation<MatrixType>::AdditionalData&
-        parameters
-      = typename PreconditionRelaxation<MatrixType>::AdditionalData());
+        parameters =
+          typename PreconditionRelaxation<MatrixType>::AdditionalData());
 
     /**
      * Storage for the permutation vector.
@@ -800,8 +800,8 @@ public:
              const std::vector<size_type>& permutation,
              const std::vector<size_type>& inverse_permutation,
              const typename PreconditionRelaxation<MatrixType>::AdditionalData&
-               parameters
-             = typename PreconditionRelaxation<MatrixType>::AdditionalData());
+               parameters =
+                 typename PreconditionRelaxation<MatrixType>::AdditionalData());
 
   /**
    * Initialize matrix and relaxation parameter. The matrix is just stored in
@@ -1484,8 +1484,8 @@ PreconditionSSOR<MatrixType>::initialize(
 
   // in case we have a SparseMatrix class, we can extract information about
   // the diagonal.
-  const SparseMatrix<typename MatrixType::value_type>* mat
-    = dynamic_cast<const SparseMatrix<typename MatrixType::value_type>*>(
+  const SparseMatrix<typename MatrixType::value_type>* mat =
+    dynamic_cast<const SparseMatrix<typename MatrixType::value_type>*>(
       &*this->A);
 
   // calculate the positions first after the diagonal.
@@ -1500,8 +1500,7 @@ PreconditionSSOR<MatrixType>::initialize(
           // only. note: the first entry in each line denotes the diagonal
           // element, which we need not check.
           typename SparseMatrix<typename MatrixType::value_type>::const_iterator
-            it
-            = mat->begin(row) + 1;
+            it = mat->begin(row) + 1;
           for(; it < mat->end(row); ++it)
             if(it->column() > row)
               break;
@@ -1751,8 +1750,8 @@ namespace internal
             else DEAL_II_OPENMP_SIMD_PRAGMA for(std::size_t i = begin; i < end;
                                                 ++i)
             {
-              update1[i] = ((update2[i] - src[i]) * factor2
-                            * matrix_diagonal_inverse[i]);
+              update1[i] =
+                ((update2[i] - src[i]) * factor2 * matrix_diagonal_inverse[i]);
               dst[i] -= update1[i];
             }
           }
@@ -1760,10 +1759,9 @@ namespace internal
           DEAL_II_OPENMP_SIMD_PRAGMA
         for(std::size_t i = begin; i < end; ++i)
           {
-            const Number update
-              = factor1 * update1[i]
-                + factor2
-                    * ((update2[i] - src[i]) * matrix_diagonal_inverse[i]);
+            const Number update =
+              factor1 * update1[i] +
+              factor2 * ((update2[i] - src[i]) * matrix_diagonal_inverse[i]);
             update1[i] = update;
             dst[i] -= update;
           }
@@ -2104,44 +2102,38 @@ PreconditionChebyshev<MatrixType, VectorType, PreconditionerType>::
   if(data.degree == numbers::invalid_unsigned_int)
     {
       const double actual_range = max_eigenvalue / alpha;
-      const double sigma        = (1. - std::sqrt(1. / actual_range))
-                           / (1. + std::sqrt(1. / actual_range));
+      const double sigma        = (1. - std::sqrt(1. / actual_range)) /
+                           (1. + std::sqrt(1. / actual_range));
       const double eps = data.smoothing_range;
       const_cast<
         PreconditionChebyshev<MatrixType, VectorType, PreconditionerType>*>(
         this)
-        ->data.degree
-        = 1
-          + std::log(1. / eps + std::sqrt(1. / eps / eps - 1))
-              / std::log(1. / sigma);
+        ->data.degree = 1 + std::log(1. / eps + std::sqrt(1. / eps / eps - 1)) /
+                              std::log(1. / sigma);
     }
 
   const_cast<
     PreconditionChebyshev<MatrixType, VectorType, PreconditionerType>*>(this)
-    ->delta
-    = (max_eigenvalue - alpha) * 0.5;
+    ->delta = (max_eigenvalue - alpha) * 0.5;
   const_cast<
     PreconditionChebyshev<MatrixType, VectorType, PreconditionerType>*>(this)
-    ->theta
-    = (max_eigenvalue + alpha) * 0.5;
+    ->theta = (max_eigenvalue + alpha) * 0.5;
 
   // We do not need the third auxiliary vector in case we have a
   // DiagonalMatrix as preconditioner and use deal.II's own vectors
-  if(std::is_same<PreconditionerType, DiagonalMatrix<VectorType>>::value
-       == false
-     || (std::is_same<VectorType,
-                      dealii::Vector<typename VectorType::value_type>>::value
-           == false
-         && std::is_same<VectorType,
-                         LinearAlgebra::distributed::Vector<
-                           typename VectorType::value_type>>::value
-              == false))
+  if(std::is_same<PreconditionerType, DiagonalMatrix<VectorType>>::value ==
+       false ||
+     (std::is_same<VectorType,
+                   dealii::Vector<typename VectorType::value_type>>::value ==
+        false &&
+      std::is_same<VectorType,
+                   LinearAlgebra::distributed::Vector<
+                     typename VectorType::value_type>>::value == false))
     update3.reinit(src, true);
 
   const_cast<
     PreconditionChebyshev<MatrixType, VectorType, PreconditionerType>*>(this)
-    ->eigenvalues_are_initialized
-    = true;
+    ->eigenvalues_are_initialized = true;
 }
 
 template <typename MatrixType, typename VectorType, typename PreconditionerType>

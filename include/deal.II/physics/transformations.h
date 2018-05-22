@@ -908,8 +908,8 @@ template <typename Number>
 Tensor<2, 2, Number>
 Physics::Transformations::Rotations::rotation_matrix_2d(const Number& angle)
 {
-  const double rotation[2][2]
-    = {{std::cos(angle), -std::sin(angle)}, {std::sin(angle), std::cos(angle)}};
+  const double rotation[2][2] = {{std::cos(angle), -std::sin(angle)},
+                                 {std::sin(angle), std::cos(angle)}};
   return Tensor<2, 2>(rotation);
 }
 

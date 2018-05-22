@@ -45,18 +45,18 @@ std::size_t
 MappingManifold<dim, spacedim>::InternalData::memory_consumption() const
 {
   return (
-    Mapping<dim, spacedim>::InternalDataBase::memory_consumption()
-    + MemoryConsumption::memory_consumption(vertices)
-    + MemoryConsumption::memory_consumption(cell)
-    + MemoryConsumption::memory_consumption(quad)
-    + MemoryConsumption::memory_consumption(cell_manifold_quadrature_weights)
-    + MemoryConsumption::memory_consumption(vertex_weights)
-    + MemoryConsumption::memory_consumption(unit_tangentials)
-    + MemoryConsumption::memory_consumption(covariant)
-    + MemoryConsumption::memory_consumption(contravariant)
-    + MemoryConsumption::memory_consumption(aux)
-    + MemoryConsumption::memory_consumption(volume_elements)
-    + MemoryConsumption::memory_consumption(manifold));
+    Mapping<dim, spacedim>::InternalDataBase::memory_consumption() +
+    MemoryConsumption::memory_consumption(vertices) +
+    MemoryConsumption::memory_consumption(cell) +
+    MemoryConsumption::memory_consumption(quad) +
+    MemoryConsumption::memory_consumption(cell_manifold_quadrature_weights) +
+    MemoryConsumption::memory_consumption(vertex_weights) +
+    MemoryConsumption::memory_consumption(unit_tangentials) +
+    MemoryConsumption::memory_consumption(covariant) +
+    MemoryConsumption::memory_consumption(contravariant) +
+    MemoryConsumption::memory_consumption(aux) +
+    MemoryConsumption::memory_consumption(volume_elements) +
+    MemoryConsumption::memory_consumption(manifold));
 }
 
 template <int dim, int spacedim>
@@ -78,8 +78,8 @@ MappingManifold<dim, spacedim>::InternalData::initialize(
 
   // see if we need the (transformation) shape function values
   // and/or gradients and resize the necessary arrays
-  if(this->update_each
-     & (update_quadrature_points | update_contravariant_transformation))
+  if(this->update_each &
+     (update_quadrature_points | update_contravariant_transformation))
     compute_manifold_quadrature_weights(q);
 
   if(this->update_each & update_covariant_transformation)
@@ -136,16 +136,16 @@ MappingManifold<dim, spacedim>::InternalData::initialize_face(
                     {
                       Tensor<1, dim> tang1, tang2;
 
-                      const unsigned int nd
-                        = GeometryInfo<dim>::unit_normal_direction[i];
+                      const unsigned int nd =
+                        GeometryInfo<dim>::unit_normal_direction[i];
 
                       // first tangential
                       // vector in direction
                       // of the (nd+1)%3 axis
                       // and inverted in case
                       // of unit inward normal
-                      tang1[(nd + 1) % dim]
-                        = GeometryInfo<dim>::unit_normal_orientation[i];
+                      tang1[(nd + 1) % dim] =
+                        GeometryInfo<dim>::unit_normal_orientation[i];
                       // second tangential
                       // vector in direction
                       // of the (nd+2)%3 axis
@@ -251,16 +251,15 @@ MappingManifold<dim, spacedim>::requires_update_flags(
       if(out & (update_JxW_values | update_normal_vectors))
         out |= update_boundary_forms;
 
-      if(out
-         & (update_covariant_transformation | update_JxW_values
-            | update_jacobians | update_jacobian_grads | update_boundary_forms
-            | update_normal_vectors))
+      if(out & (update_covariant_transformation | update_JxW_values |
+                update_jacobians | update_jacobian_grads |
+                update_boundary_forms | update_normal_vectors))
         out |= update_contravariant_transformation;
 
-      if(out
-         & (update_inverse_jacobians | update_jacobian_pushed_forward_grads
-            | update_jacobian_pushed_forward_2nd_derivatives
-            | update_jacobian_pushed_forward_3rd_derivatives))
+      if(out &
+         (update_inverse_jacobians | update_jacobian_pushed_forward_grads |
+          update_jacobian_pushed_forward_2nd_derivatives |
+          update_jacobian_pushed_forward_3rd_derivatives))
         out |= update_covariant_transformation;
 
       // The contravariant transformation used in the Piola
@@ -278,10 +277,9 @@ MappingManifold<dim, spacedim>::requires_update_flags(
 
   // Now throw an exception if we stumble upon something that was not
   // implemented yet
-  Assert(!(out
-           & (update_jacobian_grads | update_jacobian_pushed_forward_grads
-              | update_jacobian_pushed_forward_2nd_derivatives
-              | update_jacobian_pushed_forward_3rd_derivatives)),
+  Assert(!(out & (update_jacobian_grads | update_jacobian_pushed_forward_grads |
+                  update_jacobian_pushed_forward_2nd_derivatives |
+                  update_jacobian_pushed_forward_3rd_derivatives)),
          ExcNotImplemented());
 
   return out;
@@ -426,15 +424,15 @@ namespace internal
                     for(unsigned int j = 0;
                         j < GeometryInfo<dim>::vertices_per_cell;
                         ++j)
-                      data.vertex_weights[j]
-                        = GeometryInfo<dim>::d_linear_shape_function(np, j);
+                      data.vertex_weights[j] =
+                        GeometryInfo<dim>::d_linear_shape_function(np, j);
 
                     const Point<spacedim> NP = data.manifold->get_new_point(
                       make_array_view(data.vertices),
                       make_array_view(data.vertex_weights));
 
-                    const Tensor<1, spacedim> T
-                      = data.manifold->get_tangent_vector(P, NP);
+                    const Tensor<1, spacedim> T =
+                      data.manifold->get_tangent_vector(P, NP);
 
                     for(unsigned int d = 0; d < spacedim; ++d)
                       data.contravariant[point][d][i] = T[d] / L;
@@ -446,8 +444,8 @@ namespace internal
                 const unsigned int n_q_points = data.contravariant.size();
                 for(unsigned int point = 0; point < n_q_points; ++point)
                   {
-                    data.covariant[point]
-                      = (data.contravariant[point]).covariant_form();
+                    data.covariant[point] =
+                      (data.contravariant[point]).covariant_form();
                   }
               }
 
@@ -455,8 +453,8 @@ namespace internal
               {
                 const unsigned int n_q_points = data.contravariant.size();
                 for(unsigned int point = 0; point < n_q_points; ++point)
-                  data.volume_elements[point]
-                    = data.contravariant[point].determinant();
+                  data.volume_elements[point] =
+                    data.contravariant[point].determinant();
               }
           }
       }
@@ -505,8 +503,8 @@ MappingManifold<dim, spacedim>::fill_fe_values(
       AssertDimension(output_data.JxW_values.size(), n_q_points);
 
       Assert(
-        !(update_flags & update_normal_vectors)
-          || (output_data.normal_vectors.size() == n_q_points),
+        !(update_flags & update_normal_vectors) ||
+          (output_data.normal_vectors.size() == n_q_points),
         ExcDimensionMismatch(output_data.normal_vectors.size(), n_q_points));
 
       for(unsigned int point = 0; point < n_q_points; ++point)
@@ -520,9 +518,8 @@ MappingManifold<dim, spacedim>::fill_fe_values(
               // TODO: this allows for anisotropies of up to 1e6 in 3D and
               // 1e12 in 2D. might want to find a finer
               // (dimension-independent) criterion
-              Assert(det > 1e-12
-                             * Utilities::fixed_power<dim>(
-                                 cell->diameter() / std::sqrt(double(dim))),
+              Assert(det > 1e-12 * Utilities::fixed_power<dim>(
+                                     cell->diameter() / std::sqrt(double(dim))),
                      (typename Mapping<dim, spacedim>::ExcDistortedMappedCell(
                        cell->center(), det, point)));
 
@@ -543,8 +540,8 @@ MappingManifold<dim, spacedim>::fill_fe_values(
                 for(unsigned int j = 0; j < dim; ++j)
                   G[i][j] = DX_t[i] * DX_t[j];
 
-              output_data.JxW_values[point]
-                = std::sqrt(determinant(G)) * weights[point];
+              output_data.JxW_values[point] =
+                std::sqrt(determinant(G)) * weights[point];
 
               if(cell_similarity == CellSimilarity::inverted_translation)
                 {
@@ -556,25 +553,25 @@ MappingManifold<dim, spacedim>::fill_fe_values(
                 {
                   if(update_flags & update_normal_vectors)
                     {
-                      Assert(spacedim == dim + 1,
-                             ExcMessage(
-                               "There is no (unique) cell normal for "
-                               + Utilities::int_to_string(dim)
-                               + "-dimensional cells in "
-                               + Utilities::int_to_string(spacedim)
-                               + "-dimensional space. This only works if the "
-                                 "space dimension is one greater than the "
-                                 "dimensionality of the mesh cells."));
+                      Assert(
+                        spacedim == dim + 1,
+                        ExcMessage("There is no (unique) cell normal for " +
+                                   Utilities::int_to_string(dim) +
+                                   "-dimensional cells in " +
+                                   Utilities::int_to_string(spacedim) +
+                                   "-dimensional space. This only works if the "
+                                   "space dimension is one greater than the "
+                                   "dimensionality of the mesh cells."));
 
                       if(dim == 1)
-                        output_data.normal_vectors[point]
-                          = cross_product_2d(-DX_t[0]);
+                        output_data.normal_vectors[point] =
+                          cross_product_2d(-DX_t[0]);
                       else //dim == 2
-                        output_data.normal_vectors[point]
-                          = cross_product_3d(DX_t[0], DX_t[1]);
+                        output_data.normal_vectors[point] =
+                          cross_product_3d(DX_t[0], DX_t[1]);
 
-                      output_data.normal_vectors[point]
-                        /= output_data.normal_vectors[point].norm();
+                      output_data.normal_vectors[point] /=
+                        output_data.normal_vectors[point].norm();
 
                       if(cell->direction_flag() == false)
                         output_data.normal_vectors[point] *= -1.;
@@ -599,8 +596,8 @@ MappingManifold<dim, spacedim>::fill_fe_values(
       AssertDimension(output_data.inverse_jacobians.size(), n_q_points);
       if(cell_similarity != CellSimilarity::translation)
         for(unsigned int point = 0; point < n_q_points; ++point)
-          output_data.inverse_jacobians[point]
-            = data.covariant[point].transpose();
+          output_data.inverse_jacobians[point] =
+            data.covariant[point].transpose();
     }
 
   return cell_similarity;
@@ -651,22 +648,22 @@ namespace internal
             // 0.
             for(unsigned int d = 0; d != dim - 1; ++d)
               {
-                Assert(face_no + GeometryInfo<dim>::faces_per_cell * d
-                         < data.unit_tangentials.size(),
+                Assert(face_no + GeometryInfo<dim>::faces_per_cell * d <
+                         data.unit_tangentials.size(),
                        ExcInternalError());
                 Assert(
-                  data.aux[d].size()
-                    <= data
-                         .unit_tangentials[face_no
-                                           + GeometryInfo<dim>::faces_per_cell
-                                               * d]
-                         .size(),
+                  data.aux[d].size() <=
+                    data
+                      .unit_tangentials[face_no +
+                                        GeometryInfo<dim>::faces_per_cell * d]
+                      .size(),
                   ExcInternalError());
 
                 mapping.transform(
                   make_array_view(
-                    data.unit_tangentials
-                      [face_no + GeometryInfo<dim>::faces_per_cell * d]),
+                    data
+                      .unit_tangentials[face_no +
+                                        GeometryInfo<dim>::faces_per_cell * d]),
                   mapping_contravariant,
                   data,
                   make_array_view(data.aux[d]));
@@ -684,16 +681,16 @@ namespace internal
                         // fields (because it has only dim-1 components), but we
                         // can still compute the boundary form by simply
                         // looking at the number of the face
-                        output_data.boundary_forms[i][0]
-                          = (face_no == 0 ? -1 : +1);
+                        output_data.boundary_forms[i][0] =
+                          (face_no == 0 ? -1 : +1);
                         break;
                       case 2:
-                        output_data.boundary_forms[i]
-                          = cross_product_2d(data.aux[0][i]);
+                        output_data.boundary_forms[i] =
+                          cross_product_2d(data.aux[0][i]);
                         break;
                       case 3:
-                        output_data.boundary_forms[i]
-                          = cross_product_3d(data.aux[0][i], data.aux[1][i]);
+                        output_data.boundary_forms[i] =
+                          cross_product_3d(data.aux[0][i], data.aux[1][i]);
                         break;
                       default:
                         Assert(false, ExcNotImplemented());
@@ -716,29 +713,28 @@ namespace internal
                         case 1:
                           {
                             // J is a tangent vector
-                            output_data.boundary_forms[point]
-                              = data.contravariant[point].transpose()[0];
-                            output_data.boundary_forms[point]
-                              /= (face_no == 0 ? -1. : +1.)
-                                 * output_data.boundary_forms[point].norm();
+                            output_data.boundary_forms[point] =
+                              data.contravariant[point].transpose()[0];
+                            output_data.boundary_forms[point] /=
+                              (face_no == 0 ? -1. : +1.) *
+                              output_data.boundary_forms[point].norm();
 
                             break;
                           }
 
                         case 2:
                           {
-                            const DerivativeForm<1, spacedim, dim> DX_t
-                              = data.contravariant[point].transpose();
+                            const DerivativeForm<1, spacedim, dim> DX_t =
+                              data.contravariant[point].transpose();
 
-                            Tensor<1, spacedim> cell_normal
-                              = cross_product_3d(DX_t[0], DX_t[1]);
+                            Tensor<1, spacedim> cell_normal =
+                              cross_product_3d(DX_t[0], DX_t[1]);
                             cell_normal /= cell_normal.norm();
 
                             // then compute the face normal from the face tangent
                             // and the cell normal:
-                            output_data.boundary_forms[point]
-                              = cross_product_3d(data.aux[0][point],
-                                                 cell_normal);
+                            output_data.boundary_forms[point] =
+                              cross_product_3d(data.aux[0][point], cell_normal);
 
                             break;
                           }
@@ -755,22 +751,22 @@ namespace internal
                 {
                   if(update_flags & update_JxW_values)
                     {
-                      output_data.JxW_values[i]
-                        = output_data.boundary_forms[i].norm() * weights[i];
+                      output_data.JxW_values[i] =
+                        output_data.boundary_forms[i].norm() * weights[i];
 
                       if(subface_no != numbers::invalid_unsigned_int)
                         {
-                          const double area_ratio
-                            = GeometryInfo<dim>::subface_ratio(
+                          const double area_ratio =
+                            GeometryInfo<dim>::subface_ratio(
                               cell->subface_case(face_no), subface_no);
                           output_data.JxW_values[i] *= area_ratio;
                         }
                     }
 
                   if(update_flags & update_normal_vectors)
-                    output_data.normal_vectors[i]
-                      = Point<spacedim>(output_data.boundary_forms[i]
-                                        / output_data.boundary_forms[i].norm());
+                    output_data.normal_vectors[i] =
+                      Point<spacedim>(output_data.boundary_forms[i] /
+                                      output_data.boundary_forms[i].norm());
                 }
 
             if(update_flags & update_jacobians)
@@ -779,8 +775,8 @@ namespace internal
 
             if(update_flags & update_inverse_jacobians)
               for(unsigned int point = 0; point < n_q_points; ++point)
-                output_data.inverse_jacobians[point]
-                  = data.covariant[point].transpose();
+                output_data.inverse_jacobians[point] =
+                  data.covariant[point].transpose();
           }
       }
 
@@ -834,12 +830,11 @@ namespace internal
         AssertDimension(input.size(), output.size());
         Assert(
           (dynamic_cast<const typename dealii::MappingManifold<dim, spacedim>::
-                          InternalData*>(&mapping_data)
-           != nullptr),
+                          InternalData*>(&mapping_data) != nullptr),
           ExcInternalError());
         const typename dealii::MappingManifold<dim, spacedim>::InternalData&
-          data
-          = static_cast<const typename dealii::MappingManifold<dim, spacedim>::
+          data =
+            static_cast<const typename dealii::MappingManifold<dim, spacedim>::
                           InternalData&>(mapping_data);
 
         switch(mapping_type)
@@ -852,8 +847,8 @@ namespace internal
                     "update_contravariant_transformation"));
 
                 for(unsigned int i = 0; i < output.size(); ++i)
-                  output[i]
-                    = apply_transformation(data.contravariant[i], input[i]);
+                  output[i] =
+                    apply_transformation(data.contravariant[i], input[i]);
 
                 return;
               }
@@ -874,8 +869,8 @@ namespace internal
 
                 for(unsigned int i = 0; i < output.size(); ++i)
                   {
-                    output[i]
-                      = apply_transformation(data.contravariant[i], input[i]);
+                    output[i] =
+                      apply_transformation(data.contravariant[i], input[i]);
                     output[i] /= data.volume_elements[i];
                   }
                 return;
@@ -912,12 +907,11 @@ namespace internal
         AssertDimension(input.size(), output.size());
         Assert(
           (dynamic_cast<const typename dealii::MappingManifold<dim, spacedim>::
-                          InternalData*>(&mapping_data)
-           != nullptr),
+                          InternalData*>(&mapping_data) != nullptr),
           ExcInternalError());
         const typename dealii::MappingManifold<dim, spacedim>::InternalData&
-          data
-          = static_cast<const typename dealii::MappingManifold<dim, spacedim>::
+          data =
+            static_cast<const typename dealii::MappingManifold<dim, spacedim>::
                           InternalData&>(mapping_data);
 
         switch(mapping_type)
@@ -938,8 +932,8 @@ namespace internal
                   {
                     DerivativeForm<1, spacedim, dim> A = apply_transformation(
                       data.contravariant[i], transpose(input[i]));
-                    output[i]
-                      = apply_transformation(data.covariant[i], A.transpose());
+                    output[i] =
+                      apply_transformation(data.covariant[i], A.transpose());
                   }
 
                 return;
@@ -957,8 +951,8 @@ namespace internal
                   {
                     DerivativeForm<1, spacedim, dim> A = apply_transformation(
                       data.covariant[i], transpose(input[i]));
-                    output[i]
-                      = apply_transformation(data.covariant[i], A.transpose());
+                    output[i] =
+                      apply_transformation(data.covariant[i], A.transpose());
                   }
 
                 return;
@@ -982,8 +976,8 @@ namespace internal
 
                 for(unsigned int i = 0; i < output.size(); ++i)
                   {
-                    DerivativeForm<1, spacedim, dim> A
-                      = apply_transformation(data.covariant[i], input[i]);
+                    DerivativeForm<1, spacedim, dim> A =
+                      apply_transformation(data.covariant[i], input[i]);
                     Tensor<2, spacedim> T = apply_transformation(
                       data.contravariant[i], A.transpose());
 
@@ -1010,12 +1004,11 @@ namespace internal
         AssertDimension(input.size(), output.size());
         Assert(
           (dynamic_cast<const typename dealii::MappingManifold<dim, spacedim>::
-                          InternalData*>(&mapping_data)
-           != nullptr),
+                          InternalData*>(&mapping_data) != nullptr),
           ExcInternalError());
         const typename dealii::MappingManifold<dim, spacedim>::InternalData&
-          data
-          = static_cast<const typename dealii::MappingManifold<dim, spacedim>::
+          data =
+            static_cast<const typename dealii::MappingManifold<dim, spacedim>::
                           InternalData&>(mapping_data);
 
         switch(mapping_type)
@@ -1038,11 +1031,11 @@ namespace internal
                       for(unsigned int J = 0; J < dim; ++J)
                         for(unsigned int K = 0; K < dim; ++K)
                           {
-                            tmp1[J][K]
-                              = data.contravariant[q][i][0] * input[q][0][J][K];
+                            tmp1[J][K] =
+                              data.contravariant[q][i][0] * input[q][0][J][K];
                             for(unsigned int I = 1; I < dim; ++I)
-                              tmp1[J][K] += data.contravariant[q][i][I]
-                                            * input[q][I][J][K];
+                              tmp1[J][K] +=
+                                data.contravariant[q][i][I] * input[q][I][J][K];
                           }
                       for(unsigned int j = 0; j < spacedim; ++j)
                         {
@@ -1055,11 +1048,11 @@ namespace internal
                             }
                           for(unsigned int k = 0; k < spacedim; ++k)
                             {
-                              output[q][i][j][k]
-                                = data.covariant[q][k][0] * tmp2[0];
+                              output[q][i][j][k] =
+                                data.covariant[q][k][0] * tmp2[0];
                               for(unsigned int K = 1; K < dim; ++K)
-                                output[q][i][j][k]
-                                  += data.covariant[q][k][K] * tmp2[K];
+                                output[q][i][j][k] +=
+                                  data.covariant[q][k][K] * tmp2[K];
                             }
                         }
                     }
@@ -1080,11 +1073,11 @@ namespace internal
                       for(unsigned int J = 0; J < dim; ++J)
                         for(unsigned int K = 0; K < dim; ++K)
                           {
-                            tmp1[J][K]
-                              = data.covariant[q][i][0] * input[q][0][J][K];
+                            tmp1[J][K] =
+                              data.covariant[q][i][0] * input[q][0][J][K];
                             for(unsigned int I = 1; I < dim; ++I)
-                              tmp1[J][K]
-                                += data.covariant[q][i][I] * input[q][I][J][K];
+                              tmp1[J][K] +=
+                                data.covariant[q][i][I] * input[q][I][J][K];
                           }
                       for(unsigned int j = 0; j < spacedim; ++j)
                         {
@@ -1097,11 +1090,11 @@ namespace internal
                             }
                           for(unsigned int k = 0; k < spacedim; ++k)
                             {
-                              output[q][i][j][k]
-                                = data.covariant[q][k][0] * tmp2[0];
+                              output[q][i][j][k] =
+                                data.covariant[q][k][0] * tmp2[0];
                               for(unsigned int K = 1; K < dim; ++K)
-                                output[q][i][j][k]
-                                  += data.covariant[q][k][K] * tmp2[K];
+                                output[q][i][j][k] +=
+                                  data.covariant[q][k][K] * tmp2[K];
                             }
                         }
                     }
@@ -1129,8 +1122,8 @@ namespace internal
                     {
                       double factor[dim];
                       for(unsigned int I = 0; I < dim; ++I)
-                        factor[I] = data.contravariant[q][i][I]
-                                    / data.volume_elements[q];
+                        factor[I] =
+                          data.contravariant[q][i][I] / data.volume_elements[q];
                       double tmp1[dim][dim];
                       for(unsigned int J = 0; J < dim; ++J)
                         for(unsigned int K = 0; K < dim; ++K)
@@ -1150,11 +1143,11 @@ namespace internal
                             }
                           for(unsigned int k = 0; k < spacedim; ++k)
                             {
-                              output[q][i][j][k]
-                                = data.covariant[q][k][0] * tmp2[0];
+                              output[q][i][j][k] =
+                                data.covariant[q][k][0] * tmp2[0];
                               for(unsigned int K = 1; K < dim; ++K)
-                                output[q][i][j][k]
-                                  += data.covariant[q][k][K] * tmp2[K];
+                                output[q][i][j][k] +=
+                                  data.covariant[q][k][K] * tmp2[K];
                             }
                         }
                     }
@@ -1178,12 +1171,11 @@ namespace internal
         AssertDimension(input.size(), output.size());
         Assert(
           (dynamic_cast<const typename dealii::MappingManifold<dim, spacedim>::
-                          InternalData*>(&mapping_data)
-           != nullptr),
+                          InternalData*>(&mapping_data) != nullptr),
           ExcInternalError());
         const typename dealii::MappingManifold<dim, spacedim>::InternalData&
-          data
-          = static_cast<const typename dealii::MappingManifold<dim, spacedim>::
+          data =
+            static_cast<const typename dealii::MappingManifold<dim, spacedim>::
                           InternalData&>(mapping_data);
 
         switch(mapping_type)

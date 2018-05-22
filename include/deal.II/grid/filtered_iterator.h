@@ -981,24 +981,24 @@ template <typename BaseIterator>
 inline bool
 FilteredIterator<BaseIterator>::operator==(const FilteredIterator& fi) const
 {
-  return (static_cast<const BaseIterator&>(*this)
-          == static_cast<const BaseIterator&>(fi));
+  return (static_cast<const BaseIterator&>(*this) ==
+          static_cast<const BaseIterator&>(fi));
 }
 
 template <typename BaseIterator>
 inline bool
 FilteredIterator<BaseIterator>::operator!=(const FilteredIterator& fi) const
 {
-  return (static_cast<const BaseIterator&>(*this)
-          != static_cast<const BaseIterator&>(fi));
+  return (static_cast<const BaseIterator&>(*this) !=
+          static_cast<const BaseIterator&>(fi));
 }
 
 template <typename BaseIterator>
 inline bool
 FilteredIterator<BaseIterator>::operator<(const FilteredIterator& fi) const
 {
-  return (static_cast<const BaseIterator&>(*this)
-          < static_cast<const BaseIterator&>(fi));
+  return (static_cast<const BaseIterator&>(*this) <
+          static_cast<const BaseIterator&>(fi));
 }
 
 template <typename BaseIterator>
@@ -1183,8 +1183,8 @@ namespace IteratorFilters
   MaterialIdEqualTo::operator()(const Iterator& i) const
   {
     return only_locally_owned == true ?
-             (material_ids.find(i->material_id()) != material_ids.end()
-              && i->is_locally_owned()) :
+             (material_ids.find(i->material_id()) != material_ids.end() &&
+              i->is_locally_owned()) :
              material_ids.find(i->material_id()) != material_ids.end();
   }
 
@@ -1207,11 +1207,11 @@ namespace IteratorFilters
   ActiveFEIndexEqualTo::operator()(const Iterator& i) const
   {
     return only_locally_owned == true ?
-             (active_fe_indices.find(i->active_fe_index())
-                != active_fe_indices.end()
-              && i->is_locally_owned()) :
-             active_fe_indices.find(i->active_fe_index())
-               != active_fe_indices.end();
+             (active_fe_indices.find(i->active_fe_index()) !=
+                active_fe_indices.end() &&
+              i->is_locally_owned()) :
+             active_fe_indices.find(i->active_fe_index()) !=
+               active_fe_indices.end();
   }
 
   // ---------------- IteratorFilters::AtBoundary ---------

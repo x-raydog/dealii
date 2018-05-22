@@ -401,8 +401,8 @@ namespace Step57
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_quadrature_points
-                              | update_JxW_values | update_gradients);
+                            update_values | update_quadrature_points |
+                              update_JxW_values | update_gradients);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -428,9 +428,9 @@ namespace Step57
     std::vector<Tensor<2, dim>> grad_phi_u(dofs_per_cell);
     std::vector<double>         phi_p(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
 
     for(; cell != endc; ++cell)
       {
@@ -471,40 +471,37 @@ namespace Step57
                   {
                     for(unsigned int j = 0; j < dofs_per_cell; ++j)
                       {
-                        local_matrix(i, j)
-                          += (viscosity
-                                * scalar_product(grad_phi_u[j], grad_phi_u[i])
-                              + present_velocity_gradients[q] * phi_u[j]
-                                  * phi_u[i]
-                              + grad_phi_u[j] * present_velocity_values[q]
-                                  * phi_u[i]
-                              - div_phi_u[i] * phi_p[j]
-                              - phi_p[i] * div_phi_u[j]
-                              + gamma * div_phi_u[j] * div_phi_u[i]
-                              + phi_p[i] * phi_p[j])
-                             * fe_values.JxW(q);
+                        local_matrix(i, j) +=
+                          (viscosity *
+                             scalar_product(grad_phi_u[j], grad_phi_u[i]) +
+                           present_velocity_gradients[q] * phi_u[j] * phi_u[i] +
+                           grad_phi_u[j] * present_velocity_values[q] *
+                             phi_u[i] -
+                           div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j] +
+                           gamma * div_phi_u[j] * div_phi_u[i] +
+                           phi_p[i] * phi_p[j]) *
+                          fe_values.JxW(q);
                       }
                   }
 
-                double present_velocity_divergence
-                  = trace(present_velocity_gradients[q]);
-                local_rhs(i)
-                  += (-viscosity
-                        * scalar_product(present_velocity_gradients[q],
-                                         grad_phi_u[i])
-                      - present_velocity_gradients[q]
-                          * present_velocity_values[q] * phi_u[i]
-                      + present_pressure_values[q] * div_phi_u[i]
-                      + present_velocity_divergence * phi_p[i]
-                      - gamma * present_velocity_divergence * div_phi_u[i])
-                     * fe_values.JxW(q);
+                double present_velocity_divergence =
+                  trace(present_velocity_gradients[q]);
+                local_rhs(i) +=
+                  (-viscosity * scalar_product(present_velocity_gradients[q],
+                                               grad_phi_u[i]) -
+                   present_velocity_gradients[q] * present_velocity_values[q] *
+                     phi_u[i] +
+                   present_pressure_values[q] * div_phi_u[i] +
+                   present_velocity_divergence * phi_p[i] -
+                   gamma * present_velocity_divergence * div_phi_u[i]) *
+                  fe_values.JxW(q);
               }
           }
 
         cell->get_dof_indices(local_dof_indices);
 
-        const ConstraintMatrix& constraints_used
-          = initial_step ? nonzero_constraints : zero_constraints;
+        const ConstraintMatrix& constraints_used =
+          initial_step ? nonzero_constraints : zero_constraints;
 
         if(assemble_matrix)
           {
@@ -565,8 +562,8 @@ namespace Step57
   void
   StationaryNavierStokes<dim>::solve(const bool initial_step)
   {
-    const ConstraintMatrix& constraints_used
-      = initial_step ? nonzero_constraints : zero_constraints;
+    const ConstraintMatrix& constraints_used =
+      initial_step ? nonzero_constraints : zero_constraints;
 
     SolverControl solver_control(
       system_matrix.m(), 1e-4 * system_rhs.l2_norm(), true);
@@ -672,8 +669,8 @@ namespace Step57
         std::cout << "viscosity= " << viscosity << std::endl;
         std::cout << "*****************************************" << std::endl;
 
-        while((first_step || (current_res > tolerance))
-              && outer_iteration < max_iteration)
+        while((first_step || (current_res > tolerance)) &&
+              outer_iteration < max_iteration)
           {
             if(first_step)
               {
@@ -803,8 +800,8 @@ namespace Step57
                              data_component_interpretation);
     data_out.build_patches();
 
-    std::ofstream output(std::to_string(1.0 / viscosity) + "-solution-"
-                         + Utilities::int_to_string(output_index, 4) + ".vtk");
+    std::ofstream output(std::to_string(1.0 / viscosity) + "-solution-" +
+                         Utilities::int_to_string(output_index, 4) + ".vtk");
     data_out.write_vtk(output);
   }
 
@@ -816,8 +813,8 @@ namespace Step57
   void
   StationaryNavierStokes<dim>::process_solution(unsigned int refinement)
   {
-    std::ofstream f(std::to_string(1.0 / viscosity) + "-line-"
-                    + std::to_string(refinement) + ".txt");
+    std::ofstream f(std::to_string(1.0 / viscosity) + "-line-" +
+                    std::to_string(refinement) + ".txt");
     f << "# y u_x u_y" << std::endl;
 
     Point<dim> p;

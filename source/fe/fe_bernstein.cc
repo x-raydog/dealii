@@ -100,8 +100,8 @@ FE_Bernstein<dim, spacedim>::get_subface_interpolation_matrix(
     ExcDimensionMismatch(interpolation_matrix.m(), x_source_fe.dofs_per_face));
 
   // see if source is a Bernstein element
-  if(const FE_Bernstein<dim, spacedim>* source_fe
-     = dynamic_cast<const FE_Bernstein<dim, spacedim>*>(&x_source_fe))
+  if(const FE_Bernstein<dim, spacedim>* source_fe =
+       dynamic_cast<const FE_Bernstein<dim, spacedim>*>(&x_source_fe))
     {
       // have this test in here since a table of size 2x0 reports its size as
       // 0x0
@@ -126,26 +126,26 @@ FE_Bernstein<dim, spacedim>::get_subface_interpolation_matrix(
       // Rule of thumb for FP accuracy, that can be expected for a given
       // polynomial degree.  This value is used to cut off values close to
       // zero.
-      double eps
-        = 2e-13 * std::max(this->degree, source_fe->degree) * (dim - 1);
+      double eps =
+        2e-13 * std::max(this->degree, source_fe->degree) * (dim - 1);
 
       // compute the interpolation matrix by simply taking the value at the
       // support points.
       //TODO: Verify that all faces are the same with respect to
       // these support points. Furthermore, check if something has to
       // be done for the face orientation flag in 3D.
-      const Quadrature<dim> subface_quadrature
-        = subface == numbers::invalid_unsigned_int ?
-            QProjector<dim>::project_to_face(quad_face_support, 0) :
-            QProjector<dim>::project_to_subface(quad_face_support, 0, subface);
+      const Quadrature<dim> subface_quadrature =
+        subface == numbers::invalid_unsigned_int ?
+          QProjector<dim>::project_to_face(quad_face_support, 0) :
+          QProjector<dim>::project_to_subface(quad_face_support, 0, subface);
 
       for(unsigned int i = 0; i < source_fe->dofs_per_face; ++i)
         {
           const Point<dim>& p = subface_quadrature.point(i);
           for(unsigned int j = 0; j < this->dofs_per_face; ++j)
             {
-              double matrix_entry
-                = this->shape_value(this->face_to_cell_index(j, 0), p);
+              double matrix_entry =
+                this->shape_value(this->face_to_cell_index(j, 0), p);
 
               // Correct the interpolated value. I.e. if it is close to 1 or
               // 0, make it exactly 1 or 0. Unfortunately, this is required to
@@ -260,8 +260,8 @@ FiniteElementDomination::Domination
 FE_Bernstein<dim, spacedim>::compare_for_face_domination(
   const FiniteElement<dim, spacedim>& fe_other) const
 {
-  if(const FE_Bernstein<dim, spacedim>* fe_b_other
-     = dynamic_cast<const FE_Bernstein<dim, spacedim>*>(&fe_other))
+  if(const FE_Bernstein<dim, spacedim>* fe_b_other =
+       dynamic_cast<const FE_Bernstein<dim, spacedim>*>(&fe_other))
     {
       if(this->degree < fe_b_other->degree)
         return FiniteElementDomination::this_element_dominates;
@@ -270,8 +270,8 @@ FE_Bernstein<dim, spacedim>::compare_for_face_domination(
       else
         return FiniteElementDomination::other_element_dominates;
     }
-  else if(const FE_Nothing<dim>* fe_nothing
-          = dynamic_cast<const FE_Nothing<dim>*>(&fe_other))
+  else if(const FE_Nothing<dim>* fe_nothing =
+            dynamic_cast<const FE_Nothing<dim>*>(&fe_other))
     {
       if(fe_nothing->is_dominating())
         {

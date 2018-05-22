@@ -110,8 +110,8 @@ namespace LinearAlgebra
       import(
         const ReadWriteVector<Number>&                  V,
         VectorOperation::values                         operation,
-        std::shared_ptr<const CommunicationPatternBase> communication_pattern
-        = std::shared_ptr<const CommunicationPatternBase>()) override;
+        std::shared_ptr<const CommunicationPatternBase> communication_pattern =
+          std::shared_ptr<const CommunicationPatternBase>()) override;
 
       /**
        * Sets all elements of the vector to the scalar @p s. This operation is

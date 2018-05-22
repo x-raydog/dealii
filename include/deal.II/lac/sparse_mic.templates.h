@@ -100,8 +100,8 @@ SparseMIC<number>::initialize(const SparseMatrix<somenumber>& matrix,
 
       // work on the lower left part of the matrix. we know
       // it's symmetric, so we can work with this alone
-      for(typename SparseMatrix<somenumber>::const_iterator p
-          = matrix.begin(row) + 1;
+      for(typename SparseMatrix<somenumber>::const_iterator p =
+            matrix.begin(row) + 1;
           (p != matrix.end(row)) && (p->column() < row);
           ++p)
         temp1 += p->value() / diag[p->column()] * inner_sums[p->column()];
@@ -151,8 +151,8 @@ SparseMIC<number>::vmult(Vector<somenumber>&       dst,
 
       // get start of this row. skip
       // the diagonal element
-      for(typename SparseMatrix<number>::const_iterator p
-          = this->begin(row) + 1;
+      for(typename SparseMatrix<number>::const_iterator p =
+            this->begin(row) + 1;
           (p != this->end(row)) && (p->column() < row);
           ++p)
         dst(row) -= p->value() * dst(p->column());
@@ -168,8 +168,8 @@ SparseMIC<number>::vmult(Vector<somenumber>&       dst,
   for(int row = N - 1; row >= 0; --row)
     {
       // get end of this row
-      for(typename SparseMatrix<number>::const_iterator p
-          = this->begin(row) + 1;
+      for(typename SparseMatrix<number>::const_iterator p =
+            this->begin(row) + 1;
           p != this->end(row);
           ++p)
         if(p->column() > static_cast<size_type>(row))
@@ -193,10 +193,10 @@ template <typename number>
 std::size_t
 SparseMIC<number>::memory_consumption() const
 {
-  return (SparseLUDecomposition<number>::memory_consumption()
-          + MemoryConsumption::memory_consumption(diag)
-          + MemoryConsumption::memory_consumption(inv_diag)
-          + MemoryConsumption::memory_consumption(inner_sums));
+  return (SparseLUDecomposition<number>::memory_consumption() +
+          MemoryConsumption::memory_consumption(diag) +
+          MemoryConsumption::memory_consumption(inv_diag) +
+          MemoryConsumption::memory_consumption(inner_sums));
 }
 
 DEAL_II_NAMESPACE_CLOSE

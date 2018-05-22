@@ -210,10 +210,10 @@ template <int dim, int spacedim>
 std::size_t
 PersistentTriangulation<dim, spacedim>::memory_consumption() const
 {
-  return (Triangulation<dim, spacedim>::memory_consumption()
-          + MemoryConsumption::memory_consumption(coarse_grid)
-          + MemoryConsumption::memory_consumption(refine_flags)
-          + MemoryConsumption::memory_consumption(coarsen_flags));
+  return (Triangulation<dim, spacedim>::memory_consumption() +
+          MemoryConsumption::memory_consumption(coarse_grid) +
+          MemoryConsumption::memory_consumption(refine_flags) +
+          MemoryConsumption::memory_consumption(coarsen_flags));
 }
 
 // explicit instantiations

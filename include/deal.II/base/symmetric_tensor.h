@@ -202,8 +202,8 @@ namespace internal
        * Number of independent components of a symmetric tensor of rank 2. We
        * store only the upper right half of it.
        */
-      static const unsigned int n_independent_components
-        = (dim * dim + dim) / 2;
+      static const unsigned int n_independent_components =
+        (dim * dim + dim) / 2;
 
       /**
        * Declare the type in which we actually store the data.
@@ -227,9 +227,9 @@ namespace internal
       /**
        * Number of independent components of a symmetric tensor of rank 4.
        */
-      static const unsigned int n_independent_components
-        = (n_rank2_components
-           * StorageType<2, dim, Number>::n_independent_components);
+      static const unsigned int n_independent_components =
+        (n_rank2_components *
+         StorageType<2, dim, Number>::n_independent_components);
 
       /**
        * Declare the type in which we actually store the data. Symmetric
@@ -560,8 +560,8 @@ public:
    * describe a symmetric tensor. In $d$ space dimensions, this number equals
    * $\frac 12 (d^2+d)$ for symmetric tensors of rank 2.
    */
-  static const unsigned int n_independent_components
-    = internal::SymmetricTensorAccessors::StorageType<rank_, dim, Number>::
+  static const unsigned int n_independent_components =
+    internal::SymmetricTensorAccessors::StorageType<rank_, dim, Number>::
       n_independent_components;
 
   /**
@@ -1036,8 +1036,8 @@ inline SymmetricTensor<rank_, dim, Number>::SymmetricTensor(
   const SymmetricTensor<rank_, dim, OtherNumber>& initializer)
 {
   for(unsigned int i = 0; i < base_tensor_type::dimension; ++i)
-    data[i]
-      = internal::NumberType<typename base_tensor_type::value_type>::value(
+    data[i] =
+      internal::NumberType<typename base_tensor_type::value_type>::value(
         initializer.data[i]);
 }
 
@@ -1112,10 +1112,10 @@ namespace internal
         for(unsigned int j = i; j < dim; ++j)
           for(unsigned int k = 0; k < dim; ++k)
             for(unsigned int l = k; l < dim; ++l)
-              t[TableIndices<4>(i, j, k, l)] = t[TableIndices<4>(i, j, l, k)]
-                = t[TableIndices<4>(j, i, k, l)]
-                = t[TableIndices<4>(j, i, l, k)]
-                = st[TableIndices<4>(i, j, k, l)];
+              t[TableIndices<4>(i, j, k, l)] = t[TableIndices<4>(i, j, l, k)] =
+                t[TableIndices<4>(j, i, k, l)] =
+                  t[TableIndices<4>(j, i, l, k)] =
+                    st[TableIndices<4>(i, j, k, l)];
 
       return t;
     }
@@ -1148,8 +1148,8 @@ namespace internal
         const TableIndices<2> idx_00(0, 0);
         const TableIndices<2> idx_01(0, 1);
         const TableIndices<2> idx_11(1, 1);
-        const Number          inv_det_t
-          = 1.0 / (t[idx_00] * t[idx_11] - t[idx_01] * t[idx_01]);
+        const Number          inv_det_t =
+          1.0 / (t[idx_00] * t[idx_11] - t[idx_01] * t[idx_01]);
         tmp[idx_00] = t[idx_11];
         tmp[idx_01] = -t[idx_01];
         tmp[idx_11] = t[idx_00];
@@ -1183,12 +1183,12 @@ namespace internal
         const TableIndices<2> idx_11(1, 1);
         const TableIndices<2> idx_12(1, 2);
         const TableIndices<2> idx_22(2, 2);
-        const Number          inv_det_t = 1.0
-                                 / (t[idx_00] * t[idx_11] * t[idx_22]
-                                    - t[idx_00] * t[idx_12] * t[idx_12]
-                                    - t[idx_01] * t[idx_01] * t[idx_22]
-                                    + 2.0 * t[idx_01] * t[idx_02] * t[idx_12]
-                                    - t[idx_02] * t[idx_02] * t[idx_11]);
+        const Number          inv_det_t =
+          1.0 / (t[idx_00] * t[idx_11] * t[idx_22] -
+                 t[idx_00] * t[idx_12] * t[idx_12] -
+                 t[idx_01] * t[idx_01] * t[idx_22] +
+                 2.0 * t[idx_01] * t[idx_02] * t[idx_12] -
+                 t[idx_02] * t[idx_02] * t[idx_11]);
         tmp[idx_00] = t[idx_11] * t[idx_22] - t[idx_12] * t[idx_12];
         tmp[idx_01] = -t[idx_01] * t[idx_22] + t[idx_02] * t[idx_12];
         tmp[idx_02] = t[idx_01] * t[idx_12] - t[idx_02] * t[idx_11];
@@ -1243,27 +1243,27 @@ namespace internal
         // put it into tmp.data; at the end of the function we then scale the
         // last row and column of the inverse by 1/2, corresponding to the left
         // and right multiplication with mult^-1.
-        const Number t4
-          = t.data[0][0] * t.data[1][1],
-          t6 = t.data[0][0] * t.data[1][2], t8 = t.data[0][1] * t.data[1][0],
-          t00 = t.data[0][2] * t.data[1][0], t01 = t.data[0][1] * t.data[2][0],
-          t04 = t.data[0][2] * t.data[2][0],
-          t07
-          = 1.0
-            / (t4 * t.data[2][2] - t6 * t.data[2][1] - t8 * t.data[2][2]
-               + t00 * t.data[2][1] + t01 * t.data[1][2] - t04 * t.data[1][1]);
-        tmp.data[0][0]
-          = (t.data[1][1] * t.data[2][2] - t.data[1][2] * t.data[2][1]) * t07;
-        tmp.data[0][1]
-          = -(t.data[0][1] * t.data[2][2] - t.data[0][2] * t.data[2][1]) * t07;
-        tmp.data[0][2]
-          = -(-t.data[0][1] * t.data[1][2] + t.data[0][2] * t.data[1][1]) * t07;
-        tmp.data[1][0]
-          = -(t.data[1][0] * t.data[2][2] - t.data[1][2] * t.data[2][0]) * t07;
+        const Number t4  = t.data[0][0] * t.data[1][1],
+                     t6  = t.data[0][0] * t.data[1][2],
+                     t8  = t.data[0][1] * t.data[1][0],
+                     t00 = t.data[0][2] * t.data[1][0],
+                     t01 = t.data[0][1] * t.data[2][0],
+                     t04 = t.data[0][2] * t.data[2][0],
+                     t07 = 1.0 / (t4 * t.data[2][2] - t6 * t.data[2][1] -
+                                  t8 * t.data[2][2] + t00 * t.data[2][1] +
+                                  t01 * t.data[1][2] - t04 * t.data[1][1]);
+        tmp.data[0][0] =
+          (t.data[1][1] * t.data[2][2] - t.data[1][2] * t.data[2][1]) * t07;
+        tmp.data[0][1] =
+          -(t.data[0][1] * t.data[2][2] - t.data[0][2] * t.data[2][1]) * t07;
+        tmp.data[0][2] =
+          -(-t.data[0][1] * t.data[1][2] + t.data[0][2] * t.data[1][1]) * t07;
+        tmp.data[1][0] =
+          -(t.data[1][0] * t.data[2][2] - t.data[1][2] * t.data[2][0]) * t07;
         tmp.data[1][1] = (t.data[0][0] * t.data[2][2] - t04) * t07;
         tmp.data[1][2] = -(t6 - t00) * t07;
-        tmp.data[2][0]
-          = -(-t.data[1][0] * t.data[2][1] + t.data[1][1] * t.data[2][0]) * t07;
+        tmp.data[2][0] =
+          -(-t.data[1][0] * t.data[2][1] + t.data[1][1] * t.data[2][0]) * t07;
         tmp.data[2][1] = -(t.data[0][0] * t.data[2][1] - t01) * t07;
         tmp.data[2][2] = (t4 - t8) * t07;
 
@@ -1301,8 +1301,8 @@ namespace internal
         Number diagonal_sum = internal::NumberType<Number>::value(0.0);
         for(unsigned int i = 0; i < N; ++i)
           diagonal_sum += std::fabs(tmp.data[i][i]);
-        const Number typical_diagonal_element
-          = diagonal_sum / static_cast<double>(N);
+        const Number typical_diagonal_element =
+          diagonal_sum / static_cast<double>(N);
         (void) typical_diagonal_element;
 
         unsigned int p[N];
@@ -1529,8 +1529,8 @@ namespace internal
       StorageType<2, dim, value_type>::n_independent_components;
     value_type tmp[data_dim];
     for(unsigned int i = 0; i < data_dim; ++i)
-      tmp[i]
-        = perform_double_contraction<dim, Number, OtherNumber>(data[i], sdata);
+      tmp[i] =
+        perform_double_contraction<dim, Number, OtherNumber>(data[i], sdata);
     return result_type(tmp);
   }
 
@@ -1668,8 +1668,8 @@ namespace internal
       {
         case 2:
           // at least for the 2x2 case it is reasonably simple
-          Assert(((indices[0] == 1) && (indices[1] == 0))
-                   || ((indices[0] == 0) && (indices[1] == 1)),
+          Assert(((indices[0] == 1) && (indices[1] == 0)) ||
+                   ((indices[0] == 0) && (indices[1] == 1)),
                  ExcInternalError());
           return data[2];
 
@@ -1711,8 +1711,8 @@ namespace internal
       {
         case 2:
           // at least for the 2x2 case it is reasonably simple
-          Assert(((indices[0] == 1) && (indices[1] == 0))
-                   || ((indices[0] == 0) && (indices[1] == 1)),
+          Assert(((indices[0] == 1) && (indices[1] == 0)) ||
+                   ((indices[0] == 0) && (indices[1] == 1)),
                  ExcInternalError());
           return data[2];
 
@@ -1792,16 +1792,16 @@ namespace internal
               base_index[0] = 1;
             else if((indices[0] == 2) && (indices[1] == 2))
               base_index[0] = 2;
-            else if(((indices[0] == 0) && (indices[1] == 1))
-                    || ((indices[0] == 1) && (indices[1] == 0)))
+            else if(((indices[0] == 0) && (indices[1] == 1)) ||
+                    ((indices[0] == 1) && (indices[1] == 0)))
               base_index[0] = 3;
-            else if(((indices[0] == 0) && (indices[1] == 2))
-                    || ((indices[0] == 2) && (indices[1] == 0)))
+            else if(((indices[0] == 0) && (indices[1] == 2)) ||
+                    ((indices[0] == 2) && (indices[1] == 0)))
               base_index[0] = 4;
             else
               {
-                Assert(((indices[0] == 1) && (indices[1] == 2))
-                         || ((indices[0] == 2) && (indices[1] == 1)),
+                Assert(((indices[0] == 1) && (indices[1] == 2)) ||
+                         ((indices[0] == 2) && (indices[1] == 1)),
                        ExcInternalError());
                 base_index[0] = 5;
               }
@@ -1812,16 +1812,16 @@ namespace internal
               base_index[1] = 1;
             else if((indices[2] == 2) && (indices[3] == 2))
               base_index[1] = 2;
-            else if(((indices[2] == 0) && (indices[3] == 1))
-                    || ((indices[2] == 1) && (indices[3] == 0)))
+            else if(((indices[2] == 0) && (indices[3] == 1)) ||
+                    ((indices[2] == 1) && (indices[3] == 0)))
               base_index[1] = 3;
-            else if(((indices[2] == 0) && (indices[3] == 2))
-                    || ((indices[2] == 2) && (indices[3] == 0)))
+            else if(((indices[2] == 0) && (indices[3] == 2)) ||
+                    ((indices[2] == 2) && (indices[3] == 0)))
               base_index[1] = 4;
             else
               {
-                Assert(((indices[2] == 1) && (indices[3] == 2))
-                         || ((indices[2] == 2) && (indices[3] == 1)),
+                Assert(((indices[2] == 1) && (indices[3] == 2)) ||
+                         ((indices[2] == 2) && (indices[3] == 1)),
                        ExcInternalError());
                 base_index[1] = 5;
               }
@@ -1895,16 +1895,16 @@ namespace internal
               base_index[0] = 1;
             else if((indices[0] == 2) && (indices[1] == 2))
               base_index[0] = 2;
-            else if(((indices[0] == 0) && (indices[1] == 1))
-                    || ((indices[0] == 1) && (indices[1] == 0)))
+            else if(((indices[0] == 0) && (indices[1] == 1)) ||
+                    ((indices[0] == 1) && (indices[1] == 0)))
               base_index[0] = 3;
-            else if(((indices[0] == 0) && (indices[1] == 2))
-                    || ((indices[0] == 2) && (indices[1] == 0)))
+            else if(((indices[0] == 0) && (indices[1] == 2)) ||
+                    ((indices[0] == 2) && (indices[1] == 0)))
               base_index[0] = 4;
             else
               {
-                Assert(((indices[0] == 1) && (indices[1] == 2))
-                         || ((indices[0] == 2) && (indices[1] == 1)),
+                Assert(((indices[0] == 1) && (indices[1] == 2)) ||
+                         ((indices[0] == 2) && (indices[1] == 1)),
                        ExcInternalError());
                 base_index[0] = 5;
               }
@@ -1915,16 +1915,16 @@ namespace internal
               base_index[1] = 1;
             else if((indices[2] == 2) && (indices[3] == 2))
               base_index[1] = 2;
-            else if(((indices[2] == 0) && (indices[3] == 1))
-                    || ((indices[2] == 1) && (indices[3] == 0)))
+            else if(((indices[2] == 0) && (indices[3] == 1)) ||
+                    ((indices[2] == 1) && (indices[3] == 0)))
               base_index[1] = 3;
-            else if(((indices[2] == 0) && (indices[3] == 2))
-                    || ((indices[2] == 2) && (indices[3] == 0)))
+            else if(((indices[2] == 0) && (indices[3] == 2)) ||
+                    ((indices[2] == 2) && (indices[3] == 0)))
               base_index[1] = 4;
             else
               {
-                Assert(((indices[2] == 1) && (indices[3] == 2))
-                         || ((indices[2] == 2) && (indices[3] == 1)),
+                Assert(((indices[2] == 1) && (indices[3] == 2)) ||
+                         ((indices[2] == 2) && (indices[3] == 1)),
                        ExcInternalError());
                 base_index[1] = 5;
               }
@@ -2111,18 +2111,18 @@ namespace internal
 
         case 2:
           return std::sqrt(
-            numbers::NumberTraits<Number>::abs_square(data[0])
-            + numbers::NumberTraits<Number>::abs_square(data[1])
-            + 2. * numbers::NumberTraits<Number>::abs_square(data[2]));
+            numbers::NumberTraits<Number>::abs_square(data[0]) +
+            numbers::NumberTraits<Number>::abs_square(data[1]) +
+            2. * numbers::NumberTraits<Number>::abs_square(data[2]));
 
         case 3:
           return std::sqrt(
-            numbers::NumberTraits<Number>::abs_square(data[0])
-            + numbers::NumberTraits<Number>::abs_square(data[1])
-            + numbers::NumberTraits<Number>::abs_square(data[2])
-            + 2. * numbers::NumberTraits<Number>::abs_square(data[3])
-            + 2. * numbers::NumberTraits<Number>::abs_square(data[4])
-            + 2. * numbers::NumberTraits<Number>::abs_square(data[5]));
+            numbers::NumberTraits<Number>::abs_square(data[0]) +
+            numbers::NumberTraits<Number>::abs_square(data[1]) +
+            numbers::NumberTraits<Number>::abs_square(data[2]) +
+            2. * numbers::NumberTraits<Number>::abs_square(data[3]) +
+            2. * numbers::NumberTraits<Number>::abs_square(data[4]) +
+            2. * numbers::NumberTraits<Number>::abs_square(data[5]));
 
         default:
           {
@@ -2130,11 +2130,11 @@ namespace internal
               typename numbers::NumberTraits<Number>::real_type();
 
             for(unsigned int d = 0; d < dim; ++d)
-              return_value
-                += numbers::NumberTraits<Number>::abs_square(data[d]);
+              return_value +=
+                numbers::NumberTraits<Number>::abs_square(data[d]);
             for(unsigned int d = dim; d < (dim * dim + dim) / 2; ++d)
-              return_value
-                += 2. * numbers::NumberTraits<Number>::abs_square(data[d]);
+              return_value +=
+                2. * numbers::NumberTraits<Number>::abs_square(data[d]);
 
             return std::sqrt(return_value);
           }
@@ -2160,20 +2160,20 @@ namespace internal
 
             for(unsigned int i = 0; i < dim; ++i)
               for(unsigned int j = 0; j < dim; ++j)
-                return_value
-                  += numbers::NumberTraits<Number>::abs_square(data[i][j]);
+                return_value +=
+                  numbers::NumberTraits<Number>::abs_square(data[i][j]);
             for(unsigned int i = 0; i < dim; ++i)
               for(unsigned int j = dim; j < n_independent_components; ++j)
-                return_value
-                  += 2. * numbers::NumberTraits<Number>::abs_square(data[i][j]);
+                return_value +=
+                  2. * numbers::NumberTraits<Number>::abs_square(data[i][j]);
             for(unsigned int i = dim; i < n_independent_components; ++i)
               for(unsigned int j = 0; j < dim; ++j)
-                return_value
-                  += 2. * numbers::NumberTraits<Number>::abs_square(data[i][j]);
+                return_value +=
+                  2. * numbers::NumberTraits<Number>::abs_square(data[i][j]);
             for(unsigned int i = dim; i < n_independent_components; ++i)
               for(unsigned int j = dim; j < n_independent_components; ++j)
-                return_value
-                  += 4. * numbers::NumberTraits<Number>::abs_square(data[i][j]);
+                return_value +=
+                  4. * numbers::NumberTraits<Number>::abs_square(data[i][j]);
 
             return std::sqrt(return_value);
           }
@@ -2222,15 +2222,15 @@ namespace internal
 
             case 3:
               {
-                static const unsigned int table[3][3]
-                  = {{0, 3, 4}, {3, 1, 5}, {4, 5, 2}};
+                static const unsigned int table[3][3] = {
+                  {0, 3, 4}, {3, 1, 5}, {4, 5, 2}};
                 return table[indices[0]][indices[1]];
               }
 
             case 4:
               {
-                static const unsigned int table[4][4]
-                  = {{0, 4, 5, 6}, {4, 1, 7, 8}, {5, 7, 2, 9}, {6, 8, 9, 3}};
+                static const unsigned int table[4][4] = {
+                  {0, 4, 5, 6}, {4, 1, 7, 8}, {5, 7, 2, 9}, {6, 8, 9, 3}};
                 return table[indices[0]][indices[1]];
               }
 
@@ -2301,8 +2301,8 @@ namespace internal
                                     const std::integral_constant<int, 2>&)
       {
         Assert(
-          (i
-           < dealii::SymmetricTensor<2, dim, double>::n_independent_components),
+          (i <
+           dealii::SymmetricTensor<2, dim, double>::n_independent_components),
           ExcIndexRange(
             i,
             0,
@@ -2536,10 +2536,10 @@ determinant(const SymmetricTensor<2, dim, Number>& t)
           // there's something to be simplified for
           // the present case
           const Number tmp = t.data[3] * t.data[4] * t.data[5];
-          return (tmp + tmp + t.data[0] * t.data[1] * t.data[2]
-                  - t.data[0] * t.data[5] * t.data[5]
-                  - t.data[1] * t.data[4] * t.data[4]
-                  - t.data[2] * t.data[3] * t.data[3]);
+          return (tmp + tmp + t.data[0] * t.data[1] * t.data[2] -
+                  t.data[0] * t.data[5] * t.data[5] -
+                  t.data[1] * t.data[4] * t.data[4] -
+                  t.data[2] * t.data[3] * t.data[3]);
         }
       default:
         Assert(false, ExcNotImplemented());
@@ -2655,8 +2655,8 @@ template <typename Number>
 inline Number
 second_invariant(const SymmetricTensor<2, 3, Number>& t)
 {
-  return (t[0][0] * t[1][1] + t[1][1] * t[2][2] + t[2][2] * t[0][0]
-          - t[0][1] * t[0][1] - t[0][2] * t[0][2] - t[1][2] * t[1][2]);
+  return (t[0][0] * t[1][1] + t[1][1] * t[2][2] + t[2][2] * t[0][0] -
+          t[0][1] * t[0][1] - t[0][2] * t[0][2] - t[1][2] * t[1][2]);
 }
 
 /**
@@ -3020,8 +3020,8 @@ template <int dim, typename Number>
 std::array<std::pair<Number, Tensor<1, dim, Number>>,
            std::integral_constant<int, dim>::value>
 eigenvectors(const SymmetricTensor<2, dim, Number>& T,
-             const SymmetricTensorEigenvectorMethod method
-             = SymmetricTensorEigenvectorMethod::ql_implicit_shifts);
+             const SymmetricTensorEigenvectorMethod method =
+               SymmetricTensorEigenvectorMethod::ql_implicit_shifts);
 
 /**
  * Return the transpose of the given symmetric tensor. Since we are working
@@ -3630,8 +3630,8 @@ inline void double_contract(
 
   for(unsigned int i = 0; i < dim; ++i)
     for(unsigned int j = i; j < dim; ++j)
-      tmp[i][j] = t[i][j][0][0] * s[0][0] + t[i][j][1][1] * s[1][1]
-                  + 2 * t[i][j][0][1] * s[0][1];
+      tmp[i][j] = t[i][j][0][0] * s[0][0] + t[i][j][1][1] * s[1][1] +
+                  2 * t[i][j][0][1] * s[0][1];
 }
 
 /**
@@ -3659,8 +3659,8 @@ inline void double_contract(
 
   for(unsigned int i = 0; i < dim; ++i)
     for(unsigned int j = i; j < dim; ++j)
-      tmp[i][j] = s[0][0] * t[0][0][i][j] * +s[1][1] * t[1][1][i][j]
-                  + 2 * s[0][1] * t[0][1][i][j];
+      tmp[i][j] = s[0][0] * t[0][0][i][j] * +s[1][1] * t[1][1][i][j] +
+                  2 * s[0][1] * t[0][1][i][j];
 }
 
 /**
@@ -3688,9 +3688,9 @@ inline void double_contract(
 
   for(unsigned int i = 0; i < dim; ++i)
     for(unsigned int j = i; j < dim; ++j)
-      tmp[i][j] = t[i][j][0][0] * s[0][0] + t[i][j][1][1] * s[1][1]
-                  + t[i][j][2][2] * s[2][2] + 2 * t[i][j][0][1] * s[0][1]
-                  + 2 * t[i][j][0][2] * s[0][2] + 2 * t[i][j][1][2] * s[1][2];
+      tmp[i][j] = t[i][j][0][0] * s[0][0] + t[i][j][1][1] * s[1][1] +
+                  t[i][j][2][2] * s[2][2] + 2 * t[i][j][0][1] * s[0][1] +
+                  2 * t[i][j][0][2] * s[0][2] + 2 * t[i][j][1][2] * s[1][2];
 }
 
 /**
@@ -3718,9 +3718,9 @@ inline void double_contract(
 
   for(unsigned int i = 0; i < dim; ++i)
     for(unsigned int j = i; j < dim; ++j)
-      tmp[i][j] = s[0][0] * t[0][0][i][j] + s[1][1] * t[1][1][i][j]
-                  + s[2][2] * t[2][2][i][j] + 2 * s[0][1] * t[0][1][i][j]
-                  + 2 * s[0][2] * t[0][2][i][j] + 2 * s[1][2] * t[1][2][i][j];
+      tmp[i][j] = s[0][0] * t[0][0][i][j] + s[1][1] * t[1][1][i][j] +
+                  s[2][2] * t[2][2][i][j] + 2 * s[0][1] * t[0][1][i][j] +
+                  2 * s[0][2] * t[0][2][i][j] + 2 * s[1][2] * t[1][2][i][j];
 }
 
 /**

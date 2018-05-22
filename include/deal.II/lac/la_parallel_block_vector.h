@@ -473,8 +473,8 @@ namespace LinearAlgebra
       import(
         const LinearAlgebra::ReadWriteVector<Number>&   V,
         VectorOperation::values                         operation,
-        std::shared_ptr<const CommunicationPatternBase> communication_pattern
-        = std::shared_ptr<const CommunicationPatternBase>()) override;
+        std::shared_ptr<const CommunicationPatternBase> communication_pattern =
+          std::shared_ptr<const CommunicationPatternBase>()) override;
 
       /**
        * Return the scalar product of two vectors.

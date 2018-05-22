@@ -224,10 +224,10 @@ namespace MatrixFreeOperators
      */
     void
     initialize(std::shared_ptr<const MatrixFree<dim, value_type>> data,
-               const std::vector<unsigned int>& selected_row_blocks
-               = std::vector<unsigned int>(),
-               const std::vector<unsigned int>& selected_column_blocks
-               = std::vector<unsigned int>());
+               const std::vector<unsigned int>& selected_row_blocks =
+                 std::vector<unsigned int>(),
+               const std::vector<unsigned int>& selected_column_blocks =
+                 std::vector<unsigned int>());
 
     /**
      * Initialize operator on a level @p level for a single FiniteElement.
@@ -246,8 +246,8 @@ namespace MatrixFreeOperators
     initialize(std::shared_ptr<const MatrixFree<dim, value_type>> data,
                const MGConstrainedDoFs&         mg_constrained_dofs,
                const unsigned int               level,
-               const std::vector<unsigned int>& selected_row_blocks
-               = std::vector<unsigned int>());
+               const std::vector<unsigned int>& selected_row_blocks =
+                 std::vector<unsigned int>());
 
     /**
      * Initialize operator on a level @p level for multiple FiniteElement
@@ -267,8 +267,8 @@ namespace MatrixFreeOperators
     initialize(std::shared_ptr<const MatrixFree<dim, value_type>> data_,
                const std::vector<MGConstrainedDoFs>& mg_constrained_dofs,
                const unsigned int                    level,
-               const std::vector<unsigned int>&      selected_row_blocks
-               = std::vector<unsigned int>());
+               const std::vector<unsigned int>&      selected_row_blocks =
+                 std::vector<unsigned int>());
 
     /**
      * Return the dimension of the codomain (or range) space.
@@ -344,8 +344,7 @@ namespace MatrixFreeOperators
      * the protected member inverse_diagonal_entries and/or diagonal_entries accordingly.
      */
     virtual void
-    compute_diagonal()
-      = 0;
+    compute_diagonal() = 0;
 
     /**
      * Get read access to the MatrixFree object stored with this operator.
@@ -865,10 +864,10 @@ namespace MatrixFreeOperators
     for(unsigned int i = 0; i < stride; ++i)
       for(unsigned int q = 0; q < (fe_degree + 2) / 2; ++q)
         {
-          inverse_shape[i * stride + q]
-            = 0.5 * (shapes_1d(i, q) + shapes_1d(i, fe_degree - q));
-          inverse_shape[(fe_degree - i) * stride + q]
-            = 0.5 * (shapes_1d(i, q) - shapes_1d(i, fe_degree - q));
+          inverse_shape[i * stride + q] =
+            0.5 * (shapes_1d(i, q) + shapes_1d(i, fe_degree - q));
+          inverse_shape[(fe_degree - i) * stride + q] =
+            0.5 * (shapes_1d(i, q) - shapes_1d(i, fe_degree - q));
         }
     if(fe_degree % 2 == 0)
       for(unsigned int q = 0; q < (fe_degree + 2) / 2; ++q)
@@ -912,8 +911,8 @@ namespace MatrixFreeOperators
   {
     constexpr unsigned int dofs_per_cell = Utilities::pow(fe_degree + 1, dim);
     Assert(
-      inverse_coefficients.size() > 0
-        && inverse_coefficients.size() % dofs_per_cell == 0,
+      inverse_coefficients.size() > 0 &&
+        inverse_coefficients.size() % dofs_per_cell == 0,
       ExcMessage("Expected diagonal to be a multiple of scalar dof per cells"));
     if(inverse_coefficients.size() != dofs_per_cell)
       AssertDimension(n_actual_components * dofs_per_cell,
@@ -928,8 +927,8 @@ namespace MatrixFreeOperators
                                      VectorizedArray<Number>>
       evaluator(inverse_shape, inverse_shape, inverse_shape);
 
-    const unsigned int shift_coefficient
-      = inverse_coefficients.size() > dofs_per_cell ? dofs_per_cell : 0;
+    const unsigned int shift_coefficient =
+      inverse_coefficients.size() > dofs_per_cell ? dofs_per_cell : 0;
     const VectorizedArray<Number>* inv_coefficient = &inverse_coefficients[0];
     VectorizedArray<Number>        temp_data_field[dofs_per_cell];
     for(unsigned int d = 0; d < n_actual_components; ++d)
@@ -1001,8 +1000,8 @@ namespace MatrixFreeOperators
   {
     (void) col;
     Assert(row == col, ExcNotImplemented());
-    Assert(inverse_diagonal_entries.get() != nullptr
-             && inverse_diagonal_entries->m() > 0,
+    Assert(inverse_diagonal_entries.get() != nullptr &&
+             inverse_diagonal_entries->m() > 0,
            ExcNotInitialized());
     return 1.0 / (*inverse_diagonal_entries)(row, row);
   }
@@ -1149,17 +1148,16 @@ namespace MatrixFreeOperators
         edge_constrained_indices[j].clear();
         edge_constrained_indices[j].reserve(interface_indices.size());
         edge_constrained_values[j].resize(interface_indices.size());
-        const IndexSet& locally_owned = data->get_dof_handler(selected_rows[j])
-                                          .locally_owned_mg_dofs(level);
+        const IndexSet& locally_owned =
+          data->get_dof_handler(selected_rows[j]).locally_owned_mg_dofs(level);
         for(unsigned int i = 0; i < interface_indices.size(); ++i)
           if(locally_owned.is_element(interface_indices[i]))
             edge_constrained_indices[j].push_back(
               locally_owned.index_within_set(interface_indices[i]));
-        have_interface_matrices
-          |= Utilities::MPI::max(
-               static_cast<unsigned int>(edge_constrained_indices[j].size()),
-               data->get_vector_partitioner()->get_mpi_communicator())
-             > 0;
+        have_interface_matrices |=
+          Utilities::MPI::max(
+            static_cast<unsigned int>(edge_constrained_indices[j].size()),
+            data->get_vector_partitioner()->get_mpi_communicator()) > 0;
       }
   }
 
@@ -1169,8 +1167,8 @@ namespace MatrixFreeOperators
   {
     for(unsigned int j = 0; j < n_blocks(dst); ++j)
       {
-        const std::vector<unsigned int>& constrained_dofs
-          = data->get_constrained_dofs(selected_rows[j]);
+        const std::vector<unsigned int>& constrained_dofs =
+          data->get_constrained_dofs(selected_rows[j]);
         for(unsigned int i = 0; i < constrained_dofs.size(); ++i)
           subblock(dst, j).local_element(constrained_dofs[i]) = 1.;
         for(unsigned int i = 0; i < edge_constrained_indices[j].size(); ++i)
@@ -1211,19 +1209,18 @@ namespace MatrixFreeOperators
     typedef typename Base<dim, VectorType>::value_type Number;
     for(unsigned int i = 0; i < n_blocks(src); ++i)
       {
-        const unsigned int mf_component
-          = is_row ? selected_rows[i] : selected_columns[i];
+        const unsigned int mf_component =
+          is_row ? selected_rows[i] : selected_columns[i];
         // If both vectors use the same partitioner -> done
-        if(subblock(src, i).get_partitioner().get()
-           == data->get_dof_info(mf_component).vector_partitioner.get())
+        if(subblock(src, i).get_partitioner().get() ==
+           data->get_dof_info(mf_component).vector_partitioner.get())
           continue;
 
         // If not, assert that the local ranges are the same and reset to the
         // current partitioner
         Assert(
-          subblock(src, i).get_partitioner()->local_size()
-            == data->get_dof_info(mf_component)
-                 .vector_partitioner->local_size(),
+          subblock(src, i).get_partitioner()->local_size() ==
+            data->get_dof_info(mf_component).vector_partitioner->local_size(),
           ExcMessage("The vector passed to the vmult() function does not have "
                      "the correct size for compatibility with MatrixFree."));
 
@@ -1256,8 +1253,7 @@ namespace MatrixFreeOperators
               subblock(src, j).local_element(edge_constrained_indices[j][i]),
               subblock(dst, j).local_element(edge_constrained_indices[j][i]));
             subblock(const_cast<VectorType&>(src), j)
-              .local_element(edge_constrained_indices[j][i])
-              = 0.;
+              .local_element(edge_constrained_indices[j][i]) = 0.;
           }
       }
   }
@@ -1286,11 +1282,11 @@ namespace MatrixFreeOperators
   {
     for(unsigned int j = 0; j < n_blocks(dst); ++j)
       {
-        const std::vector<unsigned int>& constrained_dofs
-          = data->get_constrained_dofs(selected_rows[j]);
+        const std::vector<unsigned int>& constrained_dofs =
+          data->get_constrained_dofs(selected_rows[j]);
         for(unsigned int i = 0; i < constrained_dofs.size(); ++i)
-          subblock(dst, j).local_element(constrained_dofs[i])
-            += subblock(src, j).local_element(constrained_dofs[i]);
+          subblock(dst, j).local_element(constrained_dofs[i]) +=
+            subblock(src, j).local_element(constrained_dofs[i]);
       }
 
     // reset edge constrained values, multiply by unit matrix and add into
@@ -1300,11 +1296,11 @@ namespace MatrixFreeOperators
         for(unsigned int i = 0; i < edge_constrained_indices[j].size(); ++i)
           {
             subblock(const_cast<VectorType&>(src), j)
-              .local_element(edge_constrained_indices[j][i])
-              = edge_constrained_values[j][i].first;
-            subblock(dst, j).local_element(edge_constrained_indices[j][i])
-              = edge_constrained_values[j][i].second
-                + edge_constrained_values[j][i].first;
+              .local_element(edge_constrained_indices[j][i]) =
+              edge_constrained_values[j][i].first;
+            subblock(dst, j).local_element(edge_constrained_indices[j][i]) =
+              edge_constrained_values[j][i].second +
+              edge_constrained_values[j][i].first;
           }
       }
   }
@@ -1333,8 +1329,7 @@ namespace MatrixFreeOperators
             subblock(src, j).local_element(edge_constrained_indices[j][i]),
             subblock(dst, j).local_element(edge_constrained_indices[j][i]));
           subblock(const_cast<VectorType&>(src), j)
-            .local_element(edge_constrained_indices[j][i])
-            = 0.;
+            .local_element(edge_constrained_indices[j][i]) = 0.;
         }
 
     apply_add(dst, src);
@@ -1350,8 +1345,8 @@ namespace MatrixFreeOperators
 
             // reset the src values
             subblock(const_cast<VectorType&>(src), j)
-              .local_element(edge_constrained_indices[j][i])
-              = edge_constrained_values[j][i].first;
+              .local_element(edge_constrained_indices[j][i]) =
+              edge_constrained_values[j][i].first;
           }
         for(; c < subblock(dst, j).local_size(); ++c)
           subblock(dst, j).local_element(c) = 0.;
@@ -1424,8 +1419,8 @@ namespace MatrixFreeOperators
   const std::shared_ptr<DiagonalMatrix<VectorType>>&
   Base<dim, VectorType>::get_matrix_diagonal_inverse() const
   {
-    Assert(inverse_diagonal_entries.get() != nullptr
-             && inverse_diagonal_entries->m() > 0,
+    Assert(inverse_diagonal_entries.get() != nullptr &&
+             inverse_diagonal_entries->m() > 0,
            ExcNotInitialized());
     return inverse_diagonal_entries;
   }
@@ -1554,8 +1549,8 @@ namespace MatrixFreeOperators
 
     this->inverse_diagonal_entries.reset(new DiagonalMatrix<VectorType>());
     this->diagonal_entries.reset(new DiagonalMatrix<VectorType>());
-    VectorType& inverse_diagonal_vector
-      = this->inverse_diagonal_entries->get_vector();
+    VectorType& inverse_diagonal_vector =
+      this->inverse_diagonal_entries->get_vector();
     VectorType& diagonal_vector = this->diagonal_entries->get_vector();
     this->initialize_dof_vector(inverse_diagonal_vector);
     this->initialize_dof_vector(diagonal_vector);
@@ -1567,8 +1562,8 @@ namespace MatrixFreeOperators
 
     const unsigned int local_size = inverse_diagonal_vector.local_size();
     for(unsigned int i = 0; i < local_size; ++i)
-      inverse_diagonal_vector.local_element(i)
-        = Number(1.) / inverse_diagonal_vector.local_element(i);
+      inverse_diagonal_vector.local_element(i) =
+        Number(1.) / inverse_diagonal_vector.local_element(i);
 
     inverse_diagonal_vector.update_ghost_values();
     diagonal_vector.update_ghost_values();
@@ -1689,8 +1684,8 @@ namespace MatrixFreeOperators
     unsigned int dummy = 0;
     this->inverse_diagonal_entries.reset(new DiagonalMatrix<VectorType>());
     this->diagonal_entries.reset(new DiagonalMatrix<VectorType>());
-    VectorType& inverse_diagonal_vector
-      = this->inverse_diagonal_entries->get_vector();
+    VectorType& inverse_diagonal_vector =
+      this->inverse_diagonal_entries->get_vector();
     VectorType& diagonal_vector = this->diagonal_entries->get_vector();
     this->initialize_dof_vector(inverse_diagonal_vector);
     this->initialize_dof_vector(diagonal_vector);
@@ -1702,10 +1697,10 @@ namespace MatrixFreeOperators
     inverse_diagonal_vector = diagonal_vector;
 
     for(unsigned int i = 0; i < inverse_diagonal_vector.local_size(); ++i)
-      if(std::abs(inverse_diagonal_vector.local_element(i))
-         > std::sqrt(std::numeric_limits<Number>::epsilon()))
-        inverse_diagonal_vector.local_element(i)
-          = 1. / inverse_diagonal_vector.local_element(i);
+      if(std::abs(inverse_diagonal_vector.local_element(i)) >
+         std::sqrt(std::numeric_limits<Number>::epsilon()))
+        inverse_diagonal_vector.local_element(i) =
+          1. / inverse_diagonal_vector.local_element(i);
       else
         inverse_diagonal_vector.local_element(i) = 1.;
 
@@ -1832,8 +1827,8 @@ namespace MatrixFreeOperators
           }
         for(unsigned int i = 0; i < phi.dofs_per_component; ++i)
           for(unsigned int c = 0; c < phi.n_components; ++c)
-            phi.begin_dof_values()[i + c * phi.dofs_per_component]
-              = local_diagonal_vector[i];
+            phi.begin_dof_values()[i + c * phi.dofs_per_component] =
+              local_diagonal_vector[i];
         phi.distribute_local_to_global(dst);
       }
   }

@@ -460,8 +460,8 @@ operator()(const SolverControl::State state1,
 {
   if((state1 == SolverControl::failure) || (state2 == SolverControl::failure))
     return SolverControl::failure;
-  else if((state1 == SolverControl::iterate)
-          || (state2 == SolverControl::iterate))
+  else if((state1 == SolverControl::iterate) ||
+          (state2 == SolverControl::iterate))
     return SolverControl::iterate;
   else
     return SolverControl::success;

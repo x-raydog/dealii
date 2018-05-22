@@ -46,13 +46,13 @@ namespace LinearAlgebra
     atomicAdd_wrapper(double* address, double val)
     {
       // Use native instruction for CUDA 8 on Pascal or newer architecture
-#  if __CUDACC_VER_MAJOR__ >= 8 \
-    && (!defined(__CUDA_ARCH__) || __CUDA_ARCH__ >= 600)
+#  if __CUDACC_VER_MAJOR__ >= 8 && \
+    (!defined(__CUDA_ARCH__) || __CUDA_ARCH__ >= 600)
       return atomicAdd(address, val);
 #  else
 
-      unsigned long long int* address_as_ull
-        = reinterpret_cast<unsigned long long int*>(address);
+      unsigned long long int* address_as_ull =
+        reinterpret_cast<unsigned long long int*>(address);
       unsigned long long int old = *address_as_ull, assumed;
       do
         {
@@ -98,8 +98,8 @@ namespace LinearAlgebra
     inline __device__ double
     atomicMax_wrapper(double* address, double val)
     {
-      unsigned long long int* address_as_ull
-        = reinterpret_cast<unsigned long long int*>(address);
+      unsigned long long int* address_as_ull =
+        reinterpret_cast<unsigned long long int*>(address);
       unsigned long long int old = *address_as_ull, assumed;
       do
         {

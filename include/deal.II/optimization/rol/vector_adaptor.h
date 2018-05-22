@@ -278,8 +278,8 @@ namespace Rol
   void
   VectorAdaptor<VectorType>::set(const ROL::Vector<value_type>& rol_vector)
   {
-    const VectorAdaptor& vector_adaptor
-      = Teuchos::dyn_cast<const VectorAdaptor>(rol_vector);
+    const VectorAdaptor& vector_adaptor =
+      Teuchos::dyn_cast<const VectorAdaptor>(rol_vector);
 
     (*vector_ptr) = *(vector_adaptor.getVector());
   }
@@ -291,8 +291,8 @@ namespace Rol
     Assert(this->dimension() == rol_vector.dimension(),
            ExcDimensionMismatch(this->dimension(), rol_vector.dimension()));
 
-    const VectorAdaptor& vector_adaptor
-      = Teuchos::dyn_cast<const VectorAdaptor>(rol_vector);
+    const VectorAdaptor& vector_adaptor =
+      Teuchos::dyn_cast<const VectorAdaptor>(rol_vector);
 
     *vector_ptr += *(vector_adaptor.getVector());
   }
@@ -305,8 +305,8 @@ namespace Rol
     Assert(this->dimension() == rol_vector.dimension(),
            ExcDimensionMismatch(this->dimension(), rol_vector.dimension()));
 
-    const VectorAdaptor& vector_adaptor
-      = Teuchos::dyn_cast<const VectorAdaptor>(rol_vector);
+    const VectorAdaptor& vector_adaptor =
+      Teuchos::dyn_cast<const VectorAdaptor>(rol_vector);
 
     vector_ptr->add(alpha, *(vector_adaptor.getVector()));
   }
@@ -336,8 +336,8 @@ namespace Rol
     Assert(this->dimension() == rol_vector.dimension(),
            ExcDimensionMismatch(this->dimension(), rol_vector.dimension()));
 
-    const VectorAdaptor& vector_adaptor
-      = Teuchos::dyn_cast<const VectorAdaptor>(rol_vector);
+    const VectorAdaptor& vector_adaptor =
+      Teuchos::dyn_cast<const VectorAdaptor>(rol_vector);
 
     return (*vector_ptr) * (*vector_adaptor.getVector());
   }
@@ -402,8 +402,8 @@ namespace Rol
     Assert(this->dimension() == rol_vector.dimension(),
            ExcDimensionMismatch(this->dimension(), rol_vector.dimension()));
 
-    const VectorAdaptor& vector_adaptor
-      = Teuchos::dyn_cast<const VectorAdaptor>(rol_vector);
+    const VectorAdaptor& vector_adaptor =
+      Teuchos::dyn_cast<const VectorAdaptor>(rol_vector);
 
     const VectorType& given_rol_vector = *(vector_adaptor.getVector());
 

@@ -87,8 +87,8 @@ FE_Q<dim, spacedim>::get_name() const
   std::vector<double> points(this->degree + 1);
 
   // Decode the support points in one coordinate direction.
-  std::vector<unsigned int> lexicographic
-    = this->poly_space.get_numbering_inverse();
+  std::vector<unsigned int> lexicographic =
+    this->poly_space.get_numbering_inverse();
   for(unsigned int j = 0; j <= this->degree; j++)
     points[j] = this->unit_support_points[lexicographic[j]][0];
 

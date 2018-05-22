@@ -95,15 +95,15 @@ namespace internal
     std::size_t
     TriaLevel<dim>::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(refine_flags)
-              + MemoryConsumption::memory_consumption(coarsen_flags)
-              + MemoryConsumption::memory_consumption(active_cell_indices)
-              + MemoryConsumption::memory_consumption(neighbors)
-              + MemoryConsumption::memory_consumption(subdomain_ids)
-              + MemoryConsumption::memory_consumption(level_subdomain_ids)
-              + MemoryConsumption::memory_consumption(parents)
-              + MemoryConsumption::memory_consumption(direction_flags)
-              + MemoryConsumption::memory_consumption(cells));
+      return (MemoryConsumption::memory_consumption(refine_flags) +
+              MemoryConsumption::memory_consumption(coarsen_flags) +
+              MemoryConsumption::memory_consumption(active_cell_indices) +
+              MemoryConsumption::memory_consumption(neighbors) +
+              MemoryConsumption::memory_consumption(subdomain_ids) +
+              MemoryConsumption::memory_consumption(level_subdomain_ids) +
+              MemoryConsumption::memory_consumption(parents) +
+              MemoryConsumption::memory_consumption(direction_flags) +
+              MemoryConsumption::memory_consumption(cells));
     }
 
     // This specialization should be only temporary, until the TriaObjects
@@ -180,14 +180,14 @@ namespace internal
     std::size_t
     TriaLevel<3>::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(refine_flags)
-              + MemoryConsumption::memory_consumption(coarsen_flags)
-              + MemoryConsumption::memory_consumption(active_cell_indices)
-              + MemoryConsumption::memory_consumption(neighbors)
-              + MemoryConsumption::memory_consumption(subdomain_ids)
-              + MemoryConsumption::memory_consumption(parents)
-              + MemoryConsumption::memory_consumption(direction_flags)
-              + MemoryConsumption::memory_consumption(cells));
+      return (MemoryConsumption::memory_consumption(refine_flags) +
+              MemoryConsumption::memory_consumption(coarsen_flags) +
+              MemoryConsumption::memory_consumption(active_cell_indices) +
+              MemoryConsumption::memory_consumption(neighbors) +
+              MemoryConsumption::memory_consumption(subdomain_ids) +
+              MemoryConsumption::memory_consumption(parents) +
+              MemoryConsumption::memory_consumption(direction_flags) +
+              MemoryConsumption::memory_consumption(cells));
     }
   } // namespace TriangulationImplementation
 } // namespace internal

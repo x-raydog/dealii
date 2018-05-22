@@ -206,8 +206,8 @@ namespace SparsityTools
   reorder_Cuthill_McKee(
     const DynamicSparsityPattern&                         sparsity,
     std::vector<DynamicSparsityPattern::size_type>&       new_indices,
-    const std::vector<DynamicSparsityPattern::size_type>& starting_indices
-    = std::vector<DynamicSparsityPattern::size_type>());
+    const std::vector<DynamicSparsityPattern::size_type>& starting_indices =
+      std::vector<DynamicSparsityPattern::size_type>());
 
   /**
    * For a given sparsity pattern, compute a re-enumeration of row/column

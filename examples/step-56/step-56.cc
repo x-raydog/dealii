@@ -270,14 +270,14 @@ namespace Step56
     double y = p(1);
     double z = p(2);
     if(component == 0)
-      return 2 * PI * PI * sin(PI * x)
-             + PI * cos(PI * x) * cos(PI * y) * sin(PI * z);
+      return 2 * PI * PI * sin(PI * x) +
+             PI * cos(PI * x) * cos(PI * y) * sin(PI * z);
     if(component == 1)
-      return -PI * PI * PI * y * cos(PI * x)
-             + PI * (-1) * sin(PI * y) * sin(PI * x) * sin(PI * z);
+      return -PI * PI * PI * y * cos(PI * x) +
+             PI * (-1) * sin(PI * y) * sin(PI * x) * sin(PI * z);
     if(component == 2)
-      return -PI * PI * PI * z * cos(PI * x)
-             + PI * cos(PI * z) * sin(PI * x) * cos(PI * y);
+      return -PI * PI * PI * z * cos(PI * x) +
+             PI * cos(PI * z) * sin(PI * x) * cos(PI * y);
     if(component == 3)
       return 0;
 
@@ -605,15 +605,15 @@ namespace Step56
     system_rhs    = 0;
 
     // If true, we will assemble the pressure mass matrix in the (1,1) block:
-    const bool assemble_pressure_mass_matrix
-      = (solver_type == SolverType::UMFPACK) ? false : true;
+    const bool assemble_pressure_mass_matrix =
+      (solver_type == SolverType::UMFPACK) ? false : true;
 
     QGauss<dim> quadrature_formula(pressure_degree + 2);
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_quadrature_points
-                              | update_JxW_values | update_gradients);
+                            update_values | update_quadrature_points |
+                              update_JxW_values | update_gradients);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
 
@@ -634,9 +634,9 @@ namespace Step56
     std::vector<double>                  div_phi_u(dofs_per_cell);
     std::vector<double>                  phi_p(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         fe_values.reinit(cell);
@@ -650,8 +650,8 @@ namespace Step56
           {
             for(unsigned int k = 0; k < dofs_per_cell; ++k)
               {
-                symgrad_phi_u[k]
-                  = fe_values[velocities].symmetric_gradient(k, q);
+                symgrad_phi_u[k] =
+                  fe_values[velocities].symmetric_gradient(k, q);
                 div_phi_u[k] = fe_values[velocities].divergence(k, q);
                 phi_p[k]     = fe_values[pressure].value(k, q);
               }
@@ -660,19 +660,18 @@ namespace Step56
               {
                 for(unsigned int j = 0; j <= i; ++j)
                   {
-                    local_matrix(i, j)
-                      += (2 * (symgrad_phi_u[i] * symgrad_phi_u[j])
-                          - div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j]
-                          + (assemble_pressure_mass_matrix ?
-                               phi_p[i] * phi_p[j] :
-                               0))
-                         * fe_values.JxW(q);
+                    local_matrix(i, j) +=
+                      (2 * (symgrad_phi_u[i] * symgrad_phi_u[j]) -
+                       div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j] +
+                       (assemble_pressure_mass_matrix ? phi_p[i] * phi_p[j] :
+                                                        0)) *
+                      fe_values.JxW(q);
                   }
 
-                const unsigned int component_i
-                  = fe.system_to_component_index(i).first;
-                local_rhs(i) += fe_values.shape_value(i, q)
-                                * rhs_values[q](component_i) * fe_values.JxW(q);
+                const unsigned int component_i =
+                  fe.system_to_component_index(i).first;
+                local_rhs(i) += fe_values.shape_value(i, q) *
+                                rhs_values[q](component_i) * fe_values.JxW(q);
               }
           }
 
@@ -715,8 +714,8 @@ namespace Step56
 
     FEValues<dim> fe_values(velocity_fe,
                             quadrature_formula,
-                            update_values | update_quadrature_points
-                              | update_JxW_values | update_gradients);
+                            update_values | update_quadrature_points |
+                              update_JxW_values | update_gradients);
 
     const unsigned int dofs_per_cell = velocity_fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -741,8 +740,8 @@ namespace Step56
           mg_constrained_dofs.get_boundary_indices(level));
         boundary_constraints[level].close();
 
-        IndexSet idx = mg_constrained_dofs.get_refinement_edge_indices(level)
-                       & mg_constrained_dofs.get_boundary_indices(level);
+        IndexSet idx = mg_constrained_dofs.get_refinement_edge_indices(level) &
+                       mg_constrained_dofs.get_boundary_indices(level);
 
         boundary_interface_constraints[level].add_lines(idx);
         boundary_interface_constraints[level].close();
@@ -765,8 +764,8 @@ namespace Step56
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
               for(unsigned int j = 0; j <= i; ++j)
                 {
-                  cell_matrix(i, j)
-                    += (symgrad_phi_u[i] * symgrad_phi_u[j]) * fe_values.JxW(q);
+                  cell_matrix(i, j) +=
+                    (symgrad_phi_u[i] * symgrad_phi_u[j]) * fe_values.JxW(q);
                 }
           }
 
@@ -782,9 +781,9 @@ namespace Step56
         for(unsigned int i = 0; i < dofs_per_cell; ++i)
           for(unsigned int j = 0; j < dofs_per_cell; ++j)
             if(!mg_constrained_dofs.at_refinement_edge(cell->level(),
-                                                       local_dof_indices[i])
-               || mg_constrained_dofs.at_refinement_edge(cell->level(),
-                                                         local_dof_indices[j]))
+                                                       local_dof_indices[i]) ||
+               mg_constrained_dofs.at_refinement_edge(cell->level(),
+                                                      local_dof_indices[j]))
               cell_matrix(i, j) = 0;
 
         boundary_interface_constraints[cell->level()]

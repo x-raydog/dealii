@@ -37,8 +37,8 @@ ConvergenceTable::evaluate_convergence_rates(
   set_auto_fill_mode(false);
 
   std::vector<internal::TableEntry>& entries = columns[data_column_key].entries;
-  std::vector<internal::TableEntry>& ref_entries
-    = columns[reference_column_key].entries;
+  std::vector<internal::TableEntry>& ref_entries =
+    columns[reference_column_key].entries;
   std::string rate_key = data_column_key + "...";
 
   const unsigned int n     = entries.size();
@@ -73,8 +73,8 @@ ConvergenceTable::evaluate_convergence_rates(
             else
               {
                 add_value(rate_key,
-                          values[i - 1] / values[i] * ref_values[i]
-                            / ref_values[i - 1]);
+                          values[i - 1] / values[i] * ref_values[i] /
+                            ref_values[i - 1]);
               }
           }
         break;
@@ -93,8 +93,8 @@ ConvergenceTable::evaluate_convergence_rates(
               {
                 add_value(
                   rate_key,
-                  dim * std::log(std::fabs(values[i - 1] / values[i]))
-                    / std::log(std::fabs(ref_values[i] / ref_values[i - 1])));
+                  dim * std::log(std::fabs(values[i - 1] / values[i])) /
+                    std::log(std::fabs(ref_values[i] / ref_values[i - 1])));
               }
           }
         break;
@@ -178,8 +178,8 @@ ConvergenceTable::evaluate_convergence_rates(const std::string& data_column_key,
             else
               {
                 add_value(rate_key,
-                          std::log(std::fabs(values[i - 1] / values[i]))
-                            / std::log(2.0));
+                          std::log(std::fabs(values[i - 1] / values[i])) /
+                            std::log(2.0));
               }
           }
         break;

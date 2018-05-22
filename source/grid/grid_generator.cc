@@ -67,8 +67,8 @@ namespace GridGenerator
         {
           // there is only one cell, so
           // simple task
-          const typename Triangulation<dim, spacedim>::cell_iterator cell
-            = tria.begin();
+          const typename Triangulation<dim, spacedim>::cell_iterator cell =
+            tria.begin();
           for(unsigned int f = 0; f < GeometryInfo<dim>::faces_per_cell; ++f)
             cell->face(f)->set_boundary_id(f);
         }
@@ -80,8 +80,8 @@ namespace GridGenerator
                                              const Point<spacedim>&,
                                              const double)
     {
-      for(typename Triangulation<1, spacedim>::cell_iterator cell
-          = tria.begin();
+      for(typename Triangulation<1, spacedim>::cell_iterator cell =
+            tria.begin();
           cell != tria.end();
           ++cell)
         if(cell->center()(0) > 0)
@@ -104,9 +104,10 @@ namespace GridGenerator
       // should be smaller than the smallest cell
       // diameter.
 
-      typename Triangulation<dim, spacedim>::face_iterator face
-        = tria.begin_face(),
-        endface = tria.end_face();
+      typename Triangulation<dim, spacedim>::face_iterator face =
+                                                             tria.begin_face(),
+                                                           endface =
+                                                             tria.end_face();
       for(; face != endface; ++face)
         if(face->at_boundary())
           if(face->boundary_id() == 0)
@@ -133,8 +134,8 @@ namespace GridGenerator
                 Assert(false, ExcInternalError());
             }
 
-      for(typename Triangulation<dim, spacedim>::cell_iterator cell
-          = tria.begin();
+      for(typename Triangulation<dim, spacedim>::cell_iterator cell =
+            tria.begin();
           cell != tria.end();
           ++cell)
         {
@@ -274,40 +275,40 @@ namespace GridGenerator
               continue;
 
             double radius = cell->face(f)->center().norm() - center.norm();
-            if(std::fabs(cell->face(f)->center()(0))
-               < eps) // x = 0 set boundary 2
+            if(std::fabs(cell->face(f)->center()(0)) <
+               eps) // x = 0 set boundary 2
               {
                 cell->face(f)->set_boundary_id(2);
                 for(unsigned int j = 0; j < GeometryInfo<3>::lines_per_face;
                     ++j)
                   if(cell->face(f)->line(j)->at_boundary())
-                    if(std::fabs(cell->face(f)->line(j)->vertex(0).norm()
-                                 - cell->face(f)->line(j)->vertex(1).norm())
-                       > eps)
+                    if(std::fabs(cell->face(f)->line(j)->vertex(0).norm() -
+                                 cell->face(f)->line(j)->vertex(1).norm()) >
+                       eps)
                       cell->face(f)->line(j)->set_boundary_id(2);
               }
-            else if(std::fabs(cell->face(f)->center()(1))
-                    < eps) // y = 0 set boundary 3
+            else if(std::fabs(cell->face(f)->center()(1)) <
+                    eps) // y = 0 set boundary 3
               {
                 cell->face(f)->set_boundary_id(3);
                 for(unsigned int j = 0; j < GeometryInfo<3>::lines_per_face;
                     ++j)
                   if(cell->face(f)->line(j)->at_boundary())
-                    if(std::fabs(cell->face(f)->line(j)->vertex(0).norm()
-                                 - cell->face(f)->line(j)->vertex(1).norm())
-                       > eps)
+                    if(std::fabs(cell->face(f)->line(j)->vertex(0).norm() -
+                                 cell->face(f)->line(j)->vertex(1).norm()) >
+                       eps)
                       cell->face(f)->line(j)->set_boundary_id(3);
               }
-            else if(std::fabs(cell->face(f)->center()(2))
-                    < eps) // z = 0 set boundary 4
+            else if(std::fabs(cell->face(f)->center()(2)) <
+                    eps) // z = 0 set boundary 4
               {
                 cell->face(f)->set_boundary_id(4);
                 for(unsigned int j = 0; j < GeometryInfo<3>::lines_per_face;
                     ++j)
                   if(cell->face(f)->line(j)->at_boundary())
-                    if(std::fabs(cell->face(f)->line(j)->vertex(0).norm()
-                                 - cell->face(f)->line(j)->vertex(1).norm())
-                       > eps)
+                    if(std::fabs(cell->face(f)->line(j)->vertex(0).norm() -
+                                 cell->face(f)->line(j)->vertex(1).norm()) >
+                       eps)
                       cell->face(f)->line(j)->set_boundary_id(4);
               }
             else if(radius < middle) // inner radius set boundary 0
@@ -316,9 +317,9 @@ namespace GridGenerator
                 for(unsigned int j = 0; j < GeometryInfo<3>::lines_per_face;
                     ++j)
                   if(cell->face(f)->line(j)->at_boundary())
-                    if(std::fabs(cell->face(f)->line(j)->vertex(0).norm()
-                                 - cell->face(f)->line(j)->vertex(1).norm())
-                       < eps)
+                    if(std::fabs(cell->face(f)->line(j)->vertex(0).norm() -
+                                 cell->face(f)->line(j)->vertex(1).norm()) <
+                       eps)
                       cell->face(f)->line(j)->set_boundary_id(0);
               }
             else if(radius > middle) // outer radius set boundary 1
@@ -327,9 +328,9 @@ namespace GridGenerator
                 for(unsigned int j = 0; j < GeometryInfo<3>::lines_per_face;
                     ++j)
                   if(cell->face(f)->line(j)->at_boundary())
-                    if(std::fabs(cell->face(f)->line(j)->vertex(0).norm()
-                                 - cell->face(f)->line(j)->vertex(1).norm())
-                       < eps)
+                    if(std::fabs(cell->face(f)->line(j)->vertex(0).norm() -
+                                 cell->face(f)->line(j)->vertex(1).norm()) <
+                       eps)
                       cell->face(f)->line(j)->set_boundary_id(1);
               }
             else
@@ -455,9 +456,9 @@ namespace GridGenerator
           points.push_back(0.5 * (points[i - 1] + points[i + 1]));
         // And we need face midpoints
         for(unsigned int i = 0; i <= dim; ++i)
-          points.push_back(1. / 3.
-                           * (points[i] + points[(i + 1) % (dim + 1)]
-                              + points[(i + 2) % (dim + 1)]));
+          points.push_back(1. / 3. *
+                           (points[i] + points[(i + 1) % (dim + 1)] +
+                            points[(i + 2) % (dim + 1)]));
       }
     points.push_back((1. / (dim + 1)) * center);
 
@@ -554,16 +555,16 @@ namespace GridGenerator
     for(unsigned int i = 0; i < n_cells; ++i)
       for(unsigned int j = 0; j < 4; ++j)
         {
-          vertices[4 * i + j][0]
-            = R * std::cos(i * alpha_step)
-              + r * std::cos(i * beta_step + j * numbers::PI / 2.0)
-                  * std::cos(i * alpha_step);
-          vertices[4 * i + j][1]
-            = R * std::sin(i * alpha_step)
-              + r * std::cos(i * beta_step + j * numbers::PI / 2.0)
-                  * std::sin(i * alpha_step);
-          vertices[4 * i + j][2]
-            = r * std::sin(i * beta_step + j * numbers::PI / 2.0);
+          vertices[4 * i + j][0] =
+            R * std::cos(i * alpha_step) +
+            r * std::cos(i * beta_step + j * numbers::PI / 2.0) *
+              std::cos(i * alpha_step);
+          vertices[4 * i + j][1] =
+            R * std::sin(i * alpha_step) +
+            r * std::cos(i * beta_step + j * numbers::PI / 2.0) *
+              std::sin(i * alpha_step);
+          vertices[4 * i + j][2] =
+            r * std::sin(i * beta_step + j * numbers::PI / 2.0);
         }
 
     unsigned int offset = 0;
@@ -763,8 +764,8 @@ namespace GridGenerator
     // First create a hyper_rectangle and then deform it.
     hyper_cube(tria, 0, 1, colorize);
 
-    typename Triangulation<dim>::active_cell_iterator cell
-      = tria.begin_active();
+    typename Triangulation<dim>::active_cell_iterator cell =
+      tria.begin_active();
     for(unsigned int i = 0; i < GeometryInfo<dim>::vertices_per_cell; ++i)
       cell->vertex(i) = vertices[i];
 
@@ -914,8 +915,8 @@ namespace GridGenerator
           {
             if(spacedim == 2) // this check does not make sense otherwise
               {
-                const double plane_normal
-                  = edges[0][0] * edges[1][1] - edges[0][1] * edges[1][0];
+                const double plane_normal =
+                  edges[0][0] * edges[1][1] - edges[0][1] * edges[1][0];
                 twisted_data = (plane_normal < 0.0);
               }
             break;
@@ -925,13 +926,13 @@ namespace GridGenerator
             // Check that the first two vectors are not linear combinations to
             // avoid zero division later on.
             Assert(
-              std::abs(edges[0] * edges[1] / (edges[0].norm() * edges[1].norm())
-                       - 1.0)
-                > 1.0e-15,
+              std::abs(edges[0] * edges[1] /
+                         (edges[0].norm() * edges[1].norm()) -
+                       1.0) > 1.0e-15,
               ExcMessage("Edges in subdivided_parallelepiped() must point in"
                          " different directions."));
-            const Tensor<1, spacedim> plane_normal
-              = cross_product_3d(edges[0], edges[1]);
+            const Tensor<1, spacedim> plane_normal =
+              cross_product_3d(edges[0], edges[1]);
 
             /*
          * Ensure that edges 1, 2, and 3 form a right-handed set of
@@ -986,17 +987,18 @@ namespace GridGenerator
         case 2:
           for(unsigned int y = 0; y <= compute_subdivisions[1]; ++y)
             for(unsigned int x = 0; x <= compute_subdivisions[0]; ++x)
-              points.push_back(origin + edges[0] / compute_subdivisions[0] * x
-                               + edges[1] / compute_subdivisions[1] * y);
+              points.push_back(origin + edges[0] / compute_subdivisions[0] * x +
+                               edges[1] / compute_subdivisions[1] * y);
           break;
 
         case 3:
           for(unsigned int z = 0; z <= compute_subdivisions[2]; ++z)
             for(unsigned int y = 0; y <= compute_subdivisions[1]; ++y)
               for(unsigned int x = 0; x <= compute_subdivisions[0]; ++x)
-                points.push_back(origin + edges[0] / compute_subdivisions[0] * x
-                                 + edges[1] / compute_subdivisions[1] * y
-                                 + edges[2] / compute_subdivisions[2] * z);
+                points.push_back(origin +
+                                 edges[0] / compute_subdivisions[0] * x +
+                                 edges[1] / compute_subdivisions[1] * y +
+                                 edges[2] / compute_subdivisions[2] * z);
           break;
 
         default:
@@ -1057,22 +1059,22 @@ namespace GridGenerator
                   {
                     const unsigned int c = z * n_dy * n_dx + y * n_dx + x;
 
-                    cells[c].vertices[0]
-                      = z * (n_dy + 1) * (n_dx + 1) + y * (n_dx + 1) + x;
-                    cells[c].vertices[1]
-                      = z * (n_dy + 1) * (n_dx + 1) + y * (n_dx + 1) + x + 1;
-                    cells[c].vertices[2]
-                      = z * (n_dy + 1) * (n_dx + 1) + (y + 1) * (n_dx + 1) + x;
-                    cells[c].vertices[3] = z * (n_dy + 1) * (n_dx + 1)
-                                           + (y + 1) * (n_dx + 1) + x + 1;
-                    cells[c].vertices[4]
-                      = (z + 1) * (n_dy + 1) * (n_dx + 1) + y * (n_dx + 1) + x;
-                    cells[c].vertices[5] = (z + 1) * (n_dy + 1) * (n_dx + 1)
-                                           + y * (n_dx + 1) + x + 1;
-                    cells[c].vertices[6] = (z + 1) * (n_dy + 1) * (n_dx + 1)
-                                           + (y + 1) * (n_dx + 1) + x;
-                    cells[c].vertices[7] = (z + 1) * (n_dy + 1) * (n_dx + 1)
-                                           + (y + 1) * (n_dx + 1) + x + 1;
+                    cells[c].vertices[0] =
+                      z * (n_dy + 1) * (n_dx + 1) + y * (n_dx + 1) + x;
+                    cells[c].vertices[1] =
+                      z * (n_dy + 1) * (n_dx + 1) + y * (n_dx + 1) + x + 1;
+                    cells[c].vertices[2] =
+                      z * (n_dy + 1) * (n_dx + 1) + (y + 1) * (n_dx + 1) + x;
+                    cells[c].vertices[3] = z * (n_dy + 1) * (n_dx + 1) +
+                                           (y + 1) * (n_dx + 1) + x + 1;
+                    cells[c].vertices[4] =
+                      (z + 1) * (n_dy + 1) * (n_dx + 1) + y * (n_dx + 1) + x;
+                    cells[c].vertices[5] = (z + 1) * (n_dy + 1) * (n_dx + 1) +
+                                           y * (n_dx + 1) + x + 1;
+                    cells[c].vertices[6] = (z + 1) * (n_dy + 1) * (n_dx + 1) +
+                                           (y + 1) * (n_dx + 1) + x;
+                    cells[c].vertices[7] = (z + 1) * (n_dy + 1) * (n_dx + 1) +
+                                           (y + 1) * (n_dx + 1) + x + 1;
 
                     // wipe material id
                     cells[c].material_id = 0;
@@ -1093,9 +1095,9 @@ namespace GridGenerator
     // Finally assign boundary indicators according to hyper_rectangle
     if(colorize)
       {
-        typename Triangulation<dim>::active_cell_iterator cell
-          = tria.begin_active(),
-          endc = tria.end();
+        typename Triangulation<dim>::active_cell_iterator cell =
+                                                            tria.begin_active(),
+                                                          endc = tria.end();
         for(; cell != endc; ++cell)
           {
             for(unsigned int face = 0; face < GeometryInfo<dim>::faces_per_cell;
@@ -1175,17 +1177,16 @@ namespace GridGenerator
         case 2:
           for(unsigned int y = 0; y <= repetitions[1]; ++y)
             for(unsigned int x = 0; x <= repetitions[0]; ++x)
-              points.push_back(p1 + (double) x * delta[0]
-                               + (double) y * delta[1]);
+              points.push_back(p1 + (double) x * delta[0] +
+                               (double) y * delta[1]);
           break;
 
         case 3:
           for(unsigned int z = 0; z <= repetitions[2]; ++z)
             for(unsigned int y = 0; y <= repetitions[1]; ++y)
               for(unsigned int x = 0; x <= repetitions[0]; ++x)
-                points.push_back(p1 + (double) x * delta[0]
-                                 + (double) y * delta[1]
-                                 + (double) z * delta[2]);
+                points.push_back(p1 + (double) x * delta[0] +
+                                 (double) y * delta[1] + (double) z * delta[2]);
           break;
 
         default:
@@ -1227,17 +1228,16 @@ namespace GridGenerator
         case 3:
           {
             const unsigned int n_x = (repetitions[0] + 1);
-            const unsigned int n_xy
-              = (repetitions[0] + 1) * (repetitions[1] + 1);
+            const unsigned int n_xy =
+              (repetitions[0] + 1) * (repetitions[1] + 1);
 
             cells.resize(repetitions[2] * repetitions[1] * repetitions[0]);
             for(unsigned int z = 0; z < repetitions[2]; ++z)
               for(unsigned int y = 0; y < repetitions[1]; ++y)
                 for(unsigned int x = 0; x < repetitions[0]; ++x)
                   {
-                    const unsigned int c
-                      = x + y * repetitions[0]
-                        + z * repetitions[0] * repetitions[1];
+                    const unsigned int c = x + y * repetitions[0] +
+                                           z * repetitions[0] * repetitions[1];
                     cells[c].vertices[0] = z * n_xy + y * n_x + x;
                     cells[c].vertices[1] = z * n_xy + y * n_x + x + 1;
                     cells[c].vertices[2] = z * n_xy + (y + 1) * n_x + x;
@@ -1245,8 +1245,8 @@ namespace GridGenerator
                     cells[c].vertices[4] = (z + 1) * n_xy + y * n_x + x;
                     cells[c].vertices[5] = (z + 1) * n_xy + y * n_x + x + 1;
                     cells[c].vertices[6] = (z + 1) * n_xy + (y + 1) * n_x + x;
-                    cells[c].vertices[7]
-                      = (z + 1) * n_xy + (y + 1) * n_x + x + 1;
+                    cells[c].vertices[7] =
+                      (z + 1) * n_xy + (y + 1) * n_x + x + 1;
                     cells[c].material_id = 0;
                   }
             break;
@@ -1312,11 +1312,12 @@ namespace GridGenerator
         double x = 0;
         for(unsigned int j = 0; j < step_sizes.at(i).size(); j++)
           x += step_sizes[i][j];
-        Assert(std::fabs(x - (p2(i) - p1(i))) <= 1e-12 * std::fabs(x),
-               ExcMessage("The sequence of step sizes in coordinate direction "
-                          + Utilities::int_to_string(i)
-                          + " must be equal to the distance of the two given "
-                            "points in this coordinate direction."));
+        Assert(
+          std::fabs(x - (p2(i) - p1(i))) <= 1e-12 * std::fabs(x),
+          ExcMessage("The sequence of step sizes in coordinate direction " +
+                     Utilities::int_to_string(i) +
+                     " must be equal to the distance of the two given "
+                     "points in this coordinate direction."));
       }
 
     // then generate the necessary
@@ -1429,10 +1430,10 @@ namespace GridGenerator
                   const unsigned int c = x + y * step_sizes[0].size();
                   cells[c].vertices[0] = y * (step_sizes[0].size() + 1) + x;
                   cells[c].vertices[1] = y * (step_sizes[0].size() + 1) + x + 1;
-                  cells[c].vertices[2]
-                    = (y + 1) * (step_sizes[0].size() + 1) + x;
-                  cells[c].vertices[3]
-                    = (y + 1) * (step_sizes[0].size() + 1) + x + 1;
+                  cells[c].vertices[2] =
+                    (y + 1) * (step_sizes[0].size() + 1) + x;
+                  cells[c].vertices[3] =
+                    (y + 1) * (step_sizes[0].size() + 1) + x + 1;
                   cells[c].material_id = 0;
                 }
             break;
@@ -1441,18 +1442,18 @@ namespace GridGenerator
         case 3:
           {
             const unsigned int n_x = (step_sizes[0].size() + 1);
-            const unsigned int n_xy
-              = (step_sizes[0].size() + 1) * (step_sizes[1].size() + 1);
+            const unsigned int n_xy =
+              (step_sizes[0].size() + 1) * (step_sizes[1].size() + 1);
 
-            cells.resize(step_sizes[2].size() * step_sizes[1].size()
-                         * step_sizes[0].size());
+            cells.resize(step_sizes[2].size() * step_sizes[1].size() *
+                         step_sizes[0].size());
             for(unsigned int z = 0; z < step_sizes[2].size(); ++z)
               for(unsigned int y = 0; y < step_sizes[1].size(); ++y)
                 for(unsigned int x = 0; x < step_sizes[0].size(); ++x)
                   {
-                    const unsigned int c
-                      = x + y * step_sizes[0].size()
-                        + z * step_sizes[0].size() * step_sizes[1].size();
+                    const unsigned int c =
+                      x + y * step_sizes[0].size() +
+                      z * step_sizes[0].size() * step_sizes[1].size();
                     cells[c].vertices[0] = z * n_xy + y * n_x + x;
                     cells[c].vertices[1] = z * n_xy + y * n_x + x + 1;
                     cells[c].vertices[2] = z * n_xy + (y + 1) * n_x + x;
@@ -1460,8 +1461,8 @@ namespace GridGenerator
                     cells[c].vertices[4] = (z + 1) * n_xy + y * n_x + x;
                     cells[c].vertices[5] = (z + 1) * n_xy + y * n_x + x + 1;
                     cells[c].vertices[6] = (z + 1) * n_xy + (y + 1) * n_x + x;
-                    cells[c].vertices[7]
-                      = (z + 1) * n_xy + (y + 1) * n_x + x + 1;
+                    cells[c].vertices[7] =
+                      (z + 1) * n_xy + (y + 1) * n_x + x + 1;
                     cells[c].material_id = 0;
                   }
             break;
@@ -1483,8 +1484,8 @@ namespace GridGenerator
         // use a large epsilon to
         // compare numbers to avoid
         // roundoff problems.
-        double min_size
-          = *std::min_element(step_sizes[0].begin(), step_sizes[0].end());
+        double min_size =
+          *std::min_element(step_sizes[0].begin(), step_sizes[0].end());
         for(unsigned int i = 1; i < dim; ++i)
           min_size = std::min(
             min_size,
@@ -1799,17 +1800,16 @@ namespace GridGenerator
         case 2:
           for(unsigned int y = 0; y <= repetitions[1]; ++y)
             for(unsigned int x = 0; x <= repetitions[0]; ++x)
-              points.push_back(p1 + (double) x * delta[0]
-                               + (double) y * delta[1]);
+              points.push_back(p1 + (double) x * delta[0] +
+                               (double) y * delta[1]);
           break;
 
         case 3:
           for(unsigned int z = 0; z <= repetitions[2]; ++z)
             for(unsigned int y = 0; y <= repetitions[1]; ++y)
               for(unsigned int x = 0; x <= repetitions[0]; ++x)
-                points.push_back(p1 + (double) x * delta[0]
-                                 + (double) y * delta[1]
-                                 + (double) z * delta[2]);
+                points.push_back(p1 + (double) x * delta[0] +
+                                 (double) y * delta[1] + (double) z * delta[2]);
           break;
 
         default:
@@ -1844,8 +1844,8 @@ namespace GridGenerator
         case 3:
           {
             const unsigned int n_x = (repetitions[0] + 1);
-            const unsigned int n_xy
-              = (repetitions[0] + 1) * (repetitions[1] + 1);
+            const unsigned int n_xy =
+              (repetitions[0] + 1) * (repetitions[1] + 1);
 
             cells.resize(repetitions[2] * repetitions[1] * repetitions[0]);
 
@@ -1862,8 +1862,8 @@ namespace GridGenerator
                     cells[c].vertices[4] = (z + 1) * n_xy + y * n_x + x;
                     cells[c].vertices[5] = (z + 1) * n_xy + y * n_x + x + 1;
                     cells[c].vertices[6] = (z + 1) * n_xy + (y + 1) * n_x + x;
-                    cells[c].vertices[7]
-                      = (z + 1) * n_xy + (y + 1) * n_x + x + 1;
+                    cells[c].vertices[7] =
+                      (z + 1) * n_xy + (y + 1) * n_x + x + 1;
                     cells[c].material_id = 0;
                     ++c;
                   }
@@ -1904,9 +1904,9 @@ namespace GridGenerator
       {
         Point<spacedim> p;
         for(unsigned int d = 0; d < dim; ++d)
-          p(d) = 0.5 * dimensions[d]
-                 * GeometryInfo<dim>::unit_normal_orientation
-                     [GeometryInfo<dim>::vertex_to_face[i][d]];
+          p(d) = 0.5 * dimensions[d] *
+                 GeometryInfo<dim>::unit_normal_orientation
+                   [GeometryInfo<dim>::vertex_to_face[i][d]];
         points.push_back(p);
         cells[0].vertices[i] = i;
       }
@@ -1928,20 +1928,20 @@ namespace GridGenerator
             for(unsigned int v = 0; v < GeometryInfo<dim>::vertices_per_face;
                 ++v)
               {
-                const unsigned int cellv
-                  = GeometryInfo<dim>::face_to_cell_vertices(face, v);
-                const unsigned int ocellv
-                  = GeometryInfo<dim>::face_to_cell_vertices(oface, v);
+                const unsigned int cellv =
+                  GeometryInfo<dim>::face_to_cell_vertices(face, v);
+                const unsigned int ocellv =
+                  GeometryInfo<dim>::face_to_cell_vertices(oface, v);
                 // First the vertices which already exist
-                cells[cell_index].vertices[ocellv]
-                  = cells[last_cell].vertices[cellv];
+                cells[cell_index].vertices[ocellv] =
+                  cells[last_cell].vertices[cellv];
 
                 // Now the new vertices
                 cells[cell_index].vertices[cellv] = points.size();
 
                 Point<spacedim> p = points[cells[cell_index].vertices[ocellv]];
-                p(dir) += GeometryInfo<dim>::unit_normal_orientation[face]
-                          * dimensions[dir];
+                p(dir) += GeometryInfo<dim>::unit_normal_orientation[face] *
+                          dimensions[dir];
                 points.push_back(p);
               }
             cells[cell_index].material_id = (colorize) ? (face + 1U) : 0U;
@@ -2097,8 +2097,8 @@ namespace GridGenerator
                        const double      right,
                        const bool        colorize)
   {
-    const double   rl2          = (right + left) / 2;
-    const Point<2> vertices[10] = {Point<2>(left, left),
+    const double   rl2                 = (right + left) / 2;
+    const Point<2> vertices[10]        = {Point<2>(left, left),
                                    Point<2>(rl2, left),
                                    Point<2>(rl2, rl2),
                                    Point<2>(left, rl2),
@@ -2108,8 +2108,8 @@ namespace GridGenerator
                                    Point<2>(left, right),
                                    Point<2>(right, right),
                                    Point<2>(rl2, left)};
-    const int      cell_vertices[4][4]
-      = {{0, 1, 3, 2}, {9, 4, 2, 5}, {3, 2, 7, 6}, {2, 5, 6, 8}};
+    const int      cell_vertices[4][4] = {
+      {0, 1, 3, 2}, {9, 4, 2, 5}, {3, 2, 7, 6}, {2, 5, 6, 8}};
     std::vector<CellData<2>> cells(4, CellData<2>());
     for(unsigned int i = 0; i < 4; ++i)
       {
@@ -2228,19 +2228,19 @@ namespace GridGenerator
     // equilibrate cell sizes at
     // transition from the inner part
     // to the radial cells
-    const double   a = 1. / (1 + std::sqrt(2.0));
-    const Point<2> vertices[8]
-      = {p + Point<2>(-1, -1) * (radius / std::sqrt(2.0)),
-         p + Point<2>(+1, -1) * (radius / std::sqrt(2.0)),
-         p + Point<2>(-1, -1) * (radius / std::sqrt(2.0) * a),
-         p + Point<2>(+1, -1) * (radius / std::sqrt(2.0) * a),
-         p + Point<2>(-1, +1) * (radius / std::sqrt(2.0) * a),
-         p + Point<2>(+1, +1) * (radius / std::sqrt(2.0) * a),
-         p + Point<2>(-1, +1) * (radius / std::sqrt(2.0)),
-         p + Point<2>(+1, +1) * (radius / std::sqrt(2.0))};
+    const double   a           = 1. / (1 + std::sqrt(2.0));
+    const Point<2> vertices[8] = {
+      p + Point<2>(-1, -1) * (radius / std::sqrt(2.0)),
+      p + Point<2>(+1, -1) * (radius / std::sqrt(2.0)),
+      p + Point<2>(-1, -1) * (radius / std::sqrt(2.0) * a),
+      p + Point<2>(+1, -1) * (radius / std::sqrt(2.0) * a),
+      p + Point<2>(-1, +1) * (radius / std::sqrt(2.0) * a),
+      p + Point<2>(+1, +1) * (radius / std::sqrt(2.0) * a),
+      p + Point<2>(-1, +1) * (radius / std::sqrt(2.0)),
+      p + Point<2>(+1, +1) * (radius / std::sqrt(2.0))};
 
-    const int cell_vertices[5][4]
-      = {{0, 1, 2, 3}, {0, 2, 6, 4}, {2, 3, 4, 5}, {1, 7, 3, 5}, {6, 4, 7, 5}};
+    const int cell_vertices[5][4] = {
+      {0, 1, 2, 3}, {0, 2, 6, 4}, {2, 3, 4, 5}, {1, 7, 3, 5}, {6, 4, 7, 5}};
 
     std::vector<CellData<2>> cells(5, CellData<2>());
 
@@ -2284,11 +2284,11 @@ namespace GridGenerator
     // radial extent (which is the
     // difference between the two
     // radii)
-    const unsigned int N
-      = (n_cells == 0 ? static_cast<unsigned int>(
-                          std::ceil((2 * pi * (outer_radius + inner_radius) / 2)
-                                    / (outer_radius - inner_radius))) :
-                        n_cells);
+    const unsigned int N =
+      (n_cells == 0 ? static_cast<unsigned int>(
+                        std::ceil((2 * pi * (outer_radius + inner_radius) / 2) /
+                                  (outer_radius - inner_radius))) :
+                      n_cells);
 
     // set up N vertices on the
     // outer and N vertices on
@@ -2299,9 +2299,9 @@ namespace GridGenerator
     std::vector<Point<2>> vertices(2 * N);
     for(unsigned int i = 0; i < N; ++i)
       {
-        vertices[i]
-          = Point<2>(std::cos(2 * pi * i / N), std::sin(2 * pi * i / N))
-            * outer_radius;
+        vertices[i] =
+          Point<2>(std::cos(2 * pi * i / N), std::sin(2 * pi * i / N)) *
+          outer_radius;
         vertices[i + N] = vertices[i] * (inner_radius / outer_radius);
 
         vertices[i] += center;
@@ -2382,14 +2382,14 @@ namespace GridGenerator
     // equilibrate cell sizes at
     // transition from the inner part
     // to the radial cells
-    const Point<dim> vertices[7]
-      = {p + Point<dim>(0, 0) * radius,
-         p + Point<dim>(+1, 0) * radius,
-         p + Point<dim>(+1, 0) * (radius / 2),
-         p + Point<dim>(0, +1) * (radius / 2),
-         p + Point<dim>(+1, +1) * (radius / (2 * sqrt(2.0))),
-         p + Point<dim>(0, +1) * radius,
-         p + Point<dim>(+1, +1) * (radius / std::sqrt(2.0))};
+    const Point<dim> vertices[7] = {
+      p + Point<dim>(0, 0) * radius,
+      p + Point<dim>(+1, 0) * radius,
+      p + Point<dim>(+1, 0) * (radius / 2),
+      p + Point<dim>(0, +1) * (radius / 2),
+      p + Point<dim>(+1, +1) * (radius / (2 * sqrt(2.0))),
+      p + Point<dim>(0, +1) * radius,
+      p + Point<dim>(+1, +1) * (radius / std::sqrt(2.0))};
 
     const int cell_vertices[3][4] = {{0, 2, 3, 4}, {1, 6, 2, 4}, {5, 3, 6, 4}};
 
@@ -2416,14 +2416,14 @@ namespace GridGenerator
       {
         for(unsigned int i = 0; i < GeometryInfo<dim>::faces_per_cell; ++i)
           {
-            if(cell->face(i)->boundary_id()
-               == numbers::internal_face_boundary_id)
+            if(cell->face(i)->boundary_id() ==
+               numbers::internal_face_boundary_id)
               continue;
 
             // If one the components is the same as the respective
             // component of the center, then this is part of the plane
-            if(cell->face(i)->center()(0) < p(0) + 1.e-5 * radius
-               || cell->face(i)->center()(1) < p(1) + 1.e-5 * radius)
+            if(cell->face(i)->center()(0) < p(0) + 1.e-5 * radius ||
+               cell->face(i)->center()(1) < p(1) + 1.e-5 * radius)
               {
                 cell->face(i)->set_boundary_id(1);
                 cell->face(i)->set_manifold_id(numbers::flat_manifold_id);
@@ -2442,19 +2442,19 @@ namespace GridGenerator
     // equilibrate cell sizes at
     // transition from the inner part
     // to the radial cells
-    const double   a = 1. / (1 + std::sqrt(2.0));
-    const Point<2> vertices[8]
-      = {p + Point<2>(0, -1) * radius,
-         p + Point<2>(+1, -1) * (radius / std::sqrt(2.0)),
-         p + Point<2>(0, -1) * (radius / std::sqrt(2.0) * a),
-         p + Point<2>(+1, -1) * (radius / std::sqrt(2.0) * a),
-         p + Point<2>(0, +1) * (radius / std::sqrt(2.0) * a),
-         p + Point<2>(+1, +1) * (radius / std::sqrt(2.0) * a),
-         p + Point<2>(0, +1) * radius,
-         p + Point<2>(+1, +1) * (radius / std::sqrt(2.0))};
+    const double   a           = 1. / (1 + std::sqrt(2.0));
+    const Point<2> vertices[8] = {
+      p + Point<2>(0, -1) * radius,
+      p + Point<2>(+1, -1) * (radius / std::sqrt(2.0)),
+      p + Point<2>(0, -1) * (radius / std::sqrt(2.0) * a),
+      p + Point<2>(+1, -1) * (radius / std::sqrt(2.0) * a),
+      p + Point<2>(0, +1) * (radius / std::sqrt(2.0) * a),
+      p + Point<2>(+1, +1) * (radius / std::sqrt(2.0) * a),
+      p + Point<2>(0, +1) * radius,
+      p + Point<2>(+1, +1) * (radius / std::sqrt(2.0))};
 
-    const int cell_vertices[5][4]
-      = {{0, 1, 2, 3}, {2, 3, 4, 5}, {1, 7, 3, 5}, {6, 4, 7, 5}};
+    const int cell_vertices[5][4] = {
+      {0, 1, 2, 3}, {2, 3, 4, 5}, {1, 7, 3, 5}, {6, 4, 7, 5}};
 
     std::vector<CellData<2>> cells(4, CellData<2>());
 
@@ -2479,8 +2479,8 @@ namespace GridGenerator
       {
         for(unsigned int i = 0; i < GeometryInfo<2>::faces_per_cell; ++i)
           {
-            if(cell->face(i)->boundary_id()
-               == numbers::internal_face_boundary_id)
+            if(cell->face(i)->boundary_id() ==
+               numbers::internal_face_boundary_id)
               continue;
 
             // If x is zero, then this is part of the plane
@@ -2517,11 +2517,11 @@ namespace GridGenerator
     // radial extent (which is the
     // difference between the two
     // radii)
-    const unsigned int N
-      = (n_cells == 0 ? static_cast<unsigned int>(
-                          std::ceil((pi * (outer_radius + inner_radius) / 2)
-                                    / (outer_radius - inner_radius))) :
-                        n_cells);
+    const unsigned int N =
+      (n_cells == 0 ? static_cast<unsigned int>(
+                        std::ceil((pi * (outer_radius + inner_radius) / 2) /
+                                  (outer_radius - inner_radius))) :
+                      n_cells);
 
     // set up N+1 vertices on the
     // outer and N+1 vertices on
@@ -2538,10 +2538,10 @@ namespace GridGenerator
         // zero (contrary to what we may
         // compute using the imprecise
         // value of pi)
-        vertices[i]
-          = Point<2>(((i == 0) || (i == N) ? 0 : std::cos(pi * i / N - pi / 2)),
-                     std::sin(pi * i / N - pi / 2))
-            * outer_radius;
+        vertices[i] =
+          Point<2>(((i == 0) || (i == N) ? 0 : std::cos(pi * i / N - pi / 2)),
+                   std::sin(pi * i / N - pi / 2)) *
+          outer_radius;
         vertices[i + N + 1] = vertices[i] * (inner_radius / outer_radius);
 
         vertices[i] += center;
@@ -2598,11 +2598,11 @@ namespace GridGenerator
     // radial extent (which is the
     // difference between the two
     // radii)
-    const unsigned int N
-      = (n_cells == 0 ? static_cast<unsigned int>(
-                          std::ceil((pi * (outer_radius + inner_radius) / 4)
-                                    / (outer_radius - inner_radius))) :
-                        n_cells);
+    const unsigned int N =
+      (n_cells == 0 ? static_cast<unsigned int>(
+                        std::ceil((pi * (outer_radius + inner_radius) / 4) /
+                                  (outer_radius - inner_radius))) :
+                      n_cells);
 
     // set up N+1 vertices on the
     // outer and N+1 vertices on
@@ -2619,8 +2619,8 @@ namespace GridGenerator
         // compute using the imprecise
         // value of pi)
         vertices[i] = Point<2>(((i == N) ? 0 : std::cos(pi * i / N / 2)),
-                               std::sin(pi * i / N / 2))
-                      * outer_radius;
+                               std::sin(pi * i / N / 2)) *
+                      outer_radius;
         vertices[i + N + 1] = vertices[i] * (inner_radius / outer_radius);
 
         vertices[i] += center;
@@ -2667,17 +2667,17 @@ namespace GridGenerator
     const double rl2 = (right + left) / 2;
     const double len = (right - left) / 2.;
 
-    const Point<3> vertices[20]
-      = {Point<3>(left, left, -len / 2.),   Point<3>(rl2, left, -len / 2.),
-         Point<3>(rl2, rl2, -len / 2.),     Point<3>(left, rl2, -len / 2.),
-         Point<3>(right, left, -len / 2.),  Point<3>(right, rl2, -len / 2.),
-         Point<3>(rl2, right, -len / 2.),   Point<3>(left, right, -len / 2.),
-         Point<3>(right, right, -len / 2.), Point<3>(rl2, left, -len / 2.),
-         Point<3>(left, left, len / 2.),    Point<3>(rl2, left, len / 2.),
-         Point<3>(rl2, rl2, len / 2.),      Point<3>(left, rl2, len / 2.),
-         Point<3>(right, left, len / 2.),   Point<3>(right, rl2, len / 2.),
-         Point<3>(rl2, right, len / 2.),    Point<3>(left, right, len / 2.),
-         Point<3>(right, right, len / 2.),  Point<3>(rl2, left, len / 2.)};
+    const Point<3> vertices[20] = {
+      Point<3>(left, left, -len / 2.),   Point<3>(rl2, left, -len / 2.),
+      Point<3>(rl2, rl2, -len / 2.),     Point<3>(left, rl2, -len / 2.),
+      Point<3>(right, left, -len / 2.),  Point<3>(right, rl2, -len / 2.),
+      Point<3>(rl2, right, -len / 2.),   Point<3>(left, right, -len / 2.),
+      Point<3>(right, right, -len / 2.), Point<3>(rl2, left, -len / 2.),
+      Point<3>(left, left, len / 2.),    Point<3>(rl2, left, len / 2.),
+      Point<3>(rl2, rl2, len / 2.),      Point<3>(left, rl2, len / 2.),
+      Point<3>(right, left, len / 2.),   Point<3>(right, rl2, len / 2.),
+      Point<3>(rl2, right, len / 2.),    Point<3>(left, right, len / 2.),
+      Point<3>(right, right, len / 2.),  Point<3>(rl2, left, len / 2.)};
     const int cell_vertices[4][8] = {{0, 1, 3, 2, 10, 11, 13, 12},
                                      {9, 4, 2, 5, 19, 14, 12, 15},
                                      {3, 2, 7, 6, 13, 12, 17, 16},
@@ -2727,9 +2727,9 @@ namespace GridGenerator
         for(unsigned int x = 0; x < 4; ++x)
           vertices[k++] = Point<3>(coords[x], coords[y], coords[z]);
 
-    const types::material_id materials[27]
-      = {21, 20, 22, 17, 16, 18, 25, 24, 26, 5,  4,  6,  1, 0,
-         2,  9,  8,  10, 37, 36, 38, 33, 32, 34, 41, 40, 42};
+    const types::material_id materials[27] = {
+      21, 20, 22, 17, 16, 18, 25, 24, 26, 5,  4,  6,  1, 0,
+      2,  9,  8,  10, 37, 36, 38, 33, 32, 34, 41, 40, 42};
 
     std::vector<CellData<3>> cells(27);
     k = 0;
@@ -2775,18 +2775,18 @@ namespace GridGenerator
 
     for(unsigned int i = 0; i < n_cells; ++i)
       {
-        vertices_tmp[4 * (i + 1)]
-          = vertices_tmp[4 * i]
-            + Point<3>(dx, 0, 0.5 * (radius_0 - radius_1) * dx / half_length);
-        vertices_tmp[4 * i + 5]
-          = vertices_tmp[4 * i + 1]
-            + Point<3>(dx, 0.5 * (radius_1 - radius_0) * dx / half_length, 0);
-        vertices_tmp[4 * i + 6]
-          = vertices_tmp[4 * i + 2]
-            + Point<3>(dx, 0.5 * (radius_0 - radius_1) * dx / half_length, 0);
-        vertices_tmp[4 * i + 7]
-          = vertices_tmp[4 * i + 3]
-            + Point<3>(dx, 0, 0.5 * (radius_1 - radius_0) * dx / half_length);
+        vertices_tmp[4 * (i + 1)] =
+          vertices_tmp[4 * i] +
+          Point<3>(dx, 0, 0.5 * (radius_0 - radius_1) * dx / half_length);
+        vertices_tmp[4 * i + 5] =
+          vertices_tmp[4 * i + 1] +
+          Point<3>(dx, 0.5 * (radius_1 - radius_0) * dx / half_length, 0);
+        vertices_tmp[4 * i + 6] =
+          vertices_tmp[4 * i + 2] +
+          Point<3>(dx, 0.5 * (radius_0 - radius_1) * dx / half_length, 0);
+        vertices_tmp[4 * i + 7] =
+          vertices_tmp[4 * i + 3] +
+          Point<3>(dx, 0, 0.5 * (radius_1 - radius_0) * dx / half_length);
       }
 
     const std::vector<Point<3>> vertices(vertices_tmp.begin(),
@@ -2849,37 +2849,37 @@ namespace GridGenerator
   {
     // we slice out the top back right
     // part of the cube
-    const Point<3> vertices[26]
-      = {// front face of the big cube
-         Point<3>(a, a, a),
-         Point<3>((a + b) / 2, a, a),
-         Point<3>(b, a, a),
-         Point<3>(a, a, (a + b) / 2),
-         Point<3>((a + b) / 2, a, (a + b) / 2),
-         Point<3>(b, a, (a + b) / 2),
-         Point<3>(a, a, b),
-         Point<3>((a + b) / 2, a, b),
-         Point<3>(b, a, b),
-         // middle face of the big cube
-         Point<3>(a, (a + b) / 2, a),
-         Point<3>((a + b) / 2, (a + b) / 2, a),
-         Point<3>(b, (a + b) / 2, a),
-         Point<3>(a, (a + b) / 2, (a + b) / 2),
-         Point<3>((a + b) / 2, (a + b) / 2, (a + b) / 2),
-         Point<3>(b, (a + b) / 2, (a + b) / 2),
-         Point<3>(a, (a + b) / 2, b),
-         Point<3>((a + b) / 2, (a + b) / 2, b),
-         Point<3>(b, (a + b) / 2, b),
-         // back face of the big cube
-         // last (top right) point is missing
-         Point<3>(a, b, a),
-         Point<3>((a + b) / 2, b, a),
-         Point<3>(b, b, a),
-         Point<3>(a, b, (a + b) / 2),
-         Point<3>((a + b) / 2, b, (a + b) / 2),
-         Point<3>(b, b, (a + b) / 2),
-         Point<3>(a, b, b),
-         Point<3>((a + b) / 2, b, b)};
+    const Point<3> vertices[26] = {
+      // front face of the big cube
+      Point<3>(a, a, a),
+      Point<3>((a + b) / 2, a, a),
+      Point<3>(b, a, a),
+      Point<3>(a, a, (a + b) / 2),
+      Point<3>((a + b) / 2, a, (a + b) / 2),
+      Point<3>(b, a, (a + b) / 2),
+      Point<3>(a, a, b),
+      Point<3>((a + b) / 2, a, b),
+      Point<3>(b, a, b),
+      // middle face of the big cube
+      Point<3>(a, (a + b) / 2, a),
+      Point<3>((a + b) / 2, (a + b) / 2, a),
+      Point<3>(b, (a + b) / 2, a),
+      Point<3>(a, (a + b) / 2, (a + b) / 2),
+      Point<3>((a + b) / 2, (a + b) / 2, (a + b) / 2),
+      Point<3>(b, (a + b) / 2, (a + b) / 2),
+      Point<3>(a, (a + b) / 2, b),
+      Point<3>((a + b) / 2, (a + b) / 2, b),
+      Point<3>(b, (a + b) / 2, b),
+      // back face of the big cube
+      // last (top right) point is missing
+      Point<3>(a, b, a),
+      Point<3>((a + b) / 2, b, a),
+      Point<3>(b, b, a),
+      Point<3>(a, b, (a + b) / 2),
+      Point<3>((a + b) / 2, b, (a + b) / 2),
+      Point<3>(b, b, (a + b) / 2),
+      Point<3>(a, b, b),
+      Point<3>((a + b) / 2, b, b)};
     const int cell_vertices[7][8] = {{0, 1, 9, 10, 3, 4, 12, 13},
                                      {1, 2, 10, 11, 4, 5, 13, 14},
                                      {3, 4, 12, 13, 6, 7, 15, 16},
@@ -2915,8 +2915,8 @@ namespace GridGenerator
                   const double      radius,
                   const bool        internal_manifold)
   {
-    const double a
-      = 1. / (1 + std::sqrt(3.0)); // equilibrate cell sizes at transition
+    const double a =
+      1. / (1 + std::sqrt(3.0)); // equilibrate cell sizes at transition
     // from the inner part to the radial
     // cells
     const unsigned int n_vertices           = 16;
@@ -2945,15 +2945,15 @@ namespace GridGenerator
 
     // one needs to draw the seven cubes to
     // understand what's going on here
-    const unsigned int n_cells = 7;
-    const int          cell_vertices[n_cells][8]
-      = {{0, 1, 4, 5, 3, 2, 7, 6},      // center
-         {8, 9, 12, 13, 0, 1, 4, 5},    // bottom
-         {9, 13, 1, 5, 10, 14, 2, 6},   // right
-         {11, 10, 3, 2, 15, 14, 7, 6},  // top
-         {8, 0, 12, 4, 11, 3, 15, 7},   // left
-         {8, 9, 0, 1, 11, 10, 3, 2},    // front
-         {12, 4, 13, 5, 15, 7, 14, 6}}; // back
+    const unsigned int n_cells                   = 7;
+    const int          cell_vertices[n_cells][8] = {
+      {0, 1, 4, 5, 3, 2, 7, 6},      // center
+      {8, 9, 12, 13, 0, 1, 4, 5},    // bottom
+      {9, 13, 1, 5, 10, 14, 2, 6},   // right
+      {11, 10, 3, 2, 15, 14, 7, 6},  // top
+      {8, 0, 12, 4, 11, 3, 15, 7},   // left
+      {8, 9, 0, 1, 11, 10, 3, 2},    // front
+      {12, 4, 13, 5, 15, 7, 14, 6}}; // back
 
     std::vector<CellData<3>> cells(n_cells, CellData<3>());
 
@@ -3082,10 +3082,10 @@ namespace GridGenerator
 
                 for(unsigned int e = 0; e < GeometryInfo<3>::lines_per_face;
                     ++e)
-                  if((std::fabs(cell->face(i)->line(e)->vertex(0)[1]) == a)
-                     || (std::fabs(cell->face(i)->line(e)->vertex(0)[2]) == a)
-                     || (std::fabs(cell->face(i)->line(e)->vertex(1)[1]) == a)
-                     || (std::fabs(cell->face(i)->line(e)->vertex(1)[2]) == a))
+                  if((std::fabs(cell->face(i)->line(e)->vertex(0)[1]) == a) ||
+                     (std::fabs(cell->face(i)->line(e)->vertex(0)[2]) == a) ||
+                     (std::fabs(cell->face(i)->line(e)->vertex(1)[1]) == a) ||
+                     (std::fabs(cell->face(i)->line(e)->vertex(1)[2]) == a))
                     {
                       cell->face(i)->line(e)->set_boundary_id(2);
                       cell->face(i)->line(e)->set_manifold_id(
@@ -3099,10 +3099,10 @@ namespace GridGenerator
 
                 for(unsigned int e = 0; e < GeometryInfo<3>::lines_per_face;
                     ++e)
-                  if((std::fabs(cell->face(i)->line(e)->vertex(0)[1]) == a)
-                     || (std::fabs(cell->face(i)->line(e)->vertex(0)[2]) == a)
-                     || (std::fabs(cell->face(i)->line(e)->vertex(1)[1]) == a)
-                     || (std::fabs(cell->face(i)->line(e)->vertex(1)[2]) == a))
+                  if((std::fabs(cell->face(i)->line(e)->vertex(0)[1]) == a) ||
+                     (std::fabs(cell->face(i)->line(e)->vertex(0)[2]) == a) ||
+                     (std::fabs(cell->face(i)->line(e)->vertex(1)[1]) == a) ||
+                     (std::fabs(cell->face(i)->line(e)->vertex(1)[2]) == a))
                     {
                       cell->face(i)->line(e)->set_boundary_id(1);
                       cell->face(i)->line(e)->set_manifold_id(
@@ -3123,22 +3123,22 @@ namespace GridGenerator
     // equilibrate cell sizes at
     // transition from the inner part
     // to the radial cells
-    const Point<dim> vertices[15]
-      = {center + Point<dim>(0, 0, 0) * radius,
-         center + Point<dim>(+1, 0, 0) * radius,
-         center + Point<dim>(+1, 0, 0) * (radius / 2.),
-         center + Point<dim>(0, +1, 0) * (radius / 2.),
-         center + Point<dim>(+1, +1, 0) * (radius / (2 * sqrt(2.0))),
-         center + Point<dim>(0, +1, 0) * radius,
-         center + Point<dim>(+1, +1, 0) * (radius / std::sqrt(2.0)),
-         center + Point<dim>(0, 0, 1) * radius / 2.,
-         center + Point<dim>(+1, 0, 1) * radius / std::sqrt(2.0),
-         center + Point<dim>(+1, 0, 1) * (radius / (2 * std::sqrt(2.0))),
-         center + Point<dim>(0, +1, 1) * (radius / (2 * std::sqrt(2.0))),
-         center + Point<dim>(+1, +1, 1) * (radius / (2 * std::sqrt(3.0))),
-         center + Point<dim>(0, +1, 1) * radius / std::sqrt(2.0),
-         center + Point<dim>(+1, +1, 1) * (radius / (std::sqrt(3.0))),
-         center + Point<dim>(0, 0, 1) * radius};
+    const Point<dim> vertices[15] = {
+      center + Point<dim>(0, 0, 0) * radius,
+      center + Point<dim>(+1, 0, 0) * radius,
+      center + Point<dim>(+1, 0, 0) * (radius / 2.),
+      center + Point<dim>(0, +1, 0) * (radius / 2.),
+      center + Point<dim>(+1, +1, 0) * (radius / (2 * sqrt(2.0))),
+      center + Point<dim>(0, +1, 0) * radius,
+      center + Point<dim>(+1, +1, 0) * (radius / std::sqrt(2.0)),
+      center + Point<dim>(0, 0, 1) * radius / 2.,
+      center + Point<dim>(+1, 0, 1) * radius / std::sqrt(2.0),
+      center + Point<dim>(+1, 0, 1) * (radius / (2 * std::sqrt(2.0))),
+      center + Point<dim>(0, +1, 1) * (radius / (2 * std::sqrt(2.0))),
+      center + Point<dim>(+1, +1, 1) * (radius / (2 * std::sqrt(3.0))),
+      center + Point<dim>(0, +1, 1) * radius / std::sqrt(2.0),
+      center + Point<dim>(+1, +1, 1) * (radius / (std::sqrt(3.0))),
+      center + Point<dim>(0, 0, 1) * radius};
     const int cell_vertices[4][8] = {{0, 2, 3, 4, 7, 9, 10, 11},
                                      {1, 6, 2, 4, 8, 13, 9, 11},
                                      {5, 3, 6, 4, 12, 10, 13, 11},
@@ -3166,14 +3166,14 @@ namespace GridGenerator
       {
         for(unsigned int i = 0; i < GeometryInfo<dim>::faces_per_cell; ++i)
           {
-            if(cell->face(i)->boundary_id()
-               == numbers::internal_face_boundary_id)
+            if(cell->face(i)->boundary_id() ==
+               numbers::internal_face_boundary_id)
               continue;
 
             // If x,y or z is zero, then this is part of the plane
-            if(cell->face(i)->center()(0) < center(0) + 1.e-5 * radius
-               || cell->face(i)->center()(1) < center(1) + 1.e-5 * radius
-               || cell->face(i)->center()(2) < center(2) + 1.e-5 * radius)
+            if(cell->face(i)->center()(0) < center(0) + 1.e-5 * radius ||
+               cell->face(i)->center()(1) < center(1) + 1.e-5 * radius ||
+               cell->face(i)->center()(2) < center(2) + 1.e-5 * radius)
               {
                 cell->face(i)->set_boundary_id(1);
                 cell->face(i)->set_manifold_id(numbers::flat_manifold_id);
@@ -3182,13 +3182,13 @@ namespace GridGenerator
                 for(unsigned int j = 0; j < GeometryInfo<3>::lines_per_face;
                     ++j)
                   {
-                    const Point<3> line_vertices[2]
-                      = {cell->face(i)->line(j)->vertex(0),
-                         cell->face(i)->line(j)->vertex(1)};
-                    if((std::fabs(line_vertices[0].distance(center) - radius)
-                        > 1e-5 * radius)
-                       || (std::fabs(line_vertices[1].distance(center) - radius)
-                           > 1e-5 * radius))
+                    const Point<3> line_vertices[2] = {
+                      cell->face(i)->line(j)->vertex(0),
+                      cell->face(i)->line(j)->vertex(1)};
+                    if((std::fabs(line_vertices[0].distance(center) - radius) >
+                        1e-5 * radius) ||
+                       (std::fabs(line_vertices[1].distance(center) - radius) >
+                        1e-5 * radius))
                       {
                         cell->face(i)->line(j)->set_boundary_id(1);
                         cell->face(i)->line(j)->set_manifold_id(
@@ -3286,13 +3286,13 @@ namespace GridGenerator
                 for(unsigned int j = 0; j < GeometryInfo<3>::lines_per_face;
                     ++j)
                   {
-                    const Point<3> line_vertices[2]
-                      = {cell->face(i)->line(j)->vertex(0),
-                         cell->face(i)->line(j)->vertex(1)};
-                    if((std::fabs(line_vertices[0].distance(center) - radius)
-                        > 1e-5 * radius)
-                       || (std::fabs(line_vertices[1].distance(center) - radius)
-                           > 1e-5 * radius))
+                    const Point<3> line_vertices[2] = {
+                      cell->face(i)->line(j)->vertex(0),
+                      cell->face(i)->line(j)->vertex(1)};
+                    if((std::fabs(line_vertices[0].distance(center) - radius) >
+                        1e-5 * radius) ||
+                       (std::fabs(line_vertices[1].distance(center) - radius) >
+                        1e-5 * radius))
                       {
                         cell->face(i)->line(j)->set_boundary_id(1);
                         cell->face(i)->line(j)->set_manifold_id(
@@ -3333,14 +3333,14 @@ namespace GridGenerator
         for(unsigned int i = 0; i < 8; ++i)
           vertices.push_back(p + hexahedron[i] * orad);
 
-        const unsigned int n_cells = 6;
-        const int          cell_vertices[n_cells][8]
-          = {{8, 9, 10, 11, 0, 1, 2, 3},    // bottom
-             {9, 11, 1, 3, 13, 15, 5, 7},   // right
-             {12, 13, 4, 5, 14, 15, 6, 7},  // top
-             {8, 0, 10, 2, 12, 4, 14, 6},   // left
-             {8, 9, 0, 1, 12, 13, 4, 5},    // front
-             {10, 2, 11, 3, 14, 6, 15, 7}}; // back
+        const unsigned int n_cells                   = 6;
+        const int          cell_vertices[n_cells][8] = {
+          {8, 9, 10, 11, 0, 1, 2, 3},    // bottom
+          {9, 11, 1, 3, 13, 15, 5, 7},   // right
+          {12, 13, 4, 5, 14, 15, 6, 7},  // top
+          {8, 0, 10, 2, 12, 4, 14, 6},   // left
+          {8, 9, 0, 1, 12, 13, 4, 5},    // front
+          {10, 2, 11, 3, 14, 6, 15, 7}}; // back
 
         cells.resize(n_cells, CellData<3>());
 
@@ -3520,11 +3520,11 @@ namespace GridGenerator
                 const Triangulation<3>::face_iterator face = cell->face(i);
 
                 const Point<3> face_center(face->center());
-                if(std::abs(face_center(0) - center(0))
-                   > 1.e-6 * face_center.norm())
+                if(std::abs(face_center(0) - center(0)) >
+                   1.e-6 * face_center.norm())
                   {
-                    if(std::abs((face_center - center).norm() - inner_radius)
-                       < std::abs((face_center - center).norm() - outer_radius))
+                    if(std::abs((face_center - center).norm() - inner_radius) <
+                       std::abs((face_center - center).norm() - outer_radius))
                       face->set_all_boundary_ids(0);
                     else
                       face->set_all_boundary_ids(1);
@@ -3624,16 +3624,16 @@ namespace GridGenerator
     // radial extent (which is the
     // difference between the two
     // radii)
-    const unsigned int N_r
-      = (n_radial_cells == 0 ? static_cast<unsigned int>(std::ceil(
-                                 (2 * pi * (outer_radius + inner_radius) / 2)
-                                 / (outer_radius - inner_radius))) :
-                               n_radial_cells);
-    const unsigned int N_z
-      = (n_axial_cells == 0 ?
-           static_cast<unsigned int>(std::ceil(
-             length / (2 * pi * (outer_radius + inner_radius) / 2 / N_r))) :
-           n_axial_cells);
+    const unsigned int N_r =
+      (n_radial_cells == 0 ? static_cast<unsigned int>(std::ceil(
+                               (2 * pi * (outer_radius + inner_radius) / 2) /
+                               (outer_radius - inner_radius))) :
+                             n_radial_cells);
+    const unsigned int N_z =
+      (n_axial_cells == 0 ?
+         static_cast<unsigned int>(std::ceil(
+           length / (2 * pi * (outer_radius + inner_radius) / 2 / N_r))) :
+         n_axial_cells);
 
     // set up N vertices on the
     // outer and N vertices on
@@ -3644,9 +3644,9 @@ namespace GridGenerator
     std::vector<Point<2>> vertices_2d(2 * N_r);
     for(unsigned int i = 0; i < N_r; ++i)
       {
-        vertices_2d[i]
-          = Point<2>(std::cos(2 * pi * i / N_r), std::sin(2 * pi * i / N_r))
-            * outer_radius;
+        vertices_2d[i] =
+          Point<2>(std::cos(2 * pi * i / N_r), std::sin(2 * pi * i / N_r)) *
+          outer_radius;
         vertices_2d[i + N_r] = vertices_2d[i] * (inner_radius / outer_radius);
       }
 
@@ -3671,8 +3671,8 @@ namespace GridGenerator
           cells[i + j * N_r].vertices[3] = (i + 1) % N_r + j * 2 * N_r;
 
           cells[i + j * N_r].vertices[4] = N_r + i + (j + 1) * 2 * N_r;
-          cells[i + j * N_r].vertices[5]
-            = N_r + ((i + 1) % N_r) + (j + 1) * 2 * N_r;
+          cells[i + j * N_r].vertices[5] =
+            N_r + ((i + 1) % N_r) + (j + 1) * 2 * N_r;
           cells[i + j * N_r].vertices[6] = N_r + i + j * 2 * N_r;
           cells[i + j * N_r].vertices[7] = N_r + ((i + 1) % N_r) + j * 2 * N_r;
 
@@ -3704,8 +3704,8 @@ namespace GridGenerator
     // now form the union of the set of cells
     std::vector<CellData<dim>> cells;
     cells.reserve(triangulation_1.n_cells() + triangulation_2.n_cells());
-    for(typename Triangulation<dim, spacedim>::cell_iterator cell
-        = triangulation_1.begin();
+    for(typename Triangulation<dim, spacedim>::cell_iterator cell =
+          triangulation_1.begin();
         cell != triangulation_1.end();
         ++cell)
       {
@@ -3718,15 +3718,15 @@ namespace GridGenerator
 
     // now do the same for the other other mesh. note that we have to
     // translate the vertex indices
-    for(typename Triangulation<dim, spacedim>::cell_iterator cell
-        = triangulation_2.begin();
+    for(typename Triangulation<dim, spacedim>::cell_iterator cell =
+          triangulation_2.begin();
         cell != triangulation_2.end();
         ++cell)
       {
         CellData<dim> this_cell;
         for(unsigned int v = 0; v < GeometryInfo<dim>::vertices_per_cell; ++v)
-          this_cell.vertices[v]
-            = cell->vertex_index(v) + triangulation_1.n_vertices();
+          this_cell.vertices[v] =
+            cell->vertex_index(v) + triangulation_1.n_vertices();
         this_cell.material_id = cell->material_id();
         cells.push_back(this_cell);
       }
@@ -3757,12 +3757,10 @@ namespace GridGenerator
                       "the same coarse mesh as required."));
     Assert(
       (dynamic_cast<const parallel::distributed::Triangulation<dim, spacedim>*>(
-         &triangulation_1)
-       == nullptr)
-        && (dynamic_cast<
-              const parallel::distributed::Triangulation<dim, spacedim>*>(
-              &triangulation_2)
-            == nullptr),
+         &triangulation_1) == nullptr) &&
+        (dynamic_cast<
+           const parallel::distributed::Triangulation<dim, spacedim>*>(
+           &triangulation_2) == nullptr),
       ExcMessage("The source triangulations for this function must both "
                  "be available entirely locally, and not be distributed "
                  "triangulations."));
@@ -3790,8 +3788,7 @@ namespace GridGenerator
 
         bool any_cell_flagged = false;
         for(typename Triangulation<dim, spacedim>::active_cell_iterator
-              result_cell
-            = result.begin_active();
+              result_cell = result.begin_active();
             result_cell != result.end();
             ++result_cell)
           if(intergrid_map[result_cell]->has_children())
@@ -3822,15 +3819,15 @@ namespace GridGenerator
     // the loop through the cells and copy stuff, excluding
     // the ones we are to remove
     std::vector<CellData<dim>> cells;
-    for(typename Triangulation<dim, spacedim>::active_cell_iterator cell
-        = input_triangulation.begin_active();
+    for(typename Triangulation<dim, spacedim>::active_cell_iterator cell =
+          input_triangulation.begin_active();
         cell != input_triangulation.end();
         ++cell)
       if(cells_to_remove.find(cell) == cells_to_remove.end())
         {
           Assert(
-            static_cast<unsigned int>(cell->level())
-              == input_triangulation.n_levels() - 1,
+            static_cast<unsigned int>(cell->level()) ==
+              input_triangulation.n_levels() - 1,
             ExcMessage("Your input triangulation appears to have "
                        "adaptively refined cells. This is not allowed. You can "
                        "only call this function on a triangulation in which "
@@ -3910,8 +3907,8 @@ namespace GridGenerator
             const Point<2>& v                         = input.get_vertices()[i];
             points[slice * input.n_vertices() + i](0) = v(0);
             points[slice * input.n_vertices() + i](1) = v(1);
-            points[slice * input.n_vertices() + i](2)
-              = slice_coordinates[slice];
+            points[slice * input.n_vertices() + i](2) =
+              slice_coordinates[slice];
           }
       }
 
@@ -3926,10 +3923,10 @@ namespace GridGenerator
             CellData<3> this_cell;
             for(unsigned int v = 0; v < GeometryInfo<2>::vertices_per_cell; ++v)
               {
-                this_cell.vertices[v]
-                  = cell->vertex_index(v) + slice * input.n_vertices();
-                this_cell.vertices[v + GeometryInfo<2>::vertices_per_cell]
-                  = cell->vertex_index(v) + (slice + 1) * input.n_vertices();
+                this_cell.vertices[v] =
+                  cell->vertex_index(v) + slice * input.n_vertices();
+                this_cell.vertices[v + GeometryInfo<2>::vertices_per_cell] =
+                  cell->vertex_index(v) + (slice + 1) * input.n_vertices();
               }
 
             this_cell.material_id = cell->material_id();
@@ -3943,8 +3940,8 @@ namespace GridGenerator
     // no need to do that)
     SubCellData        s;
     types::boundary_id max_boundary_id = 0;
-    s.boundary_quads.reserve(input.n_active_lines() * (n_slices - 1)
-                             + input.n_active_cells() * 2);
+    s.boundary_quads.reserve(input.n_active_lines() * (n_slices - 1) +
+                             input.n_active_cells() * 2);
     for(Triangulation<2, 2>::cell_iterator cell = input.begin();
         cell != input.end();
         ++cell)
@@ -3957,14 +3954,14 @@ namespace GridGenerator
               max_boundary_id  = std::max(max_boundary_id, quad.boundary_id);
               for(unsigned int slice = 0; slice < n_slices - 1; ++slice)
                 {
-                  quad.vertices[0] = cell->face(f)->vertex_index(0)
-                                     + slice * input.n_vertices();
-                  quad.vertices[1] = cell->face(f)->vertex_index(1)
-                                     + slice * input.n_vertices();
-                  quad.vertices[2] = cell->face(f)->vertex_index(0)
-                                     + (slice + 1) * input.n_vertices();
-                  quad.vertices[3] = cell->face(f)->vertex_index(1)
-                                     + (slice + 1) * input.n_vertices();
+                  quad.vertices[0] =
+                    cell->face(f)->vertex_index(0) + slice * input.n_vertices();
+                  quad.vertices[1] =
+                    cell->face(f)->vertex_index(1) + slice * input.n_vertices();
+                  quad.vertices[2] = cell->face(f)->vertex_index(0) +
+                                     (slice + 1) * input.n_vertices();
+                  quad.vertices[3] = cell->face(f)->vertex_index(1) +
+                                     (slice + 1) * input.n_vertices();
                   s.boundary_quads.push_back(quad);
                 }
             }
@@ -3974,9 +3971,9 @@ namespace GridGenerator
     // with max_boundary_id+1 and max_boundary_id+2. check that this
     // remains valid
     Assert(
-      (max_boundary_id != numbers::invalid_boundary_id)
-        && (max_boundary_id + 1 != numbers::invalid_boundary_id)
-        && (max_boundary_id + 2 != numbers::invalid_boundary_id),
+      (max_boundary_id != numbers::invalid_boundary_id) &&
+        (max_boundary_id + 1 != numbers::invalid_boundary_id) &&
+        (max_boundary_id + 2 != numbers::invalid_boundary_id),
       ExcMessage("The input triangulation to this function is using boundary "
                  "indicators in a range that do not allow using "
                  "max_boundary_id+1 and max_boundary_id+2 as boundary "
@@ -4039,9 +4036,9 @@ namespace GridGenerator
     // We create an hyper_shell in two dimensions, and then we modify it.
     hyper_shell(triangulation, center, inner_radius, outer_radius, 8);
     triangulation.set_all_manifold_ids(numbers::flat_manifold_id);
-    Triangulation<dim>::active_cell_iterator cell
-      = triangulation.begin_active(),
-      endc = triangulation.end();
+    Triangulation<dim>::active_cell_iterator cell =
+                                               triangulation.begin_active(),
+                                             endc = triangulation.end();
     std::vector<bool> treated_vertices(triangulation.n_vertices(), false);
     for(; cell != endc; ++cell)
       {
@@ -4058,23 +4055,20 @@ namespace GridGenerator
                       switch(vv)
                         {
                           case 1:
-                            cell->face(f)->vertex(v)
-                              = center + Point<dim>(outer_radius, outer_radius);
+                            cell->face(f)->vertex(v) =
+                              center + Point<dim>(outer_radius, outer_radius);
                             break;
                           case 3:
-                            cell->face(f)->vertex(v)
-                              = center
-                                + Point<dim>(-outer_radius, outer_radius);
+                            cell->face(f)->vertex(v) =
+                              center + Point<dim>(-outer_radius, outer_radius);
                             break;
                           case 5:
-                            cell->face(f)->vertex(v)
-                              = center
-                                + Point<dim>(-outer_radius, -outer_radius);
+                            cell->face(f)->vertex(v) =
+                              center + Point<dim>(-outer_radius, -outer_radius);
                             break;
                           case 7:
-                            cell->face(f)->vertex(v)
-                              = center
-                                + Point<dim>(outer_radius, -outer_radius);
+                            cell->face(f)->vertex(v) =
+                              center + Point<dim>(outer_radius, -outer_radius);
                             break;
                           default:
                             break;
@@ -4142,9 +4136,9 @@ namespace GridGenerator
     cylinder_shell(triangulation, L, inner_radius, outer_radius, 8, Nz);
     triangulation.set_all_manifold_ids(numbers::flat_manifold_id);
 
-    Triangulation<dim>::active_cell_iterator cell
-      = triangulation.begin_active(),
-      endc = triangulation.end();
+    Triangulation<dim>::active_cell_iterator cell =
+                                               triangulation.begin_active(),
+                                             endc = triangulation.end();
     std::vector<bool> treated_vertices(triangulation.n_vertices(), false);
     for(; cell != endc; ++cell)
       {
@@ -4164,20 +4158,20 @@ namespace GridGenerator
                           switch(vv - i * 16)
                             {
                               case 1:
-                                cell->face(f)->vertex(v)
-                                  = Point<dim>(outer_radius, outer_radius, d);
+                                cell->face(f)->vertex(v) =
+                                  Point<dim>(outer_radius, outer_radius, d);
                                 break;
                               case 3:
-                                cell->face(f)->vertex(v)
-                                  = Point<dim>(-outer_radius, outer_radius, d);
+                                cell->face(f)->vertex(v) =
+                                  Point<dim>(-outer_radius, outer_radius, d);
                                 break;
                               case 5:
-                                cell->face(f)->vertex(v)
-                                  = Point<dim>(-outer_radius, -outer_radius, d);
+                                cell->face(f)->vertex(v) =
+                                  Point<dim>(-outer_radius, -outer_radius, d);
                                 break;
                               case 7:
-                                cell->face(f)->vertex(v)
-                                  = Point<dim>(outer_radius, -outer_radius, d);
+                                cell->face(f)->vertex(v) =
+                                  Point<dim>(outer_radius, -outer_radius, d);
                                 break;
                               default:
                                 break;
@@ -4247,9 +4241,9 @@ namespace GridGenerator
   flatten_triangulation(const Triangulation<dim, spacedim1>& in_tria,
                         Triangulation<dim, spacedim2>&       out_tria)
   {
-    const parallel::distributed::Triangulation<dim, spacedim1>* pt
-      = dynamic_cast<
-        const parallel::distributed::Triangulation<dim, spacedim1>*>(&in_tria);
+    const parallel::distributed::Triangulation<dim, spacedim1>* pt =
+      dynamic_cast<const parallel::distributed::Triangulation<dim, spacedim1>*>(
+        &in_tria);
 
     (void) pt;
     Assert(
@@ -4270,8 +4264,8 @@ namespace GridGenerator
         v[i][d] = in_vertices[i][d];
 
     cells.resize(in_tria.n_active_cells());
-    typename Triangulation<dim, spacedim1>::active_cell_iterator cell
-      = in_tria.begin_active(),
+    typename Triangulation<dim, spacedim1>::active_cell_iterator
+      cell = in_tria.begin_active(),
       endc = in_tria.end();
 
     for(unsigned int id = 0; cell != endc; ++cell, ++id)
@@ -4284,8 +4278,8 @@ namespace GridGenerator
 
     if(dim > 1)
       {
-        typename Triangulation<dim, spacedim1>::active_face_iterator face
-          = in_tria.begin_active_face(),
+        typename Triangulation<dim, spacedim1>::active_face_iterator
+          face = in_tria.begin_active_face(),
           endf = in_tria.end_face();
 
         // Face counter for both dim == 2 and dim == 3
@@ -4301,12 +4295,12 @@ namespace GridGenerator
                       for(unsigned int i = 0;
                           i < GeometryInfo<dim>::vertices_per_face;
                           ++i)
-                        subcelldata.boundary_lines[f].vertices[i]
-                          = face->vertex_index(i);
-                      subcelldata.boundary_lines[f].boundary_id
-                        = face->boundary_id();
-                      subcelldata.boundary_lines[f].manifold_id
-                        = face->manifold_id();
+                        subcelldata.boundary_lines[f].vertices[i] =
+                          face->vertex_index(i);
+                      subcelldata.boundary_lines[f].boundary_id =
+                        face->boundary_id();
+                      subcelldata.boundary_lines[f].manifold_id =
+                        face->manifold_id();
                       ++f;
                     }
                 subcelldata.boundary_lines.resize(f);
@@ -4321,12 +4315,12 @@ namespace GridGenerator
                       for(unsigned int i = 0;
                           i < GeometryInfo<dim>::vertices_per_face;
                           ++i)
-                        subcelldata.boundary_quads[f].vertices[i]
-                          = face->vertex_index(i);
-                      subcelldata.boundary_quads[f].boundary_id
-                        = face->boundary_id();
-                      subcelldata.boundary_quads[f].manifold_id
-                        = face->manifold_id();
+                        subcelldata.boundary_quads[f].vertices[i] =
+                          face->vertex_index(i);
+                      subcelldata.boundary_quads[f].boundary_id =
+                        face->boundary_id();
+                      subcelldata.boundary_quads[f].manifold_id =
+                        face->manifold_id();
                       ++f;
                     }
                 subcelldata.boundary_quads.resize(f);
@@ -4352,8 +4346,7 @@ namespace GridGenerator
   {
     Assert(
       (dynamic_cast<const parallel::distributed::Triangulation<dim, spacedim>*>(
-         &volume_mesh.get_triangulation())
-       == nullptr),
+         &volume_mesh.get_triangulation()) == nullptr),
       ExcNotImplemented());
 
     // This function works using the following assumption:
@@ -4381,19 +4374,18 @@ namespace GridGenerator
     std::map<unsigned int, unsigned int>
       map_vert_index; //volume vertex indices to surf ones
 
-    for(typename MeshType<dim, spacedim>::cell_iterator cell
-        = volume_mesh.begin(0);
+    for(typename MeshType<dim, spacedim>::cell_iterator cell =
+          volume_mesh.begin(0);
         cell != volume_mesh.end(0);
         ++cell)
       for(unsigned int i = 0; i < GeometryInfo<dim>::faces_per_cell; ++i)
         {
-          const typename MeshType<dim, spacedim>::face_iterator face
-            = cell->face(i);
+          const typename MeshType<dim, spacedim>::face_iterator face =
+            cell->face(i);
 
-          if(face->at_boundary()
-             && (boundary_ids.empty()
-                 || (boundary_ids.find(face->boundary_id())
-                     != boundary_ids.end())))
+          if(face->at_boundary() &&
+             (boundary_ids.empty() ||
+              (boundary_ids.find(face->boundary_id()) != boundary_ids.end())))
             {
               CellData<boundary_dim> c_data;
 
@@ -4411,8 +4403,8 @@ namespace GridGenerator
                     }
 
                   c_data.vertices[j] = map_vert_index[v_index];
-                  c_data.material_id
-                    = static_cast<types::material_id>(face->boundary_id());
+                  c_data.material_id =
+                    static_cast<types::material_id>(face->boundary_id());
                   c_data.manifold_id = face->manifold_id();
                 }
 
@@ -4453,17 +4445,14 @@ namespace GridGenerator
                       for(unsigned int i = 0;
                           i < subcell_data.boundary_lines.size();
                           ++i)
-                        if(((subcell_data.boundary_lines[i].vertices[0]
-                             == map_vert_index[face->line(e)->vertex_index(0)])
-                            && (subcell_data.boundary_lines[i].vertices[1]
-                                == map_vert_index[face->line(e)->vertex_index(
-                                     1)]))
-                           || ((subcell_data.boundary_lines[i].vertices[0]
-                                == map_vert_index[face->line(e)->vertex_index(
-                                     1)])
-                               && (subcell_data.boundary_lines[i].vertices[1]
-                                   == map_vert_index[face->line(e)
-                                                       ->vertex_index(0)])))
+                        if(((subcell_data.boundary_lines[i].vertices[0] ==
+                             map_vert_index[face->line(e)->vertex_index(0)]) &&
+                            (subcell_data.boundary_lines[i].vertices[1] ==
+                             map_vert_index[face->line(e)->vertex_index(1)])) ||
+                           ((subcell_data.boundary_lines[i].vertices[0] ==
+                             map_vert_index[face->line(e)->vertex_index(1)]) &&
+                            (subcell_data.boundary_lines[i].vertices[1] ==
+                             map_vert_index[face->line(e)->vertex_index(0)])))
                           {
                             edge_found = true;
                             break;
@@ -4473,10 +4462,10 @@ namespace GridGenerator
                     }
 
                     CellData<1> edge;
-                    edge.vertices[0]
-                      = map_vert_index[face->line(e)->vertex_index(0)];
-                    edge.vertices[1]
-                      = map_vert_index[face->line(e)->vertex_index(1)];
+                    edge.vertices[0] =
+                      map_vert_index[face->line(e)->vertex_index(0)];
+                    edge.vertices[1] =
+                      map_vert_index[face->line(e)->vertex_index(1)];
                     edge.boundary_id = numbers::internal_face_boundary_id;
                     edge.manifold_id = face->line(e)->manifold_id();
 
@@ -4495,8 +4484,8 @@ namespace GridGenerator
       .create_triangulation(vertices, cells, subcell_data);
 
     // Make the actual mapping
-    for(typename MeshType<dim - 1, spacedim>::active_cell_iterator cell
-        = surface_mesh.begin(0);
+    for(typename MeshType<dim - 1, spacedim>::active_cell_iterator cell =
+          surface_mesh.begin(0);
         cell != surface_mesh.end(0);
         ++cell)
       surface_to_volume_mapping[cell] = mapping.at(cell->index());
@@ -4505,8 +4494,8 @@ namespace GridGenerator
       {
         bool changed = false;
 
-        for(typename MeshType<dim - 1, spacedim>::active_cell_iterator cell
-            = surface_mesh.begin_active();
+        for(typename MeshType<dim - 1, spacedim>::active_cell_iterator cell =
+              surface_mesh.begin_active();
             cell != surface_mesh.end();
             ++cell)
           if(surface_to_volume_mapping[cell]->has_children() == true)
@@ -4521,15 +4510,15 @@ namespace GridGenerator
               surface_mesh.get_triangulation())
               .execute_coarsening_and_refinement();
 
-            for(typename MeshType<dim - 1, spacedim>::cell_iterator surface_cell
-                = surface_mesh.begin();
+            for(typename MeshType<dim - 1, spacedim>::cell_iterator
+                  surface_cell = surface_mesh.begin();
                 surface_cell != surface_mesh.end();
                 ++surface_cell)
               for(unsigned int c = 0; c < surface_cell->n_children(); c++)
-                if(surface_to_volume_mapping.find(surface_cell->child(c))
-                   == surface_to_volume_mapping.end())
-                  surface_to_volume_mapping[surface_cell->child(c)]
-                    = surface_to_volume_mapping[surface_cell]->child(c);
+                if(surface_to_volume_mapping.find(surface_cell->child(c)) ==
+                   surface_to_volume_mapping.end())
+                  surface_to_volume_mapping[surface_cell->child(c)] =
+                    surface_to_volume_mapping[surface_cell]->child(c);
           }
         else
           break;

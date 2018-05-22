@@ -213,8 +213,7 @@ public:
    * The implementation may still have an assert to check that it is indeed the case.
    */
   virtual void
-  unpack_values(const std::vector<double>& values)
-    = 0;
+  unpack_values(const std::vector<double>& values) = 0;
 };
 
 #ifdef DEAL_II_WITH_P4EST
@@ -624,8 +623,8 @@ pack_cell_data(const CellIteratorType&                            cell,
     std::is_base_of<TransferableQuadraturePointData, DataType>::value,
     "User's DataType class should be derived from QPData");
 
-  const std::vector<std::shared_ptr<const DataType>> qpd
-    = data_storage->get_data(cell);
+  const std::vector<std::shared_ptr<const DataType>> qpd =
+    data_storage->get_data(cell);
 
   const unsigned int n = matrix_data.n();
 
@@ -729,14 +728,13 @@ namespace parallel
       // if triangulation has some active cells locally owned cells on this processor we can expect
       // data to be initialized. Do that to get the number:
       for(typename parallel::distributed::Triangulation<
-            dim>::active_cell_iterator it
-          = triangulation->begin_active();
+            dim>::active_cell_iterator it = triangulation->begin_active();
           it != triangulation->end();
           it++)
         if(it->is_locally_owned())
           {
-            std::vector<std::shared_ptr<DataType>> qpd
-              = data_storage->get_data(it);
+            std::vector<std::shared_ptr<DataType>> qpd =
+              data_storage->get_data(it);
             number_of_values = qpd[0]->number_of_values();
             break;
           }
@@ -808,8 +806,8 @@ namespace parallel
                   status,
       const void* data)
     {
-      Assert((status
-              != parallel::distributed::Triangulation<dim, dim>::CELL_COARSEN),
+      Assert((status !=
+              parallel::distributed::Triangulation<dim, dim>::CELL_COARSEN),
              ExcNotImplemented());
       (void) status;
 

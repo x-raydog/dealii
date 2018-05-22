@@ -50,8 +50,8 @@ MappingQ1<dim, spacedim>::clone() const
 //---------------------------------------------------------------------------
 
 template <int dim, int spacedim>
-MappingQGeneric<dim, spacedim> StaticMappingQ1<dim, spacedim>::mapping
-  = MappingQGeneric<dim, spacedim>(1);
+MappingQGeneric<dim, spacedim>
+  StaticMappingQ1<dim, spacedim>::mapping = MappingQGeneric<dim, spacedim>(1);
 
 //--------------------------- Explicit instantiations -----------------------
 #include "mapping_q1.inst"

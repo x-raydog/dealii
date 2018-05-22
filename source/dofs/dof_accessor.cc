@@ -82,8 +82,8 @@ template <typename DoFHandlerType, bool lda>
 void
 DoFCellAccessor<DoFHandlerType, lda>::update_cell_dof_indices_cache() const
 {
-  Assert(static_cast<unsigned int>(this->present_level)
-           < this->dof_handler->levels.size(),
+  Assert(static_cast<unsigned int>(this->present_level) <
+           this->dof_handler->levels.size(),
          ExcMessage("DoFHandler not initialized"));
 
   Assert(this->dof_handler != nullptr, typename BaseClass::ExcInvalidObject());
@@ -97,8 +97,8 @@ void
 DoFCellAccessor<DoFHandlerType, lda>::set_dof_indices(
   const std::vector<types::global_dof_index>& local_dof_indices)
 {
-  Assert(static_cast<unsigned int>(this->present_level)
-           < this->dof_handler->levels.size(),
+  Assert(static_cast<unsigned int>(this->present_level) <
+           this->dof_handler->levels.size(),
          ExcMessage("DoFHandler not initialized"));
 
   Assert(this->dof_handler != nullptr, typename BaseClass::ExcInvalidObject());
@@ -113,8 +113,8 @@ DoFCellAccessor<DoFHandlerType, lda>::neighbor_child_on_subface(
   const unsigned int face,
   const unsigned int subface) const
 {
-  const TriaIterator<CellAccessor<dim, spacedim>> q
-    = CellAccessor<dim, spacedim>::neighbor_child_on_subface(face, subface);
+  const TriaIterator<CellAccessor<dim, spacedim>> q =
+    CellAccessor<dim, spacedim>::neighbor_child_on_subface(face, subface);
   return TriaIterator<DoFCellAccessor<DoFHandlerType, lda>>(*q,
                                                             this->dof_handler);
 }
@@ -125,9 +125,9 @@ DoFCellAccessor<DoFHandlerType, lda>::periodic_neighbor_child_on_subface(
   const unsigned int face,
   const unsigned int subface) const
 {
-  const TriaIterator<CellAccessor<dim, spacedim>> q
-    = CellAccessor<dim, spacedim>::periodic_neighbor_child_on_subface(face,
-                                                                      subface);
+  const TriaIterator<CellAccessor<dim, spacedim>> q =
+    CellAccessor<dim, spacedim>::periodic_neighbor_child_on_subface(face,
+                                                                    subface);
   return TriaIterator<DoFCellAccessor<DoFHandlerType, lda>>(*q,
                                                             this->dof_handler);
 }
@@ -137,8 +137,8 @@ inline TriaIterator<DoFCellAccessor<DoFHandlerType, lda>>
 DoFCellAccessor<DoFHandlerType, lda>::periodic_neighbor(
   const unsigned int face) const
 {
-  const TriaIterator<CellAccessor<dim, spacedim>> q
-    = CellAccessor<dim, spacedim>::periodic_neighbor(face);
+  const TriaIterator<CellAccessor<dim, spacedim>> q =
+    CellAccessor<dim, spacedim>::periodic_neighbor(face);
   return TriaIterator<DoFCellAccessor<DoFHandlerType, lda>>(*q,
                                                             this->dof_handler);
 }
@@ -148,8 +148,8 @@ inline TriaIterator<DoFCellAccessor<DoFHandlerType, lda>>
 DoFCellAccessor<DoFHandlerType, lda>::neighbor_or_periodic_neighbor(
   const unsigned int face) const
 {
-  const TriaIterator<CellAccessor<dim, spacedim>> q
-    = CellAccessor<dim, spacedim>::neighbor_or_periodic_neighbor(face);
+  const TriaIterator<CellAccessor<dim, spacedim>> q =
+    CellAccessor<dim, spacedim>::neighbor_or_periodic_neighbor(face);
   return TriaIterator<DoFCellAccessor<DoFHandlerType, lda>>(*q,
                                                             this->dof_handler);
 }

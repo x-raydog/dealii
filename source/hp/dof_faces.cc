@@ -28,8 +28,8 @@ namespace internal
     std::size_t
     DoFIndicesOnFacesOrEdges<structdim>::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(dofs)
-              + MemoryConsumption::memory_consumption(dof_offsets));
+      return (MemoryConsumption::memory_consumption(dofs) +
+              MemoryConsumption::memory_consumption(dof_offsets));
     }
 
     // explicit instantiations
@@ -59,8 +59,8 @@ namespace internal
     std::size_t
     DoFIndicesOnFaces<3>::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(lines)
-              + MemoryConsumption::memory_consumption(quads));
+      return (MemoryConsumption::memory_consumption(lines) +
+              MemoryConsumption::memory_consumption(quads));
     }
 
   } // namespace hp

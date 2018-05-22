@@ -114,13 +114,13 @@ namespace Functions
     std::string expression     = prm.get("Function expression");
     std::string constants_list = prm.get("Function constants");
 
-    std::vector<std::string> const_list
-      = Utilities::split_string_list(constants_list, ',');
+    std::vector<std::string> const_list =
+      Utilities::split_string_list(constants_list, ',');
     std::map<std::string, double> constants;
     for(unsigned int i = 0; i < const_list.size(); ++i)
       {
-        std::vector<std::string> this_c
-          = Utilities::split_string_list(const_list[i], '=');
+        std::vector<std::string> this_c =
+          Utilities::split_string_list(const_list[i], '=');
         AssertThrow(this_c.size() == 2, ExcMessage("Invalid format"));
         double tmp;
         AssertThrow(std::sscanf(this_c[1].c_str(), "%lf", &tmp),
@@ -147,12 +147,12 @@ namespace Functions
         default:
           AssertThrow(
             false,
-            ExcMessage("The list of variables specified is <" + vnames
-                       + "> which is a list of length "
-                       + Utilities::int_to_string(nn)
-                       + " but it has to be a list of length equal to"
-                       + " either dim (for a time-independent function)"
-                       + " or dim+1 (for a time-dependent function)."));
+            ExcMessage("The list of variables specified is <" + vnames +
+                       "> which is a list of length " +
+                       Utilities::int_to_string(nn) +
+                       " but it has to be a list of length equal to" +
+                       " either dim (for a time-independent function)" +
+                       " or dim+1 (for a time-dependent function)."));
       }
   }
 

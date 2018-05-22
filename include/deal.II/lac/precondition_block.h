@@ -1000,8 +1000,8 @@ inline
 
       if(accessor.a_block < accessor.matrix->size())
         {
-          accessor.b_iterator
-            = accessor.matrix->inverse(accessor.a_block).begin();
+          accessor.b_iterator =
+            accessor.matrix->inverse(accessor.a_block).begin();
           accessor.b_end = accessor.matrix->inverse(accessor.a_block).end();
         }
     }
@@ -1031,15 +1031,15 @@ inline bool
 PreconditionBlockJacobi<MatrixType, inverse_type>::const_iterator::
 operator==(const const_iterator& other) const
 {
-  if(accessor.a_block == accessor.matrix->size()
-     && accessor.a_block == other.accessor.a_block)
+  if(accessor.a_block == accessor.matrix->size() &&
+     accessor.a_block == other.accessor.a_block)
     return true;
 
   if(accessor.a_block != other.accessor.a_block)
     return false;
 
-  return (accessor.row() == other.accessor.row()
-          && accessor.column() == other.accessor.column());
+  return (accessor.row() == other.accessor.row() &&
+          accessor.column() == other.accessor.column());
 }
 
 template <typename MatrixType, typename inverse_type>
@@ -1055,9 +1055,9 @@ inline bool
 PreconditionBlockJacobi<MatrixType, inverse_type>::const_iterator::
 operator<(const const_iterator& other) const
 {
-  return (accessor.row() < other.accessor.row()
-          || (accessor.row() == other.accessor.row()
-              && accessor.column() < other.accessor.column()));
+  return (accessor.row() < other.accessor.row() ||
+          (accessor.row() == other.accessor.row() &&
+           accessor.column() < other.accessor.column()));
 }
 
 template <typename MatrixType, typename inverse_type>

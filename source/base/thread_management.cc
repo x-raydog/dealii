@@ -228,8 +228,8 @@ namespace Threads
       {
         if(i != n_intervals - 1)
           {
-            return_values[i].second
-              = (return_values[i].first + n_elements_per_interval);
+            return_values[i].second =
+              (return_values[i].first + n_elements_per_interval);
             // distribute residual in
             // division equally among
             // the first few

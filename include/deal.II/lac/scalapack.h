@@ -130,8 +130,8 @@ public:
     const size_type                                          size,
     const std::shared_ptr<const Utilities::MPI::ProcessGrid> process_grid,
     const size_type                                          block_size = 32,
-    const LAPACKSupport::Property                            property
-    = LAPACKSupport::Property::symmetric);
+    const LAPACKSupport::Property                            property =
+      LAPACKSupport::Property::symmetric);
 
   /**
    * Destructor
@@ -143,13 +143,13 @@ public:
    * and distributed using the grid @p process_grid.
    */
   void
-  reinit(const size_type                                           n_rows,
-         const size_type                                           n_columns,
-         const std::shared_ptr<const Utilities::MPI::ProcessGrid>& process_grid,
-         const size_type               row_block_size    = 32,
-         const size_type               column_block_size = 32,
-         const LAPACKSupport::Property property
-         = LAPACKSupport::Property::general);
+  reinit(
+    const size_type                                           n_rows,
+    const size_type                                           n_columns,
+    const std::shared_ptr<const Utilities::MPI::ProcessGrid>& process_grid,
+    const size_type               row_block_size    = 32,
+    const size_type               column_block_size = 32,
+    const LAPACKSupport::Property property = LAPACKSupport::Property::general);
 
   /**
    * Initialize the square matrix of size @p size and distributed using the grid @p process_grid.
@@ -158,8 +158,8 @@ public:
   reinit(const size_type                                          size,
          const std::shared_ptr<const Utilities::MPI::ProcessGrid> process_grid,
          const size_type               block_size = 32,
-         const LAPACKSupport::Property property
-         = LAPACKSupport::Property::symmetric);
+         const LAPACKSupport::Property property =
+           LAPACKSupport::Property::symmetric);
 
   /**
    * Assign @p property to this matrix.
@@ -405,8 +405,8 @@ public:
    */
   void
   save(const char*                                  filename,
-       const std::pair<unsigned int, unsigned int>& chunk_size
-       = std::make_pair(numbers::invalid_unsigned_int,
+       const std::pair<unsigned int, unsigned int>& chunk_size =
+         std::make_pair(numbers::invalid_unsigned_int,
                         numbers::invalid_unsigned_int)) const;
 
   /**
@@ -735,11 +735,11 @@ private:
   std::vector<NumberType>
   eigenpairs_symmetric(
     const bool                                   compute_eigenvectors,
-    const std::pair<unsigned int, unsigned int>& index_limits
-    = std::make_pair(numbers::invalid_unsigned_int,
+    const std::pair<unsigned int, unsigned int>& index_limits =
+      std::make_pair(numbers::invalid_unsigned_int,
                      numbers::invalid_unsigned_int),
-    const std::pair<NumberType, NumberType>& value_limits
-    = std::make_pair(std::numeric_limits<NumberType>::quiet_NaN(),
+    const std::pair<NumberType, NumberType>& value_limits =
+      std::make_pair(std::numeric_limits<NumberType>::quiet_NaN(),
                      std::numeric_limits<NumberType>::quiet_NaN()));
 
   /**
@@ -763,11 +763,11 @@ private:
   std::vector<NumberType>
   eigenpairs_symmetric_MRRR(
     const bool                                   compute_eigenvectors,
-    const std::pair<unsigned int, unsigned int>& index_limits
-    = std::make_pair(numbers::invalid_unsigned_int,
+    const std::pair<unsigned int, unsigned int>& index_limits =
+      std::make_pair(numbers::invalid_unsigned_int,
                      numbers::invalid_unsigned_int),
-    const std::pair<NumberType, NumberType>& value_limits
-    = std::make_pair(std::numeric_limits<NumberType>::quiet_NaN(),
+    const std::pair<NumberType, NumberType>& value_limits =
+      std::make_pair(std::numeric_limits<NumberType>::quiet_NaN(),
                      std::numeric_limits<NumberType>::quiet_NaN()));
 
   /*

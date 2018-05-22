@@ -241,8 +241,8 @@ namespace Polynomials
           {
             coefficients[i + 1] = 1.;
             for(unsigned int j = i; j > 0; --j)
-              coefficients[j] = (-lagrange_support_points[i] * coefficients[j]
-                                 + coefficients[j - 1]);
+              coefficients[j] = (-lagrange_support_points[i] * coefficients[j] +
+                                 coefficients[j - 1]);
             coefficients[0] *= -lagrange_support_points[i];
           }
       }
@@ -450,8 +450,8 @@ namespace Polynomials
     // are on different forms, but the expansion
     // is the same
     if(in_lagrange_product_form == true && p.in_lagrange_product_form == true)
-      return ((lagrange_weight == p.lagrange_weight)
-              && (lagrange_support_points == p.lagrange_support_points));
+      return ((lagrange_weight == p.lagrange_weight) &&
+              (lagrange_support_points == p.lagrange_support_points));
     else if(in_lagrange_product_form == true)
       {
         Polynomial<number> q = *this;
@@ -513,8 +513,8 @@ namespace Polynomials
             // division.
             binomial_coefficient = (binomial_coefficient * (n - k)) / (k + 1);
 
-            new_coefficients[d - k - 1]
-              += new_coefficients[d] * binomial_coefficient * offset_power;
+            new_coefficients[d - k - 1] +=
+              new_coefficients[d] * binomial_coefficient * offset_power;
             offset_power *= offset;
           }
         // The binomial coefficient
@@ -704,8 +704,8 @@ namespace Polynomials
           }
         case 2:
           {
-            static const double x2[9]
-              = {1.0, -3.0, 2.0, 0.0, 4.0, -4.0, 0.0, -1.0, 2.0};
+            static const double x2[9] = {
+              1.0, -3.0, 2.0, 0.0, 4.0, -4.0, 0.0, -1.0, 2.0};
             x = &x2[0];
             break;
           }
@@ -862,30 +862,30 @@ namespace Polynomials
                 for(unsigned int j = 0; j < i; ++j)
                   legendre_coefficients_tmp1[j] = coefficients[j];
 
-                coefficients[0]
-                  = std::sqrt(2 * i + 1.)
-                    * ((1.0 - 2 * i) * legendre_coefficients_tmp1[0]
-                         / std::sqrt(2 * i - 1.)
-                       + (1.0 - i) * legendre_coefficients_tmp2[0]
-                           / std::sqrt(2 * i - 3.))
-                    / i;
+                coefficients[0] =
+                  std::sqrt(2 * i + 1.) *
+                  ((1.0 - 2 * i) * legendre_coefficients_tmp1[0] /
+                     std::sqrt(2 * i - 1.) +
+                   (1.0 - i) * legendre_coefficients_tmp2[0] /
+                     std::sqrt(2 * i - 3.)) /
+                  i;
 
                 for(unsigned int j = 1; j < i - 1; ++j)
-                  coefficients[j]
-                    = std::sqrt(2 * i + 1.)
-                      * (std::sqrt(2 * i - 1.)
-                           * (2.0 * legendre_coefficients_tmp1[j - 1]
-                              - legendre_coefficients_tmp1[j])
-                         + (1.0 - i) * legendre_coefficients_tmp2[j]
-                             / std::sqrt(2 * i - 3.))
-                      / i;
+                  coefficients[j] =
+                    std::sqrt(2 * i + 1.) *
+                    (std::sqrt(2 * i - 1.) *
+                       (2.0 * legendre_coefficients_tmp1[j - 1] -
+                        legendre_coefficients_tmp1[j]) +
+                     (1.0 - i) * legendre_coefficients_tmp2[j] /
+                       std::sqrt(2 * i - 3.)) /
+                    i;
 
-                coefficients[i - 1] = std::sqrt(4 * i * i - 1.)
-                                      * (2.0 * legendre_coefficients_tmp1[i - 2]
-                                         - legendre_coefficients_tmp1[i - 1])
-                                      / i;
-                coefficients[i] = 2.0 * std::sqrt(4 * i * i - 1.)
-                                  * legendre_coefficients_tmp1[i - 1] / i;
+                coefficients[i - 1] = std::sqrt(4 * i * i - 1.) *
+                                      (2.0 * legendre_coefficients_tmp1[i - 2] -
+                                       legendre_coefficients_tmp1[i - 1]) /
+                                      i;
+                coefficients[i] = 2.0 * std::sqrt(4 * i * i - 1.) *
+                                  legendre_coefficients_tmp1[i - 1] / i;
               }
 
             for(int i = p; i > 0; --i)
@@ -937,8 +937,8 @@ namespace Polynomials
       k = 1;
     // check: does the information
     // already exist?
-    if((recursive_coefficients.size() < k + 1)
-       || (recursive_coefficients[k].get() == nullptr))
+    if((recursive_coefficients.size() < k + 1) ||
+       (recursive_coefficients[k].get() == nullptr))
       // no, then generate the
       // respective coefficients
       {
@@ -982,12 +982,10 @@ namespace Polynomials
 
             // now make these arrays
             // const
-            recursive_coefficients[0]
-              = std_cxx14::make_unique<const std::vector<double>>(
-                std::move(c0));
-            recursive_coefficients[1]
-              = std_cxx14::make_unique<const std::vector<double>>(
-                std::move(c1));
+            recursive_coefficients[0] =
+              std_cxx14::make_unique<const std::vector<double>>(std::move(c0));
+            recursive_coefficients[1] =
+              std_cxx14::make_unique<const std::vector<double>>(std::move(c1));
           }
         else if(k == 2)
           {
@@ -1003,9 +1001,8 @@ namespace Polynomials
             c2[1] = -4. * a;
             c2[2] = 4. * a;
 
-            recursive_coefficients[2]
-              = std_cxx14::make_unique<const std::vector<double>>(
-                std::move(c2));
+            recursive_coefficients[2] =
+              std_cxx14::make_unique<const std::vector<double>>(std::move(c2));
           }
         else
           {
@@ -1028,9 +1025,8 @@ namespace Polynomials
             ck[0] = -a * (*recursive_coefficients[k - 1])[0];
 
             for(unsigned int i = 1; i <= k - 1; ++i)
-              ck[i] = a
-                      * (2. * (*recursive_coefficients[k - 1])[i - 1]
-                         - (*recursive_coefficients[k - 1])[i]);
+              ck[i] = a * (2. * (*recursive_coefficients[k - 1])[i - 1] -
+                           (*recursive_coefficients[k - 1])[i]);
 
             ck[k] = a * 2. * (*recursive_coefficients[k - 1])[k - 1];
             // for even degrees, we need
@@ -1049,9 +1045,8 @@ namespace Polynomials
             // created vector to the
             // const pointer in the
             // coefficients array
-            recursive_coefficients[k]
-              = std_cxx14::make_unique<const std::vector<double>>(
-                std::move(ck));
+            recursive_coefficients[k] =
+              std_cxx14::make_unique<const std::vector<double>>(std::move(ck));
           };
       };
   }
@@ -1196,17 +1191,16 @@ namespace Polynomials
           for(unsigned int j = 0; j < degree - 3; ++j)
             poly_val_common *= Utilities::fixed_power<2>(x - jacobi_roots[j]);
           poly_val_common *= Utilities::fixed_power<4>(x - 1.);
-          integral_left
-            += gauss.weight(q) * (poly_val_common * (x - guess_left));
-          integral_right
-            += gauss.weight(q) * (poly_val_common * (x - guess_right));
+          integral_left +=
+            gauss.weight(q) * (poly_val_common * (x - guess_left));
+          integral_right +=
+            gauss.weight(q) * (poly_val_common * (x - guess_right));
         }
 
       // compute guess by secant method. Due to linearity in the root x_star,
       // this is the correct position after this single step
-      return guess_right
-             - (guess_right - guess_left) / (integral_right - integral_left)
-                 * integral_right;
+      return guess_right - (guess_right - guess_left) /
+                             (integral_right - integral_left) * integral_right;
     }
   } // namespace
 
@@ -1320,8 +1314,8 @@ namespace Polynomials
         // (1-x)^2 (1+x)^2, the two polynomials achieving zero value and zero
         // derivative at the boundary.
 
-        std::vector<double> jacobi_roots
-          = jacobi_polynomial_roots<double>(degree - 3, 2, 2);
+        std::vector<double> jacobi_roots =
+          jacobi_polynomial_roots<double>(degree - 3, 2, 2);
         AssertDimension(jacobi_roots.size(), degree - 3);
 
         // iteration from variable support point N with secant method
@@ -1330,8 +1324,8 @@ namespace Polynomials
         this->lagrange_support_points.resize(degree);
         if(index == 0)
           {
-            const double auxiliary_zero
-              = find_support_point_x_star(jacobi_roots);
+            const double auxiliary_zero =
+              find_support_point_x_star(jacobi_roots);
             this->lagrange_support_points[0] = auxiliary_zero;
             for(unsigned int m = 0; m < degree - 3; m++)
               this->lagrange_support_points[m + 1] = jacobi_roots[m];
@@ -1371,11 +1365,11 @@ namespace Polynomials
             Assert(std::abs(value_and_grad[0]) > 1e-10,
                    ExcInternalError("There should not be a zero at x=0."));
 
-            const double auxiliary_zero
-              = find_support_point_x_star(jacobi_roots);
-            this->lagrange_weight
-              = (1. / auxiliary_zero - value_and_grad[1] / value_and_grad[0])
-                / ratio;
+            const double auxiliary_zero =
+              find_support_point_x_star(jacobi_roots);
+            this->lagrange_weight =
+              (1. / auxiliary_zero - value_and_grad[1] / value_and_grad[0]) /
+              ratio;
           }
         else if(index >= 2 && index < degree - 1)
           {
@@ -1413,16 +1407,16 @@ namespace Polynomials
             Assert(std::abs(value_and_grad[0]) > 1e-10,
                    ExcInternalError("There should not be a zero at x=1."));
 
-            const double auxiliary_zero
-              = find_support_point_x_star(jacobi_roots);
-            this->lagrange_weight
-              = (-1. / auxiliary_zero - value_and_grad[1] / value_and_grad[0])
-                / ratio;
+            const double auxiliary_zero =
+              find_support_point_x_star(jacobi_roots);
+            this->lagrange_weight =
+              (-1. / auxiliary_zero - value_and_grad[1] / value_and_grad[0]) /
+              ratio;
           }
         else if(index == degree)
           {
-            const double auxiliary_zero
-              = find_support_point_x_star(jacobi_roots);
+            const double auxiliary_zero =
+              find_support_point_x_star(jacobi_roots);
             this->lagrange_support_points[0] = 0.;
             this->lagrange_support_points[1] = 0.;
             for(unsigned int m = 0; m < degree - 3; m++)

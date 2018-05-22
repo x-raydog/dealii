@@ -249,8 +249,8 @@ namespace Functions
     std::vector<std::vector<Point<dim>>>                       qpoints;
     std::vector<std::vector<unsigned int>>                     maps;
 
-    const unsigned int n_cells
-      = compute_point_locations(points, cells, qpoints, maps);
+    const unsigned int n_cells =
+      compute_point_locations(points, cells, qpoints, maps);
     hp::MappingCollection<dim>   mapping_collection(mapping);
     const hp::FECollection<dim>& fe_collection = dh->get_fe_collection();
     hp::QCollection<dim>         quadrature_collection;
@@ -313,8 +313,8 @@ namespace Functions
     std::vector<std::vector<Point<dim>>>                       qpoints;
     std::vector<std::vector<unsigned int>>                     maps;
 
-    const unsigned int n_cells
-      = compute_point_locations(points, cells, qpoints, maps);
+    const unsigned int n_cells =
+      compute_point_locations(points, cells, qpoints, maps);
     hp::MappingCollection<dim>   mapping_collection(mapping);
     const hp::FECollection<dim>& fe_collection = dh->get_fe_collection();
     hp::QCollection<dim>         quadrature_collection;
@@ -388,8 +388,8 @@ namespace Functions
     std::vector<std::vector<Point<dim>>>                       qpoints;
     std::vector<std::vector<unsigned int>>                     maps;
 
-    const unsigned int n_cells
-      = compute_point_locations(points, cells, qpoints, maps);
+    const unsigned int n_cells =
+      compute_point_locations(points, cells, qpoints, maps);
     hp::MappingCollection<dim>   mapping_collection(mapping);
     const hp::FECollection<dim>& fe_collection = dh->get_fe_collection();
     hp::QCollection<dim>         quadrature_collection;
@@ -450,8 +450,8 @@ namespace Functions
     std::vector<std::vector<unsigned int>>&                     maps) const
   {
     // Calling the GridTools routine and preparing output
-    auto cell_qpoint_map
-      = GridTools::compute_point_locations(cache, points, cell_hint.get());
+    auto cell_qpoint_map =
+      GridTools::compute_point_locations(cache, points, cell_hint.get());
     const auto& tria_cells = std::get<0>(cell_qpoint_map);
     cells.resize(tria_cells.size());
     unsigned int i = 0;

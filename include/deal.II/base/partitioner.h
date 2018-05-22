@@ -694,8 +694,8 @@ namespace Utilities
     inline unsigned int
     Partitioner::local_size() const
     {
-      types::global_dof_index size
-        = local_range_data.second - local_range_data.first;
+      types::global_dof_index size =
+        local_range_data.second - local_range_data.first;
       Assert(size <= std::numeric_limits<unsigned int>::max(),
              ExcNotImplemented());
       return static_cast<unsigned int>(size);
@@ -705,8 +705,8 @@ namespace Utilities
     Partitioner::in_local_range(
       const types::global_dof_index global_index) const
     {
-      return (local_range_data.first <= global_index
-              && global_index < local_range_data.second);
+      return (local_range_data.first <= global_index &&
+              global_index < local_range_data.second);
     }
 
     inline bool
@@ -729,9 +729,9 @@ namespace Utilities
       if(in_local_range(global_index))
         return static_cast<unsigned int>(global_index - local_range_data.first);
       else if(is_ghost_entry(global_index))
-        return (local_size()
-                + static_cast<unsigned int>(
-                    ghost_indices_data.index_within_set(global_index)));
+        return (local_size() +
+                static_cast<unsigned int>(
+                  ghost_indices_data.index_within_set(global_index)));
       else
         // should only end up here in optimized mode, when we use this large
         // number to trigger a segfault when using this method for array

@@ -411,8 +411,8 @@ public:
    * Number of independent components of a tensor of current rank. This is dim
    * times the number of independent components of each sub-tensor.
    */
-  static const unsigned int n_independent_components
-    = Tensor<rank_ - 1, dim>::n_independent_components * dim;
+  static const unsigned int n_independent_components =
+    Tensor<rank_ - 1, dim>::n_independent_components * dim;
 
   /**
    * Type of objects encapsulated by this container and returned by
@@ -856,8 +856,8 @@ inline bool
 Tensor<0, dim, Number>::operator==(const Tensor<0, dim, OtherNumber>& p) const
 {
 #ifdef DEAL_II_ADOLC_WITH_ADVANCED_BRANCHING
-  Assert(!(std::is_same<Number, adouble>::value
-           || std::is_same<OtherNumber, adouble>::value),
+  Assert(!(std::is_same<Number, adouble>::value ||
+           std::is_same<OtherNumber, adouble>::value),
          ExcMessage(
            "The Tensor equality operator for Adol-C taped numbers has not yet "
            "been extended to support advanced branching."));
@@ -1414,8 +1414,8 @@ inline DEAL_II_ALWAYS_INLINE typename ProductType<Number, OtherNumber>::type
 operator*(const Tensor<0, dim, Number>&      src1,
           const Tensor<0, dim, OtherNumber>& src2)
 {
-  return static_cast<const Number&>(src1)
-         * static_cast<const OtherNumber&>(src2);
+  return static_cast<const Number&>(src1) *
+         static_cast<const OtherNumber&>(src2);
 }
 
 /**
@@ -1764,8 +1764,8 @@ inline
   using namespace TensorAccessors::internal;
 
   // Reorder index_1 to the end of src1:
-  ReorderedIndexView<index_1, rank_1, const Tensor<rank_1, dim, Number>> reord_1
-    = TensorAccessors::reordered_index_view<index_1, rank_1>(src1);
+  ReorderedIndexView<index_1, rank_1, const Tensor<rank_1, dim, Number>>
+    reord_1 = TensorAccessors::reordered_index_view<index_1, rank_1>(src1);
 
   // Reorder index_2 to the end of src2:
   ReorderedIndexView<index_2, rank_2, const Tensor<rank_2, dim, OtherNumber>>
@@ -1778,8 +1778,8 @@ inline
     (index_3 < index_1 ? index_3 : index_3 - 1),
     rank_1,
     ReorderedIndexView<index_1, rank_1, const Tensor<rank_1, dim, Number>>>
-    reord_3
-    = TensorAccessors::reordered_index_view < index_3 < index_1 ? index_3 :
+    reord_3 =
+      TensorAccessors::reordered_index_view < index_3 < index_1 ? index_3 :
                                                                   index_3 - 1,
     rank_1 > (reord_1);
 
@@ -1790,8 +1790,8 @@ inline
     (index_4 < index_2 ? index_4 : index_4 - 1),
     rank_2,
     ReorderedIndexView<index_2, rank_2, const Tensor<rank_2, dim, OtherNumber>>>
-    reord_4
-    = TensorAccessors::reordered_index_view < index_4 < index_2 ? index_4 :
+    reord_4 =
+      TensorAccessors::reordered_index_view < index_4 < index_2 ? index_4 :
                                                                   index_4 - 1,
     rank_2 > (reord_2);
 
@@ -2082,29 +2082,23 @@ invert(const Tensor<2, 3, Number>& t)
                t01 = internal::NumberType<Number>::value(t[0][1] * t[2][0]),
                t04 = internal::NumberType<Number>::value(t[0][2] * t[2][0]),
                inv_det_t = internal::NumberType<Number>::value(
-                 1.0
-                 / (t4 * t[2][2] - t6 * t[2][1] - t8 * t[2][2] + t00 * t[2][1]
-                    + t01 * t[1][2] - t04 * t[1][1]));
-  return_tensor[0][0]
-    = internal::NumberType<Number>::value(t[1][1] * t[2][2])
-      - internal::NumberType<Number>::value(t[1][2] * t[2][1]);
-  return_tensor[0][1]
-    = internal::NumberType<Number>::value(t[0][2] * t[2][1])
-      - internal::NumberType<Number>::value(t[0][1] * t[2][2]);
-  return_tensor[0][2]
-    = internal::NumberType<Number>::value(t[0][1] * t[1][2])
-      - internal::NumberType<Number>::value(t[0][2] * t[1][1]);
-  return_tensor[1][0]
-    = internal::NumberType<Number>::value(t[1][2] * t[2][0])
-      - internal::NumberType<Number>::value(t[1][0] * t[2][2]);
-  return_tensor[1][1]
-    = internal::NumberType<Number>::value(t[0][0] * t[2][2]) - t04;
+                 1.0 / (t4 * t[2][2] - t6 * t[2][1] - t8 * t[2][2] +
+                        t00 * t[2][1] + t01 * t[1][2] - t04 * t[1][1]));
+  return_tensor[0][0] = internal::NumberType<Number>::value(t[1][1] * t[2][2]) -
+                        internal::NumberType<Number>::value(t[1][2] * t[2][1]);
+  return_tensor[0][1] = internal::NumberType<Number>::value(t[0][2] * t[2][1]) -
+                        internal::NumberType<Number>::value(t[0][1] * t[2][2]);
+  return_tensor[0][2] = internal::NumberType<Number>::value(t[0][1] * t[1][2]) -
+                        internal::NumberType<Number>::value(t[0][2] * t[1][1]);
+  return_tensor[1][0] = internal::NumberType<Number>::value(t[1][2] * t[2][0]) -
+                        internal::NumberType<Number>::value(t[1][0] * t[2][2]);
+  return_tensor[1][1] =
+    internal::NumberType<Number>::value(t[0][0] * t[2][2]) - t04;
   return_tensor[1][2] = t00 - t6;
-  return_tensor[2][0]
-    = internal::NumberType<Number>::value(t[1][0] * t[2][1])
-      - internal::NumberType<Number>::value(t[1][1] * t[2][0]);
-  return_tensor[2][1]
-    = t01 - internal::NumberType<Number>::value(t[0][0] * t[2][1]);
+  return_tensor[2][0] = internal::NumberType<Number>::value(t[1][0] * t[2][1]) -
+                        internal::NumberType<Number>::value(t[1][1] * t[2][0]);
+  return_tensor[2][1] =
+    t01 - internal::NumberType<Number>::value(t[0][0] * t[2][1]);
   return_tensor[2][2] = internal::NumberType<Number>::value(t4 - t8);
   return_tensor *= inv_det_t;
 

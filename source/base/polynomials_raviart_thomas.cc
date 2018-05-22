@@ -132,16 +132,16 @@ PolynomialsRaviartThomas<dim>::compute(
       for(unsigned int i = 0; i < p_grad_grads.size(); ++i)
         for(unsigned int d1 = 0; d1 < dim; ++d1)
           for(unsigned int d2 = 0; d2 < dim; ++d2)
-            grad_grads[i + d * n_sub][d][(d1 + d) % dim][(d2 + d) % dim]
-              = p_grad_grads[i][d1][d2];
+            grad_grads[i + d * n_sub][d][(d1 + d) % dim][(d2 + d) % dim] =
+              p_grad_grads[i][d1][d2];
 
       for(unsigned int i = 0; i < p_third_derivatives.size(); ++i)
         for(unsigned int d1 = 0; d1 < dim; ++d1)
           for(unsigned int d2 = 0; d2 < dim; ++d2)
             for(unsigned int d3 = 0; d3 < dim; ++d3)
               third_derivatives[i + d * n_sub][d][(d1 + d) % dim]
-                               [(d2 + d) % dim][(d3 + d) % dim]
-                = p_third_derivatives[i][d1][d2][d3];
+                               [(d2 + d) % dim][(d3 + d) % dim] =
+                                 p_third_derivatives[i][d1][d2][d3];
 
       for(unsigned int i = 0; i < p_fourth_derivatives.size(); ++i)
         for(unsigned int d1 = 0; d1 < dim; ++d1)
@@ -150,8 +150,8 @@ PolynomialsRaviartThomas<dim>::compute(
               for(unsigned int d4 = 0; d4 < dim; ++d4)
                 fourth_derivatives[i + d * n_sub][d][(d1 + d) % dim]
                                   [(d2 + d) % dim][(d3 + d) % dim]
-                                  [(d4 + d) % dim]
-                  = p_fourth_derivatives[i][d1][d2][d3][d4];
+                                  [(d4 + d) % dim] =
+                                    p_fourth_derivatives[i][d1][d2][d3][d4];
     }
 }
 

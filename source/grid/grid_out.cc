@@ -665,10 +665,10 @@ GridOut::parse_parameters(ParameterHandler& param)
 std::size_t
 GridOut::memory_consumption() const
 {
-  return (sizeof(dx_flags) + sizeof(msh_flags) + sizeof(ucd_flags)
-          + sizeof(gnuplot_flags) + sizeof(eps_flags_1) + sizeof(eps_flags_2)
-          + sizeof(eps_flags_3) + sizeof(xfig_flags) + sizeof(svg_flags)
-          + sizeof(mathgl_flags) + sizeof(vtk_flags) + sizeof(vtu_flags));
+  return (sizeof(dx_flags) + sizeof(msh_flags) + sizeof(ucd_flags) +
+          sizeof(gnuplot_flags) + sizeof(eps_flags_1) + sizeof(eps_flags_2) +
+          sizeof(eps_flags_3) + sizeof(xfig_flags) + sizeof(svg_flags) +
+          sizeof(mathgl_flags) + sizeof(vtk_flags) + sizeof(vtu_flags));
 }
 
 template <>
@@ -721,8 +721,8 @@ GridOut::write_dx(const Triangulation<dim, spacedim>& tria,
   Assert(new_number == n_vertices, ExcInternalError());
 
   typename Triangulation<dim, spacedim>::active_cell_iterator       cell;
-  const typename Triangulation<dim, spacedim>::active_cell_iterator endc
-    = tria.end();
+  const typename Triangulation<dim, spacedim>::active_cell_iterator endc =
+    tria.end();
 
   // write the vertices
   out << "object \"vertices\" class array type float rank 1 shape " << dim
@@ -737,8 +737,8 @@ GridOut::write_dx(const Triangulation<dim, spacedim>& tria,
   const bool write_faces = (dim > 1) ? dx_flags.write_faces : false;
 
   const unsigned int n_cells = tria.n_active_cells();
-  const unsigned int n_faces
-    = tria.n_active_cells() * GeometryInfo<dim>::faces_per_cell;
+  const unsigned int n_faces =
+    tria.n_active_cells() * GeometryInfo<dim>::faces_per_cell;
 
   const unsigned int n_vertices_per_cell = GeometryInfo<dim>::vertices_per_cell;
   const unsigned int n_vertices_per_face = GeometryInfo<dim>::vertices_per_face;
@@ -815,8 +815,8 @@ GridOut::write_dx(const Triangulation<dim, spacedim>& tria,
         {
           for(unsigned int f = 0; f < GeometryInfo<dim>::faces_per_cell; ++f)
             {
-              typename Triangulation<dim, spacedim>::face_iterator face
-                = cell->face(f);
+              typename Triangulation<dim, spacedim>::face_iterator face =
+                cell->face(f);
 
               for(unsigned int v = 0; v < GeometryInfo<dim>::vertices_per_face;
                   ++v)
@@ -945,10 +945,10 @@ GridOut::write_msh(const Triangulation<dim, spacedim>& tria,
 
   const unsigned int n_vertices = tria.n_used_vertices();
 
-  typename Triangulation<dim, spacedim>::active_cell_iterator cell
-    = tria.begin_active();
-  const typename Triangulation<dim, spacedim>::active_cell_iterator endc
-    = tria.end();
+  typename Triangulation<dim, spacedim>::active_cell_iterator cell =
+    tria.begin_active();
+  const typename Triangulation<dim, spacedim>::active_cell_iterator endc =
+    tria.end();
 
   // Write Header
   // The file format is:
@@ -984,9 +984,9 @@ GridOut::write_msh(const Triangulation<dim, spacedim>& tria,
   // Write cells preamble
   out << "$ENDNOD" << '\n'
       << "$ELM" << '\n'
-      << tria.n_active_cells()
-           + ((msh_flags.write_faces ? n_boundary_faces(tria) : 0)
-              + (msh_flags.write_lines ? n_boundary_lines(tria) : 0))
+      << tria.n_active_cells() +
+           ((msh_flags.write_faces ? n_boundary_faces(tria) : 0) +
+            (msh_flags.write_lines ? n_boundary_lines(tria) : 0))
       << '\n';
 
   /*
@@ -1093,10 +1093,10 @@ GridOut::write_ucd(const Triangulation<dim, spacedim>& tria,
 
   const unsigned int n_vertices = tria.n_used_vertices();
 
-  typename Triangulation<dim, spacedim>::active_cell_iterator cell
-    = tria.begin_active();
-  const typename Triangulation<dim, spacedim>::active_cell_iterator endc
-    = tria.end();
+  typename Triangulation<dim, spacedim>::active_cell_iterator cell =
+    tria.begin_active();
+  const typename Triangulation<dim, spacedim>::active_cell_iterator endc =
+    tria.end();
 
   // write preamble
   if(ucd_flags.write_preamble)
@@ -1120,9 +1120,9 @@ GridOut::write_ucd(const Triangulation<dim, spacedim>& tria,
 
   // start with ucd data
   out << n_vertices << ' '
-      << tria.n_active_cells()
-           + ((ucd_flags.write_faces ? n_boundary_faces(tria) : 0)
-              + (ucd_flags.write_lines ? n_boundary_lines(tria) : 0))
+      << tria.n_active_cells() +
+           ((ucd_flags.write_faces ? n_boundary_faces(tria) : 0) +
+            (ucd_flags.write_lines ? n_boundary_lines(tria) : 0))
       << " 0 0 0" // no data
       << '\n';
 
@@ -1339,12 +1339,12 @@ GridOut::write_xfig(const Triangulation<2>& tria,
       // (dots/inch)
       for(unsigned int k = 0; k <= nv; ++k)
         {
-          const Point<dim>& p
-            = cell->vertex(GeometryInfo<dim>::ucd_to_deal[k % nv]);
+          const Point<dim>& p =
+            cell->vertex(GeometryInfo<dim>::ucd_to_deal[k % nv]);
           for(unsigned int d = 0; d < static_cast<unsigned int>(dim); ++d)
             {
-              int val = (int) (1200 * xfig_flags.scaling(d)
-                               * (p(d) - xfig_flags.offset(d)));
+              int val = (int) (1200 * xfig_flags.scaling(d) *
+                               (p(d) - xfig_flags.offset(d)));
               out << '\t' << ((d == 0) ? val : -val);
             }
           out << std::endl;
@@ -1354,8 +1354,8 @@ GridOut::write_xfig(const Triangulation<2>& tria,
       if(xfig_flags.draw_boundary)
         for(unsigned int f = 0; f < nf; ++f)
           {
-            Triangulation<dim, spacedim>::face_iterator face
-              = cell->face(face_reorder[f]);
+            Triangulation<dim, spacedim>::face_iterator face =
+              cell->face(face_reorder[f]);
             const types::boundary_id bi = face->boundary_id();
             if(bi != numbers::internal_face_boundary_id)
               {
@@ -1388,8 +1388,8 @@ GridOut::write_xfig(const Triangulation<2>& tria,
                     for(unsigned int d = 0; d < static_cast<unsigned int>(dim);
                         ++d)
                       {
-                        int val = (int) (1200 * xfig_flags.scaling(d)
-                                         * (p(d) - xfig_flags.offset(d)));
+                        int val = (int) (1200 * xfig_flags.scaling(d) *
+                                         (p(d) - xfig_flags.offset(d)));
                         out << '\t' << ((d == 0) ? val : -val);
                       }
                     out << std::endl;
@@ -1599,26 +1599,26 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
   const double angle_factor = 3.14159265 / 180.;
 
   // (I) rotate the camera to the chosen polar angle
-  camera_position_temp[1]
-    = cos(angle_factor * svg_flags.polar_angle) * camera_position[1]
-      - sin(angle_factor * svg_flags.polar_angle) * camera_position[2];
-  camera_position_temp[2]
-    = sin(angle_factor * svg_flags.polar_angle) * camera_position[1]
-      + cos(angle_factor * svg_flags.polar_angle) * camera_position[2];
+  camera_position_temp[1] =
+    cos(angle_factor * svg_flags.polar_angle) * camera_position[1] -
+    sin(angle_factor * svg_flags.polar_angle) * camera_position[2];
+  camera_position_temp[2] =
+    sin(angle_factor * svg_flags.polar_angle) * camera_position[1] +
+    cos(angle_factor * svg_flags.polar_angle) * camera_position[2];
 
-  camera_direction_temp[1]
-    = cos(angle_factor * svg_flags.polar_angle) * camera_direction[1]
-      - sin(angle_factor * svg_flags.polar_angle) * camera_direction[2];
-  camera_direction_temp[2]
-    = sin(angle_factor * svg_flags.polar_angle) * camera_direction[1]
-      + cos(angle_factor * svg_flags.polar_angle) * camera_direction[2];
+  camera_direction_temp[1] =
+    cos(angle_factor * svg_flags.polar_angle) * camera_direction[1] -
+    sin(angle_factor * svg_flags.polar_angle) * camera_direction[2];
+  camera_direction_temp[2] =
+    sin(angle_factor * svg_flags.polar_angle) * camera_direction[1] +
+    cos(angle_factor * svg_flags.polar_angle) * camera_direction[2];
 
-  camera_horizontal_temp[1]
-    = cos(angle_factor * svg_flags.polar_angle) * camera_horizontal[1]
-      - sin(angle_factor * svg_flags.polar_angle) * camera_horizontal[2];
-  camera_horizontal_temp[2]
-    = sin(angle_factor * svg_flags.polar_angle) * camera_horizontal[1]
-      + cos(angle_factor * svg_flags.polar_angle) * camera_horizontal[2];
+  camera_horizontal_temp[1] =
+    cos(angle_factor * svg_flags.polar_angle) * camera_horizontal[1] -
+    sin(angle_factor * svg_flags.polar_angle) * camera_horizontal[2];
+  camera_horizontal_temp[2] =
+    sin(angle_factor * svg_flags.polar_angle) * camera_horizontal[1] +
+    cos(angle_factor * svg_flags.polar_angle) * camera_horizontal[2];
 
   camera_position[1] = camera_position_temp[1];
   camera_position[2] = camera_position_temp[2];
@@ -1630,26 +1630,26 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
   camera_horizontal[2] = camera_horizontal_temp[2];
 
   // (II) rotate the camera to the chosen azimuth angle
-  camera_position_temp[0]
-    = cos(angle_factor * svg_flags.azimuth_angle) * camera_position[0]
-      - sin(angle_factor * svg_flags.azimuth_angle) * camera_position[1];
-  camera_position_temp[1]
-    = sin(angle_factor * svg_flags.azimuth_angle) * camera_position[0]
-      + cos(angle_factor * svg_flags.azimuth_angle) * camera_position[1];
+  camera_position_temp[0] =
+    cos(angle_factor * svg_flags.azimuth_angle) * camera_position[0] -
+    sin(angle_factor * svg_flags.azimuth_angle) * camera_position[1];
+  camera_position_temp[1] =
+    sin(angle_factor * svg_flags.azimuth_angle) * camera_position[0] +
+    cos(angle_factor * svg_flags.azimuth_angle) * camera_position[1];
 
-  camera_direction_temp[0]
-    = cos(angle_factor * svg_flags.azimuth_angle) * camera_direction[0]
-      - sin(angle_factor * svg_flags.azimuth_angle) * camera_direction[1];
-  camera_direction_temp[1]
-    = sin(angle_factor * svg_flags.azimuth_angle) * camera_direction[0]
-      + cos(angle_factor * svg_flags.azimuth_angle) * camera_direction[1];
+  camera_direction_temp[0] =
+    cos(angle_factor * svg_flags.azimuth_angle) * camera_direction[0] -
+    sin(angle_factor * svg_flags.azimuth_angle) * camera_direction[1];
+  camera_direction_temp[1] =
+    sin(angle_factor * svg_flags.azimuth_angle) * camera_direction[0] +
+    cos(angle_factor * svg_flags.azimuth_angle) * camera_direction[1];
 
-  camera_horizontal_temp[0]
-    = cos(angle_factor * svg_flags.azimuth_angle) * camera_horizontal[0]
-      - sin(angle_factor * svg_flags.azimuth_angle) * camera_horizontal[1];
-  camera_horizontal_temp[1]
-    = sin(angle_factor * svg_flags.azimuth_angle) * camera_horizontal[0]
-      + cos(angle_factor * svg_flags.azimuth_angle) * camera_horizontal[1];
+  camera_horizontal_temp[0] =
+    cos(angle_factor * svg_flags.azimuth_angle) * camera_horizontal[0] -
+    sin(angle_factor * svg_flags.azimuth_angle) * camera_horizontal[1];
+  camera_horizontal_temp[1] =
+    sin(angle_factor * svg_flags.azimuth_angle) * camera_horizontal[0] +
+    cos(angle_factor * svg_flags.azimuth_angle) * camera_horizontal[1];
 
   camera_position[0] = camera_position_temp[0];
   camera_position[1] = camera_position_temp[1];
@@ -1664,12 +1664,12 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
   camera_position[0] = x_min + .5 * x_dimension;
   camera_position[1] = y_min + .5 * y_dimension;
 
-  camera_position[0] += 2. * std::max(x_dimension, y_dimension)
-                        * sin(angle_factor * svg_flags.polar_angle)
-                        * sin(angle_factor * svg_flags.azimuth_angle);
-  camera_position[1] -= 2. * std::max(x_dimension, y_dimension)
-                        * sin(angle_factor * svg_flags.polar_angle)
-                        * cos(angle_factor * svg_flags.azimuth_angle);
+  camera_position[0] += 2. * std::max(x_dimension, y_dimension) *
+                        sin(angle_factor * svg_flags.polar_angle) *
+                        sin(angle_factor * svg_flags.azimuth_angle);
+  camera_position[1] -= 2. * std::max(x_dimension, y_dimension) *
+                        sin(angle_factor * svg_flags.polar_angle) *
+                        cos(angle_factor * svg_flags.azimuth_angle);
 
   // determine the bounding box of the given triangulation on the projection plane of the camera viewing system
   point[0] = tria.begin()->vertex(0)[0];
@@ -1680,9 +1680,9 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
   if(svg_flags.convert_level_number_to_height)
     {
-      point[2] = svg_flags.level_height_factor
-                 * ((float) tria.begin()->level() / (float) n_levels)
-                 * std::max(x_dimension, y_dimension);
+      point[2] = svg_flags.level_height_factor *
+                 ((float) tria.begin()->level() / (float) n_levels) *
+                 std::max(x_dimension, y_dimension);
     }
 
   projection_decomposition = GridOut::svg_project_point(
@@ -1704,9 +1704,9 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
       if(svg_flags.convert_level_number_to_height)
         {
-          point[2] = svg_flags.level_height_factor
-                     * ((float) cell->level() / (float) n_levels)
-                     * std::max(x_dimension, y_dimension);
+          point[2] = svg_flags.level_height_factor *
+                     ((float) cell->level() / (float) n_levels) *
+                     std::max(x_dimension, y_dimension);
         }
 
       projection_decomposition = GridOut::svg_project_point(point,
@@ -1798,17 +1798,16 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
       .5 + width * (y_dimension_perspective / x_dimension_perspective));
   unsigned int additional_width = 0;
   // font size for date, time, legend, and colorbar
-  unsigned int font_size
-    = static_cast<unsigned int>(.5 + (height / 100.) * 1.75);
+  unsigned int font_size =
+    static_cast<unsigned int>(.5 + (height / 100.) * 1.75);
   cell_label_font_size = static_cast<unsigned int>(
-    .5
-    + (height * .15 * svg_flags.cell_font_scaling
-       * min_level_min_vertex_distance / std::min(x_dimension, y_dimension)));
+    .5 + (height * .15 * svg_flags.cell_font_scaling *
+          min_level_min_vertex_distance / std::min(x_dimension, y_dimension)));
 
-  if(svg_flags.draw_legend
-     && (svg_flags.label_level_number || svg_flags.label_cell_index
-         || svg_flags.label_material_id || svg_flags.label_subdomain_id
-         || svg_flags.label_level_subdomain_id))
+  if(svg_flags.draw_legend &&
+     (svg_flags.label_level_number || svg_flags.label_cell_index ||
+      svg_flags.label_material_id || svg_flags.label_subdomain_id ||
+      svg_flags.label_level_subdomain_id))
     {
       additional_width = static_cast<unsigned int>(
         .5 + height * .4); // additional width for legend
@@ -1968,8 +1967,8 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
       unsigned int x_offset = 0;
 
       if(svg_flags.margin)
-        x_offset = static_cast<unsigned int>(
-          .5 + (height / 100.) * (margin_in_percent / 2.));
+        x_offset = static_cast<unsigned int>(.5 + (height / 100.) *
+                                                    (margin_in_percent / 2.));
       else
         x_offset = static_cast<unsigned int>(.5 + height * .025);
 
@@ -2048,137 +2047,137 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
           if(svg_flags.convert_level_number_to_height)
             {
-              point[2] = svg_flags.level_height_factor
-                         * ((float) cell->level() / (float) n_levels)
-                         * std::max(x_dimension, y_dimension);
+              point[2] = svg_flags.level_height_factor *
+                         ((float) cell->level() / (float) n_levels) *
+                         std::max(x_dimension, y_dimension);
             }
 
-          projection_decomposition
-            = GridOut::svg_project_point(point,
-                                         camera_position,
-                                         camera_direction,
-                                         camera_horizontal,
-                                         camera_focus);
+          projection_decomposition =
+            GridOut::svg_project_point(point,
+                                       camera_position,
+                                       camera_direction,
+                                       camera_horizontal,
+                                       camera_focus);
 
           out << static_cast<unsigned int>(
-                   .5
-                   + ((projection_decomposition[0] - x_min_perspective)
-                      / x_dimension_perspective)
-                       * (width - (width / 100.) * 2. * margin_in_percent)
-                   + ((width / 100.) * margin_in_percent))
+                   .5 +
+                   ((projection_decomposition[0] - x_min_perspective) /
+                    x_dimension_perspective) *
+                     (width - (width / 100.) * 2. * margin_in_percent) +
+                   ((width / 100.) * margin_in_percent))
               << ' '
               << static_cast<unsigned int>(
-                   .5 + height - (height / 100.) * margin_in_percent
-                   - ((projection_decomposition[1] - y_min_perspective)
-                      / y_dimension_perspective)
-                       * (height - (height / 100.) * 2. * margin_in_percent));
+                   .5 + height - (height / 100.) * margin_in_percent -
+                   ((projection_decomposition[1] - y_min_perspective) /
+                    y_dimension_perspective) *
+                     (height - (height / 100.) * 2. * margin_in_percent));
 
           out << " L ";
 
           point[0] = cell->vertex(1)[0];
           point[1] = cell->vertex(1)[1];
 
-          projection_decomposition
-            = GridOut::svg_project_point(point,
-                                         camera_position,
-                                         camera_direction,
-                                         camera_horizontal,
-                                         camera_focus);
+          projection_decomposition =
+            GridOut::svg_project_point(point,
+                                       camera_position,
+                                       camera_direction,
+                                       camera_horizontal,
+                                       camera_focus);
 
           out << static_cast<unsigned int>(
-                   .5
-                   + ((projection_decomposition[0] - x_min_perspective)
-                      / x_dimension_perspective)
-                       * (width - (width / 100.) * 2. * margin_in_percent)
-                   + ((width / 100.) * margin_in_percent))
+                   .5 +
+                   ((projection_decomposition[0] - x_min_perspective) /
+                    x_dimension_perspective) *
+                     (width - (width / 100.) * 2. * margin_in_percent) +
+                   ((width / 100.) * margin_in_percent))
               << ' '
               << static_cast<unsigned int>(
-                   .5 + height - (height / 100.) * margin_in_percent
-                   - ((projection_decomposition[1] - y_min_perspective)
-                      / y_dimension_perspective)
-                       * (height - (height / 100.) * 2. * margin_in_percent));
+                   .5 + height - (height / 100.) * margin_in_percent -
+                   ((projection_decomposition[1] - y_min_perspective) /
+                    y_dimension_perspective) *
+                     (height - (height / 100.) * 2. * margin_in_percent));
 
           out << " L ";
 
           point[0] = cell->vertex(3)[0];
           point[1] = cell->vertex(3)[1];
 
-          projection_decomposition
-            = GridOut::svg_project_point(point,
-                                         camera_position,
-                                         camera_direction,
-                                         camera_horizontal,
-                                         camera_focus);
+          projection_decomposition =
+            GridOut::svg_project_point(point,
+                                       camera_position,
+                                       camera_direction,
+                                       camera_horizontal,
+                                       camera_focus);
 
           out << static_cast<unsigned int>(
-                   .5
-                   + ((projection_decomposition[0] - x_min_perspective)
-                      / x_dimension_perspective)
-                       * (width - (width / 100.) * 2. * margin_in_percent)
-                   + ((width / 100.) * margin_in_percent))
+                   .5 +
+                   ((projection_decomposition[0] - x_min_perspective) /
+                    x_dimension_perspective) *
+                     (width - (width / 100.) * 2. * margin_in_percent) +
+                   ((width / 100.) * margin_in_percent))
               << ' '
               << static_cast<unsigned int>(
-                   .5 + height - (height / 100.) * margin_in_percent
-                   - ((projection_decomposition[1] - y_min_perspective)
-                      / y_dimension_perspective)
-                       * (height - (height / 100.) * 2. * margin_in_percent));
+                   .5 + height - (height / 100.) * margin_in_percent -
+                   ((projection_decomposition[1] - y_min_perspective) /
+                    y_dimension_perspective) *
+                     (height - (height / 100.) * 2. * margin_in_percent));
 
           out << " L ";
 
           point[0] = cell->vertex(2)[0];
           point[1] = cell->vertex(2)[1];
 
-          projection_decomposition
-            = GridOut::svg_project_point(point,
-                                         camera_position,
-                                         camera_direction,
-                                         camera_horizontal,
-                                         camera_focus);
+          projection_decomposition =
+            GridOut::svg_project_point(point,
+                                       camera_position,
+                                       camera_direction,
+                                       camera_horizontal,
+                                       camera_focus);
 
           out << static_cast<unsigned int>(
-                   .5
-                   + ((projection_decomposition[0] - x_min_perspective)
-                      / x_dimension_perspective)
-                       * (width - (width / 100.) * 2. * margin_in_percent)
-                   + ((width / 100.) * margin_in_percent))
+                   .5 +
+                   ((projection_decomposition[0] - x_min_perspective) /
+                    x_dimension_perspective) *
+                     (width - (width / 100.) * 2. * margin_in_percent) +
+                   ((width / 100.) * margin_in_percent))
               << ' '
               << static_cast<unsigned int>(
-                   .5 + height - (height / 100.) * margin_in_percent
-                   - ((projection_decomposition[1] - y_min_perspective)
-                      / y_dimension_perspective)
-                       * (height - (height / 100.) * 2. * margin_in_percent));
+                   .5 + height - (height / 100.) * margin_in_percent -
+                   ((projection_decomposition[1] - y_min_perspective) /
+                    y_dimension_perspective) *
+                     (height - (height / 100.) * 2. * margin_in_percent));
 
           out << " L ";
 
           point[0] = cell->vertex(0)[0];
           point[1] = cell->vertex(0)[1];
 
-          projection_decomposition
-            = GridOut::svg_project_point(point,
-                                         camera_position,
-                                         camera_direction,
-                                         camera_horizontal,
-                                         camera_focus);
+          projection_decomposition =
+            GridOut::svg_project_point(point,
+                                       camera_position,
+                                       camera_direction,
+                                       camera_horizontal,
+                                       camera_focus);
 
           out << static_cast<unsigned int>(
-                   .5
-                   + ((projection_decomposition[0] - x_min_perspective)
-                      / x_dimension_perspective)
-                       * (width - (width / 100.) * 2. * margin_in_percent)
-                   + ((width / 100.) * margin_in_percent))
+                   .5 +
+                   ((projection_decomposition[0] - x_min_perspective) /
+                    x_dimension_perspective) *
+                     (width - (width / 100.) * 2. * margin_in_percent) +
+                   ((width / 100.) * margin_in_percent))
               << ' '
               << static_cast<unsigned int>(
-                   .5 + height - (height / 100.) * margin_in_percent
-                   - ((projection_decomposition[1] - y_min_perspective)
-                      / y_dimension_perspective)
-                       * (height - (height / 100.) * 2. * margin_in_percent));
+                   .5 + height - (height / 100.) * margin_in_percent -
+                   ((projection_decomposition[1] - y_min_perspective) /
+                    y_dimension_perspective) *
+                     (height - (height / 100.) * 2. * margin_in_percent));
 
           out << "\"/>" << '\n';
 
           // label the current cell
-          if(svg_flags.label_level_number || svg_flags.label_cell_index
-             || svg_flags.label_material_id || svg_flags.label_subdomain_id
-             || svg_flags.label_level_subdomain_id)
+          if(svg_flags.label_level_number || svg_flags.label_cell_index ||
+             svg_flags.label_material_id || svg_flags.label_subdomain_id ||
+             svg_flags.label_level_subdomain_id)
             {
               point[0] = cell->center()[0];
               point[1] = cell->center()[1];
@@ -2186,49 +2185,46 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
               if(svg_flags.convert_level_number_to_height)
                 {
-                  point[2] = svg_flags.level_height_factor
-                             * ((float) cell->level() / (float) n_levels)
-                             * std::max(x_dimension, y_dimension);
+                  point[2] = svg_flags.level_height_factor *
+                             ((float) cell->level() / (float) n_levels) *
+                             std::max(x_dimension, y_dimension);
                 }
 
-              float distance_to_camera
-                = sqrt(pow(point[0] - camera_position[0], 2.)
-                       + pow(point[1] - camera_position[1], 2.)
-                       + pow(point[2] - camera_position[2], 2.));
-              float distance_factor
-                = distance_to_camera
-                  / (2. * std::max(x_dimension, y_dimension));
+              float distance_to_camera =
+                sqrt(pow(point[0] - camera_position[0], 2.) +
+                     pow(point[1] - camera_position[1], 2.) +
+                     pow(point[2] - camera_position[2], 2.));
+              float distance_factor =
+                distance_to_camera / (2. * std::max(x_dimension, y_dimension));
 
-              projection_decomposition
-                = GridOut::svg_project_point(point,
-                                             camera_position,
-                                             camera_direction,
-                                             camera_horizontal,
-                                             camera_focus);
+              projection_decomposition =
+                GridOut::svg_project_point(point,
+                                           camera_position,
+                                           camera_direction,
+                                           camera_horizontal,
+                                           camera_focus);
 
-              const unsigned int font_size_this_cell
-                = static_cast<unsigned int>(
-                  .5
-                  + cell_label_font_size
-                      * pow(.5,
-                            (float) cell->level() - 4.
-                              + 3.5 * distance_factor));
+              const unsigned int font_size_this_cell =
+                static_cast<unsigned int>(
+                  .5 + cell_label_font_size * pow(.5,
+                                                  (float) cell->level() - 4. +
+                                                    3.5 * distance_factor));
 
               out << "  <text"
                   << " x=\""
                   << static_cast<unsigned int>(
-                       .5
-                       + ((projection_decomposition[0] - x_min_perspective)
-                          / x_dimension_perspective)
-                           * (width - (width / 100.) * 2. * margin_in_percent)
-                       + ((width / 100.) * margin_in_percent))
+                       .5 +
+                       ((projection_decomposition[0] - x_min_perspective) /
+                        x_dimension_perspective) *
+                         (width - (width / 100.) * 2. * margin_in_percent) +
+                       ((width / 100.) * margin_in_percent))
                   << "\" y=\""
                   << static_cast<unsigned int>(
-                       .5 + height - (height / 100.) * margin_in_percent
-                       - ((projection_decomposition[1] - y_min_perspective)
-                          / y_dimension_perspective)
-                           * (height - (height / 100.) * 2. * margin_in_percent)
-                       + 0.5 * font_size_this_cell)
+                       .5 + height - (height / 100.) * margin_in_percent -
+                       ((projection_decomposition[1] - y_min_perspective) /
+                        y_dimension_perspective) *
+                         (height - (height / 100.) * 2. * margin_in_percent) +
+                       0.5 * font_size_this_cell)
                   << "\" style=\"font-size:" << font_size_this_cell << "px\">";
 
               if(svg_flags.label_level_number)
@@ -2252,8 +2248,8 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
               if(svg_flags.label_subdomain_id)
                 {
-                  if(svg_flags.label_level_number || svg_flags.label_cell_index
-                     || svg_flags.label_material_id)
+                  if(svg_flags.label_level_number ||
+                     svg_flags.label_cell_index || svg_flags.label_material_id)
                     out << ',';
                   if(cell->active())
                     out << static_cast<int>(cell->subdomain_id());
@@ -2263,9 +2259,10 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
               if(svg_flags.label_level_subdomain_id)
                 {
-                  if(svg_flags.label_level_number || svg_flags.label_cell_index
-                     || svg_flags.label_material_id
-                     || svg_flags.label_subdomain_id)
+                  if(svg_flags.label_level_number ||
+                     svg_flags.label_cell_index ||
+                     svg_flags.label_material_id ||
+                     svg_flags.label_subdomain_id)
                     out << ',';
                   out << static_cast<int>(cell->level_subdomain_id());
                 }
@@ -2286,37 +2283,37 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
                       if(svg_flags.convert_level_number_to_height)
                         {
-                          point[2]
-                            = svg_flags.level_height_factor
-                              * ((float) cell->level() / (float) n_levels)
-                              * std::max(x_dimension, y_dimension);
+                          point[2] =
+                            svg_flags.level_height_factor *
+                            ((float) cell->level() / (float) n_levels) *
+                            std::max(x_dimension, y_dimension);
                         }
 
-                      projection_decomposition
-                        = GridOut::svg_project_point(point,
-                                                     camera_position,
-                                                     camera_direction,
-                                                     camera_horizontal,
-                                                     camera_focus);
+                      projection_decomposition =
+                        GridOut::svg_project_point(point,
+                                                   camera_position,
+                                                   camera_direction,
+                                                   camera_horizontal,
+                                                   camera_focus);
 
                       out << "  <line x1=\""
                           << static_cast<unsigned int>(
-                               .5
-                               + ((projection_decomposition[0]
-                                   - x_min_perspective)
-                                  / x_dimension_perspective)
-                                   * (width
-                                      - (width / 100.) * 2. * margin_in_percent)
-                               + ((width / 100.) * margin_in_percent))
+                               .5 +
+                               ((projection_decomposition[0] -
+                                 x_min_perspective) /
+                                x_dimension_perspective) *
+                                 (width -
+                                  (width / 100.) * 2. * margin_in_percent) +
+                               ((width / 100.) * margin_in_percent))
                           << "\" y1=\""
                           << static_cast<unsigned int>(
-                               .5 + height - (height / 100.) * margin_in_percent
-                               - ((projection_decomposition[1]
-                                   - y_min_perspective)
-                                  / y_dimension_perspective)
-                                   * (height
-                                      - (height / 100.) * 2.
-                                          * margin_in_percent));
+                               .5 + height -
+                               (height / 100.) * margin_in_percent -
+                               ((projection_decomposition[1] -
+                                 y_min_perspective) /
+                                y_dimension_perspective) *
+                                 (height -
+                                  (height / 100.) * 2. * margin_in_percent));
 
                       point[0] = cell->face(faceIndex)->vertex(1)[0];
                       point[1] = cell->face(faceIndex)->vertex(1)[1];
@@ -2324,37 +2321,37 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
                       if(svg_flags.convert_level_number_to_height)
                         {
-                          point[2]
-                            = svg_flags.level_height_factor
-                              * ((float) cell->level() / (float) n_levels)
-                              * std::max(x_dimension, y_dimension);
+                          point[2] =
+                            svg_flags.level_height_factor *
+                            ((float) cell->level() / (float) n_levels) *
+                            std::max(x_dimension, y_dimension);
                         }
 
-                      projection_decomposition
-                        = GridOut::svg_project_point(point,
-                                                     camera_position,
-                                                     camera_direction,
-                                                     camera_horizontal,
-                                                     camera_focus);
+                      projection_decomposition =
+                        GridOut::svg_project_point(point,
+                                                   camera_position,
+                                                   camera_direction,
+                                                   camera_horizontal,
+                                                   camera_focus);
 
                       out << "\" x2=\""
                           << static_cast<unsigned int>(
-                               .5
-                               + ((projection_decomposition[0]
-                                   - x_min_perspective)
-                                  / x_dimension_perspective)
-                                   * (width
-                                      - (width / 100.) * 2. * margin_in_percent)
-                               + ((width / 100.) * margin_in_percent))
+                               .5 +
+                               ((projection_decomposition[0] -
+                                 x_min_perspective) /
+                                x_dimension_perspective) *
+                                 (width -
+                                  (width / 100.) * 2. * margin_in_percent) +
+                               ((width / 100.) * margin_in_percent))
                           << "\" y2=\""
                           << static_cast<unsigned int>(
-                               .5 + height - (height / 100.) * margin_in_percent
-                               - ((projection_decomposition[1]
-                                   - y_min_perspective)
-                                  / y_dimension_perspective)
-                                   * (height
-                                      - (height / 100.) * 2.
-                                          * margin_in_percent))
+                               .5 + height -
+                               (height / 100.) * margin_in_percent -
+                               ((projection_decomposition[1] -
+                                 y_min_perspective) /
+                                y_dimension_perspective) *
+                                 (height -
+                                  (height / 100.) * 2. * margin_in_percent))
                           << "\"/>" << '\n';
                     }
                 }
@@ -2371,26 +2368,27 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
     additional_width = static_cast<unsigned int>(.5 + (height / 100.) * 2.5);
 
   // explanation of the cell labeling
-  if(svg_flags.draw_legend
-     && (svg_flags.label_level_number || svg_flags.label_cell_index
-         || svg_flags.label_material_id || svg_flags.label_subdomain_id
-         || svg_flags.label_level_subdomain_id))
+  if(svg_flags.draw_legend &&
+     (svg_flags.label_level_number || svg_flags.label_cell_index ||
+      svg_flags.label_material_id || svg_flags.label_subdomain_id ||
+      svg_flags.label_level_subdomain_id))
     {
       unsigned int line_offset = 0;
       out << " <rect x=\"" << width + additional_width << "\" y=\""
           << static_cast<unsigned int>(.5 + (height / 100.) * margin_in_percent)
           << "\" width=\""
-          << static_cast<unsigned int>(
-               .5 + (height / 100.) * (40. - margin_in_percent))
+          << static_cast<unsigned int>(.5 + (height / 100.) *
+                                              (40. - margin_in_percent))
           << "\" height=\"" << static_cast<unsigned int>(.5 + height * .165)
           << "\"/>" << '\n';
 
       out << " <text x=\""
-          << width + additional_width
-               + static_cast<unsigned int>(.5 + (height / 100.) * 1.25)
+          << width + additional_width +
+               static_cast<unsigned int>(.5 + (height / 100.) * 1.25)
           << "\" y=\""
-          << static_cast<unsigned int>(.5 + (height / 100.) * margin_in_percent
-                                       + (++line_offset) * 1.5 * font_size)
+          << static_cast<unsigned int>(.5 +
+                                       (height / 100.) * margin_in_percent +
+                                       (++line_offset) * 1.5 * font_size)
           << "\" style=\"text-anchor:start; font-weight:bold; font-size:"
           << font_size << "px\">"
           << "cell label"
@@ -2399,19 +2397,18 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
       if(svg_flags.label_level_number)
         {
           out << "  <text x=\""
-              << width + additional_width
-                   + static_cast<unsigned int>(.5 + (height / 100.) * 2.)
+              << width + additional_width +
+                   static_cast<unsigned int>(.5 + (height / 100.) * 2.)
               << "\" y=\""
-              << static_cast<unsigned int>(.5
-                                           + (height / 100.) * margin_in_percent
-                                           + (++line_offset) * 1.5 * font_size)
+              << static_cast<unsigned int>(.5 +
+                                           (height / 100.) * margin_in_percent +
+                                           (++line_offset) * 1.5 * font_size)
               << "\" style=\"text-anchor:start; font-style:oblique; font-size:"
               << font_size << "px\">"
               << "level_number";
 
-          if(svg_flags.label_cell_index || svg_flags.label_material_id
-             || svg_flags.label_subdomain_id
-             || svg_flags.label_level_subdomain_id)
+          if(svg_flags.label_cell_index || svg_flags.label_material_id ||
+             svg_flags.label_subdomain_id || svg_flags.label_level_subdomain_id)
             out << ',';
 
           out << "</text>" << '\n';
@@ -2420,18 +2417,18 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
       if(svg_flags.label_cell_index)
         {
           out << "  <text x=\""
-              << width + additional_width
-                   + static_cast<unsigned int>(.5 + (height / 100.) * 2.)
+              << width + additional_width +
+                   static_cast<unsigned int>(.5 + (height / 100.) * 2.)
               << "\" y=\""
-              << static_cast<unsigned int>(.5
-                                           + (height / 100.) * margin_in_percent
-                                           + (++line_offset) * 1.5 * font_size)
+              << static_cast<unsigned int>(.5 +
+                                           (height / 100.) * margin_in_percent +
+                                           (++line_offset) * 1.5 * font_size)
               << "\" style=\"text-anchor:start; font-style:oblique; font-size:"
               << font_size << "px\">"
               << "cell_index";
 
-          if(svg_flags.label_material_id || svg_flags.label_subdomain_id
-             || svg_flags.label_level_subdomain_id)
+          if(svg_flags.label_material_id || svg_flags.label_subdomain_id ||
+             svg_flags.label_level_subdomain_id)
             out << ',';
 
           out << "</text>" << '\n';
@@ -2440,12 +2437,12 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
       if(svg_flags.label_material_id)
         {
           out << "  <text x=\""
-              << width + additional_width
-                   + static_cast<unsigned int>(.5 + (height / 100.) * 2.)
+              << width + additional_width +
+                   static_cast<unsigned int>(.5 + (height / 100.) * 2.)
               << "\" y=\""
-              << static_cast<unsigned int>(.5
-                                           + (height / 100.) * margin_in_percent
-                                           + (++line_offset) * 1.5 * font_size)
+              << static_cast<unsigned int>(.5 +
+                                           (height / 100.) * margin_in_percent +
+                                           (++line_offset) * 1.5 * font_size)
               << "\" style=\"text-anchor:start; font-style:oblique; font-size:"
               << font_size << "px\">"
               << "material_id";
@@ -2459,12 +2456,12 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
       if(svg_flags.label_subdomain_id)
         {
           out << "  <text x= \""
-              << width + additional_width
-                   + static_cast<unsigned int>(.5 + (height / 100.) * 2.)
+              << width + additional_width +
+                   static_cast<unsigned int>(.5 + (height / 100.) * 2.)
               << "\" y=\""
-              << static_cast<unsigned int>(.5
-                                           + (height / 100.) * margin_in_percent
-                                           + (++line_offset) * 1.5 * font_size)
+              << static_cast<unsigned int>(.5 +
+                                           (height / 100.) * margin_in_percent +
+                                           (++line_offset) * 1.5 * font_size)
               << "\" style=\"text-anchor:start; font-style:oblique; font-size:"
               << font_size << "px\">"
               << "subdomain_id";
@@ -2478,12 +2475,12 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
       if(svg_flags.label_level_subdomain_id)
         {
           out << "  <text x= \""
-              << width + additional_width
-                   + static_cast<unsigned int>(.5 + (height / 100.) * 2.)
+              << width + additional_width +
+                   static_cast<unsigned int>(.5 + (height / 100.) * 2.)
               << "\" y=\""
-              << static_cast<unsigned int>(.5
-                                           + (height / 100.) * margin_in_percent
-                                           + (++line_offset) * 1.5 * font_size)
+              << static_cast<unsigned int>(.5 +
+                                           (height / 100.) * margin_in_percent +
+                                           (++line_offset) * 1.5 * font_size)
               << "\" style=\"text-anchor:start; font-style:oblique; font-size:"
               << font_size << "px\">"
               << "level_subdomain_id"
@@ -2495,8 +2492,8 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
   if(svg_flags.draw_legend)
     {
       out << "  <text x=\"" << width + additional_width << "\" y=\""
-          << static_cast<unsigned int>(.5 + (height / 100.) * margin_in_percent
-                                       + 10.75 * font_size)
+          << static_cast<unsigned int>(
+               .5 + (height / 100.) * margin_in_percent + 10.75 * font_size)
           << "\" style=\"text-anchor:start; font-size:" << font_size << "px\">"
           << "azimuth: " << svg_flags.azimuth_angle
           << "°, polar: " << svg_flags.polar_angle << "°</text>" << '\n';
@@ -2509,8 +2506,8 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
       out << " <text x=\"" << width + additional_width << "\" y=\""
           << static_cast<unsigned int>(
-               .5 + (height / 100.) * (margin_in_percent + 29.)
-               - (font_size / 1.25))
+               .5 + (height / 100.) * (margin_in_percent + 29.) -
+               (font_size / 1.25))
           << "\" style=\"text-anchor:start; font-weight:bold; font-size:"
           << font_size << "px\">";
 
@@ -2536,8 +2533,8 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
       unsigned int element_height = static_cast<unsigned int>(
         ((height / 100.) * (71. - 2. * margin_in_percent)) / n);
-      unsigned int element_width
-        = static_cast<unsigned int>(.5 + (height / 100.) * 2.5);
+      unsigned int element_width =
+        static_cast<unsigned int>(.5 + (height / 100.) * 2.5);
 
       int labeling_index = 0;
 
@@ -2567,18 +2564,18 @@ GridOut::write_svg(const Triangulation<2, 2>& tria, std::ostream& out) const
 
           out << "  <rect class=\"r" << labeling_index << "\" x=\""
               << width + additional_width << "\" y=\""
-              << static_cast<unsigned int>(
-                   .5 + (height / 100.) * (margin_in_percent + 29))
-                   + (n - index - 1) * element_height
+              << static_cast<unsigned int>(.5 + (height / 100.) *
+                                                  (margin_in_percent + 29)) +
+                   (n - index - 1) * element_height
               << "\" width=\"" << element_width << "\" height=\""
               << element_height << "\"/>" << '\n';
 
           out << "  <text x=\""
               << width + additional_width + 1.5 * element_width << "\" y=\""
-              << static_cast<unsigned int>(
-                   .5 + (height / 100.) * (margin_in_percent + 29))
-                   + (n - index - 1 + .5) * element_height
-                   + static_cast<unsigned int>(.5 + font_size * .35)
+              << static_cast<unsigned int>(.5 + (height / 100.) *
+                                                  (margin_in_percent + 29)) +
+                   (n - index - 1 + .5) * element_height +
+                   static_cast<unsigned int>(.5 + font_size * .35)
               << "\""
               << " style=\"text-anchor:start; font-size:"
               << static_cast<unsigned int>(.5 + font_size) << "px";
@@ -2708,8 +2705,8 @@ GridOut::write_mathgl(const Triangulation<dim, spacedim>& tria,
 
   // run over all active cells and write out a list of
   // xyz-coordinates that correspond to vertices
-  typename dealii::Triangulation<dim, spacedim>::active_cell_iterator cell
-    = tria.begin_active(),
+  typename dealii::Triangulation<dim, spacedim>::active_cell_iterator
+    cell = tria.begin_active(),
     endc = tria.end();
 
   // No global indices in deal.II, so we make one up here.
@@ -2879,19 +2876,19 @@ GridOut::write_mesh_per_processor_as_vtu(
         {
           if(cell->has_children())
             continue;
-          if(!include_artificial
-             && cell->subdomain_id() == numbers::artificial_subdomain_id)
+          if(!include_artificial &&
+             cell->subdomain_id() == numbers::artificial_subdomain_id)
             continue;
         }
       else if(!include_artificial)
         {
-          if(cell->has_children()
-             && cell->level_subdomain_id() == numbers::artificial_subdomain_id)
+          if(cell->has_children() &&
+             cell->level_subdomain_id() == numbers::artificial_subdomain_id)
             continue;
-          else if(!cell->has_children()
-                  && cell->level_subdomain_id()
-                       == numbers::artificial_subdomain_id
-                  && cell->subdomain_id() == numbers::artificial_subdomain_id)
+          else if(!cell->has_children() &&
+                  cell->level_subdomain_id() ==
+                    numbers::artificial_subdomain_id &&
+                  cell->subdomain_id() == numbers::artificial_subdomain_id)
             continue;
         }
 
@@ -2904,12 +2901,12 @@ GridOut::write_mesh_per_processor_as_vtu(
           patch.vertices[vertex] = cell->vertex(vertex);
           patch.data(0, vertex)  = cell->level();
           if(!cell->has_children())
-            patch.data(1, vertex)
-              = (double) static_cast<int>(cell->subdomain_id());
+            patch.data(1, vertex) =
+              (double) static_cast<int>(cell->subdomain_id());
           else
             patch.data(1, vertex) = -1.0;
-          patch.data(2, vertex)
-            = (double) static_cast<int>(cell->level_subdomain_id());
+          patch.data(2, vertex) =
+            (double) static_cast<int>(cell->level_subdomain_id());
           patch.data(3, vertex) = tria.locally_owned_subdomain();
         }
 
@@ -2922,12 +2919,12 @@ GridOut::write_mesh_per_processor_as_vtu(
   // if not, just create a .vtu file with no reference
   // to the processor number
   std::string new_file = filename_without_extension + ".vtu";
-  if(const parallel::Triangulation<dim, spacedim>* tr
-     = dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(&tria))
+  if(const parallel::Triangulation<dim, spacedim>* tr =
+       dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(&tria))
     {
-      new_file = filename_without_extension + ".proc"
-                 + Utilities::int_to_string(tr->locally_owned_subdomain(), 4)
-                 + ".vtu";
+      new_file = filename_without_extension + ".proc" +
+                 Utilities::int_to_string(tr->locally_owned_subdomain(), 4) +
+                 ".vtu";
 
       // create .pvtu record
       if(tr->locally_owned_subdomain() == 0)
@@ -2941,14 +2938,15 @@ GridOut::write_mesh_per_processor_as_vtu(
             pos = 0;
           else
             pos += 1;
-          const unsigned int n_procs
-            = Utilities::MPI::n_mpi_processes(tr->get_communicator());
+          const unsigned int n_procs =
+            Utilities::MPI::n_mpi_processes(tr->get_communicator());
           for(unsigned int i = 0; i < n_procs; ++i)
-            filenames.push_back(filename_without_extension.substr(pos) + ".proc"
-                                + Utilities::int_to_string(i, 4) + ".vtu");
+            filenames.push_back(filename_without_extension.substr(pos) +
+                                ".proc" + Utilities::int_to_string(i, 4) +
+                                ".vtu");
 
-          const std::string pvtu_master_filename
-            = (filename_without_extension + ".pvtu");
+          const std::string pvtu_master_filename =
+            (filename_without_extension + ".pvtu");
           std::ofstream pvtu_master(pvtu_master_filename.c_str());
 
           DataOut<dim, DoFHandler<dim, spacedim>> data_out;
@@ -3057,8 +3055,8 @@ GridOut::n_boundary_lines(const Triangulation<dim, spacedim>& tria) const
 
   for(cell = tria.begin_active(), endc = tria.end(); cell != endc; ++cell)
     for(unsigned int l = 0; l < GeometryInfo<dim>::lines_per_cell; ++l)
-      if(cell->line(l)->at_boundary() && (cell->line(l)->boundary_id() != 0)
-         && (cell->line(l)->user_flag_set() == false))
+      if(cell->line(l)->at_boundary() && (cell->line(l)->boundary_id() != 0) &&
+         (cell->line(l)->user_flag_set() == false))
         {
           ++n_lines;
           cell->line(l)->set_user_flag();
@@ -3169,8 +3167,9 @@ GridOut::write_msh_faces(const Triangulation<dim, spacedim>& tria,
             vertex < GeometryInfo<dim>::vertices_per_face;
             ++vertex)
           out << ' '
-              << face->vertex_index(GeometryInfo<dim - 1>::ucd_to_deal[vertex])
-                   + 1;
+              << face->vertex_index(
+                   GeometryInfo<dim - 1>::ucd_to_deal[vertex]) +
+                   1;
         out << '\n';
 
         ++current_element_index;
@@ -3199,8 +3198,8 @@ GridOut::write_msh_lines(const Triangulation<dim, spacedim>& tria,
 
   for(cell = tria.begin_active(), endc = tria.end(); cell != endc; ++cell)
     for(unsigned int l = 0; l < GeometryInfo<dim>::lines_per_cell; ++l)
-      if(cell->line(l)->at_boundary() && (cell->line(l)->boundary_id() != 0)
-         && (cell->line(l)->user_flag_set() == false))
+      if(cell->line(l)->at_boundary() && (cell->line(l)->boundary_id() != 0) &&
+         (cell->line(l)->user_flag_set() == false))
         {
           out << next_element_index << " 1 ";
           out << static_cast<unsigned int>(cell->line(l)->boundary_id()) << ' '
@@ -3210,8 +3209,8 @@ GridOut::write_msh_lines(const Triangulation<dim, spacedim>& tria,
           for(unsigned int vertex = 0; vertex < 2; ++vertex)
             out << ' '
                 << cell->line(l)->vertex_index(
-                     GeometryInfo<dim - 2>::ucd_to_deal[vertex])
-                     + 1;
+                     GeometryInfo<dim - 2>::ucd_to_deal[vertex]) +
+                     1;
           out << '\n';
 
           // move on to the next line
@@ -3323,8 +3322,9 @@ GridOut::write_ucd_faces(const Triangulation<dim, spacedim>& tria,
         for(unsigned int vertex = 0;
             vertex < GeometryInfo<dim>::vertices_per_face;
             ++vertex)
-          out << face->vertex_index(GeometryInfo<dim - 1>::ucd_to_deal[vertex])
-                   + 1
+          out << face->vertex_index(
+                   GeometryInfo<dim - 1>::ucd_to_deal[vertex]) +
+                   1
               << ' ';
         out << '\n';
 
@@ -3354,8 +3354,8 @@ GridOut::write_ucd_lines(const Triangulation<dim, spacedim>& tria,
 
   for(cell = tria.begin_active(), endc = tria.end(); cell != endc; ++cell)
     for(unsigned int l = 0; l < GeometryInfo<dim>::lines_per_cell; ++l)
-      if(cell->line(l)->at_boundary() && (cell->line(l)->boundary_id() != 0)
-         && (cell->line(l)->user_flag_set() == false))
+      if(cell->line(l)->at_boundary() && (cell->line(l)->boundary_id() != 0) &&
+         (cell->line(l)->user_flag_set() == false))
         {
           out << current_element_index << "  "
               << static_cast<unsigned int>(cell->line(l)->boundary_id())
@@ -3363,8 +3363,8 @@ GridOut::write_ucd_lines(const Triangulation<dim, spacedim>& tria,
           // note: vertex numbers in ucd format are 1-base
           for(unsigned int vertex = 0; vertex < 2; ++vertex)
             out << cell->line(l)->vertex_index(
-                     GeometryInfo<dim - 2>::ucd_to_deal[vertex])
-                     + 1
+                     GeometryInfo<dim - 2>::ucd_to_deal[vertex]) +
+                     1
                 << ' ';
           out << '\n';
 
@@ -3390,18 +3390,18 @@ Point<2> GridOut::svg_project_point(Point<3> point,
 {
   // ...
   Point<3> camera_vertical;
-  camera_vertical[0] = camera_horizontal[1] * camera_direction[2]
-                       - camera_horizontal[2] * camera_direction[1];
-  camera_vertical[1] = camera_horizontal[2] * camera_direction[0]
-                       - camera_horizontal[0] * camera_direction[2];
-  camera_vertical[2] = camera_horizontal[0] * camera_direction[1]
-                       - camera_horizontal[1] * camera_direction[0];
+  camera_vertical[0] = camera_horizontal[1] * camera_direction[2] -
+                       camera_horizontal[2] * camera_direction[1];
+  camera_vertical[1] = camera_horizontal[2] * camera_direction[0] -
+                       camera_horizontal[0] * camera_direction[2];
+  camera_vertical[2] = camera_horizontal[0] * camera_direction[1] -
+                       camera_horizontal[1] * camera_direction[0];
 
   float phi;
   phi = camera_focus;
-  phi /= (point[0] - camera_position[0]) * camera_direction[0]
-         + (point[1] - camera_position[1]) * camera_direction[1]
-         + (point[2] - camera_position[2]) * camera_direction[2];
+  phi /= (point[0] - camera_position[0]) * camera_direction[0] +
+         (point[1] - camera_position[1]) * camera_direction[1] +
+         (point[2] - camera_position[2]) * camera_direction[2];
 
   Point<3> projection;
   projection[0] = camera_position[0] + phi * (point[0] - camera_position[0]);
@@ -3409,25 +3409,25 @@ Point<2> GridOut::svg_project_point(Point<3> point,
   projection[2] = camera_position[2] + phi * (point[2] - camera_position[2]);
 
   Point<2> projection_decomposition;
-  projection_decomposition[0]
-    = (projection[0] - camera_position[0] - camera_focus * camera_direction[0])
-      * camera_horizontal[0];
-  projection_decomposition[0]
-    += (projection[1] - camera_position[1] - camera_focus * camera_direction[1])
-       * camera_horizontal[1];
-  projection_decomposition[0]
-    += (projection[2] - camera_position[2] - camera_focus * camera_direction[2])
-       * camera_horizontal[2];
+  projection_decomposition[0] =
+    (projection[0] - camera_position[0] - camera_focus * camera_direction[0]) *
+    camera_horizontal[0];
+  projection_decomposition[0] +=
+    (projection[1] - camera_position[1] - camera_focus * camera_direction[1]) *
+    camera_horizontal[1];
+  projection_decomposition[0] +=
+    (projection[2] - camera_position[2] - camera_focus * camera_direction[2]) *
+    camera_horizontal[2];
 
-  projection_decomposition[1]
-    = (projection[0] - camera_position[0] - camera_focus * camera_direction[0])
-      * camera_vertical[0];
-  projection_decomposition[1]
-    += (projection[1] - camera_position[1] - camera_focus * camera_direction[1])
-       * camera_vertical[1];
-  projection_decomposition[1]
-    += (projection[2] - camera_position[2] - camera_focus * camera_direction[2])
-       * camera_vertical[2];
+  projection_decomposition[1] =
+    (projection[0] - camera_position[0] - camera_focus * camera_direction[0]) *
+    camera_vertical[0];
+  projection_decomposition[1] +=
+    (projection[1] - camera_position[1] - camera_focus * camera_direction[1]) *
+    camera_vertical[1];
+  projection_decomposition[1] +=
+    (projection[2] - camera_position[2] - camera_focus * camera_direction[2]) *
+    camera_vertical[2];
 
   return projection_decomposition;
 }
@@ -3447,11 +3447,10 @@ namespace internal
 
       const int dim = 1;
 
-      typename dealii::Triangulation<dim, spacedim>::active_cell_iterator cell
-        = tria.begin_active();
+      typename dealii::Triangulation<dim, spacedim>::active_cell_iterator cell =
+        tria.begin_active();
       const typename dealii::Triangulation<dim, spacedim>::active_cell_iterator
-        endc
-        = tria.end();
+        endc = tria.end();
       for(; cell != endc; ++cell)
         {
           if(gnuplot_flags.write_cell_numbers)
@@ -3482,15 +3481,14 @@ namespace internal
 
       const int dim = 2;
 
-      const unsigned int n_additional_points
-        = gnuplot_flags.n_boundary_face_points;
+      const unsigned int n_additional_points =
+        gnuplot_flags.n_boundary_face_points;
       const unsigned int n_points = 2 + n_additional_points;
 
-      typename dealii::Triangulation<dim, spacedim>::active_cell_iterator cell
-        = tria.begin_active();
+      typename dealii::Triangulation<dim, spacedim>::active_cell_iterator cell =
+        tria.begin_active();
       const typename dealii::Triangulation<dim, spacedim>::active_cell_iterator
-        endc
-        = tria.end();
+        endc = tria.end();
 
       // if we are to treat curved
       // boundaries, then generate a
@@ -3519,8 +3517,8 @@ namespace internal
           if(gnuplot_flags.write_cell_numbers)
             out << "# cell " << cell << '\n';
 
-          if(mapping == nullptr
-             || (!cell->at_boundary() && !gnuplot_flags.curved_inner_cells))
+          if(mapping == nullptr ||
+             (!cell->at_boundary() && !gnuplot_flags.curved_inner_cells))
             {
               // write out the four sides
               // of this cell by putting
@@ -3552,8 +3550,7 @@ namespace internal
                 {
                   const typename dealii::Triangulation<dim,
                                                        spacedim>::face_iterator
-                    face
-                    = cell->face(face_no);
+                    face = cell->face(face_no);
                   if(face->at_boundary() || gnuplot_flags.curved_inner_cells)
                     {
                       // compute offset
@@ -3612,15 +3609,14 @@ namespace internal
 
       const int dim = 3;
 
-      const unsigned int n_additional_points
-        = gnuplot_flags.n_boundary_face_points;
+      const unsigned int n_additional_points =
+        gnuplot_flags.n_boundary_face_points;
       const unsigned int n_points = 2 + n_additional_points;
 
-      typename dealii::Triangulation<dim, spacedim>::active_cell_iterator cell
-        = tria.begin_active();
+      typename dealii::Triangulation<dim, spacedim>::active_cell_iterator cell =
+        tria.begin_active();
       const typename dealii::Triangulation<dim, spacedim>::active_cell_iterator
-        endc
-        = tria.end();
+        endc = tria.end();
 
       // if we are to treat curved
       // boundaries, then generate a
@@ -3652,9 +3648,8 @@ namespace internal
           if(gnuplot_flags.write_cell_numbers)
             out << "# cell " << cell << '\n';
 
-          if(mapping == nullptr || n_points == 2
-             || (!cell->has_boundary_lines()
-                 && !gnuplot_flags.curved_inner_cells))
+          if(mapping == nullptr || n_points == 2 ||
+             (!cell->has_boundary_lines() && !gnuplot_flags.curved_inner_cells))
             {
               // front face
               out << cell->vertex(0) << ' ' << cell->level() << ' '
@@ -3711,8 +3706,7 @@ namespace internal
                 {
                   const typename dealii::Triangulation<dim,
                                                        spacedim>::face_iterator
-                    face
-                    = cell->face(face_no);
+                    face = cell->face(face_no);
 
                   if(face->at_boundary())
                     {
@@ -3720,8 +3714,8 @@ namespace internal
                       for(unsigned int i = 0; i < n_points - 1; ++i)
                         for(unsigned int j = 0; j < n_points - 1; ++j)
                           {
-                            const Point<spacedim> p0
-                              = mapping->transform_unit_to_real_cell(
+                            const Point<spacedim> p0 =
+                              mapping->transform_unit_to_real_cell(
                                 cell,
                                 q_projector->point(offset + i * n_points + j));
                             out
@@ -3731,8 +3725,8 @@ namespace internal
                             out
                               << (mapping->transform_unit_to_real_cell(
                                    cell,
-                                   q_projector->point(
-                                     offset + (i + 1) * n_points + j)))
+                                   q_projector->point(offset +
+                                                      (i + 1) * n_points + j)))
                               << ' ' << cell->level() << ' '
                               << static_cast<unsigned int>(cell->material_id())
                               << '\n';
@@ -3747,8 +3741,8 @@ namespace internal
                             out
                               << (mapping->transform_unit_to_real_cell(
                                    cell,
-                                   q_projector->point(offset + i * n_points + j
-                                                      + 1)))
+                                   q_projector->point(offset + i * n_points +
+                                                      j + 1)))
                               << ' ' << cell->level() << ' '
                               << static_cast<unsigned int>(cell->material_id())
                               << '\n';
@@ -3770,13 +3764,12 @@ namespace internal
                           ++l)
                         {
                           const typename dealii::Triangulation<dim, spacedim>::
-                            line_iterator line
-                            = face->line(l);
+                            line_iterator line = face->line(l);
 
                           const Point<spacedim>&v0 = line->vertex(0),
                                 &v1                = line->vertex(1);
-                          if(line->at_boundary()
-                             || gnuplot_flags.curved_inner_cells)
+                          if(line->at_boundary() ||
+                             gnuplot_flags.curved_inner_cells)
                             {
                               // transform_real_to_unit_cell
                               // could be
@@ -3786,17 +3779,17 @@ namespace internal
                               // which is
                               // not yet
                               // implemented
-                              const Point<spacedim> u0
-                                = mapping->transform_real_to_unit_cell(cell,
-                                                                       v0),
+                              const Point<spacedim>
+                                u0 = mapping->transform_real_to_unit_cell(cell,
+                                                                          v0),
                                 u1 = mapping->transform_real_to_unit_cell(cell,
                                                                           v1);
 
                               for(unsigned int i = 0; i < n_points; ++i)
                                 out << (mapping->transform_unit_to_real_cell(
                                          cell,
-                                         (1 - boundary_points[i][0]) * u0
-                                           + boundary_points[i][0] * u1))
+                                         (1 - boundary_points[i][0]) * u0 +
+                                           boundary_points[i][0] * u1))
                                     << ' ' << cell->level() << ' '
                                     << static_cast<unsigned int>(
                                          cell->material_id())
@@ -3914,10 +3907,9 @@ namespace internal
       // Copy, with an object slice, something containing the flags common to
       // all dimensions in order to avoid the recurring distinctions between
       // the different eps_flags present.
-      const GridOutFlags::EpsFlagsBase eps_flags_base
-        = dim == 2 ?
-            static_cast<const GridOutFlags::EpsFlagsBase&>(eps_flags_2) :
-            static_cast<const GridOutFlags::EpsFlagsBase&>(eps_flags_3);
+      const GridOutFlags::EpsFlagsBase eps_flags_base =
+        dim == 2 ? static_cast<const GridOutFlags::EpsFlagsBase&>(eps_flags_2) :
+                   static_cast<const GridOutFlags::EpsFlagsBase&>(eps_flags_3);
 
       AssertThrow(out, ExcIO());
       const unsigned int n_points = eps_flags_base.n_boundary_face_points;
@@ -3947,8 +3939,7 @@ namespace internal
             {
               for(typename dealii::Triangulation<dim,
                                                  spacedim>::active_cell_iterator
-                    cell
-                  = tria.begin_active();
+                    cell = tria.begin_active();
                   cell != tria.end();
                   ++cell)
                 for(unsigned int line_no = 0;
@@ -3956,8 +3947,7 @@ namespace internal
                     ++line_no)
                   {
                     typename dealii::Triangulation<dim, spacedim>::line_iterator
-                      line
-                      = cell->line(line_no);
+                      line = cell->line(line_no);
 
                     // first treat all
                     // interior lines and
@@ -3969,8 +3959,8 @@ namespace internal
                     // provided), then also
                     // treat all other
                     // lines
-                    if(!line->has_children()
-                       && (mapping == nullptr || !line->at_boundary()))
+                    if(!line->has_children() &&
+                       (mapping == nullptr || !line->at_boundary()))
                       // one would expect
                       // make_pair(line->vertex(0),
                       //           line->vertex(1))
@@ -4024,8 +4014,7 @@ namespace internal
                   // generate the info from
                   // them
                   for(typename dealii::Triangulation<dim, spacedim>::
-                        active_cell_iterator cell
-                      = tria.begin_active();
+                        active_cell_iterator cell = tria.begin_active();
                       cell != tria.end();
                       ++cell)
                     for(unsigned int face_no = 0;
@@ -4033,8 +4022,7 @@ namespace internal
                         ++face_no)
                       {
                         const typename dealii::Triangulation<dim, spacedim>::
-                          face_iterator face
-                          = cell->face(face_no);
+                          face_iterator face = cell->face(face_no);
 
                         if(face->at_boundary())
                           {
@@ -4079,8 +4067,7 @@ namespace internal
 
               typename dealii::Triangulation<dim,
                                              spacedim>::active_cell_iterator
-                cell
-                = tria.begin_active(),
+                cell = tria.begin_active(),
                 endc = tria.end();
 
               // loop over all lines and compute their
@@ -4104,29 +4091,29 @@ namespace internal
               const double     z_angle    = eps_flags_3.azimut_angle;
               const double     turn_angle = eps_flags_3.turn_angle;
               const Point<dim> view_direction(
-                -std::sin(z_angle * 2. * pi / 360.)
-                  * std::sin(turn_angle * 2. * pi / 360.),
-                +std::sin(z_angle * 2. * pi / 360.)
-                  * std::cos(turn_angle * 2. * pi / 360.),
+                -std::sin(z_angle * 2. * pi / 360.) *
+                  std::sin(turn_angle * 2. * pi / 360.),
+                +std::sin(z_angle * 2. * pi / 360.) *
+                  std::cos(turn_angle * 2. * pi / 360.),
                 -std::cos(z_angle * 2. * pi / 360.));
 
               // decide about the two unit vectors
               // in this plane. we chose the first one
               // to be the projection of the z-axis
               // to this plane
-              const Tensor<1, dim> vector1
-                = Point<dim>(0, 0, 1)
-                  - ((Point<dim>(0, 0, 1) * view_direction) * view_direction);
+              const Tensor<1, dim> vector1 =
+                Point<dim>(0, 0, 1) -
+                ((Point<dim>(0, 0, 1) * view_direction) * view_direction);
               const Tensor<1, dim> unit_vector1 = vector1 / vector1.norm();
 
               // now the third vector is fixed. we
               // chose the projection of a more or
               // less arbitrary vector to the plane
               // perpendicular to the first one
-              const Tensor<1, dim> vector2
-                = (Point<dim>(1, 0, 0)
-                   - ((Point<dim>(1, 0, 0) * view_direction) * view_direction)
-                   - ((Point<dim>(1, 0, 0) * unit_vector1) * unit_vector1));
+              const Tensor<1, dim> vector2 =
+                (Point<dim>(1, 0, 0) -
+                 ((Point<dim>(1, 0, 0) * view_direction) * view_direction) -
+                 ((Point<dim>(1, 0, 0) * unit_vector1) * unit_vector1));
               const Tensor<1, dim> unit_vector2 = vector2 / vector2.norm();
 
               for(; cell != endc; ++cell)
@@ -4135,8 +4122,7 @@ namespace internal
                     ++line_no)
                   {
                     typename dealii::Triangulation<dim, spacedim>::line_iterator
-                      line
-                      = cell->line(line_no);
+                      line = cell->line(line_no);
                     line_list.emplace_back(
                       Point<2>(line->vertex(0) * unit_vector2,
                                line->vertex(0) * unit_vector1),
@@ -4186,11 +4172,11 @@ namespace internal
       // don't scale in y-direction to
       // preserve the shape of the
       // triangulation
-      const double scale
-        = (eps_flags_base.size
-           / (eps_flags_base.size_type == GridOutFlags::EpsFlagsBase::width ?
-                x_max - x_min :
-                y_min - y_max));
+      const double scale =
+        (eps_flags_base.size /
+         (eps_flags_base.size_type == GridOutFlags::EpsFlagsBase::width ?
+            x_max - x_min :
+            y_min - y_max));
 
       // now write preamble
       if(true)
@@ -4246,9 +4232,8 @@ namespace internal
           // this means, it is reverse
           // engineered from what GNUPLOT
           // uses in its output
-          if((dim == 2)
-             && (eps_flags_2.write_cell_numbers
-                 || eps_flags_2.write_vertex_numbers))
+          if((dim == 2) && (eps_flags_2.write_cell_numbers ||
+                            eps_flags_2.write_vertex_numbers))
             {
               out
                 << ("/R {rmoveto} bind def\n"
@@ -4300,8 +4285,7 @@ namespace internal
           out << "(Helvetica) findfont 140 scalefont setfont" << '\n';
 
           typename dealii::Triangulation<dim, spacedim>::active_cell_iterator
-            cell
-            = tria.begin_active(),
+            cell = tria.begin_active(),
             endc = tria.end();
           for(; cell != endc; ++cell)
             {
@@ -4329,15 +4313,14 @@ namespace internal
           // doing this multiply
           std::set<unsigned int> treated_vertices;
           typename dealii::Triangulation<dim, spacedim>::active_cell_iterator
-            cell
-            = tria.begin_active(),
+            cell = tria.begin_active(),
             endc = tria.end();
           for(; cell != endc; ++cell)
             for(unsigned int vertex = 0;
                 vertex < GeometryInfo<dim>::vertices_per_cell;
                 ++vertex)
-              if(treated_vertices.find(cell->vertex_index(vertex))
-                 == treated_vertices.end())
+              if(treated_vertices.find(cell->vertex_index(vertex)) ==
+                 treated_vertices.end())
                 {
                   treated_vertices.insert(cell->vertex_index(vertex));
 

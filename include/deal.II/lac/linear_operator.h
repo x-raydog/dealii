@@ -41,31 +41,31 @@ class Vector;
 
 template <typename Range  = Vector<double>,
           typename Domain = Range,
-          typename Payload
-          = internal::LinearOperatorImplementation::EmptyPayload>
+          typename Payload =
+            internal::LinearOperatorImplementation::EmptyPayload>
 class LinearOperator;
 
-template <typename Range  = Vector<double>,
-          typename Domain = Range,
-          typename Payload
-          = internal::LinearOperatorImplementation::EmptyPayload,
-          typename OperatorExemplar,
-          typename Matrix>
+template <
+  typename Range   = Vector<double>,
+  typename Domain  = Range,
+  typename Payload = internal::LinearOperatorImplementation::EmptyPayload,
+  typename OperatorExemplar,
+  typename Matrix>
 LinearOperator<Range, Domain, Payload>
 linear_operator(const OperatorExemplar&, const Matrix&);
 
-template <typename Range  = Vector<double>,
-          typename Domain = Range,
-          typename Payload
-          = internal::LinearOperatorImplementation::EmptyPayload,
-          typename Matrix>
+template <
+  typename Range   = Vector<double>,
+  typename Domain  = Range,
+  typename Payload = internal::LinearOperatorImplementation::EmptyPayload,
+  typename Matrix>
 LinearOperator<Range, Domain, Payload>
 linear_operator(const Matrix&);
 
-template <typename Range  = Vector<double>,
-          typename Domain = Range,
-          typename Payload
-          = internal::LinearOperatorImplementation::EmptyPayload>
+template <
+  typename Range   = Vector<double>,
+  typename Domain  = Range,
+  typename Payload = internal::LinearOperatorImplementation::EmptyPayload>
 LinearOperator<Range, Domain, Payload>
 null_operator(const LinearOperator<Range, Domain, Payload>&);
 
@@ -226,8 +226,7 @@ public:
    * Default copy assignment operator.
    */
   LinearOperator<Range, Domain, Payload>&
-  operator=(const LinearOperator<Range, Domain, Payload>&)
-    = default;
+  operator=(const LinearOperator<Range, Domain, Payload>&) = default;
 
   /**
    * Templated copy assignment operator for an object @p op for which the
@@ -376,8 +375,8 @@ operator+(const LinearOperator<Range, Domain, Payload>& first_op,
   else
     {
       LinearOperator<Range, Domain, Payload> return_op(
-        static_cast<const Payload&>(first_op)
-        + static_cast<const Payload&>(second_op));
+        static_cast<const Payload&>(first_op) +
+        static_cast<const Payload&>(second_op));
 
       return_op.reinit_range_vector  = first_op.reinit_range_vector;
       return_op.reinit_domain_vector = first_op.reinit_domain_vector;
@@ -568,8 +567,8 @@ operator*(const LinearOperator<Range, Intermediate, Payload>&  first_op,
   else
     {
       LinearOperator<Range, Domain, Payload> return_op(
-        static_cast<const Payload&>(first_op)
-        * static_cast<const Payload&>(second_op));
+        static_cast<const Payload&>(first_op) *
+        static_cast<const Payload&>(second_op));
 
       return_op.reinit_domain_vector = second_op.reinit_domain_vector;
       return_op.reinit_range_vector  = first_op.reinit_range_vector;
@@ -684,30 +683,30 @@ inverse_operator(const LinearOperator<Range, Domain, Payload>& op,
     solver.solve(op, v, u, preconditioner);
   };
 
-  return_op.vmult_add
-    = [op, &solver, &preconditioner](Range& v, const Domain& u) {
-        GrowingVectorMemory<Range> vector_memory;
+  return_op.vmult_add = [op, &solver, &preconditioner](Range&        v,
+                                                       const Domain& u) {
+    GrowingVectorMemory<Range> vector_memory;
 
-        typename VectorMemory<Range>::Pointer v2(vector_memory);
-        op.reinit_range_vector(*v2, /*bool omit_zeroing_entries =*/false);
-        solver.solve(op, *v2, u, preconditioner);
-        v += *v2;
-      };
+    typename VectorMemory<Range>::Pointer v2(vector_memory);
+    op.reinit_range_vector(*v2, /*bool omit_zeroing_entries =*/false);
+    solver.solve(op, *v2, u, preconditioner);
+    v += *v2;
+  };
 
   return_op.Tvmult = [op, &solver, &preconditioner](Range& v, const Domain& u) {
     op.reinit_range_vector(v, /*bool omit_zeroing_entries =*/false);
     solver.solve(transpose_operator(op), v, u, preconditioner);
   };
 
-  return_op.Tvmult_add
-    = [op, &solver, &preconditioner](Range& v, const Domain& u) {
-        GrowingVectorMemory<Range> vector_memory;
+  return_op.Tvmult_add = [op, &solver, &preconditioner](Range&        v,
+                                                        const Domain& u) {
+    GrowingVectorMemory<Range> vector_memory;
 
-        typename VectorMemory<Range>::Pointer v2(vector_memory);
-        op.reinit_range_vector(*v2, /*bool omit_zeroing_entries =*/false);
-        solver.solve(transpose_operator(op), *v2, u, preconditioner);
-        v += *v2;
-      };
+    typename VectorMemory<Range>::Pointer v2(vector_memory);
+    op.reinit_range_vector(*v2, /*bool omit_zeroing_entries =*/false);
+    solver.solve(transpose_operator(op), *v2, u, preconditioner);
+    v += *v2;
+  };
 
   return return_op;
 }
@@ -730,9 +729,9 @@ inverse_operator(const LinearOperator<Range, Domain, Payload>& op,
  *
  * @ingroup LAOperators
  */
-template <typename Range,
-          typename Payload
-          = internal::LinearOperatorImplementation::EmptyPayload>
+template <
+  typename Range,
+  typename Payload = internal::LinearOperatorImplementation::EmptyPayload>
 LinearOperator<Range, Range, Payload>
 identity_operator(const std::function<void(Range&, bool)>& reinit_vector)
 {
@@ -817,9 +816,9 @@ null_operator(const LinearOperator<Range, Domain, Payload>& op)
  *
  * @ingroup LAOperators
  */
-template <typename Range,
-          typename Payload
-          = internal::LinearOperatorImplementation::EmptyPayload>
+template <
+  typename Range,
+  typename Payload = internal::LinearOperatorImplementation::EmptyPayload>
 LinearOperator<Range, Range, Payload>
 mean_value_filter(const std::function<void(Range&, bool)>& reinit_vector)
 {

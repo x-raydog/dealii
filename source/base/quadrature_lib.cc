@@ -56,8 +56,8 @@ QGauss<1>::QGauss(const unsigned int n) : Quadrature<1>(n)
   if(n == 0)
     return;
 
-  std::vector<long double> points
-    = Polynomials::jacobi_polynomial_roots<long double>(n, 0, 0);
+  std::vector<long double> points =
+    Polynomials::jacobi_polynomial_roots<long double>(n, 0, 0);
 
   for(unsigned int i = 0; i < (points.size() + 1) / 2; ++i)
     {
@@ -65,9 +65,9 @@ QGauss<1>::QGauss(const unsigned int n) : Quadrature<1>(n)
       this->quadrature_points[n - i - 1][0] = 1. - points[i];
 
       // derivative of Jacobi polynomial
-      const long double pp
-        = 0.5 * (n + 1)
-          * Polynomials::jacobi_polynomial_value(n - 1, 1, 1, points[i]);
+      const long double pp =
+        0.5 * (n + 1) *
+        Polynomials::jacobi_polynomial_value(n - 1, 1, 1, points[i]);
       const long double x      = -1. + 2. * points[i];
       const double      w      = 1. / ((1. - x * x) * pp * pp);
       this->weights[i]         = w;
@@ -107,13 +107,13 @@ namespace internal
       const unsigned int       q = x.size();
       std::vector<long double> w(q);
 
-      const long double factor
-        = std::pow(2., alpha + beta + 1) * gamma(alpha + q) * gamma(beta + q)
-          / ((q - 1) * gamma(q) * gamma(alpha + beta + q + 1));
+      const long double factor =
+        std::pow(2., alpha + beta + 1) * gamma(alpha + q) * gamma(beta + q) /
+        ((q - 1) * gamma(q) * gamma(alpha + beta + q + 1));
       for(unsigned int i = 0; i < q; ++i)
         {
-          const long double s
-            = Polynomials::jacobi_polynomial_value(q - 1, alpha, beta, x[i]);
+          const long double s =
+            Polynomials::jacobi_polynomial_value(q - 1, alpha, beta, x[i]);
           w[i] = factor / (s * s);
         }
       w[0] *= (beta + 1);
@@ -129,12 +129,12 @@ QGaussLobatto<1>::QGaussLobatto(const unsigned int n) : Quadrature<1>(n)
 {
   Assert(n >= 2, ExcNotImplemented());
 
-  std::vector<long double> points
-    = Polynomials::jacobi_polynomial_roots<long double>(n - 2, 1, 1);
+  std::vector<long double> points =
+    Polynomials::jacobi_polynomial_roots<long double>(n - 2, 1, 1);
   points.insert(points.begin(), 0);
   points.push_back(1.);
-  std::vector<long double> w
-    = internal::QGaussLobatto::compute_quadrature_weights(points, 0, 0);
+  std::vector<long double> w =
+    internal::QGaussLobatto::compute_quadrature_weights(points, 0, 0);
 
   // scale weights to the interval [0.0, 1.0]:
   for(unsigned int i = 0; i < points.size(); ++i)
@@ -181,8 +181,8 @@ template <>
 QMilne<1>::QMilne() : Quadrature<1>(5)
 {
   static const double xpts[] = {0.0, .25, .5, .75, 1.0};
-  static const double wts[]
-    = {7. / 90., 32. / 90., 12. / 90., 32. / 90., 7. / 90.};
+  static const double wts[]  = {
+    7. / 90., 32. / 90., 12. / 90., 32. / 90., 7. / 90.};
 
   for(unsigned int i = 0; i < this->size(); ++i)
     {
@@ -194,8 +194,8 @@ QMilne<1>::QMilne() : Quadrature<1>(5)
 template <>
 QWeddle<1>::QWeddle() : Quadrature<1>(7)
 {
-  static const double xpts[]
-    = {0.0, 1. / 6., 1. / 3., .5, 2. / 3., 5. / 6., 1.0};
+  static const double xpts[] = {
+    0.0, 1. / 6., 1. / 3., .5, 2. / 3., 5. / 6., 1.0};
   static const double wts[] = {41. / 840.,
                                216. / 840.,
                                27. / 840.,
@@ -223,8 +223,8 @@ QGaussLog<1>::QGaussLog(const unsigned int n, const bool revert)
       // Using the change of variables x=1-t, it's possible to show
       // that int f(x)ln|1-x| = int f(1-t) ln|t|, which implies that
       // we can use this quadrature formula also with weight ln|1-x|.
-      this->quadrature_points[i]
-        = revert ? Point<1>(1 - p[n - 1 - i]) : Point<1>(p[i]);
+      this->quadrature_points[i] =
+        revert ? Point<1>(1 - p[n - 1 - i]) : Point<1>(p[i]);
       this->weights[i] = revert ? w[n - 1 - i] : w[i];
     }
 }
@@ -534,21 +534,21 @@ QGaussLogR<1>::QGaussLogR(const unsigned int n,
       if((alpha != 1) || (fraction != 1))
         {
           this->quadrature_points[j] = quad.point(i) * fraction;
-          this->weights[j]
-            = -std::log(alpha / fraction) * quad.weight(i) * fraction;
+          this->weights[j] =
+            -std::log(alpha / fraction) * quad.weight(i) * fraction;
         }
       // In case we need the second quadrature as well, do it now.
       if(fraction != 1)
         {
-          this->quadrature_points[i + n]
-            = quad2.point(i) * (1 - fraction) + Point<1>(fraction);
+          this->quadrature_points[i + n] =
+            quad2.point(i) * (1 - fraction) + Point<1>(fraction);
           this->weights[i + n] = quad2.weight(i) * (1 - fraction);
 
           // We need to scale with -log|fraction*alpha|
-          this->quadrature_points[j + n]
-            = quad.point(i) * (1 - fraction) + Point<1>(fraction);
-          this->weights[j + n] = -std::log(alpha / (1 - fraction))
-                                 * quad.weight(i) * (1 - fraction);
+          this->quadrature_points[j + n] =
+            quad.point(i) * (1 - fraction) + Point<1>(fraction);
+          this->weights[j + n] =
+            -std::log(alpha / (1 - fraction)) * quad.weight(i) * (1 - fraction);
         }
     }
   if(factor_out_singularity == true)
@@ -558,8 +558,8 @@ QGaussLogR<1>::QGaussLogR(const unsigned int n,
           this->quadrature_points[i] != origin,
           ExcMessage(
             "The singularity cannot be on a Gauss point of the same order!"));
-        double denominator = std::log(
-          std::abs((this->quadrature_points[i] - origin)[0]) / alpha);
+        double denominator =
+          std::log(std::abs((this->quadrature_points[i] - origin)[0]) / alpha);
         Assert(denominator != 0.0,
                ExcMessage(
                  "The quadrature formula you are using does not allow to "
@@ -578,8 +578,8 @@ QGaussOneOverR<2>::quad_size(const Point<2> singularity, const unsigned int n)
   for(unsigned int i = 0; i < 2; ++i)
     if((std::abs(singularity[i]) < eps) || (std::abs(singularity[i] - 1) < eps))
       on_edge = true;
-  if(on_edge
-     && (std::abs((singularity - Point<2>(.5, .5)).norm_square() - .5) < eps))
+  if(on_edge &&
+     (std::abs((singularity - Point<2>(.5, .5)).norm_square() - .5) < eps))
     on_vertex = true;
   if(on_vertex)
     return (2 * n * n);
@@ -629,8 +629,8 @@ QGaussOneOverR<2>::QGaussOneOverR(const unsigned int n,
         for(unsigned int q = 0; q < quads[box].size(); ++q, ++q_id)
           {
             const Point<2>& qp = quads[box].point(q);
-            this->quadrature_points[q_id]
-              = origins[box] + Point<2>(dist[0] * qp[0], dist[1] * qp[1]);
+            this->quadrature_points[q_id] =
+              origins[box] + Point<2>(dist[0] * qp[0], dist[1] * qp[1]);
             this->weights[q_id] = quads[box].weight(q) * area;
           }
     }
@@ -862,33 +862,32 @@ QTelles<1>::QTelles(const Quadrature<1>& base_quad, const Point<1>& singularity)
   // We need to check if the singularity is at the boundary of the interval.
   if(std::abs(eta_star) <= tol)
     {
-      gamma_bar
-        = std::pow((eta_bar * eta_star + std::abs(eta_star)), 1.0 / 3.0)
-          + std::pow((eta_bar * eta_star - std::abs(eta_star)), 1.0 / 3.0)
-          + eta_bar;
+      gamma_bar =
+        std::pow((eta_bar * eta_star + std::abs(eta_star)), 1.0 / 3.0) +
+        std::pow((eta_bar * eta_star - std::abs(eta_star)), 1.0 / 3.0) +
+        eta_bar;
     }
   else
     {
-      gamma_bar
-        = (eta_bar * eta_star + std::abs(eta_star))
-            / std::abs(eta_bar * eta_star + std::abs(eta_star))
-            * std::pow(std::abs(eta_bar * eta_star + std::abs(eta_star)),
-                       1.0 / 3.0)
-          + (eta_bar * eta_star - std::abs(eta_star))
-              / std::abs(eta_bar * eta_star - std::abs(eta_star))
-              * std::pow(std::abs(eta_bar * eta_star - std::abs(eta_star)),
-                         1.0 / 3.0)
-          + eta_bar;
+      gamma_bar = (eta_bar * eta_star + std::abs(eta_star)) /
+                    std::abs(eta_bar * eta_star + std::abs(eta_star)) *
+                    std::pow(std::abs(eta_bar * eta_star + std::abs(eta_star)),
+                             1.0 / 3.0) +
+                  (eta_bar * eta_star - std::abs(eta_star)) /
+                    std::abs(eta_bar * eta_star - std::abs(eta_star)) *
+                    std::pow(std::abs(eta_bar * eta_star - std::abs(eta_star)),
+                             1.0 / 3.0) +
+                  eta_bar;
     }
   for(unsigned int q = 0; q < quadrature_points.size(); ++q)
     {
       double gamma = quadrature_points[q][0] * 2 - 1;
-      double eta   = (std::pow(gamma - gamma_bar, 3.0)
-                    + gamma_bar * (gamma_bar * gamma_bar + 3))
-                   / (1 + 3 * gamma_bar * gamma_bar);
+      double eta   = (std::pow(gamma - gamma_bar, 3.0) +
+                    gamma_bar * (gamma_bar * gamma_bar + 3)) /
+                   (1 + 3 * gamma_bar * gamma_bar);
 
-      double J = 3 * ((gamma - gamma_bar) * (gamma - gamma_bar))
-                 / (1 + 3 * gamma_bar * gamma_bar);
+      double J = 3 * ((gamma - gamma_bar) * (gamma - gamma_bar)) /
+                 (1 + 3 * gamma_bar * gamma_bar);
 
       quadrature_points[q][0] = (eta + 1) / 2.0;
       weights[q]              = J * weights[q];
@@ -911,12 +910,10 @@ namespace internal
         // would be cos((2i+1)Pi/(2N+2))
         // put + Pi so we start from the smallest point
         // then map from [-1,1] to [0,1]
-        points[i]
-          = 1. / 2.
-            * (1.
-               + std::cos(
-                   numbers::PI
-                   * (1. + double(2 * i + 1) / double(2 * (n - 1) + 2))));
+        points[i] =
+          1. / 2. *
+          (1. + std::cos(numbers::PI *
+                         (1. + double(2 * i + 1) / double(2 * (n - 1) + 2))));
 
       return points;
     }
@@ -978,22 +975,20 @@ namespace internal
           {
             case ::dealii::QGaussRadauChebyshev<1>::left:
               {
-                points[i]
-                  = 1. / 2.
-                    * (1.
-                       - std::cos(
-                           numbers::PI
-                           * (1 + 2 * double(i) / (2 * double(n - 1) + 1.))));
+                points[i] =
+                  1. / 2. *
+                  (1. -
+                   std::cos(numbers::PI *
+                            (1 + 2 * double(i) / (2 * double(n - 1) + 1.))));
                 break;
               }
 
             case ::dealii::QGaussRadauChebyshev<1>::right:
               {
-                points[i] = 1. / 2.
-                            * (1.
-                               - std::cos(numbers::PI
-                                          * (2 * double(n - 1 - i)
-                                             / (2 * double(n - 1) + 1.))));
+                points[i] =
+                  1. / 2. *
+                  (1. - std::cos(numbers::PI * (2 * double(n - 1 - i) /
+                                                (2 * double(n - 1) + 1.))));
                 break;
               }
 
@@ -1022,8 +1017,8 @@ namespace internal
           weights[i] = 2. * numbers::PI / double(2 * (n - 1) + 1.);
           if(ep == ::dealii::QGaussRadauChebyshev<1>::left && i == 0)
             weights[i] /= 2.;
-          else if(ep == ::dealii::QGaussRadauChebyshev<1>::right
-                  && i == (n - 1))
+          else if(ep == ::dealii::QGaussRadauChebyshev<1>::right &&
+                  i == (n - 1))
             weights[i] /= 2.;
         }
 
@@ -1037,10 +1032,10 @@ QGaussRadauChebyshev<1>::QGaussRadauChebyshev(const unsigned int n, EndPoint ep)
   : Quadrature<1>(n), ep(ep)
 {
   Assert(n > 0, ExcMessage("Need at least one point for quadrature rules"));
-  std::vector<double> p
-    = internal::QGaussRadauChebyshev::get_quadrature_points(n, ep);
-  std::vector<double> w
-    = internal::QGaussRadauChebyshev::get_quadrature_weights(n, ep);
+  std::vector<double> p =
+    internal::QGaussRadauChebyshev::get_quadrature_points(n, ep);
+  std::vector<double> w =
+    internal::QGaussRadauChebyshev::get_quadrature_weights(n, ep);
 
   for(unsigned int i = 0; i < this->size(); ++i)
     {
@@ -1072,9 +1067,9 @@ namespace internal
         // would be cos(i Pi/N)
         // put + Pi so we start from the smallest point
         // then map from [-1,1] to [0,1]
-        points[i]
-          = 1. / 2.
-            * (1. + std::cos(numbers::PI * (1 + double(i) / double(n - 1))));
+        points[i] =
+          1. / 2. *
+          (1. + std::cos(numbers::PI * (1 + double(i) / double(n - 1))));
 
       return points;
     }
@@ -1105,10 +1100,10 @@ QGaussLobattoChebyshev<1>::QGaussLobattoChebyshev(const unsigned int n)
   Assert(
     n > 1,
     ExcMessage("Need at least two points for Gauss-Lobatto quadrature rule"));
-  std::vector<double> p
-    = internal::QGaussLobattoChebyshev::get_quadrature_points(n);
-  std::vector<double> w
-    = internal::QGaussLobattoChebyshev::get_quadrature_weights(n);
+  std::vector<double> p =
+    internal::QGaussLobattoChebyshev::get_quadrature_points(n);
+  std::vector<double> w =
+    internal::QGaussLobattoChebyshev::get_quadrature_weights(n);
 
   for(unsigned int i = 0; i < this->size(); ++i)
     {

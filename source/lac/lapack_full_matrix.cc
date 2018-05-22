@@ -158,8 +158,8 @@ template <typename number>
 LAPACKFullMatrix<number>&
 LAPACKFullMatrix<number>::operator*=(const number factor)
 {
-  Assert(state == LAPACKSupport::matrix
-           || state == LAPACKSupport::inverse_matrix,
+  Assert(state == LAPACKSupport::matrix ||
+           state == LAPACKSupport::inverse_matrix,
          ExcState(state));
 
   AssertIsFinite(factor);
@@ -185,8 +185,8 @@ template <typename number>
 LAPACKFullMatrix<number>&
 LAPACKFullMatrix<number>::operator/=(const number factor)
 {
-  Assert(state == LAPACKSupport::matrix
-           || state == LAPACKSupport::inverse_matrix,
+  Assert(state == LAPACKSupport::matrix ||
+           state == LAPACKSupport::inverse_matrix,
          ExcState(state));
 
   AssertIsFinite(factor);
@@ -214,8 +214,8 @@ template <typename number>
 void
 LAPACKFullMatrix<number>::add(const number a, const LAPACKFullMatrix<number>& A)
 {
-  Assert(state == LAPACKSupport::matrix
-           || state == LAPACKSupport::inverse_matrix,
+  Assert(state == LAPACKSupport::matrix ||
+           state == LAPACKSupport::inverse_matrix,
          ExcState(state));
 
   Assert(m() == A.m(), ExcDimensionMismatch(m(), A.m()));
@@ -264,8 +264,8 @@ namespace
         z *= std::sqrt(a);
         for(typename LAPACKFullMatrix<number>::size_type k = 0; k < N; ++k)
           {
-            const std::array<number, 3> csr
-              = Utilities::LinearAlgebra::givens_rotation(A(k, k), z(k));
+            const std::array<number, 3> csr =
+              Utilities::LinearAlgebra::givens_rotation(A(k, k), z(k));
             A(k, k) = csr[2];
             for(typename LAPACKFullMatrix<number>::size_type i = k + 1; i < N;
                 ++i)
@@ -306,8 +306,8 @@ namespace
         z *= std::sqrt(-a);
         for(typename LAPACKFullMatrix<number>::size_type k = 0; k < N; ++k)
           {
-            const std::array<number, 3> csr
-              = Utilities::LinearAlgebra::hyperbolic_rotation(A(k, k), z(k));
+            const std::array<number, 3> csr =
+              Utilities::LinearAlgebra::hyperbolic_rotation(A(k, k), z(k));
             A(k, k) = csr[2];
             for(typename LAPACKFullMatrix<number>::size_type i = k + 1; i < N;
                 ++i)
@@ -381,8 +381,8 @@ LAPACKFullMatrix<number>::vmult(Vector<number>&       w,
   const number          null  = 0.;
 
   // use trmv for triangular matrices
-  if((property == upper_triangular || property == lower_triangular)
-     && (mm == nn) && state == matrix)
+  if((property == upper_triangular || property == lower_triangular) &&
+     (mm == nn) && state == matrix)
     {
       Assert(adding == false, ExcNotImplemented());
 
@@ -391,8 +391,8 @@ LAPACKFullMatrix<number>::vmult(Vector<number>&       w,
 
       const char diag  = 'N';
       const char trans = 'N';
-      const char uplo
-        = (property == upper_triangular ? LAPACKSupport::U : LAPACKSupport::L);
+      const char uplo =
+        (property == upper_triangular ? LAPACKSupport::U : LAPACKSupport::L);
 
       w = v;
 
@@ -514,8 +514,8 @@ LAPACKFullMatrix<number>::Tvmult(Vector<number>&       w,
   const number          null  = 0.;
 
   // use trmv for triangular matrices
-  if((property == upper_triangular || property == lower_triangular)
-     && (mm == nn) && state == matrix)
+  if((property == upper_triangular || property == lower_triangular) &&
+     (mm == nn) && state == matrix)
     {
       Assert(adding == false, ExcNotImplemented());
 
@@ -524,8 +524,8 @@ LAPACKFullMatrix<number>::Tvmult(Vector<number>&       w,
 
       const char diag  = 'N';
       const char trans = 'T';
-      const char uplo
-        = (property == upper_triangular ? LAPACKSupport::U : LAPACKSupport::L);
+      const char uplo =
+        (property == upper_triangular ? LAPACKSupport::U : LAPACKSupport::L);
 
       w = v;
 
@@ -1100,8 +1100,8 @@ LAPACKFullMatrix<number>::norm(const char type) const
 {
   Threads::Mutex::ScopedLock lock(mutex);
 
-  Assert(state == LAPACKSupport::matrix
-           || state == LAPACKSupport::inverse_matrix,
+  Assert(state == LAPACKSupport::matrix ||
+           state == LAPACKSupport::inverse_matrix,
          ExcMessage("norms can be called in matrix state only."));
 
   const types::blas_int N      = this->n();
@@ -1110,16 +1110,16 @@ LAPACKFullMatrix<number>::norm(const char type) const
   if(property == symmetric)
     {
       const types::blas_int lda = std::max<types::blas_int>(1, N);
-      const types::blas_int lwork
-        = (type == 'I' || type == 'O') ? std::max<types::blas_int>(1, N) : 0;
+      const types::blas_int lwork =
+        (type == 'I' || type == 'O') ? std::max<types::blas_int>(1, N) : 0;
       work.resize(lwork);
       return lansy(&type, &LAPACKSupport::L, &N, values, &lda, work.data());
     }
   else
     {
       const types::blas_int lda = std::max<types::blas_int>(1, M);
-      const types::blas_int lwork
-        = (type == 'I') ? std::max<types::blas_int>(1, M) : 0;
+      const types::blas_int lwork =
+        (type == 'I') ? std::max<types::blas_int>(1, M) : 0;
       work.resize(lwork);
       return lange(&type, &M, &N, values, &lda, work.data());
     }
@@ -1129,8 +1129,8 @@ template <typename number>
 number
 LAPACKFullMatrix<number>::trace() const
 {
-  Assert(state == LAPACKSupport::matrix
-           || state == LAPACKSupport::inverse_matrix,
+  Assert(state == LAPACKSupport::matrix ||
+           state == LAPACKSupport::inverse_matrix,
          ExcMessage("Trace can be called in matrix state only."));
   Assert(this->n() == this->m(), ExcDimensionMismatch(this->n(), this->m()));
 
@@ -1215,8 +1215,8 @@ LAPACKFullMatrix<number>::reciprocal_condition_number() const
 
   const char norm = '1';
   const char diag = 'N';
-  const char uplo
-    = (property == upper_triangular ? LAPACKSupport::U : LAPACKSupport::L);
+  const char uplo =
+    (property == upper_triangular ? LAPACKSupport::U : LAPACKSupport::L);
   trcon(&norm,
         &uplo,
         &diag,
@@ -1400,8 +1400,8 @@ LAPACKFullMatrix<number>::solve(Vector<number>& v, const bool transposed) const
     }
   else if(property == upper_triangular || property == lower_triangular)
     {
-      const char uplo
-        = (property == upper_triangular ? LAPACKSupport::U : LAPACKSupport::L);
+      const char uplo =
+        (property == upper_triangular ? LAPACKSupport::U : LAPACKSupport::L);
 
       const types::blas_int lda = nn;
       const types::blas_int ldb = nn;
@@ -1445,8 +1445,8 @@ LAPACKFullMatrix<number>::solve(LAPACKFullMatrix<number>& B,
     }
   else if(property == upper_triangular || property == lower_triangular)
     {
-      const char uplo
-        = (property == upper_triangular ? LAPACKSupport::U : LAPACKSupport::L);
+      const char uplo =
+        (property == upper_triangular ? LAPACKSupport::U : LAPACKSupport::L);
 
       const types::blas_int lda = nn;
       const types::blas_int ldb = nn;
@@ -1512,8 +1512,8 @@ LAPACKFullMatrix<number>::determinant() const
   Assert(ipiv.size() == this->m(), ExcInternalError());
   number det = 1.0;
   for(size_type i = 0; i < this->m(); ++i)
-    det
-      *= (ipiv[i] == types::blas_int(i + 1) ? this->el(i, i) : -this->el(i, i));
+    det *=
+      (ipiv[i] == types::blas_int(i + 1) ? this->el(i, i) : -this->el(i, i));
   return det;
 }
 
@@ -1934,9 +1934,9 @@ LAPACKFullMatrix<number>::print_formatted(std::ostream&      out,
   unsigned int width = width_;
 
   Assert((!this->empty()) || (this->n() + this->m() == 0), ExcInternalError());
-  Assert(state == LAPACKSupport::matrix
-           || state == LAPACKSupport::inverse_matrix
-           || state == LAPACKSupport::cholesky,
+  Assert(state == LAPACKSupport::matrix ||
+           state == LAPACKSupport::inverse_matrix ||
+           state == LAPACKSupport::cholesky,
          ExcState(state));
 
   // set output format, but store old

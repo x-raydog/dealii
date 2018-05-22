@@ -137,8 +137,8 @@ protected:
       }
     // No derivatives of this element
     // are implemented.
-    if(data->update_each & update_gradients
-       || data->update_each & update_hessians)
+    if(data->update_each & update_gradients ||
+       data->update_each & update_hessians)
       {
         Assert(false, ExcNotImplemented());
       }

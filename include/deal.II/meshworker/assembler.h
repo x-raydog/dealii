@@ -558,8 +558,8 @@ namespace MeshWorker
                 // block-wise local
                 // numbering we use in
                 // our local vectors
-                const unsigned int jcell
-                  = this->block_info->local().local_to_global(b, j);
+                const unsigned int jcell =
+                  this->block_info->local().local_to_global(b, j);
                 global(dof[jcell]) += local.block(b)(j);
               }
         }
@@ -653,10 +653,10 @@ namespace MeshWorker
                   // block-wise local
                   // numbering we use in
                   // our local matrices
-                  const unsigned int jcell
-                    = this->block_info->local().local_to_global(block_row, j);
-                  const unsigned int kcell
-                    = this->block_info->local().local_to_global(block_col, k);
+                  const unsigned int jcell =
+                    this->block_info->local().local_to_global(block_row, j);
+                  const unsigned int kcell =
+                    this->block_info->local().local_to_global(block_col, k);
 
                   global.add(dof1[jcell], dof2[kcell], local(j, k));
                 }
@@ -823,10 +823,10 @@ namespace MeshWorker
               // block-wise local
               // numbering we use in
               // our local matrices
-              const unsigned int jcell
-                = this->block_info->local().local_to_global(block_row, j);
-              const unsigned int kcell
-                = this->block_info->local().local_to_global(block_col, k);
+              const unsigned int jcell =
+                this->block_info->local().local_to_global(block_row, j);
+              const unsigned int kcell =
+                this->block_info->local().local_to_global(block_col, k);
 
               // The global dof
               // indices to assemble
@@ -852,21 +852,21 @@ namespace MeshWorker
                 }
               else
                 {
-                  if(!mg_constrained_dofs->at_refinement_edge(level1, jglobal)
-                     && !mg_constrained_dofs->at_refinement_edge(level2,
-                                                                 kglobal))
+                  if(!mg_constrained_dofs->at_refinement_edge(level1,
+                                                              jglobal) &&
+                     !mg_constrained_dofs->at_refinement_edge(level2, kglobal))
                     {
                       if(mg_constrained_dofs->set_boundary_values())
                         {
-                          if((!mg_constrained_dofs->is_boundary_index(level1,
-                                                                      jglobal)
-                              && !mg_constrained_dofs->is_boundary_index(
-                                   level2, kglobal))
-                             || (mg_constrained_dofs->is_boundary_index(level1,
-                                                                        jglobal)
-                                 && mg_constrained_dofs->is_boundary_index(
-                                      level2, kglobal)
-                                 && jglobal == kglobal))
+                          if((!mg_constrained_dofs->is_boundary_index(
+                                level1, jglobal) &&
+                              !mg_constrained_dofs->is_boundary_index(
+                                level2, kglobal)) ||
+                             (mg_constrained_dofs->is_boundary_index(level1,
+                                                                     jglobal) &&
+                              mg_constrained_dofs->is_boundary_index(level2,
+                                                                     kglobal) &&
+                              jglobal == kglobal))
                             {
                               if(transpose)
                                 global.add(kglobal, jglobal, local(j, k));
@@ -910,10 +910,10 @@ namespace MeshWorker
               // block-wise local
               // numbering we use in
               // our local matrices
-              const unsigned int jcell
-                = this->block_info->local().local_to_global(block_row, j);
-              const unsigned int kcell
-                = this->block_info->local().local_to_global(block_col, k);
+              const unsigned int jcell =
+                this->block_info->local().local_to_global(block_row, j);
+              const unsigned int kcell =
+                this->block_info->local().local_to_global(block_col, k);
 
               // The global dof
               // indices to assemble
@@ -935,14 +935,14 @@ namespace MeshWorker
               else
                 {
                   if(!mg_constrained_dofs->non_refinement_edge_index(level1,
-                                                                     jglobal)
-                     && !mg_constrained_dofs->non_refinement_edge_index(
-                          level2, kglobal))
+                                                                     jglobal) &&
+                     !mg_constrained_dofs->non_refinement_edge_index(level2,
+                                                                     kglobal))
                     {
                       if(!mg_constrained_dofs->at_refinement_edge(level1,
-                                                                  jglobal)
-                         && !mg_constrained_dofs->at_refinement_edge(level2,
-                                                                     kglobal))
+                                                                  jglobal) &&
+                         !mg_constrained_dofs->at_refinement_edge(level2,
+                                                                  kglobal))
                         global.add(jglobal, kglobal, local(j, k));
                     }
                 }
@@ -973,10 +973,10 @@ namespace MeshWorker
               // block-wise local
               // numbering we use in
               // our local matrices
-              const unsigned int jcell
-                = this->block_info->local().local_to_global(block_row, j);
-              const unsigned int kcell
-                = this->block_info->local().local_to_global(block_col, k);
+              const unsigned int jcell =
+                this->block_info->local().local_to_global(block_row, j);
+              const unsigned int kcell =
+                this->block_info->local().local_to_global(block_col, k);
 
               // The global dof
               // indices to assemble
@@ -998,14 +998,14 @@ namespace MeshWorker
               else
                 {
                   if(!mg_constrained_dofs->non_refinement_edge_index(level1,
-                                                                     jglobal)
-                     && !mg_constrained_dofs->non_refinement_edge_index(
-                          level2, kglobal))
+                                                                     jglobal) &&
+                     !mg_constrained_dofs->non_refinement_edge_index(level2,
+                                                                     kglobal))
                     {
                       if(!mg_constrained_dofs->at_refinement_edge(level1,
-                                                                  jglobal)
-                         && !mg_constrained_dofs->at_refinement_edge(level2,
-                                                                     kglobal))
+                                                                  jglobal) &&
+                         !mg_constrained_dofs->at_refinement_edge(level2,
+                                                                  kglobal))
                         global.add(jglobal, kglobal, local(j, k));
                     }
                 }
@@ -1036,10 +1036,10 @@ namespace MeshWorker
               // block-wise local
               // numbering we use in
               // our local matrices
-              const unsigned int jcell
-                = this->block_info->local().local_to_global(block_row, j);
-              const unsigned int kcell
-                = this->block_info->local().local_to_global(block_col, k);
+              const unsigned int jcell =
+                this->block_info->local().local_to_global(block_row, j);
+              const unsigned int kcell =
+                this->block_info->local().local_to_global(block_col, k);
 
               // The global dof
               // indices to assemble
@@ -1061,14 +1061,14 @@ namespace MeshWorker
               else
                 {
                   if(!mg_constrained_dofs->non_refinement_edge_index(level1,
-                                                                     jglobal)
-                     && !mg_constrained_dofs->non_refinement_edge_index(
-                          level2, kglobal))
+                                                                     jglobal) &&
+                     !mg_constrained_dofs->non_refinement_edge_index(level2,
+                                                                     kglobal))
                     {
                       if(!mg_constrained_dofs->at_refinement_edge(level1,
-                                                                  jglobal)
-                         && !mg_constrained_dofs->at_refinement_edge(level2,
-                                                                     kglobal))
+                                                                  jglobal) &&
+                         !mg_constrained_dofs->at_refinement_edge(level2,
+                                                                  kglobal))
                         global.add(jglobal, kglobal, local(k, j));
                     }
                 }
@@ -1102,10 +1102,10 @@ namespace MeshWorker
               // block-wise local
               // numbering we use in
               // our local matrices
-              const unsigned int jcell
-                = this->block_info->local().local_to_global(block_row, j);
-              const unsigned int kcell
-                = this->block_info->local().local_to_global(block_col, k);
+              const unsigned int jcell =
+                this->block_info->local().local_to_global(block_row, j);
+              const unsigned int kcell =
+                this->block_info->local().local_to_global(block_col, k);
 
               // The global dof
               // indices to assemble
@@ -1126,21 +1126,20 @@ namespace MeshWorker
                 global.add(jglobal, kglobal, local(j, k));
               else
                 {
-                  if(mg_constrained_dofs->at_refinement_edge(level1, jglobal)
-                     && !mg_constrained_dofs->at_refinement_edge(level2,
-                                                                 kglobal))
+                  if(mg_constrained_dofs->at_refinement_edge(level1, jglobal) &&
+                     !mg_constrained_dofs->at_refinement_edge(level2, kglobal))
                     {
                       if(mg_constrained_dofs->set_boundary_values())
                         {
-                          if((!mg_constrained_dofs->is_boundary_index(level1,
-                                                                      jglobal)
-                              && !mg_constrained_dofs->is_boundary_index(
-                                   level2, kglobal))
-                             || (mg_constrained_dofs->is_boundary_index(level1,
-                                                                        jglobal)
-                                 && mg_constrained_dofs->is_boundary_index(
-                                      level2, kglobal)
-                                 && jglobal == kglobal))
+                          if((!mg_constrained_dofs->is_boundary_index(
+                                level1, jglobal) &&
+                              !mg_constrained_dofs->is_boundary_index(
+                                level2, kglobal)) ||
+                             (mg_constrained_dofs->is_boundary_index(level1,
+                                                                     jglobal) &&
+                              mg_constrained_dofs->is_boundary_index(level2,
+                                                                     kglobal) &&
+                              jglobal == kglobal))
                             global.add(jglobal, kglobal, local(j, k));
                         }
                       else
@@ -1177,10 +1176,10 @@ namespace MeshWorker
               // block-wise local
               // numbering we use in
               // our local matrices
-              const unsigned int jcell
-                = this->block_info->local().local_to_global(block_row, j);
-              const unsigned int kcell
-                = this->block_info->local().local_to_global(block_col, k);
+              const unsigned int jcell =
+                this->block_info->local().local_to_global(block_row, j);
+              const unsigned int kcell =
+                this->block_info->local().local_to_global(block_col, k);
 
               // The global dof
               // indices to assemble
@@ -1201,21 +1200,20 @@ namespace MeshWorker
                 global.add(jglobal, kglobal, local(k, j));
               else
                 {
-                  if(mg_constrained_dofs->at_refinement_edge(level1, jglobal)
-                     && !mg_constrained_dofs->at_refinement_edge(level2,
-                                                                 kglobal))
+                  if(mg_constrained_dofs->at_refinement_edge(level1, jglobal) &&
+                     !mg_constrained_dofs->at_refinement_edge(level2, kglobal))
                     {
                       if(mg_constrained_dofs->set_boundary_values())
                         {
-                          if((!mg_constrained_dofs->is_boundary_index(level1,
-                                                                      jglobal)
-                              && !mg_constrained_dofs->is_boundary_index(
-                                   level2, kglobal))
-                             || (mg_constrained_dofs->is_boundary_index(level1,
-                                                                        jglobal)
-                                 && mg_constrained_dofs->is_boundary_index(
-                                      level2, kglobal)
-                                 && jglobal == kglobal))
+                          if((!mg_constrained_dofs->is_boundary_index(
+                                level1, jglobal) &&
+                              !mg_constrained_dofs->is_boundary_index(
+                                level2, kglobal)) ||
+                             (mg_constrained_dofs->is_boundary_index(level1,
+                                                                     jglobal) &&
+                              mg_constrained_dofs->is_boundary_index(level2,
+                                                                     kglobal) &&
+                              jglobal == kglobal))
                             global.add(jglobal, kglobal, local(k, j));
                         }
                       else

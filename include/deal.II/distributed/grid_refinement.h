@@ -75,8 +75,8 @@ namespace parallel
         const dealii::Vector<Number>&                        criteria,
         const double       top_fraction_of_cells,
         const double       bottom_fraction_of_cells,
-        const unsigned int max_n_cells
-        = std::numeric_limits<unsigned int>::max());
+        const unsigned int max_n_cells =
+          std::numeric_limits<unsigned int>::max());
 
       /**
        * Like dealii::GridRefinement::refine_and_coarsen_fixed_fraction, but

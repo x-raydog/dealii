@@ -87,8 +87,8 @@ AutoDerivativeFunction<dim>::gradient(const Point<dim>&  p,
             {
               q1 = p + ht[i];
               q2 = p - ht[i];
-              grad[i]
-                = (this->value(q1, comp) - this->value(q2, comp)) / (2 * h);
+              grad[i] =
+                (this->value(q1, comp) - this->value(q2, comp)) / (2 * h);
             }
           break;
         }
@@ -101,9 +101,9 @@ AutoDerivativeFunction<dim>::gradient(const Point<dim>&  p,
               q1      = q2 + ht[i];
               q3      = p - ht[i];
               q4      = q3 - ht[i];
-              grad[i] = (-this->value(q1, comp) + 8 * this->value(q2, comp)
-                         - 8 * this->value(q3, comp) + this->value(q4, comp))
-                        / (12 * h);
+              grad[i] = (-this->value(q1, comp) + 8 * this->value(q2, comp) -
+                         8 * this->value(q3, comp) + this->value(q4, comp)) /
+                        (12 * h);
             }
           break;
         }
@@ -177,9 +177,9 @@ AutoDerivativeFunction<dim>::vector_gradient(
               this->vector_value(q4, v4);
 
               for(unsigned int comp = 0; comp < this->n_components; ++comp)
-                gradients[comp][i]
-                  = (-v1(comp) + 8 * v2(comp) - 8 * v3(comp) + v4(comp))
-                    * h_inv_12;
+                gradients[comp][i] =
+                  (-v1(comp) + 8 * v2(comp) - 8 * v3(comp) + v4(comp)) *
+                  h_inv_12;
             }
           break;
         }
@@ -208,8 +208,8 @@ AutoDerivativeFunction<dim>::gradient_list(
             for(unsigned int i = 0; i < dim; ++i)
               {
                 q1 = points[p] - ht[i];
-                gradients[p][i]
-                  = (this->value(points[p], comp) - this->value(q1, comp)) / h;
+                gradients[p][i] =
+                  (this->value(points[p], comp) - this->value(q1, comp)) / h;
               }
           break;
         }
@@ -222,8 +222,8 @@ AutoDerivativeFunction<dim>::gradient_list(
               {
                 q1 = points[p] + ht[i];
                 q2 = points[p] - ht[i];
-                gradients[p][i]
-                  = (this->value(q1, comp) - this->value(q2, comp)) / (2 * h);
+                gradients[p][i] =
+                  (this->value(q1, comp) - this->value(q2, comp)) / (2 * h);
               }
           break;
         }
@@ -238,10 +238,10 @@ AutoDerivativeFunction<dim>::gradient_list(
                 q1 = q2 + ht[i];
                 q3 = points[p] - ht[i];
                 q4 = q3 - ht[i];
-                gradients[p][i]
-                  = (-this->value(q1, comp) + 8 * this->value(q2, comp)
-                     - 8 * this->value(q3, comp) + this->value(q4, comp))
-                    / (12 * h);
+                gradients[p][i] =
+                  (-this->value(q1, comp) + 8 * this->value(q2, comp) -
+                   8 * this->value(q3, comp) + this->value(q4, comp)) /
+                  (12 * h);
               }
           break;
         }
@@ -273,9 +273,8 @@ AutoDerivativeFunction<dim>::vector_gradient_list(
               {
                 q1 = points[p] - ht[i];
                 for(unsigned int comp = 0; comp < this->n_components; ++comp)
-                  gradients[p][comp][i]
-                    = (this->value(points[p], comp) - this->value(q1, comp))
-                      / h;
+                  gradients[p][comp][i] =
+                    (this->value(points[p], comp) - this->value(q1, comp)) / h;
               }
           break;
         }
@@ -289,8 +288,8 @@ AutoDerivativeFunction<dim>::vector_gradient_list(
                 q1 = points[p] + ht[i];
                 q2 = points[p] - ht[i];
                 for(unsigned int comp = 0; comp < this->n_components; ++comp)
-                  gradients[p][comp][i]
-                    = (this->value(q1, comp) - this->value(q2, comp)) / (2 * h);
+                  gradients[p][comp][i] =
+                    (this->value(q1, comp) - this->value(q2, comp)) / (2 * h);
               }
           break;
         }
@@ -306,10 +305,10 @@ AutoDerivativeFunction<dim>::vector_gradient_list(
                 q3 = points[p] - ht[i];
                 q4 = q3 - ht[i];
                 for(unsigned int comp = 0; comp < this->n_components; ++comp)
-                  gradients[p][comp][i]
-                    = (-this->value(q1, comp) + 8 * this->value(q2, comp)
-                       - 8 * this->value(q3, comp) + this->value(q4, comp))
-                      / (12 * h);
+                  gradients[p][comp][i] =
+                    (-this->value(q1, comp) + 8 * this->value(q2, comp) -
+                     8 * this->value(q3, comp) + this->value(q4, comp)) /
+                    (12 * h);
               }
           break;
         }

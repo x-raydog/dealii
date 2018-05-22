@@ -38,8 +38,8 @@ namespace internal
     std::size_t
     DoFFaces<3>::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(quads)
-              + MemoryConsumption::memory_consumption(lines));
+      return (MemoryConsumption::memory_consumption(quads) +
+              MemoryConsumption::memory_consumption(lines));
     }
   } // namespace DoFHandlerImplementation
 } // namespace internal

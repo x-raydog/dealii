@@ -140,8 +140,8 @@ SparseMatrixEZ<number>::vmult(Vector<somenumber>&       dst,
   for(size_type row = 0; row < end_row; ++row)
     {
       const RowInfo&                              ri = row_info[row];
-      typename std::vector<Entry>::const_iterator entry
-        = data.begin() + ri.start;
+      typename std::vector<Entry>::const_iterator entry =
+        data.begin() + ri.start;
       double s = 0.;
       for(unsigned short i = 0; i < ri.length; ++i, ++entry)
         {
@@ -192,8 +192,8 @@ SparseMatrixEZ<number>::vmult_add(Vector<somenumber>&       dst,
   for(size_type row = 0; row < end_row; ++row)
     {
       const RowInfo&                              ri = row_info[row];
-      typename std::vector<Entry>::const_iterator entry
-        = data.begin() + ri.start;
+      typename std::vector<Entry>::const_iterator entry =
+        data.begin() + ri.start;
       double s = 0.;
       for(unsigned short i = 0; i < ri.length; ++i, ++entry)
         {
@@ -217,8 +217,8 @@ SparseMatrixEZ<number>::Tvmult_add(Vector<somenumber>&       dst,
   for(size_type row = 0; row < end_row; ++row)
     {
       const RowInfo&                              ri = row_info[row];
-      typename std::vector<Entry>::const_iterator entry
-        = data.begin() + ri.start;
+      typename std::vector<Entry>::const_iterator entry =
+        data.begin() + ri.start;
       for(unsigned short i = 0; i < ri.length; ++i, ++entry)
         {
           Assert(entry->column != Entry::invalid, ExcInternalError());
@@ -292,8 +292,8 @@ SparseMatrixEZ<number>::precondition_TSOR(Vector<somenumber>&       dst,
   somenumber*       dst_ptr = dst.begin() + dst.size() - 1;
   const somenumber* src_ptr = src.begin() + src.size() - 1;
   typename std::vector<RowInfo>::const_reverse_iterator ri = row_info.rbegin();
-  const typename std::vector<RowInfo>::const_reverse_iterator end
-    = row_info.rend();
+  const typename std::vector<RowInfo>::const_reverse_iterator end =
+    row_info.rend();
 
   for(; ri != end; --dst_ptr, --src_ptr, ++ri)
     {
@@ -343,8 +343,8 @@ SparseMatrixEZ<number>::precondition_SSOR(Vector<somenumber>&       dst,
 
   // Backward
   typename std::vector<RowInfo>::const_reverse_iterator       rri;
-  const typename std::vector<RowInfo>::const_reverse_iterator rend
-    = row_info.rend();
+  const typename std::vector<RowInfo>::const_reverse_iterator rend =
+    row_info.rend();
   dst_ptr = dst.begin() + dst.size() - 1;
   for(rri = row_info.rbegin(); rri != rend; --dst_ptr, ++rri)
     {
@@ -362,8 +362,8 @@ template <typename number>
 std::size_t
 SparseMatrixEZ<number>::memory_consumption() const
 {
-  return sizeof(*this) + sizeof(size_type) * row_info.capacity()
-         + sizeof(typename SparseMatrixEZ<number>::Entry) * data.capacity();
+  return sizeof(*this) + sizeof(size_type) * row_info.capacity() +
+         sizeof(typename SparseMatrixEZ<number>::Entry) * data.capacity();
 }
 
 template <typename number>

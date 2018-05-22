@@ -128,8 +128,7 @@ public:
    *   for arbitrary memory allocated on the heap.
    */
   virtual VectorType*
-  alloc()
-    = 0;
+  alloc() = 0;
 
   /**
    * Return a vector and indicate that it is not going to be used any further
@@ -146,8 +145,7 @@ public:
    *   for arbitrary memory allocated on the heap.
    */
   virtual void
-  free(const VectorType* const)
-    = 0;
+  free(const VectorType* const) = 0;
 
   /**
    * @addtogroup Exceptions
@@ -210,8 +208,7 @@ public:
      * and then steals the internal data owned by @p p.
      */
     Pointer&
-    operator=(Pointer&& p) noexcept
-      = default;
+    operator=(Pointer&& p) noexcept = default;
 
     /**
      * Constructor. This constructor automatically allocates a vector from

@@ -1135,11 +1135,11 @@ namespace DataOutBase
     /**
      * Constructor.
      */
-    VtkFlags(const double       time = std::numeric_limits<double>::min(),
-             const unsigned int cycle
-             = std::numeric_limits<unsigned int>::min(),
-             const bool                 print_date_and_time = true,
-             const ZlibCompressionLevel compression_level   = best_compression);
+    VtkFlags(
+      const double       time  = std::numeric_limits<double>::min(),
+      const unsigned int cycle = std::numeric_limits<unsigned int>::min(),
+      const bool         print_date_and_time       = true,
+      const ZlibCompressionLevel compression_level = best_compression);
   };
 
   /**
@@ -1423,10 +1423,9 @@ namespace DataOutBase
          * return false;
          */
 
-        return (
-          one(0) < two(0)
-          || (!(two(0) < one(0))
-              && (one(1) < two(1) || (!(two(1) < one(1)) && one(2) < two(2)))));
+        return (one(0) < two(0) ||
+                (!(two(0) < one(0)) &&
+                 (one(1) < two(1) || (!(two(1) < one(1)) && one(2) < two(2)))));
       }
     };
 
@@ -2732,8 +2731,8 @@ public:
    */
   void
   write(std::ostream&                   out,
-        const DataOutBase::OutputFormat output_format
-        = DataOutBase::default_format) const;
+        const DataOutBase::OutputFormat output_format =
+          DataOutBase::default_format) const;
 
   /**
    * Set the default format. The value set here is used anytime, output for
@@ -2758,8 +2757,8 @@ public:
    * set_default_format() or parse_parameters() before calling this function.
    */
   std::string
-  default_suffix(const DataOutBase::OutputFormat output_format
-                 = DataOutBase::default_format) const;
+  default_suffix(const DataOutBase::OutputFormat output_format =
+                   DataOutBase::default_format) const;
 
   /**
    * Declare parameters for all output formats by declaring subsections within

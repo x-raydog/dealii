@@ -72,8 +72,8 @@ FE_RaviartThomasNodal<dim>::FE_RaviartThomasNodal(const unsigned int deg)
       ref_case < RefinementCase<dim>::isotropic_refinement + 1;
       ++ref_case)
     {
-      const unsigned int nc
-        = GeometryInfo<dim>::n_children(RefinementCase<dim>(ref_case));
+      const unsigned int nc =
+        GeometryInfo<dim>::n_children(RefinementCase<dim>(ref_case));
 
       for(unsigned int i = 0; i < nc; ++i)
         this->prolongation[ref_case - 1][i].reinit(n_dofs, n_dofs);
@@ -152,14 +152,13 @@ FE_RaviartThomasNodal<dim>::initialize_support_points(const unsigned int deg)
       Assert(face_points.size() == this->dofs_per_face, ExcInternalError());
       for(unsigned int k = 0; k < this->dofs_per_face; ++k)
         this->generalized_face_support_points[k] = face_points.point(k);
-      Quadrature<dim> faces
-        = QProjector<dim>::project_to_all_faces(face_points);
+      Quadrature<dim> faces =
+        QProjector<dim>::project_to_all_faces(face_points);
       for(unsigned int k = 0;
           k < this->dofs_per_face * GeometryInfo<dim>::faces_per_cell;
           ++k)
-        this->generalized_support_points[k]
-          = faces.point(k
-                        + QProjector<dim>::DataSetDescriptor::face(
+        this->generalized_support_points[k] =
+          faces.point(k + QProjector<dim>::DataSetDescriptor::face(
                             0, true, false, false, this->dofs_per_face));
 
       current = this->dofs_per_face * GeometryInfo<dim>::faces_per_cell;
@@ -233,8 +232,8 @@ template <int dim>
 std::vector<bool>
 FE_RaviartThomasNodal<dim>::get_ria_vector(const unsigned int deg)
 {
-  const unsigned int dofs_per_cell
-    = PolynomialsRaviartThomas<dim>::compute_n_pols(deg);
+  const unsigned int dofs_per_cell =
+    PolynomialsRaviartThomas<dim>::compute_n_pols(deg);
   unsigned int dofs_per_face = deg + 1;
   for(unsigned int d = 2; d < dim; ++d)
     dofs_per_face *= deg + 1;
@@ -369,8 +368,8 @@ FE_RaviartThomasNodal<dim>::hp_line_dof_identities(
   // these identities if both FEs are
   // FE_RaviartThomasNodals or if the other
   // one is FE_Nothing
-  if(const FE_RaviartThomasNodal<dim>* fe_q_other
-     = dynamic_cast<const FE_RaviartThomasNodal<dim>*>(&fe_other))
+  if(const FE_RaviartThomasNodal<dim>* fe_q_other =
+       dynamic_cast<const FE_RaviartThomasNodal<dim>*>(&fe_other))
     {
       // dofs are located on faces; these are
       // only lines in 2d
@@ -432,8 +431,8 @@ FE_RaviartThomasNodal<dim>::hp_quad_dof_identities(
   // these identities if both FEs are
   // FE_RaviartThomasNodals or if the other
   // one is FE_Nothing
-  if(const FE_RaviartThomasNodal<dim>* fe_q_other
-     = dynamic_cast<const FE_RaviartThomasNodal<dim>*>(&fe_other))
+  if(const FE_RaviartThomasNodal<dim>* fe_q_other =
+       dynamic_cast<const FE_RaviartThomasNodal<dim>*>(&fe_other))
     {
       // dofs are located on faces; these are
       // only quads in 3d
@@ -474,8 +473,8 @@ FiniteElementDomination::Domination
 FE_RaviartThomasNodal<dim>::compare_for_face_domination(
   const FiniteElement<dim>& fe_other) const
 {
-  if(const FE_RaviartThomasNodal<dim>* fe_q_other
-     = dynamic_cast<const FE_RaviartThomasNodal<dim>*>(&fe_other))
+  if(const FE_RaviartThomasNodal<dim>* fe_q_other =
+       dynamic_cast<const FE_RaviartThomasNodal<dim>*>(&fe_other))
     {
       if(this->degree < fe_q_other->degree)
         return FiniteElementDomination::this_element_dominates;
@@ -484,8 +483,8 @@ FE_RaviartThomasNodal<dim>::compare_for_face_domination(
       else
         return FiniteElementDomination::other_element_dominates;
     }
-  else if(const FE_Nothing<dim>* fe_q_other
-          = dynamic_cast<const FE_Nothing<dim>*>(&fe_other))
+  else if(const FE_Nothing<dim>* fe_q_other =
+            dynamic_cast<const FE_Nothing<dim>*>(&fe_other))
     {
       if(fe_q_other->is_dominating())
         {
@@ -532,11 +531,10 @@ FE_RaviartThomasNodal<dim>::get_face_interpolation_matrix(
   // this is only implemented, if the
   // source FE is also a
   // RaviartThomasNodal element
-  AssertThrow(
-    (x_source_fe.get_name().find("FE_RaviartThomasNodal<") == 0)
-      || (dynamic_cast<const FE_RaviartThomasNodal<dim>*>(&x_source_fe)
-          != nullptr),
-    typename FiniteElement<dim>::ExcInterpolationNotImplemented());
+  AssertThrow((x_source_fe.get_name().find("FE_RaviartThomasNodal<") == 0) ||
+                (dynamic_cast<const FE_RaviartThomasNodal<dim>*>(
+                   &x_source_fe) != nullptr),
+              typename FiniteElement<dim>::ExcInterpolationNotImplemented());
 
   Assert(interpolation_matrix.n() == this->dofs_per_face,
          ExcDimensionMismatch(interpolation_matrix.n(), this->dofs_per_face));
@@ -546,8 +544,8 @@ FE_RaviartThomasNodal<dim>::get_face_interpolation_matrix(
 
   // ok, source is a RaviartThomasNodal element, so
   // we will be able to do the work
-  const FE_RaviartThomasNodal<dim>& source_fe
-    = dynamic_cast<const FE_RaviartThomasNodal<dim>&>(x_source_fe);
+  const FE_RaviartThomasNodal<dim>& source_fe =
+    dynamic_cast<const FE_RaviartThomasNodal<dim>&>(x_source_fe);
 
   // Make sure, that the element,
   // for which the DoFs should be
@@ -582,8 +580,8 @@ FE_RaviartThomasNodal<dim>::get_face_interpolation_matrix(
   // compute the interpolation
   // matrix by simply taking the
   // value at the support points.
-  const Quadrature<dim> face_projection
-    = QProjector<dim>::project_to_face(quad_face_support, 0);
+  const Quadrature<dim> face_projection =
+    QProjector<dim>::project_to_face(quad_face_support, 0);
 
   for(unsigned int i = 0; i < source_fe.dofs_per_face; ++i)
     {
@@ -591,8 +589,8 @@ FE_RaviartThomasNodal<dim>::get_face_interpolation_matrix(
 
       for(unsigned int j = 0; j < this->dofs_per_face; ++j)
         {
-          double matrix_entry
-            = this->shape_value_component(this->face_to_cell_index(j, 0), p, 0);
+          double matrix_entry =
+            this->shape_value_component(this->face_to_cell_index(j, 0), p, 0);
 
           // Correct the interpolated
           // value. I.e. if it is close
@@ -636,11 +634,10 @@ FE_RaviartThomasNodal<dim>::get_subface_interpolation_matrix(
   // this is only implemented, if the
   // source FE is also a
   // RaviartThomasNodal element
-  AssertThrow(
-    (x_source_fe.get_name().find("FE_RaviartThomasNodal<") == 0)
-      || (dynamic_cast<const FE_RaviartThomasNodal<dim>*>(&x_source_fe)
-          != nullptr),
-    typename FiniteElement<dim>::ExcInterpolationNotImplemented());
+  AssertThrow((x_source_fe.get_name().find("FE_RaviartThomasNodal<") == 0) ||
+                (dynamic_cast<const FE_RaviartThomasNodal<dim>*>(
+                   &x_source_fe) != nullptr),
+              typename FiniteElement<dim>::ExcInterpolationNotImplemented());
 
   Assert(interpolation_matrix.n() == this->dofs_per_face,
          ExcDimensionMismatch(interpolation_matrix.n(), this->dofs_per_face));
@@ -650,8 +647,8 @@ FE_RaviartThomasNodal<dim>::get_subface_interpolation_matrix(
 
   // ok, source is a RaviartThomasNodal element, so
   // we will be able to do the work
-  const FE_RaviartThomasNodal<dim>& source_fe
-    = dynamic_cast<const FE_RaviartThomasNodal<dim>&>(x_source_fe);
+  const FE_RaviartThomasNodal<dim>& source_fe =
+    dynamic_cast<const FE_RaviartThomasNodal<dim>&>(x_source_fe);
 
   // Make sure, that the element,
   // for which the DoFs should be
@@ -687,8 +684,8 @@ FE_RaviartThomasNodal<dim>::get_subface_interpolation_matrix(
   // matrix by simply taking the
   // value at the support points.
 
-  const Quadrature<dim> subface_projection
-    = QProjector<dim>::project_to_subface(quad_face_support, 0, subface);
+  const Quadrature<dim> subface_projection =
+    QProjector<dim>::project_to_subface(quad_face_support, 0, subface);
 
   for(unsigned int i = 0; i < source_fe.dofs_per_face; ++i)
     {
@@ -696,8 +693,8 @@ FE_RaviartThomasNodal<dim>::get_subface_interpolation_matrix(
 
       for(unsigned int j = 0; j < this->dofs_per_face; ++j)
         {
-          double matrix_entry
-            = this->shape_value_component(this->face_to_cell_index(j, 0), p, 0);
+          double matrix_entry =
+            this->shape_value_component(this->face_to_cell_index(j, 0), p, 0);
 
           // Correct the interpolated
           // value. I.e. if it is close

@@ -198,15 +198,15 @@ namespace Step39
     exact_solution.value_list(fe.get_quadrature_points(), boundary_values);
 
     const unsigned int deg = fe.get_fe().tensor_degree();
-    const double       penalty
-      = 2. * deg * (deg + 1) * dinfo.face->measure() / dinfo.cell->measure();
+    const double       penalty =
+      2. * deg * (deg + 1) * dinfo.face->measure() / dinfo.cell->measure();
 
     for(unsigned k = 0; k < fe.n_quadrature_points; ++k)
       for(unsigned int i = 0; i < fe.dofs_per_cell; ++i)
-        local_vector(i) += (-fe.shape_value(i, k) * penalty * boundary_values[k]
-                            + (fe.normal_vector(k) * fe.shape_grad(i, k))
-                                * boundary_values[k])
-                           * fe.JxW(k);
+        local_vector(i) +=
+          (-fe.shape_value(i, k) * penalty * boundary_values[k] +
+           (fe.normal_vector(k) * fe.shape_grad(i, k)) * boundary_values[k]) *
+          fe.JxW(k);
   }
 
   template <int dim>
@@ -272,12 +272,12 @@ namespace Step39
     const std::vector<double>& uh = info.values[0][0];
 
     const unsigned int deg = fe.get_fe().tensor_degree();
-    const double       penalty
-      = 2. * deg * (deg + 1) * dinfo.face->measure() / dinfo.cell->measure();
+    const double       penalty =
+      2. * deg * (deg + 1) * dinfo.face->measure() / dinfo.cell->measure();
 
     for(unsigned k = 0; k < fe.n_quadrature_points; ++k)
-      dinfo.value(0) += penalty * (boundary_values[k] - uh[k])
-                        * (boundary_values[k] - uh[k]) * fe.JxW(k);
+      dinfo.value(0) += penalty * (boundary_values[k] - uh[k]) *
+                        (boundary_values[k] - uh[k]) * fe.JxW(k);
     dinfo.value(0) = std::sqrt(dinfo.value(0));
   }
 
@@ -297,20 +297,20 @@ namespace Step39
     const std::vector<Tensor<1, dim>>& Duh2 = info2.gradients[0][0];
 
     const unsigned int deg = fe.get_fe().tensor_degree();
-    const double       penalty1
-      = deg * (deg + 1) * dinfo1.face->measure() / dinfo1.cell->measure();
-    const double penalty2
-      = deg * (deg + 1) * dinfo2.face->measure() / dinfo2.cell->measure();
+    const double       penalty1 =
+      deg * (deg + 1) * dinfo1.face->measure() / dinfo1.cell->measure();
+    const double penalty2 =
+      deg * (deg + 1) * dinfo2.face->measure() / dinfo2.cell->measure();
     const double penalty = penalty1 + penalty2;
     const double h       = dinfo1.face->measure();
 
     for(unsigned k = 0; k < fe.n_quadrature_points; ++k)
       {
         double diff1 = uh1[k] - uh2[k];
-        double diff2
-          = fe.normal_vector(k) * Duh1[k] - fe.normal_vector(k) * Duh2[k];
-        dinfo1.value(0)
-          += (penalty * diff1 * diff1 + h * diff2 * diff2) * fe.JxW(k);
+        double diff2 =
+          fe.normal_vector(k) * Duh1[k] - fe.normal_vector(k) * Duh2[k];
+        dinfo1.value(0) +=
+          (penalty * diff1 * diff1 + h * diff2 * diff2) * fe.JxW(k);
       }
     dinfo1.value(0) = std::sqrt(dinfo1.value(0));
     dinfo2.value(0) = dinfo1.value(0);
@@ -404,8 +404,8 @@ namespace Step39
     const std::vector<double>& uh = info.values[0][0];
 
     const unsigned int deg = fe.get_fe().tensor_degree();
-    const double       penalty
-      = 2. * deg * (deg + 1) * dinfo.face->measure() / dinfo.cell->measure();
+    const double       penalty =
+      2. * deg * (deg + 1) * dinfo.face->measure() / dinfo.cell->measure();
 
     for(unsigned k = 0; k < fe.n_quadrature_points; ++k)
       {
@@ -428,10 +428,10 @@ namespace Step39
     const std::vector<double>& uh2 = info2.values[0][0];
 
     const unsigned int deg = fe.get_fe().tensor_degree();
-    const double       penalty1
-      = deg * (deg + 1) * dinfo1.face->measure() / dinfo1.cell->measure();
-    const double penalty2
-      = deg * (deg + 1) * dinfo2.face->measure() / dinfo2.cell->measure();
+    const double       penalty1 =
+      deg * (deg + 1) * dinfo1.face->measure() / dinfo1.cell->measure();
+    const double penalty2 =
+      deg * (deg + 1) * dinfo2.face->measure() / dinfo2.cell->measure();
     const double penalty = penalty1 + penalty2;
 
     for(unsigned k = 0; k < fe.n_quadrature_points; ++k)
@@ -688,8 +688,8 @@ namespace Step39
   InteriorPenaltyProblem<dim>::assemble_right_hand_side()
   {
     MeshWorker::IntegrationInfoBox<dim> info_box;
-    UpdateFlags                         update_flags
-      = update_quadrature_points | update_values | update_gradients;
+    UpdateFlags                         update_flags =
+      update_quadrature_points | update_values | update_gradients;
     info_box.add_update_flags_all(update_flags);
     info_box.initialize(fe, mapping);
 
@@ -797,16 +797,16 @@ namespace Step39
 
     estimates.block(0).reinit(triangulation.n_active_cells());
     unsigned int i = 0;
-    for(typename Triangulation<dim>::active_cell_iterator cell
-        = triangulation.begin_active();
+    for(typename Triangulation<dim>::active_cell_iterator cell =
+          triangulation.begin_active();
         cell != triangulation.end();
         ++cell, ++i)
       cell->set_user_index(i);
 
     // This starts like before,
     MeshWorker::IntegrationInfoBox<dim> info_box;
-    const unsigned int                  n_gauss_points
-      = dof_handler.get_fe().tensor_degree() + 1;
+    const unsigned int                  n_gauss_points =
+      dof_handler.get_fe().tensor_degree() + 1;
     info_box.initialize_gauss_quadrature(
       n_gauss_points, n_gauss_points + 1, n_gauss_points);
 
@@ -872,15 +872,15 @@ namespace Step39
     errors.block(0).reinit(triangulation.n_active_cells());
     errors.block(1).reinit(triangulation.n_active_cells());
     unsigned int i = 0;
-    for(typename Triangulation<dim>::active_cell_iterator cell
-        = triangulation.begin_active();
+    for(typename Triangulation<dim>::active_cell_iterator cell =
+          triangulation.begin_active();
         cell != triangulation.end();
         ++cell, ++i)
       cell->set_user_index(i);
 
     MeshWorker::IntegrationInfoBox<dim> info_box;
-    const unsigned int                  n_gauss_points
-      = dof_handler.get_fe().tensor_degree() + 1;
+    const unsigned int                  n_gauss_points =
+      dof_handler.get_fe().tensor_degree() + 1;
     info_box.initialize_gauss_quadrature(
       n_gauss_points, n_gauss_points + 1, n_gauss_points);
 
@@ -921,8 +921,8 @@ namespace Step39
   void
   InteriorPenaltyProblem<dim>::output_results(const unsigned int cycle) const
   {
-    const std::string filename
-      = "sol-" + Utilities::int_to_string(cycle, 2) + ".gnuplot";
+    const std::string filename =
+      "sol-" + Utilities::int_to_string(cycle, 2) + ".gnuplot";
 
     deallog << "Writing solution to <" << filename << ">..." << std::endl
             << std::endl;

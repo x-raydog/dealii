@@ -82,16 +82,14 @@ namespace internal
        * object to the current object.
        */
       NumberCache&
-      operator=(const NumberCache&)
-        = default;
+      operator=(const NumberCache&) = default;
 
       /**
        * Move assignment operator. Simply move all members of the referenced
        * object to the current object.
        */
       NumberCache&
-      operator=(NumberCache&&)
-        = default;
+      operator=(NumberCache&&) = default;
 
       /**
        * Determine an estimate for the memory consumption (in bytes) of this

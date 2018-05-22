@@ -133,8 +133,8 @@ namespace Step10
             grid_out.set_flags(gnuplot_flags);
 
             // Finally, generate a filename and a file for output:
-            std::string filename = filename_base + "_mapping_q_"
-                                   + Utilities::to_string(degree) + ".dat";
+            std::string filename = filename_base + "_mapping_q_" +
+                                   Utilities::to_string(degree) + ".dat";
             std::ofstream gnuplot_file(filename);
 
             // Then write out the triangulation to this file. The last
@@ -264,8 +264,8 @@ namespace Step10
             // Now we loop over all cells, reinitialize the FEValues object
             // for each cell, and add up all the `JxW' values for this cell to
             // `area'...
-            typename DoFHandler<dim>::active_cell_iterator cell
-              = dof_handler.begin_active(),
+            typename DoFHandler<dim>::active_cell_iterator
+              cell = dof_handler.begin_active(),
               endc = dof_handler.end();
             for(; cell != endc; ++cell)
               {
@@ -355,8 +355,8 @@ namespace Step10
             // Now we run over all cells and over all faces of each cell. Only
             // the contributions of the `JxW' values on boundary faces are
             // added to the long double variable `perimeter'.
-            typename DoFHandler<dim>::active_cell_iterator cell
-              = dof_handler.begin_active(),
+            typename DoFHandler<dim>::active_cell_iterator
+              cell                = dof_handler.begin_active(),
               endc                = dof_handler.end();
             long double perimeter = 0;
             for(; cell != endc; ++cell)
@@ -371,8 +371,8 @@ namespace Step10
                     for(unsigned int i = 0;
                         i < fe_face_values.n_quadrature_points;
                         ++i)
-                      perimeter
-                        += static_cast<long double>(fe_face_values.JxW(i));
+                      perimeter +=
+                        static_cast<long double>(fe_face_values.JxW(i));
                   }
             // Then store the evaluated values in the table...
             table.add_value("eval.pi", static_cast<double>(perimeter / 2.0L));

@@ -186,8 +186,8 @@ namespace TrilinosWrappers
 
     // We need an Epetra_LinearProblem object to let the AztecOO solver know
     // about the matrix and vectors.
-    linear_problem
-      = std_cxx14::make_unique<Epetra_LinearProblem>(&A, &ep_x, &ep_b);
+    linear_problem =
+      std_cxx14::make_unique<Epetra_LinearProblem>(&A, &ep_x, &ep_b);
 
     do_solve(preconditioner);
   }
@@ -238,8 +238,8 @@ namespace TrilinosWrappers
 
     // We need an Epetra_LinearProblem object to let the AztecOO solver know
     // about the matrix and vectors.
-    linear_problem
-      = std_cxx14::make_unique<Epetra_LinearProblem>(&A, &ep_x, &ep_b);
+    linear_problem =
+      std_cxx14::make_unique<Epetra_LinearProblem>(&A, &ep_x, &ep_b);
 
     do_solve(preconditioner);
   }
@@ -283,9 +283,9 @@ namespace TrilinosWrappers
         {
           // Note: CurrentResNormEst is set to -1.0 if no estimate of the
           // residual value is available
-          current_residual
-            = (CurrentResNormEst < 0.0 ? compute_residual(CurrentResVector) :
-                                         CurrentResNormEst);
+          current_residual =
+            (CurrentResNormEst < 0.0 ? compute_residual(CurrentResVector) :
+                                       CurrentResNormEst);
           if(CurrentIter == 0)
             initial_residual = current_residual;
 
@@ -336,14 +336,14 @@ namespace TrilinosWrappers
       {
         // Consider linear problem converged if any of the collection
         // of criterion are met
-        status_test_collection
-          = std_cxx14::make_unique<AztecOO_StatusTestCombo>(
+        status_test_collection =
+          std_cxx14::make_unique<AztecOO_StatusTestCombo>(
             AztecOO_StatusTestCombo::OR);
 
         // Maximum number of iterations
         Assert(max_steps >= 0, ExcInternalError());
-        status_test_max_steps
-          = std_cxx14::make_unique<AztecOO_StatusTestMaxIters>(max_steps);
+        status_test_max_steps =
+          std_cxx14::make_unique<AztecOO_StatusTestMaxIters>(max_steps);
         status_test_collection->AddStatusTest(*status_test_max_steps);
 
         Assert(linear_problem.GetRHS()->NumVectors() == 1,
@@ -434,11 +434,11 @@ namespace TrilinosWrappers
     // status test.
     if(!status_test)
       {
-        if(const ReductionControl* const reduction_control
-           = dynamic_cast<const ReductionControl* const>(&solver_control))
+        if(const ReductionControl* const reduction_control =
+             dynamic_cast<const ReductionControl* const>(&solver_control))
           {
-            status_test
-              = std_cxx14::make_unique<internal::TrilinosReductionControl>(
+            status_test =
+              std_cxx14::make_unique<internal::TrilinosReductionControl>(
                 reduction_control->max_steps(),
                 reduction_control->tolerance(),
                 reduction_control->reduction(),
@@ -448,8 +448,8 @@ namespace TrilinosWrappers
       }
 
     // ... and then solve!
-    ierr
-      = solver.Iterate(solver_control.max_steps(), solver_control.tolerance());
+    ierr =
+      solver.Iterate(solver_control.max_steps(), solver_control.tolerance());
 
     // report errors in more detail than just by checking whether the return
     // status is zero or greater. the error strings are taken from the
@@ -487,9 +487,10 @@ namespace TrilinosWrappers
     // certain choices of solver or if a custom status test is set, then the
     // result returned by TrueResidual() is equal to -1. In this case we must
     // compute it ourself.
-    if(const internal::TrilinosReductionControl* const reduction_control_status
-       = dynamic_cast<const internal::TrilinosReductionControl* const>(
-         status_test.get()))
+    if(const internal::TrilinosReductionControl* const
+         reduction_control_status =
+           dynamic_cast<const internal::TrilinosReductionControl* const>(
+             status_test.get()))
       {
         Assert(dynamic_cast<const ReductionControl* const>(&solver_control),
                ExcInternalError());
@@ -547,8 +548,8 @@ namespace TrilinosWrappers
   SolverBase::set_preconditioner(AztecOO&               solver,
                                  const Epetra_Operator& preconditioner)
   {
-    const int ierr
-      = solver.SetPrecOperator(const_cast<Epetra_Operator*>(&preconditioner));
+    const int ierr =
+      solver.SetPrecOperator(const_cast<Epetra_Operator*>(&preconditioner));
     AssertThrow(ierr == 0, ExcTrilinosError(ierr));
   }
 
@@ -659,11 +660,11 @@ namespace TrilinosWrappers
 
     AssertThrow(
       Factory.Query(additional_data.solver_type.c_str()),
-      ExcMessage(std::string("You tried to select the solver type <")
-                 + additional_data.solver_type
-                 + "> but this solver is not supported by Trilinos either "
-                   "because it does not exist, or because Trilinos was not "
-                   "configured for its use."));
+      ExcMessage(std::string("You tried to select the solver type <") +
+                 additional_data.solver_type +
+                 "> but this solver is not supported by Trilinos either "
+                 "because it does not exist, or because Trilinos was not "
+                 "configured for its use."));
 
     solver.reset(
       Factory.Create(additional_data.solver_type.c_str(), *linear_problem));
@@ -752,11 +753,11 @@ namespace TrilinosWrappers
 
     AssertThrow(
       Factory.Query(additional_data.solver_type.c_str()),
-      ExcMessage(std::string("You tried to select the solver type <")
-                 + additional_data.solver_type
-                 + "> but this solver is not supported by Trilinos either "
-                   "because it does not exist, or because Trilinos was not "
-                   "configured for its use."));
+      ExcMessage(std::string("You tried to select the solver type <") +
+                 additional_data.solver_type +
+                 "> but this solver is not supported by Trilinos either "
+                 "because it does not exist, or because Trilinos was not "
+                 "configured for its use."));
 
     solver.reset(
       Factory.Create(additional_data.solver_type.c_str(), *linear_problem));

@@ -131,19 +131,19 @@ std::size_t
 MGTransferComponentBase::memory_consumption() const
 {
   std::size_t result = sizeof(*this);
-  result += MemoryConsumption::memory_consumption(component_mask)
-            - sizeof(ComponentMask);
-  result += MemoryConsumption::memory_consumption(target_component)
-            - sizeof(mg_target_component);
+  result += MemoryConsumption::memory_consumption(component_mask) -
+            sizeof(ComponentMask);
+  result += MemoryConsumption::memory_consumption(target_component) -
+            sizeof(mg_target_component);
   result += MemoryConsumption::memory_consumption(sizes) - sizeof(sizes);
-  result += MemoryConsumption::memory_consumption(component_start)
-            - sizeof(component_start);
-  result += MemoryConsumption::memory_consumption(mg_component_start)
-            - sizeof(mg_component_start);
-  result += MemoryConsumption::memory_consumption(prolongation_sparsities)
-            - sizeof(prolongation_sparsities);
-  result += MemoryConsumption::memory_consumption(prolongation_matrices)
-            - sizeof(prolongation_matrices);
+  result += MemoryConsumption::memory_consumption(component_start) -
+            sizeof(component_start);
+  result += MemoryConsumption::memory_consumption(mg_component_start) -
+            sizeof(mg_component_start);
+  result += MemoryConsumption::memory_consumption(prolongation_sparsities) -
+            sizeof(prolongation_sparsities);
+  result += MemoryConsumption::memory_consumption(prolongation_matrices) -
+            sizeof(prolongation_matrices);
   //TODO:[GK] Add this.
   //   result += MemoryConsumption::memory_consumption(copy_to_and_from_indices)
   //          - sizeof(copy_to_and_from_indices);
@@ -158,14 +158,14 @@ MGTransferBlockBase::memory_consumption() const
   result += sizeof(unsigned int) * sizes.size();
   result += MemoryConsumption::memory_consumption(selected) - sizeof(selected);
   result += MemoryConsumption::memory_consumption(mg_block) - sizeof(mg_block);
-  result
-    += MemoryConsumption::memory_consumption(block_start) - sizeof(block_start);
-  result += MemoryConsumption::memory_consumption(mg_block_start)
-            - sizeof(mg_block_start);
-  result += MemoryConsumption::memory_consumption(prolongation_sparsities)
-            - sizeof(prolongation_sparsities);
-  result += MemoryConsumption::memory_consumption(prolongation_matrices)
-            - sizeof(prolongation_matrices);
+  result +=
+    MemoryConsumption::memory_consumption(block_start) - sizeof(block_start);
+  result += MemoryConsumption::memory_consumption(mg_block_start) -
+            sizeof(mg_block_start);
+  result += MemoryConsumption::memory_consumption(prolongation_sparsities) -
+            sizeof(prolongation_sparsities);
+  result += MemoryConsumption::memory_consumption(prolongation_matrices) -
+            sizeof(prolongation_matrices);
   //TODO:[GK] Add this.
   //   result += MemoryConsumption::memory_consumption(copy_indices)
   //          - sizeof(copy_indices);

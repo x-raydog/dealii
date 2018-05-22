@@ -165,8 +165,8 @@ namespace Step8
         // If <code>points[point_n]</code> is in a circle (sphere) of radius
         // 0.2 around one of these points, then set the force in x-direction
         // to one, otherwise to zero:
-        if(((points[point_n] - point_1).norm_square() < 0.2 * 0.2)
-           || ((points[point_n] - point_2).norm_square() < 0.2 * 0.2))
+        if(((points[point_n] - point_1).norm_square() < 0.2 * 0.2) ||
+           ((points[point_n] - point_2).norm_square() < 0.2 * 0.2))
           values[point_n][0] = 1.0;
         else
           values[point_n][0] = 0.0;
@@ -273,8 +273,8 @@ namespace Step8
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -304,9 +304,9 @@ namespace Step8
     std::vector<Tensor<1, dim>> rhs_values(n_q_points);
 
     // Now we can begin with the loop over all cells:
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         cell_matrix = 0;
@@ -344,13 +344,13 @@ namespace Step8
         // contributions:
         for(unsigned int i = 0; i < dofs_per_cell; ++i)
           {
-            const unsigned int component_i
-              = fe.system_to_component_index(i).first;
+            const unsigned int component_i =
+              fe.system_to_component_index(i).first;
 
             for(unsigned int j = 0; j < dofs_per_cell; ++j)
               {
-                const unsigned int component_j
-                  = fe.system_to_component_index(j).first;
+                const unsigned int component_j =
+                  fe.system_to_component_index(j).first;
 
                 for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
                   {
@@ -365,13 +365,12 @@ namespace Step8
                       // component of the i-th shape function with respect to
                       // the comp(i)th coordinate is accessed by the appended
                       // brackets.
-                      ((fe_values.shape_grad(i, q_point)[component_i]
-                        * fe_values.shape_grad(j, q_point)[component_j]
-                        * lambda_values[q_point])
-                       + (fe_values.shape_grad(i, q_point)[component_j]
-                          * fe_values.shape_grad(j, q_point)[component_i]
-                          * mu_values[q_point])
-                       +
+                      ((fe_values.shape_grad(i, q_point)[component_i] *
+                        fe_values.shape_grad(j, q_point)[component_j] *
+                        lambda_values[q_point]) +
+                       (fe_values.shape_grad(i, q_point)[component_j] *
+                        fe_values.shape_grad(j, q_point)[component_i] *
+                        mu_values[q_point]) +
                        // The second term is (mu nabla u_i, nabla v_j).  We
                        // need not access a specific component of the
                        // gradient, since we only have to compute the scalar
@@ -384,11 +383,11 @@ namespace Step8
                        // added (which will be optimized away by the
                        // compiler).
                        ((component_i == component_j) ?
-                          (fe_values.shape_grad(i, q_point)
-                           * fe_values.shape_grad(j, q_point)
-                           * mu_values[q_point]) :
-                          0))
-                      * fe_values.JxW(q_point);
+                          (fe_values.shape_grad(i, q_point) *
+                           fe_values.shape_grad(j, q_point) *
+                           mu_values[q_point]) :
+                          0)) *
+                      fe_values.JxW(q_point);
                   }
               }
           }
@@ -397,13 +396,13 @@ namespace Step8
         // introduction:
         for(unsigned int i = 0; i < dofs_per_cell; ++i)
           {
-            const unsigned int component_i
-              = fe.system_to_component_index(i).first;
+            const unsigned int component_i =
+              fe.system_to_component_index(i).first;
 
             for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
-              cell_rhs(i) += fe_values.shape_value(i, q_point)
-                             * rhs_values[q_point][component_i]
-                             * fe_values.JxW(q_point);
+              cell_rhs(i) += fe_values.shape_value(i, q_point) *
+                             rhs_values[q_point][component_i] *
+                             fe_values.JxW(q_point);
           }
 
         // The transfer from local degrees of freedom into the global matrix

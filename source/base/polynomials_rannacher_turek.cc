@@ -32,23 +32,23 @@ PolynomialsRannacherTurek<dim>::compute_value(const unsigned int i,
   Assert(dim == 2, ExcNotImplemented());
   if(i == 0)
     {
-      return (0.75 - 2.5 * p(0) + 1.5 * p(1)
-              + 1.5 * (p(0) * p(0) - p(1) * p(1)));
+      return (0.75 - 2.5 * p(0) + 1.5 * p(1) +
+              1.5 * (p(0) * p(0) - p(1) * p(1)));
     }
   else if(i == 1)
     {
-      return (-0.25 - 0.5 * p(0) + 1.5 * p(1)
-              + 1.5 * (p(0) * p(0) - p(1) * p(1)));
+      return (-0.25 - 0.5 * p(0) + 1.5 * p(1) +
+              1.5 * (p(0) * p(0) - p(1) * p(1)));
     }
   else if(i == 2)
     {
-      return (0.75 + 1.5 * p(0) - 2.5 * p(1)
-              - 1.5 * (p(0) * p(0) - p(1) * p(1)));
+      return (0.75 + 1.5 * p(0) - 2.5 * p(1) -
+              1.5 * (p(0) * p(0) - p(1) * p(1)));
     }
   else if(i == 3)
     {
-      return (-0.25 + 1.5 * p(0) - 0.5 * p(1)
-              - 1.5 * (p(0) * p(0) - p(1) * p(1)));
+      return (-0.25 + 1.5 * p(0) - 0.5 * p(1) -
+              1.5 * (p(0) * p(0) - p(1) * p(1)));
     }
 
   Assert(false, ExcNotImplemented());

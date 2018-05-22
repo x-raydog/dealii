@@ -167,8 +167,8 @@ FE_ABF<dim>::initialize_support_points(const unsigned int deg)
   if(dim > 1)
     {
       QGauss<dim - 1>                   face_points(deg + 1);
-      TensorProductPolynomials<dim - 1> legendre
-        = Polynomials::Legendre::generate_complete_basis(deg);
+      TensorProductPolynomials<dim - 1> legendre =
+        Polynomials::Legendre::generate_complete_basis(deg);
 
       boundary_weights.reinit(n_face_points, legendre.n());
 
@@ -183,14 +183,14 @@ FE_ABF<dim>::initialize_support_points(const unsigned int deg)
           // moment.
           for(unsigned int i = 0; i < legendre.n(); ++i)
             {
-              boundary_weights(k, i)
-                = face_points.weight(k)
-                  * legendre.compute_value(i, face_points.point(k));
+              boundary_weights(k, i) =
+                face_points.weight(k) *
+                legendre.compute_value(i, face_points.point(k));
             }
         }
 
-      Quadrature<dim> faces
-        = QProjector<dim>::project_to_all_faces(face_points);
+      Quadrature<dim> faces =
+        QProjector<dim>::project_to_all_faces(face_points);
       for(; current < GeometryInfo<dim>::faces_per_cell * n_face_points;
           ++current)
         {
@@ -209,10 +209,10 @@ FE_ABF<dim>::initialize_support_points(const unsigned int deg)
         {
           for(unsigned int i = 0; i < polynomials_abf[0]->n() * dim; ++i)
             {
-              boundary_weights_abf(k, i)
-                = polynomials_abf[i % dim]->compute_value(i / dim,
-                                                          faces.point(k))
-                  * faces.weight(k);
+              boundary_weights_abf(k, i) =
+                polynomials_abf[i % dim]->compute_value(i / dim,
+                                                        faces.point(k)) *
+                faces.weight(k);
             }
         }
     }
@@ -240,9 +240,9 @@ FE_ABF<dim>::initialize_support_points(const unsigned int deg)
         {
           for(unsigned int i = 0; i < polynomials[0]->n(); ++i)
             for(unsigned int d = 0; d < dim; ++d)
-              interior_weights(k, i, d)
-                = cell_quadrature.weight(k)
-                  * polynomials[d]->compute_value(i, cell_quadrature.point(k));
+              interior_weights(k, i, d) =
+                cell_quadrature.weight(k) *
+                polynomials[d]->compute_value(i, cell_quadrature.point(k));
         }
 
       for(unsigned int d = 0; d < dim; ++d)
@@ -267,8 +267,8 @@ FE_ABF<dim>::initialize_support_points(const unsigned int deg)
       for(unsigned int i = 0; i < polynomials_abf[0]->n() * dim; ++i)
         {
           poly_grad = polynomials_abf[i % dim]->compute_grad(
-                        i / dim, cell_quadrature.point(k))
-                      * cell_quadrature.weight(k);
+                        i / dim, cell_quadrature.point(k)) *
+                      cell_quadrature.weight(k);
           // The minus sign comes from the use of the Gauss theorem to replace the divergence.
           for(unsigned int d = 0; d < dim; ++d)
             interior_weights_abf(k, i, d) = -poly_grad[d];
@@ -331,8 +331,8 @@ FE_ABF<dim>::initialize_restriction()
           // the coarse face are
           // evaluated on the subface
           // only.
-          Quadrature<dim> q_sub
-            = QProjector<dim>::project_to_subface(q_base, face, sub);
+          Quadrature<dim> q_sub =
+            QProjector<dim>::project_to_subface(q_base, face, sub);
           const unsigned int child = GeometryInfo<dim>::child_cell_on_face(
             RefinementCase<dim>::isotropic_refinement, face, sub);
 
@@ -360,13 +360,13 @@ FE_ABF<dim>::initialize_restriction()
                   // transformed, so we
                   // have to do it here.
                   this->restriction[iso][child](
-                    face * this->dofs_per_face + i_face, i_child)
-                    += Utilities::fixed_power<dim - 1>(.5) * q_sub.weight(k)
-                       * cached_values_face(i_child, k)
-                       * this->shape_value_component(
-                           face * this->dofs_per_face + i_face,
-                           q_sub.point(k),
-                           GeometryInfo<dim>::unit_normal_direction[face]);
+                    face * this->dofs_per_face + i_face, i_child) +=
+                    Utilities::fixed_power<dim - 1>(.5) * q_sub.weight(k) *
+                    cached_values_face(i_child, k) *
+                    this->shape_value_component(
+                      face * this->dofs_per_face + i_face,
+                      q_sub.point(k),
+                      GeometryInfo<dim>::unit_normal_direction[face]);
                 }
         }
     }
@@ -389,8 +389,8 @@ FE_ABF<dim>::initialize_restriction()
     }
 
   QGauss<dim>        q_cell(rt_order + 1);
-  const unsigned int start_cell_dofs
-    = GeometryInfo<dim>::faces_per_cell * this->dofs_per_face;
+  const unsigned int start_cell_dofs =
+    GeometryInfo<dim>::faces_per_cell * this->dofs_per_face;
 
   // Store shape values, since the
   // evaluation suffers if not
@@ -399,8 +399,8 @@ FE_ABF<dim>::initialize_restriction()
   for(unsigned int k = 0; k < q_cell.size(); ++k)
     for(unsigned int i = 0; i < this->dofs_per_cell; ++i)
       for(unsigned int d = 0; d < dim; ++d)
-        cached_values_cell(i, k, d)
-          = this->shape_value_component(i, q_cell.point(k), d);
+        cached_values_cell(i, k, d) =
+          this->shape_value_component(i, q_cell.point(k), d);
 
   for(unsigned int child = 0; child < GeometryInfo<dim>::max_children_per_cell;
       ++child)
@@ -414,9 +414,9 @@ FE_ABF<dim>::initialize_restriction()
                 ++i_weight)
               {
                 this->restriction[iso][child](
-                  start_cell_dofs + i_weight * dim + d, i_child)
-                  += q_sub.weight(k) * cached_values_cell(i_child, k, d)
-                     * polynomials[d]->compute_value(i_weight, q_sub.point(k));
+                  start_cell_dofs + i_weight * dim + d, i_child) +=
+                  q_sub.weight(k) * cached_values_cell(i_child, k, d) *
+                  polynomials[d]->compute_value(i_weight, q_sub.point(k));
               }
     }
 
@@ -483,8 +483,8 @@ FE_ABF<dim>::has_support_on_face(const unsigned int shape_index,
                   // are the values
                   // actually zero. list
                   // these in a table
-                  return (face_index
-                          != GeometryInfo<dim>::opposite_face[shape_index]);
+                  return (face_index !=
+                          GeometryInfo<dim>::opposite_face[shape_index]);
                 }
 
               default:
@@ -521,50 +521,50 @@ FE_ABF<dim>::convert_generalized_support_point_values_to_dof_values(
     for(unsigned int k = 0; k < n_face_points; ++k)
       for(unsigned int i = 0; i < boundary_weights.size(1); ++i)
         {
-          nodal_values[i + face * this->dofs_per_face]
-            += boundary_weights(k, i)
-               * support_point_values[face * n_face_points + k][GeometryInfo<
-                   dim>::unit_normal_direction[face]];
+          nodal_values[i + face * this->dofs_per_face] +=
+            boundary_weights(k, i) *
+            support_point_values[face * n_face_points + k][GeometryInfo<
+              dim>::unit_normal_direction[face]];
         }
 
-  const unsigned int start_cell_dofs
-    = GeometryInfo<dim>::faces_per_cell * this->dofs_per_face;
-  const unsigned int start_cell_points
-    = GeometryInfo<dim>::faces_per_cell * n_face_points;
+  const unsigned int start_cell_dofs =
+    GeometryInfo<dim>::faces_per_cell * this->dofs_per_face;
+  const unsigned int start_cell_points =
+    GeometryInfo<dim>::faces_per_cell * n_face_points;
 
   for(unsigned int k = 0; k < interior_weights.size(0); ++k)
     for(unsigned int i = 0; i < interior_weights.size(1); ++i)
       for(unsigned int d = 0; d < dim; ++d)
-        nodal_values[start_cell_dofs + i * dim + d]
-          += interior_weights(k, i, d)
-             * support_point_values[k + start_cell_points][d];
+        nodal_values[start_cell_dofs + i * dim + d] +=
+          interior_weights(k, i, d) *
+          support_point_values[k + start_cell_points][d];
 
-  const unsigned int start_abf_dofs
-    = start_cell_dofs + interior_weights.size(1) * dim;
+  const unsigned int start_abf_dofs =
+    start_cell_dofs + interior_weights.size(1) * dim;
 
   // Cell integral of ABF terms
   for(unsigned int k = 0; k < interior_weights_abf.size(0); ++k)
     for(unsigned int i = 0; i < interior_weights_abf.size(1); ++i)
       for(unsigned int d = 0; d < dim; ++d)
-        nodal_values[start_abf_dofs + i]
-          += interior_weights_abf(k, i, d)
-             * support_point_values[k + start_cell_points][d];
+        nodal_values[start_abf_dofs + i] +=
+          interior_weights_abf(k, i, d) *
+          support_point_values[k + start_cell_points][d];
 
   // Face integral of ABF terms
   for(unsigned int face = 0; face < GeometryInfo<dim>::faces_per_cell; ++face)
     {
-      double n_orient
-        = (double) GeometryInfo<dim>::unit_normal_orientation[face];
+      double n_orient =
+        (double) GeometryInfo<dim>::unit_normal_orientation[face];
       for(unsigned int fp = 0; fp < n_face_points; ++fp)
         {
           // TODO: Check what the face_orientation, face_flip and face_rotation have to be in 3D
           unsigned int k = QProjector<dim>::DataSetDescriptor::face(
             face, false, false, false, n_face_points);
           for(unsigned int i = 0; i < boundary_weights_abf.size(1); ++i)
-            nodal_values[start_abf_dofs + i]
-              += n_orient * boundary_weights_abf(k + fp, i)
-                 * support_point_values[face * n_face_points + fp][GeometryInfo<
-                     dim>::unit_normal_direction[face]];
+            nodal_values[start_abf_dofs + i] +=
+              n_orient * boundary_weights_abf(k + fp, i) *
+              support_point_values[face * n_face_points + fp][GeometryInfo<
+                dim>::unit_normal_direction[face]];
         }
     }
 

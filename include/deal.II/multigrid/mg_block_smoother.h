@@ -217,9 +217,9 @@ template <typename MatrixType, class RelaxationType, typename number>
 inline std::size_t
 MGSmootherBlock<MatrixType, RelaxationType, number>::memory_consumption() const
 {
-  return sizeof(*this) + matrices.memory_consumption()
-         + smoothers.memory_consumption()
-         + this->vector_memory.memory_consumption();
+  return sizeof(*this) + matrices.memory_consumption() +
+         smoothers.memory_consumption() +
+         this->vector_memory.memory_consumption();
 }
 
 template <typename MatrixType, class RelaxationType, typename number>

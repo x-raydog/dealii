@@ -42,11 +42,11 @@ namespace MeshWorker
   std::size_t
   LocalResults<number>::memory_consumption() const
   {
-    std::size_t mem = sizeof(*this) + MemoryConsumption::memory_consumption(J)
-                      + MemoryConsumption::memory_consumption(R)
-                      + MemoryConsumption::memory_consumption(M1)
-                      + MemoryConsumption::memory_consumption(M2)
-                      + MemoryConsumption::memory_consumption(quadrature_data);
+    std::size_t mem = sizeof(*this) + MemoryConsumption::memory_consumption(J) +
+                      MemoryConsumption::memory_consumption(R) +
+                      MemoryConsumption::memory_consumption(M1) +
+                      MemoryConsumption::memory_consumption(M2) +
+                      MemoryConsumption::memory_consumption(quadrature_data);
     return mem;
   }
 

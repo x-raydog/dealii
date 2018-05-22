@@ -357,9 +357,8 @@ namespace parallel
       Triangulation(
         MPI_Comm mpi_communicator,
         const typename dealii::Triangulation<dim, spacedim>::MeshSmoothing
-          smooth_grid
-        = (dealii::Triangulation<dim, spacedim>::none),
-        const Settings settings = default_setting);
+                       smooth_grid = (dealii::Triangulation<dim, spacedim>::none),
+        const Settings settings    = default_setting);
 
       /**
        * Destructor.
@@ -1043,9 +1042,8 @@ namespace parallel
       Triangulation(
         MPI_Comm mpi_communicator,
         const typename dealii::Triangulation<1, spacedim>::MeshSmoothing
-          smooth_grid
-        = (dealii::Triangulation<1, spacedim>::none),
-        const Settings settings = default_setting);
+                       smooth_grid = (dealii::Triangulation<1, spacedim>::none),
+        const Settings settings    = default_setting);
 
       /**
        * Destructor.

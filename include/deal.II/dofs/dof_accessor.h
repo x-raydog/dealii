@@ -297,8 +297,8 @@ public:
    * Consequently, this operator is declared as deleted and can not be used.
    */
   DoFAccessor<structdim, DoFHandlerType, level_dof_access>&
-  operator=(const DoFAccessor<structdim, DoFHandlerType, level_dof_access>& da)
-    = delete;
+  operator=(const DoFAccessor<structdim, DoFHandlerType, level_dof_access>&
+              da) = delete;
 
   /**
    * @}
@@ -410,9 +410,9 @@ public:
    *
    */
   void
-  get_dof_indices(std::vector<types::global_dof_index>& dof_indices,
-                  const unsigned int                    fe_index
-                  = DoFHandlerType::default_fe_index) const;
+  get_dof_indices(
+    std::vector<types::global_dof_index>& dof_indices,
+    const unsigned int fe_index = DoFHandlerType::default_fe_index) const;
 
   /**
    * Return the global multilevel indices of the degrees of freedom that live
@@ -421,19 +421,19 @@ public:
    * level this line lives on.
    */
   void
-  get_mg_dof_indices(const int                             level,
-                     std::vector<types::global_dof_index>& dof_indices,
-                     const unsigned int                    fe_index
-                     = DoFHandlerType::default_fe_index) const;
+  get_mg_dof_indices(
+    const int                             level,
+    std::vector<types::global_dof_index>& dof_indices,
+    const unsigned int fe_index = DoFHandlerType::default_fe_index) const;
 
   /**
    * Set the level DoF indices that are returned by get_mg_dof_indices.
    */
   void
-  set_mg_dof_indices(const int                                   level,
-                     const std::vector<types::global_dof_index>& dof_indices,
-                     const unsigned int                          fe_index
-                     = DoFHandlerType::default_fe_index);
+  set_mg_dof_indices(
+    const int                                   level,
+    const std::vector<types::global_dof_index>& dof_indices,
+    const unsigned int fe_index = DoFHandlerType::default_fe_index);
 
   /**
    * Global DoF index of the <i>i</i> degree associated with the @p vertexth
@@ -453,10 +453,10 @@ public:
    * fe_index has to match the result of active_fe_index().
    */
   types::global_dof_index
-  vertex_dof_index(const unsigned int vertex,
-                   const unsigned int i,
-                   const unsigned int fe_index
-                   = DoFHandlerType::default_fe_index) const;
+  vertex_dof_index(
+    const unsigned int vertex,
+    const unsigned int i,
+    const unsigned int fe_index = DoFHandlerType::default_fe_index) const;
 
   /**
    * Return the global DoF index of the <code>i</code>th degree of freedom
@@ -464,11 +464,11 @@ public:
    * see vertex_dof_index().
    */
   types::global_dof_index
-  mg_vertex_dof_index(const int          level,
-                      const unsigned int vertex,
-                      const unsigned int i,
-                      const unsigned int fe_index
-                      = DoFHandlerType::default_fe_index) const;
+  mg_vertex_dof_index(
+    const int          level,
+    const unsigned int vertex,
+    const unsigned int i,
+    const unsigned int fe_index = DoFHandlerType::default_fe_index) const;
 
   /**
    * Index of the <i>i</i>th degree of freedom of this object.
@@ -498,9 +498,9 @@ public:
    * the face.
    */
   types::global_dof_index
-  dof_index(const unsigned int i,
-            const unsigned int fe_index
-            = DoFHandlerType::default_fe_index) const;
+  dof_index(
+    const unsigned int i,
+    const unsigned int fe_index = DoFHandlerType::default_fe_index) const;
 
   /**
    * Return the dof_index on the given level. Also see dof_index.
@@ -665,10 +665,10 @@ protected:
    * fe_index has to match the result of active_fe_index().
    */
   void
-  set_dof_index(const unsigned int            i,
-                const types::global_dof_index index,
-                const unsigned int            fe_index
-                = DoFHandlerType::default_fe_index) const;
+  set_dof_index(
+    const unsigned int            i,
+    const types::global_dof_index index,
+    const unsigned int fe_index = DoFHandlerType::default_fe_index) const;
 
   void
   set_mg_dof_index(const int                     level,
@@ -693,19 +693,19 @@ protected:
    * fe_index has to match the result of active_fe_index().
    */
   void
-  set_vertex_dof_index(const unsigned int            vertex,
-                       const unsigned int            i,
-                       const types::global_dof_index index,
-                       const unsigned int            fe_index
-                       = DoFHandlerType::default_fe_index) const;
+  set_vertex_dof_index(
+    const unsigned int            vertex,
+    const unsigned int            i,
+    const types::global_dof_index index,
+    const unsigned int fe_index = DoFHandlerType::default_fe_index) const;
 
   void
-  set_mg_vertex_dof_index(const int                     level,
-                          const unsigned int            vertex,
-                          const unsigned int            i,
-                          const types::global_dof_index index,
-                          const unsigned int            fe_index
-                          = DoFHandlerType::default_fe_index) const;
+  set_mg_vertex_dof_index(
+    const int                     level,
+    const unsigned int            vertex,
+    const unsigned int            i,
+    const types::global_dof_index index,
+    const unsigned int fe_index = DoFHandlerType::default_fe_index) const;
 
   /**
    * Iterator classes need to be friends because they need to access
@@ -848,9 +848,8 @@ public:
    * Consequently, this operator is declared as deleted and can not be used.
    */
   DoFAccessor<0, DoFHandlerType<1, spacedim>, level_dof_access>&
-  operator=(
-    const DoFAccessor<0, DoFHandlerType<1, spacedim>, level_dof_access>& da)
-    = delete;
+  operator=(const DoFAccessor<0, DoFHandlerType<1, spacedim>, level_dof_access>&
+              da) = delete;
 
   /**
    * @}
@@ -955,9 +954,9 @@ public:
    * <code>cell-@>active_fe_index</code> as last argument.
    */
   void
-  get_dof_indices(std::vector<types::global_dof_index>& dof_indices,
-                  const unsigned int                    fe_index
-                  = AccessorData::default_fe_index) const;
+  get_dof_indices(
+    std::vector<types::global_dof_index>& dof_indices,
+    const unsigned int fe_index = AccessorData::default_fe_index) const;
 
   /**
    * Return the global multilevel indices of the degrees of freedom that live
@@ -966,10 +965,10 @@ public:
    * level this line lives on.
    */
   void
-  get_mg_dof_indices(const int                             level,
-                     std::vector<types::global_dof_index>& dof_indices,
-                     const unsigned int                    fe_index
-                     = AccessorData::default_fe_index) const;
+  get_mg_dof_indices(
+    const int                             level,
+    std::vector<types::global_dof_index>& dof_indices,
+    const unsigned int fe_index = AccessorData::default_fe_index) const;
 
   /**
    * Global DoF index of the <i>i</i> degree associated with the @p vertexth
@@ -989,10 +988,10 @@ public:
    * fe_index has to match the result of active_fe_index().
    */
   types::global_dof_index
-  vertex_dof_index(const unsigned int vertex,
-                   const unsigned int i,
-                   const unsigned int fe_index
-                   = AccessorData::default_fe_index) const;
+  vertex_dof_index(
+    const unsigned int vertex,
+    const unsigned int i,
+    const unsigned int fe_index = AccessorData::default_fe_index) const;
 
   /**
    * Index of the <i>i</i>th degree of freedom of this object.
@@ -1153,10 +1152,10 @@ protected:
    * fe_index has to match the result of active_fe_index().
    */
   void
-  set_dof_index(const unsigned int            i,
-                const types::global_dof_index index,
-                const unsigned int            fe_index
-                = AccessorData::default_fe_index) const;
+  set_dof_index(
+    const unsigned int            i,
+    const types::global_dof_index index,
+    const unsigned int fe_index = AccessorData::default_fe_index) const;
 
   /**
    * Set the global index of the <i>i</i> degree on the @p vertex-th vertex of
@@ -1176,11 +1175,11 @@ protected:
    * fe_index has to match the result of active_fe_index().
    */
   void
-  set_vertex_dof_index(const unsigned int            vertex,
-                       const unsigned int            i,
-                       const types::global_dof_index index,
-                       const unsigned int            fe_index
-                       = AccessorData::default_fe_index) const;
+  set_vertex_dof_index(
+    const unsigned int            vertex,
+    const unsigned int            i,
+    const types::global_dof_index index,
+    const unsigned int fe_index = AccessorData::default_fe_index) const;
 
   /**
    * Iterator classes need to be friends because they need to access
@@ -1274,8 +1273,8 @@ public:
   void
   set_dof_index(const unsigned int            i,
                 const types::global_dof_index index,
-                const unsigned int            fe_index
-                = DoFHandler<dim, spacedim>::default_fe_index) const;
+                const unsigned int            fe_index =
+                  DoFHandler<dim, spacedim>::default_fe_index) const;
 };
 
 /* -------------------------------------------------------------------------- */
@@ -1384,8 +1383,8 @@ public:
    * Consequently, this operator is declared as deleted and can not be used.
    */
   DoFCellAccessor<DoFHandlerType, level_dof_access>&
-  operator=(const DoFCellAccessor<DoFHandlerType, level_dof_access>& da)
-    = delete;
+  operator=(const DoFCellAccessor<DoFHandlerType, level_dof_access>& da) =
+    delete;
 
   /**
    * @}
@@ -1602,10 +1601,10 @@ public:
    */
   template <class InputVector, typename number>
   void
-  get_interpolated_dof_values(const InputVector& values,
-                              Vector<number>&    interpolated_values,
-                              const unsigned int fe_index
-                              = DoFHandlerType::default_fe_index) const;
+  get_interpolated_dof_values(
+    const InputVector& values,
+    Vector<number>&    interpolated_values,
+    const unsigned int fe_index = DoFHandlerType::default_fe_index) const;
 
   /**
    * This function is the counterpart to get_interpolated_dof_values(): you
@@ -1661,10 +1660,10 @@ public:
    */
   template <class OutputVector, typename number>
   void
-  set_dof_values_by_interpolation(const Vector<number>& local_values,
-                                  OutputVector&         values,
-                                  const unsigned int    fe_index
-                                  = DoFHandlerType::default_fe_index) const;
+  set_dof_values_by_interpolation(
+    const Vector<number>& local_values,
+    OutputVector&         values,
+    const unsigned int    fe_index = DoFHandlerType::default_fe_index) const;
 
   /**
    * Distribute a local (cell based) vector to a global one by mapping the

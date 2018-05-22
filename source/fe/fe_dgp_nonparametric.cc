@@ -54,8 +54,8 @@ FE_DGPNonparametric<dim, spacedim>::FE_DGPNonparametric(
         // implemented so far
         continue;
 
-      const unsigned int nc
-        = GeometryInfo<dim>::n_children(RefinementCase<dim>(ref_case));
+      const unsigned int nc =
+        GeometryInfo<dim>::n_children(RefinementCase<dim>(ref_case));
       for(unsigned int i = 0; i < nc; ++i)
         {
           this->prolongation[ref_case - 1][i].reinit(n_dofs, n_dofs);
@@ -446,9 +446,9 @@ FE_DGPNonparametric<dim, spacedim>::get_face_interpolation_matrix(
   // much we need to do here.
   (void) interpolation_matrix;
   AssertThrow(
-    (x_source_fe.get_name().find("FE_DGPNonparametric<") == 0)
-      || (dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&x_source_fe)
-          != nullptr),
+    (x_source_fe.get_name().find("FE_DGPNonparametric<") == 0) ||
+      (dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&x_source_fe) !=
+       nullptr),
     (typename FiniteElement<dim, spacedim>::ExcInterpolationNotImplemented()));
 
   Assert(interpolation_matrix.m() == 0,
@@ -472,9 +472,9 @@ FE_DGPNonparametric<dim, spacedim>::get_subface_interpolation_matrix(
   // much we need to do here.
   (void) interpolation_matrix;
   AssertThrow(
-    (x_source_fe.get_name().find("FE_DGPNonparametric<") == 0)
-      || (dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&x_source_fe)
-          != nullptr),
+    (x_source_fe.get_name().find("FE_DGPNonparametric<") == 0) ||
+      (dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&x_source_fe) !=
+       nullptr),
     (typename FiniteElement<dim, spacedim>::ExcInterpolationNotImplemented()));
 
   Assert(interpolation_matrix.m() == 0,
@@ -497,8 +497,8 @@ FE_DGPNonparametric<dim, spacedim>::hp_vertex_dof_identities(
 {
   // there are no such constraints for DGPNonparametric
   // elements at all
-  if(dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&fe_other)
-     != nullptr)
+  if(dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&fe_other) !=
+     nullptr)
     return std::vector<std::pair<unsigned int, unsigned int>>();
   else
     {
@@ -514,8 +514,8 @@ FE_DGPNonparametric<dim, spacedim>::hp_line_dof_identities(
 {
   // there are no such constraints for DGPNonparametric
   // elements at all
-  if(dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&fe_other)
-     != nullptr)
+  if(dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&fe_other) !=
+     nullptr)
     return std::vector<std::pair<unsigned int, unsigned int>>();
   else
     {
@@ -531,8 +531,8 @@ FE_DGPNonparametric<dim, spacedim>::hp_quad_dof_identities(
 {
   // there are no such constraints for DGPNonparametric
   // elements at all
-  if(dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&fe_other)
-     != nullptr)
+  if(dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&fe_other) !=
+     nullptr)
     return std::vector<std::pair<unsigned int, unsigned int>>();
   else
     {
@@ -549,8 +549,8 @@ FE_DGPNonparametric<dim, spacedim>::compare_for_face_domination(
   // check whether both are discontinuous
   // elements, see the description of
   // FiniteElementDomination::Domination
-  if(dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&fe_other)
-     != nullptr)
+  if(dynamic_cast<const FE_DGPNonparametric<dim, spacedim>*>(&fe_other) !=
+     nullptr)
     return FiniteElementDomination::no_requirements;
 
   Assert(false, ExcNotImplemented());

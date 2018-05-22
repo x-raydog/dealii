@@ -72,11 +72,11 @@ namespace internal
 
       // how many single objects are needed in addition to
       // n_unused_objects?
-      const int additional_single_objects
-        = new_objects_single - n_unused_singles;
+      const int additional_single_objects =
+        new_objects_single - n_unused_singles;
 
-      unsigned int new_size
-        = used.size() + new_objects_in_pairs - 2 * n_unused_pairs;
+      unsigned int new_size =
+        used.size() + new_objects_in_pairs - 2 * n_unused_pairs;
       if(additional_single_objects > 0)
         new_size += additional_single_objects;
 
@@ -93,8 +93,8 @@ namespace internal
           user_flags.insert(
             user_flags.end(), new_size - user_flags.size(), false);
 
-          const unsigned int factor
-            = GeometryInfo<G::dimension>::max_children_per_cell / 2;
+          const unsigned int factor =
+            GeometryInfo<G::dimension>::max_children_per_cell / 2;
           children.reserve(factor * new_size);
           children.insert(
             children.end(), factor * new_size - children.size(), -1);
@@ -159,12 +159,12 @@ namespace internal
     void
     TriaObjectsHex::reserve_space(const unsigned int new_hexes)
     {
-      const unsigned int new_size
-        = new_hexes
-          + std::count_if(
-              used.begin(),
-              used.end(),
-              std::bind(std::equal_to<bool>(), std::placeholders::_1, true));
+      const unsigned int new_size =
+        new_hexes +
+        std::count_if(
+          used.begin(),
+          used.end(),
+          std::bind(std::equal_to<bool>(), std::placeholders::_1, true));
 
       // see above...
       if(new_size > cells.size())
@@ -199,8 +199,8 @@ namespace internal
 
           face_orientations.reserve(new_size * GeometryInfo<3>::faces_per_cell);
           face_orientations.insert(face_orientations.end(),
-                                   new_size * GeometryInfo<3>::faces_per_cell
-                                     - face_orientations.size(),
+                                   new_size * GeometryInfo<3>::faces_per_cell -
+                                     face_orientations.size(),
                                    true);
 
           refinement_cases.reserve(new_size);
@@ -210,13 +210,13 @@ namespace internal
 
           face_flips.reserve(new_size * GeometryInfo<3>::faces_per_cell);
           face_flips.insert(face_flips.end(),
-                            new_size * GeometryInfo<3>::faces_per_cell
-                              - face_flips.size(),
+                            new_size * GeometryInfo<3>::faces_per_cell -
+                              face_flips.size(),
                             false);
           face_rotations.reserve(new_size * GeometryInfo<3>::faces_per_cell);
           face_rotations.insert(face_rotations.end(),
-                                new_size * GeometryInfo<3>::faces_per_cell
-                                  - face_rotations.size(),
+                                new_size * GeometryInfo<3>::faces_per_cell -
+                                  face_rotations.size(),
                                 false);
         }
       next_free_single = next_free_pair = 0;
@@ -266,8 +266,8 @@ namespace internal
       // how many single quads are needed in addition to n_unused_quads?
       const int additional_single_quads = new_quads_single - n_unused_singles;
 
-      unsigned int new_size
-        = used.size() + new_quads_in_pairs - 2 * n_unused_pairs;
+      unsigned int new_size =
+        used.size() + new_quads_in_pairs - 2 * n_unused_pairs;
       if(additional_single_quads > 0)
         new_size += additional_single_quads;
 
@@ -280,8 +280,8 @@ namespace internal
           // reserve the field of the derived class
           line_orientations.reserve(new_size * GeometryInfo<2>::lines_per_cell);
           line_orientations.insert(line_orientations.end(),
-                                   new_size * GeometryInfo<2>::lines_per_cell
-                                     - line_orientations.size(),
+                                   new_size * GeometryInfo<2>::lines_per_cell -
+                                     line_orientations.size(),
                                    true);
         }
 
@@ -345,16 +345,16 @@ namespace internal
              ExcMemoryInexact(cells.size(), manifold_id.size()));
       Assert(cells.size() == user_data.size(),
              ExcMemoryInexact(cells.size(), user_data.size()));
-      Assert(cells.size() * GeometryInfo<3>::faces_per_cell
-               == face_orientations.size(),
+      Assert(cells.size() * GeometryInfo<3>::faces_per_cell ==
+               face_orientations.size(),
              ExcMemoryInexact(cells.size() * GeometryInfo<3>::faces_per_cell,
                               face_orientations.size()));
-      Assert(cells.size() * GeometryInfo<3>::faces_per_cell
-               == face_flips.size(),
+      Assert(cells.size() * GeometryInfo<3>::faces_per_cell ==
+               face_flips.size(),
              ExcMemoryInexact(cells.size() * GeometryInfo<3>::faces_per_cell,
                               face_flips.size()));
-      Assert(cells.size() * GeometryInfo<3>::faces_per_cell
-               == face_rotations.size(),
+      Assert(cells.size() * GeometryInfo<3>::faces_per_cell ==
+               face_rotations.size(),
              ExcMemoryInexact(cells.size() * GeometryInfo<3>::faces_per_cell,
                               face_rotations.size()));
     }
@@ -365,8 +365,8 @@ namespace internal
       // check that we have not allocated too much memory. note that bool
       // vectors allocate their memory in chunks of whole integers, so they
       // may over-allocate by up to as many elements as an integer has bits
-      Assert(cells.size() * GeometryInfo<2>::lines_per_cell
-               == line_orientations.size(),
+      Assert(cells.size() * GeometryInfo<2>::lines_per_cell ==
+               line_orientations.size(),
              ExcMemoryInexact(cells.size() * GeometryInfo<2>::lines_per_cell,
                               line_orientations.size()));
       TriaObjects<TriaObject<2>>::monitor_memory(3);
@@ -407,30 +407,30 @@ namespace internal
     std::size_t
     TriaObjects<G>::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(cells)
-              + MemoryConsumption::memory_consumption(children)
-              + MemoryConsumption::memory_consumption(used)
-              + MemoryConsumption::memory_consumption(user_flags)
-              + MemoryConsumption::memory_consumption(boundary_or_material_id)
-              + MemoryConsumption::memory_consumption(manifold_id)
-              + MemoryConsumption::memory_consumption(refinement_cases)
-              + user_data.capacity() * sizeof(UserData) + sizeof(user_data));
+      return (MemoryConsumption::memory_consumption(cells) +
+              MemoryConsumption::memory_consumption(children) +
+              MemoryConsumption::memory_consumption(used) +
+              MemoryConsumption::memory_consumption(user_flags) +
+              MemoryConsumption::memory_consumption(boundary_or_material_id) +
+              MemoryConsumption::memory_consumption(manifold_id) +
+              MemoryConsumption::memory_consumption(refinement_cases) +
+              user_data.capacity() * sizeof(UserData) + sizeof(user_data));
     }
 
     std::size_t
     TriaObjectsHex::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(face_orientations)
-              + MemoryConsumption::memory_consumption(face_flips)
-              + MemoryConsumption::memory_consumption(face_rotations)
-              + TriaObjects<TriaObject<3>>::memory_consumption());
+      return (MemoryConsumption::memory_consumption(face_orientations) +
+              MemoryConsumption::memory_consumption(face_flips) +
+              MemoryConsumption::memory_consumption(face_rotations) +
+              TriaObjects<TriaObject<3>>::memory_consumption());
     }
 
     std::size_t
     TriaObjectsQuad3D::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(line_orientations)
-              + this->TriaObjects<TriaObject<2>>::memory_consumption());
+      return (MemoryConsumption::memory_consumption(line_orientations) +
+              this->TriaObjects<TriaObject<2>>::memory_consumption());
     }
 
     // explicit instantiations

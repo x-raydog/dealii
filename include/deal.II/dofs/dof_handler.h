@@ -320,8 +320,8 @@ public:
    * @deprecated Use numbers::invalid_dof_index instead.
    */
   DEAL_II_DEPRECATED
-  static const types::global_dof_index invalid_dof_index
-    = numbers::invalid_dof_index;
+  static const types::global_dof_index invalid_dof_index =
+    numbers::invalid_dof_index;
 
   /**
    * The default index of the finite element to be used on a given cell. Since
@@ -366,8 +366,7 @@ public:
    * is explicitly removed from the interface of this class.
    */
   DoFHandler&
-  operator=(const DoFHandler&)
-    = delete;
+  operator=(const DoFHandler&) = delete;
 
   /**
    * Assign a Triangulation and a FiniteElement to the DoFHandler and compute
@@ -1403,8 +1402,8 @@ DoFHandler<dim, spacedim>::n_boundary_dofs(
   // extract the set of boundary ids and forget about the function object pointers
   std::set<types::boundary_id> boundary_ids_only;
   for(typename std::map<types::boundary_id,
-                        const Function<spacedim, number>*>::const_iterator p
-      = boundary_ids.begin();
+                        const Function<spacedim, number>*>::const_iterator p =
+        boundary_ids.begin();
       p != boundary_ids.end();
       ++p)
     boundary_ids_only.insert(p->first);
@@ -1517,11 +1516,11 @@ DoFHandler<dim, spacedim>::load(Archive& ar, const unsigned int)
       "the one that was associated with the DoFHandler previously stored."));
   AssertThrow(
     policy_name == internal::policy_to_string(*policy),
-    ExcMessage("The policy currently associated with this DoFHandler ("
-               + internal::policy_to_string(*policy)
-               + ") does not match the one that was associated with the "
-                 "DoFHandler previously stored ("
-               + policy_name + ")."));
+    ExcMessage("The policy currently associated with this DoFHandler (" +
+               internal::policy_to_string(*policy) +
+               ") does not match the one that was associated with the "
+               "DoFHandler previously stored (" +
+               policy_name + ")."));
 }
 
 template <int dim, int spacedim>

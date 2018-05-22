@@ -363,12 +363,12 @@ namespace WorkStream
           // consist of at most chunk_size
           // elements
           current_item->n_items = 0;
-          while(
-            (remaining_iterator_range.first != remaining_iterator_range.second)
-            && (current_item->n_items < chunk_size))
+          while((remaining_iterator_range.first !=
+                 remaining_iterator_range.second) &&
+                (current_item->n_items < chunk_size))
             {
-              current_item->work_items[current_item->n_items]
-                = remaining_iterator_range.first;
+              current_item->work_items[current_item->n_items] =
+                remaining_iterator_range.first;
 
               ++remaining_iterator_range.first;
               ++current_item->n_items;
@@ -492,13 +492,13 @@ namespace WorkStream
           // not have to lock the following section
           ScratchData* scratch_data = nullptr;
           {
-            typename ItemType::ScratchDataList& scratch_data_list
-              = current_item->scratch_data->get();
+            typename ItemType::ScratchDataList& scratch_data_list =
+              current_item->scratch_data->get();
 
             // see if there is an unused object. if so, grab it and mark
             // it as used
-            for(typename ItemType::ScratchDataList::iterator p
-                = scratch_data_list.begin();
+            for(typename ItemType::ScratchDataList::iterator p =
+                  scratch_data_list.begin();
                 p != scratch_data_list.end();
                 ++p)
               if(p->currently_in_use == false)
@@ -511,8 +511,8 @@ namespace WorkStream
             // if no object was found, create one and mark it as used
             if(scratch_data == nullptr)
               {
-                scratch_data
-                  = new ScratchData(*current_item->sample_scratch_data);
+                scratch_data =
+                  new ScratchData(*current_item->sample_scratch_data);
 
                 typename ItemType::ScratchDataList::value_type
                   new_scratch_object(scratch_data, true);
@@ -547,11 +547,11 @@ namespace WorkStream
           // is no need to lock anything here since the object we work on
           // is thread-local
           {
-            typename ItemType::ScratchDataList& scratch_data_list
-              = current_item->scratch_data->get();
+            typename ItemType::ScratchDataList& scratch_data_list =
+              current_item->scratch_data->get();
 
-            for(typename ItemType::ScratchDataList::iterator p
-                = scratch_data_list.begin();
+            for(typename ItemType::ScratchDataList::iterator p =
+                  scratch_data_list.begin();
                 p != scratch_data_list.end();
                 ++p)
               if(p->scratch_data.get() == scratch_data)
@@ -752,8 +752,8 @@ namespace WorkStream
 
             // see if there is an unused object. if so, grab it and mark
             // it as used
-            for(typename ScratchAndCopyDataList::iterator p
-                = scratch_and_copy_data_list.begin();
+            for(typename ScratchAndCopyDataList::iterator p =
+                  scratch_and_copy_data_list.begin();
                 p != scratch_and_copy_data_list.end();
                 ++p)
               if(p->currently_in_use == false)
@@ -805,8 +805,8 @@ namespace WorkStream
           {
             ScratchAndCopyDataList& scratch_and_copy_data_list = data.get();
 
-            for(typename ScratchAndCopyDataList::iterator p
-                = scratch_and_copy_data_list.begin();
+            for(typename ScratchAndCopyDataList::iterator p =
+                  scratch_and_copy_data_list.begin();
                 p != scratch_and_copy_data_list.end();
                 ++p)
               if(p->scratch_data.get() == scratch_data)
@@ -1082,8 +1082,8 @@ namespace WorkStream
         CopyData    copy_data    = sample_copy_data; // NOLINT
 
         for(unsigned int color = 0; color < colored_iterators.size(); ++color)
-          for(typename std::vector<Iterator>::const_iterator p
-              = colored_iterators[color].begin();
+          for(typename std::vector<Iterator>::const_iterator p =
+                colored_iterators[color].begin();
               p != colored_iterators[color].end();
               ++p)
             {

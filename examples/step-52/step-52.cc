@@ -227,16 +227,16 @@ namespace Step52
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
             for(unsigned int j = 0; j < dofs_per_cell; ++j)
               {
-                cell_matrix(i, j)
-                  += ((-diffusion_coefficient * fe_values.shape_grad(i, q_point)
-                         * fe_values.shape_grad(j, q_point)
-                       - absorption_cross_section
-                           * fe_values.shape_value(i, q_point)
-                           * fe_values.shape_value(j, q_point))
-                      * fe_values.JxW(q_point));
-                cell_mass_matrix(i, j) += fe_values.shape_value(i, q_point)
-                                          * fe_values.shape_value(j, q_point)
-                                          * fe_values.JxW(q_point);
+                cell_matrix(i, j) +=
+                  ((-diffusion_coefficient * fe_values.shape_grad(i, q_point) *
+                      fe_values.shape_grad(j, q_point) -
+                    absorption_cross_section *
+                      fe_values.shape_value(i, q_point) *
+                      fe_values.shape_value(j, q_point)) *
+                   fe_values.JxW(q_point));
+                cell_mass_matrix(i, j) += fe_values.shape_value(i, q_point) *
+                                          fe_values.shape_value(j, q_point) *
+                                          fe_values.JxW(q_point);
               }
 
         cell->get_dof_indices(local_dof_indices);
@@ -262,11 +262,11 @@ namespace Step52
     const double b         = 5.;
     const double x         = point(0);
 
-    return intensity
-           * (frequency * std::cos(frequency * time) * (b * x - x * x)
-              + std::sin(frequency * time)
-                  * (absorption_cross_section * (b * x - x * x)
-                     + 2. * diffusion_coefficient));
+    return intensity *
+           (frequency * std::cos(frequency * time) * (b * x - x * x) +
+            std::sin(frequency * time) *
+              (absorption_cross_section * (b * x - x * x) +
+               2. * diffusion_coefficient));
   }
 
   // @sect4{<code>Diffusion::evaluate_diffusion</code>}
@@ -293,8 +293,8 @@ namespace Step52
 
     FEValues<2> fe_values(fe,
                           quadrature_formula,
-                          update_values | update_quadrature_points
-                            | update_JxW_values);
+                          update_values | update_quadrature_points |
+                            update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -314,11 +314,11 @@ namespace Step52
 
         for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
           {
-            const double source
-              = get_source(time, fe_values.quadrature_point(q_point));
+            const double source =
+              get_source(time, fe_values.quadrature_point(q_point));
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
-              cell_source(i) += source * fe_values.shape_value(i, q_point)
-                                * fe_values.JxW(q_point);
+              cell_source(i) += source * fe_values.shape_value(i, q_point) *
+                                fe_values.JxW(q_point);
           }
 
         cell->get_dof_indices(local_dof_indices);
@@ -446,9 +446,9 @@ namespace Step52
 
     data_out.build_patches();
 
-    const std::string filename = "solution-" + method_name + "-"
-                                 + Utilities::int_to_string(time_step, 3)
-                                 + ".vtu";
+    const std::string filename = "solution-" + method_name + "-" +
+                                 Utilities::int_to_string(time_step, 3) +
+                                 ".vtu";
     std::ofstream output(filename);
     data_out.write_vtu(output);
   }
@@ -467,8 +467,8 @@ namespace Step52
                              const double       initial_time,
                              const double       final_time)
   {
-    const double time_step
-      = (final_time - initial_time) / static_cast<double>(n_time_steps);
+    const double time_step =
+      (final_time - initial_time) / static_cast<double>(n_time_steps);
     double time = initial_time;
     solution    = 0.;
 
@@ -502,8 +502,8 @@ namespace Step52
                              const double       initial_time,
                              const double       final_time)
   {
-    const double time_step
-      = (final_time - initial_time) / static_cast<double>(n_time_steps);
+    const double time_step =
+      (final_time - initial_time) / static_cast<double>(n_time_steps);
     double time = initial_time;
     solution    = 0.;
 
@@ -553,8 +553,8 @@ namespace Step52
     const double                           initial_time,
     const double                           final_time)
   {
-    double time_step
-      = (final_time - initial_time) / static_cast<double>(n_time_steps);
+    double time_step =
+      (final_time - initial_time) / static_cast<double>(n_time_steps);
     double       time          = initial_time;
     const double coarsen_param = 1.2;
     const double refine_param  = 0.8;
@@ -620,8 +620,8 @@ namespace Step52
       for(unsigned int f = 0; f < GeometryInfo<2>::faces_per_cell; ++f)
         if(cell->face(f)->at_boundary())
           {
-            if((cell->face(f)->center()[0] == 0.)
-               || (cell->face(f)->center()[0] == 5.))
+            if((cell->face(f)->center()[0] == 0.) ||
+               (cell->face(f)->center()[0] == 5.))
               cell->face(f)->set_boundary_id(1);
             else
               cell->face(f)->set_boundary_id(0);

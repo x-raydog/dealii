@@ -358,12 +358,11 @@ namespace internal
                         "information for an object on which no such "
                         "information is available"));
 
-      Assert(
-        fe_index
-          == (is_compressed_entry(active_fe_indices[obj_index]) == false ?
-                active_fe_indices[obj_index] :
-                get_toggled_compression_state(active_fe_indices[obj_index])),
-        ExcMessage("FE index does not match that of the present cell"));
+      Assert(fe_index ==
+               (is_compressed_entry(active_fe_indices[obj_index]) == false ?
+                  active_fe_indices[obj_index] :
+                  get_toggled_compression_state(active_fe_indices[obj_index])),
+             ExcMessage("FE index does not match that of the present cell"));
 
       // see if the dof_indices array has been compressed for this
       // particular cell
@@ -445,9 +444,9 @@ namespace internal
     {
       (void) dofs_per_cell;
       Assert(
-        (obj_index < cell_cache_offsets.size())
-          && (cell_cache_offsets[obj_index] + dofs_per_cell
-              <= cell_dof_indices_cache.size()),
+        (obj_index < cell_cache_offsets.size()) &&
+          (cell_cache_offsets[obj_index] + dofs_per_cell <=
+           cell_dof_indices_cache.size()),
         ExcMessage(
           "You are trying to access an element of the cache that stores "
           "the indices of all degrees of freedom that live on one cell. "

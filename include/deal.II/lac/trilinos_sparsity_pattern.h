@@ -1290,8 +1290,8 @@ namespace TrilinosWrappers
           accessor.a_index = 0;
           ++accessor.a_row;
 
-          while((accessor.a_row < accessor.sparsity_pattern->n_rows())
-                && (accessor.sparsity_pattern->row_length(accessor.a_row) == 0))
+          while((accessor.a_row < accessor.sparsity_pattern->n_rows()) &&
+                (accessor.sparsity_pattern->row_length(accessor.a_row) == 0))
             ++accessor.a_row;
 
           accessor.visit_present_row();
@@ -1320,8 +1320,8 @@ namespace TrilinosWrappers
     inline bool
     Iterator::operator==(const Iterator& other) const
     {
-      return (accessor.a_row == other.accessor.a_row
-              && accessor.a_index == other.accessor.a_index);
+      return (accessor.a_row == other.accessor.a_row &&
+              accessor.a_index == other.accessor.a_index);
     }
 
     inline bool
@@ -1333,9 +1333,9 @@ namespace TrilinosWrappers
     inline bool
     Iterator::operator<(const Iterator& other) const
     {
-      return (accessor.row() < other.accessor.row()
-              || (accessor.row() == other.accessor.row()
-                  && accessor.index() < other.accessor.index()));
+      return (accessor.row() < other.accessor.row() ||
+              (accessor.row() == other.accessor.row() &&
+               accessor.index() < other.accessor.index()));
     }
 
   } // namespace SparsityPatternIterators
@@ -1391,8 +1391,8 @@ namespace TrilinosWrappers
     end   = graph->RowMap().MaxMyGID64() + 1;
 #      endif
 
-    return ((index >= static_cast<size_type>(begin))
-            && (index < static_cast<size_type>(end)));
+    return ((index >= static_cast<size_type>(begin)) &&
+            (index < static_cast<size_type>(end)));
   }
 
   inline bool
@@ -1434,13 +1434,13 @@ namespace TrilinosWrappers
     Assert(sizeof(TrilinosWrappers::types::int_type) == sizeof((*begin) * 2),
            ExcNotImplemented());
 
-    TrilinosWrappers::types::int_type* col_index_ptr
-      = (TrilinosWrappers::types::int_type*) (&*begin);
+    TrilinosWrappers::types::int_type* col_index_ptr =
+      (TrilinosWrappers::types::int_type*) (&*begin);
     const int n_cols = static_cast<int>(end - begin);
 
     int ierr;
-    if(graph->RowMap().LID(static_cast<TrilinosWrappers::types::int_type>(row))
-       != -1)
+    if(graph->RowMap().LID(
+         static_cast<TrilinosWrappers::types::int_type>(row)) != -1)
       ierr = graph->InsertGlobalIndices(row, n_cols, col_index_ptr);
     else if(nonlocal_graph.get() != nullptr)
       {
@@ -1448,8 +1448,7 @@ namespace TrilinosWrappers
         // and want to create a separate matrix object for them (to retain
         // thread-safety)
         Assert(nonlocal_graph->RowMap().LID(
-                 static_cast<TrilinosWrappers::types::int_type>(row))
-                 != -1,
+                 static_cast<TrilinosWrappers::types::int_type>(row)) != -1,
                ExcMessage("Attempted to write into off-processor matrix row "
                           "that has not be specified as being writable upon "
                           "initialization"));

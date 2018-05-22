@@ -839,10 +839,11 @@ namespace VectorTools
           const Quadrature<dim>&           quadrature,
           const Function<spacedim, typename VectorType::value_type>& function,
           VectorType&                                                vec,
-          const bool                 enforce_zero_boundary = false,
-          const Quadrature<dim - 1>& q_boundary
-          = (dim > 1 ? QGauss<dim - 1>(2) : Quadrature<dim - 1>(0)),
-          const bool project_to_boundary_first = false);
+          const bool                 enforce_zero_boundary     = false,
+          const Quadrature<dim - 1>& q_boundary                = (dim > 1 ?
+                                                     QGauss<dim - 1>(2) :
+                                                     Quadrature<dim - 1>(0)),
+          const bool                 project_to_boundary_first = false);
 
   /**
    * Call the project() function above, with
@@ -855,10 +856,11 @@ namespace VectorTools
           const Quadrature<dim>&           quadrature,
           const Function<spacedim, typename VectorType::value_type>& function,
           VectorType&                                                vec,
-          const bool                 enforce_zero_boundary = false,
-          const Quadrature<dim - 1>& q_boundary
-          = (dim > 1 ? QGauss<dim - 1>(2) : Quadrature<dim - 1>(0)),
-          const bool project_to_boundary_first = false);
+          const bool                 enforce_zero_boundary     = false,
+          const Quadrature<dim - 1>& q_boundary                = (dim > 1 ?
+                                                     QGauss<dim - 1>(2) :
+                                                     Quadrature<dim - 1>(0)),
+          const bool                 project_to_boundary_first = false);
 
   /**
    * Same as above, but for arguments of type hp::DoFHandler, hp::QCollection, and
@@ -873,9 +875,8 @@ namespace VectorTools
           const Function<spacedim, typename VectorType::value_type>& function,
           VectorType&                                                vec,
           const bool                      enforce_zero_boundary = false,
-          const hp::QCollection<dim - 1>& q_boundary
-          = hp::QCollection<dim - 1>(dim > 1 ? QGauss<dim - 1>(2) :
-                                               Quadrature<dim - 1>(0)),
+          const hp::QCollection<dim - 1>& q_boundary = hp::QCollection<dim - 1>(
+            dim > 1 ? QGauss<dim - 1>(2) : Quadrature<dim - 1>(0)),
           const bool project_to_boundary_first = false);
 
   /**
@@ -890,9 +891,8 @@ namespace VectorTools
           const Function<spacedim, typename VectorType::value_type>& function,
           VectorType&                                                vec,
           const bool                      enforce_zero_boundary = false,
-          const hp::QCollection<dim - 1>& q_boundary
-          = hp::QCollection<dim - 1>(dim > 1 ? QGauss<dim - 1>(2) :
-                                               Quadrature<dim - 1>(0)),
+          const hp::QCollection<dim - 1>& q_boundary = hp::QCollection<dim - 1>(
+            dim > 1 ? QGauss<dim - 1>(2) : Quadrature<dim - 1>(0)),
           const bool project_to_boundary_first = false);
 
   /**
@@ -1519,8 +1519,8 @@ namespace VectorTools
     const Function<dim, double>&           boundary_function,
     const types::boundary_id               boundary_component,
     ConstraintMatrix&                      constraints,
-    const hp::MappingCollection<dim, dim>& mapping_collection
-    = hp::StaticMappingQ1<dim>::mapping_collection);
+    const hp::MappingCollection<dim, dim>& mapping_collection =
+      hp::StaticMappingQ1<dim>::mapping_collection);
 
   /**
    * This function is an updated version of the
@@ -1641,8 +1641,8 @@ namespace VectorTools
     const Function<dim, double>&           boundary_function,
     const types::boundary_id               boundary_component,
     ConstraintMatrix&                      constraints,
-    const hp::MappingCollection<dim, dim>& mapping_collection
-    = hp::StaticMappingQ1<dim>::mapping_collection);
+    const hp::MappingCollection<dim, dim>& mapping_collection =
+      hp::StaticMappingQ1<dim>::mapping_collection);
 
   /**
    * Compute constraints that correspond to boundary conditions of the form
@@ -1716,8 +1716,8 @@ namespace VectorTools
     const Function<dim, double>&           boundary_function,
     const types::boundary_id               boundary_component,
     ConstraintMatrix&                      constraints,
-    const hp::MappingCollection<dim, dim>& mapping_collection
-    = hp::StaticMappingQ1<dim>::mapping_collection);
+    const hp::MappingCollection<dim, dim>& mapping_collection =
+      hp::StaticMappingQ1<dim>::mapping_collection);
 
   /**
    * This function computes the constraints that correspond to boundary
@@ -2248,8 +2248,8 @@ namespace VectorTools
     const Quadrature<dim - 1>&                                 q,
     const Function<spacedim, typename VectorType::value_type>& rhs,
     VectorType&                                                rhs_vector,
-    const std::set<types::boundary_id>&                        boundary_ids
-    = std::set<types::boundary_id>());
+    const std::set<types::boundary_id>&                        boundary_ids =
+      std::set<types::boundary_id>());
 
   /**
    * Call the create_boundary_right_hand_side() function, see above, with
@@ -2265,8 +2265,8 @@ namespace VectorTools
     const Quadrature<dim - 1>&                                 q,
     const Function<spacedim, typename VectorType::value_type>& rhs,
     VectorType&                                                rhs_vector,
-    const std::set<types::boundary_id>&                        boundary_ids
-    = std::set<types::boundary_id>());
+    const std::set<types::boundary_id>&                        boundary_ids =
+      std::set<types::boundary_id>());
 
   /**
    * Same as the set of functions above, but for hp objects.
@@ -2282,8 +2282,8 @@ namespace VectorTools
     const hp::QCollection<dim - 1>&                            q,
     const Function<spacedim, typename VectorType::value_type>& rhs,
     VectorType&                                                rhs_vector,
-    const std::set<types::boundary_id>&                        boundary_ids
-    = std::set<types::boundary_id>());
+    const std::set<types::boundary_id>&                        boundary_ids =
+      std::set<types::boundary_id>());
 
   /**
    * Call the create_boundary_right_hand_side() function, see above, with a
@@ -2300,8 +2300,8 @@ namespace VectorTools
     const hp::QCollection<dim - 1>&                            q,
     const Function<spacedim, typename VectorType::value_type>& rhs,
     VectorType&                                                rhs_vector,
-    const std::set<types::boundary_id>&                        boundary_ids
-    = std::set<types::boundary_id>());
+    const std::set<types::boundary_id>&                        boundary_ids =
+      std::set<types::boundary_id>());
 
   //@}
   /**

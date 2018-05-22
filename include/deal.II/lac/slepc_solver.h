@@ -478,8 +478,8 @@ namespace SLEPcWrappers
        * Constructor. By default sets the type of reorthogonalization used
        * during the Lanczos iteration to full.
        */
-      AdditionalData(const EPSLanczosReorthogType r
-                     = EPS_LANCZOS_REORTHOG_FULL);
+      AdditionalData(
+        const EPSLanczosReorthogType r = EPS_LANCZOS_REORTHOG_FULL);
     };
 
     /**
@@ -565,10 +565,10 @@ namespace SLEPcWrappers
      * computations are parallelized. By default, this carries the same
      * behaviour as the PETScWrappers, but you can change that.
      */
-    SolverGeneralizedDavidson(SolverControl&  cn,
-                              const MPI_Comm& mpi_communicator
-                              = PETSC_COMM_SELF,
-                              const AdditionalData& data = AdditionalData());
+    SolverGeneralizedDavidson(
+      SolverControl&        cn,
+      const MPI_Comm&       mpi_communicator = PETSC_COMM_SELF,
+      const AdditionalData& data             = AdditionalData());
 
   protected:
     /**
@@ -761,8 +761,8 @@ namespace SLEPcWrappers
     AssertThrow(
       n_converged == n_eigenpairs,
       ExcSLEPcEigenvectorConvergenceMismatchError(n_converged, n_eigenpairs));
-    AssertThrow((real_eigenvectors.size() != 0)
-                  && (imag_eigenvectors.size() != 0),
+    AssertThrow((real_eigenvectors.size() != 0) &&
+                  (imag_eigenvectors.size() != 0),
                 ExcSLEPcWrappersUsageError());
 
     real_eigenvectors.resize(n_converged, real_eigenvectors.front());
@@ -796,8 +796,8 @@ namespace SLEPcWrappers
     // One could still build a vector that is rich in the directions of all guesses,
     // by taking a linear combination of them. (TODO: make function virtual?)
 
-    const PetscErrorCode ierr
-      = EPSSetInitialSpace(eps, vecs.size(), vecs.data());
+    const PetscErrorCode ierr =
+      EPSSetInitialSpace(eps, vecs.size(), vecs.data());
     AssertThrow(ierr == 0, ExcSLEPcError(ierr));
   }
 

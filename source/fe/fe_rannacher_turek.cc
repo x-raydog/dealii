@@ -82,14 +82,14 @@ FE_RannacherTurek<dim>::initialize_support_points()
   this->generalized_support_points.resize(4 * face_quadrature.size());
   for(unsigned int q = 0; q < face_quadrature.size(); ++q)
     {
-      this->generalized_support_points[0 * face_quadrature.size() + q]
-        = dealii::Point<dim>(0, 1 - face_quadrature.point(q)(0));
-      this->generalized_support_points[1 * face_quadrature.size() + q]
-        = dealii::Point<dim>(1, 1 - face_quadrature.point(q)(0));
-      this->generalized_support_points[2 * face_quadrature.size() + q]
-        = dealii::Point<dim>(face_quadrature.point(q)(0), 0);
-      this->generalized_support_points[3 * face_quadrature.size() + q]
-        = dealii::Point<dim>(face_quadrature.point(q)(0), 1);
+      this->generalized_support_points[0 * face_quadrature.size() + q] =
+        dealii::Point<dim>(0, 1 - face_quadrature.point(q)(0));
+      this->generalized_support_points[1 * face_quadrature.size() + q] =
+        dealii::Point<dim>(1, 1 - face_quadrature.point(q)(0));
+      this->generalized_support_points[2 * face_quadrature.size() + q] =
+        dealii::Point<dim>(face_quadrature.point(q)(0), 0);
+      this->generalized_support_points[3 * face_quadrature.size() + q] =
+        dealii::Point<dim>(face_quadrature.point(q)(0), 1);
     }
 }
 
@@ -106,8 +106,8 @@ FE_RannacherTurek<dim>::convert_generalized_support_point_values_to_dof_values(
   const unsigned int q_points_per_face = this->weights.size();
   std::fill(nodal_values.begin(), nodal_values.end(), 0.0);
 
-  std::vector<Vector<double>>::const_iterator value
-    = support_point_values.begin();
+  std::vector<Vector<double>>::const_iterator value =
+    support_point_values.begin();
   for(unsigned int face = 0; face < dealii::GeometryInfo<dim>::faces_per_cell;
       ++face)
     {

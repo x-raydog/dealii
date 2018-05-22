@@ -327,8 +327,8 @@ namespace Utilities
         if(pos_newline != std::string::npos && pos_newline <= width)
           {
             std::string line(text, 0, pos_newline);
-            while((line.length() != 0)
-                  && (line[line.length() - 1] == delimiter))
+            while((line.length() != 0) &&
+                  (line[line.length() - 1] == delimiter))
               line.erase(line.length() - 1, 1);
             lines.push_back(line);
             text.erase(0, pos_newline + 1);
@@ -341,8 +341,8 @@ namespace Utilities
         if(text.length() < width)
           {
             // remove trailing spaces
-            while((text.length() != 0)
-                  && (text[text.length() - 1] == delimiter))
+            while((text.length() != 0) &&
+                  (text[text.length() - 1] == delimiter))
               text.erase(text.length() - 1, 1);
             lines.push_back(text);
             text = "";
@@ -370,8 +370,8 @@ namespace Utilities
             // location and put it into a single
             // line, and remove it from 'text'
             std::string line(text, 0, location);
-            while((line.length() != 0)
-                  && (line[line.length() - 1] == delimiter))
+            while((line.length() != 0) &&
+                  (line[line.length() - 1] == delimiter))
               line.erase(line.length() - 1, 1);
             lines.push_back(line);
             text.erase(0, location);
@@ -708,11 +708,11 @@ namespace Utilities
     comm_world()
     {
 #  ifdef DEAL_II_WITH_MPI
-      static Teuchos::RCP<Epetra_MpiComm> communicator
-        = Teuchos::rcp(new Epetra_MpiComm(MPI_COMM_WORLD), true);
+      static Teuchos::RCP<Epetra_MpiComm> communicator =
+        Teuchos::rcp(new Epetra_MpiComm(MPI_COMM_WORLD), true);
 #  else
-      static Teuchos::RCP<Epetra_SerialComm> communicator
-        = Teuchos::rcp(new Epetra_SerialComm(), true);
+      static Teuchos::RCP<Epetra_SerialComm> communicator =
+        Teuchos::rcp(new Epetra_SerialComm(), true);
 #  endif
 
       return *communicator;
@@ -722,11 +722,11 @@ namespace Utilities
     comm_self()
     {
 #  ifdef DEAL_II_WITH_MPI
-      static Teuchos::RCP<Epetra_MpiComm> communicator
-        = Teuchos::rcp(new Epetra_MpiComm(MPI_COMM_SELF), true);
+      static Teuchos::RCP<Epetra_MpiComm> communicator =
+        Teuchos::rcp(new Epetra_MpiComm(MPI_COMM_SELF), true);
 #  else
-      static Teuchos::RCP<Epetra_SerialComm> communicator
-        = Teuchos::rcp(new Epetra_SerialComm(), true);
+      static Teuchos::RCP<Epetra_SerialComm> communicator =
+        Teuchos::rcp(new Epetra_SerialComm(), true);
 #  endif
 
       return *communicator;
@@ -740,8 +740,8 @@ namespace Utilities
       // see if the communicator is in fact a
       // parallel MPI communicator; if so,
       // return a duplicate of it
-      const Epetra_MpiComm* mpi_comm
-        = dynamic_cast<const Epetra_MpiComm*>(&communicator);
+      const Epetra_MpiComm* mpi_comm =
+        dynamic_cast<const Epetra_MpiComm*>(&communicator);
       if(mpi_comm != nullptr)
         return new Epetra_MpiComm(
           Utilities::MPI::duplicate_communicator(mpi_comm->GetMpiComm()));

@@ -165,10 +165,10 @@ namespace Functions
      * mapping is specified, that is what is used to find out where the points
      * lay. Otherwise the standard Q1 mapping is used.
      */
-    FEFieldFunction(const DoFHandlerType& dh,
-                    const VectorType&     data_vector,
-                    const Mapping<dim>&   mapping
-                    = StaticMappingQ1<dim>::mapping);
+    FEFieldFunction(
+      const DoFHandlerType& dh,
+      const VectorType&     data_vector,
+      const Mapping<dim>&   mapping = StaticMappingQ1<dim>::mapping);
 
     /**
      * Set the current cell. If you know in advance where your points lie, you

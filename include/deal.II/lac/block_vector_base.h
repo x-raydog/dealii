@@ -90,9 +90,8 @@ public:
    * argument to this class is a block vector (in fact whether the type is
    * derived from BlockVectorBase<T>).
    */
-  static const bool value
-    = (sizeof(check_for_block_vector((VectorType*) nullptr))
-       == sizeof(yes_type));
+  static const bool value =
+    (sizeof(check_for_block_vector((VectorType*) nullptr)) == sizeof(yes_type));
 };
 
 // instantiation of the static member
@@ -765,8 +764,7 @@ public:
    * move-constructible, otherwise copy them.
    */
   BlockVectorBase&
-  operator=(BlockVectorBase&& /*V*/)
-    = default; // NOLINT
+  operator=(BlockVectorBase&& /*V*/) = default; // NOLINT
 
   /**
    * Copy operator for template arguments of different types.
@@ -1127,8 +1125,8 @@ namespace internal
       // currently point into, then we
       // can save the computation of
       // the block
-      if((global_index + d >= next_break_backward)
-         && (global_index + d <= next_break_forward))
+      if((global_index + d >= next_break_backward) &&
+         (global_index + d <= next_break_forward))
         return parent->block(current_block)(index_within_block + d);
 
       // if the index is not within the
@@ -1249,8 +1247,8 @@ namespace internal
     {
       Assert(parent == i.parent, ExcPointerToDifferentVectors());
 
-      return (static_cast<signed int>(global_index)
-              - static_cast<signed int>(i.global_index));
+      return (static_cast<signed int>(global_index) -
+              static_cast<signed int>(i.global_index));
     }
 
     template <class BlockVectorType, bool Constness>
@@ -1263,8 +1261,8 @@ namespace internal
       // currently point into, then we
       // can save the computation of
       // the block
-      if((global_index + d >= next_break_backward)
-         && (global_index + d <= next_break_forward))
+      if((global_index + d >= next_break_backward) &&
+         (global_index + d <= next_break_forward))
         return Iterator(*parent,
                         global_index + d,
                         current_block,
@@ -1288,8 +1286,8 @@ namespace internal
       // currently point into, then we
       // can save the computation of
       // the block
-      if((global_index - d >= next_break_backward)
-         && (global_index - d <= next_break_forward))
+      if((global_index - d >= next_break_backward) &&
+         (global_index - d <= next_break_forward))
         return Iterator(*parent,
                         global_index - d,
                         current_block,
@@ -1312,8 +1310,8 @@ namespace internal
       // currently point into, then we
       // can save the computation of
       // the block
-      if((global_index + d >= next_break_backward)
-         && (global_index + d <= next_break_forward))
+      if((global_index + d >= next_break_backward) &&
+         (global_index + d <= next_break_forward))
         {
           global_index += d;
           index_within_block += d;
@@ -1336,8 +1334,8 @@ namespace internal
       // currently point into, then we
       // can save the computation of
       // the block
-      if((global_index - d >= next_break_backward)
-         && (global_index - d <= next_break_forward))
+      if((global_index - d >= next_break_backward) &&
+         (global_index - d <= next_break_forward))
         {
           global_index -= d;
           index_within_block -= d;
@@ -1364,16 +1362,16 @@ namespace internal
       // past-the-end
       if(global_index < parent.size())
         {
-          const std::pair<size_type, size_type> indices
-            = parent.block_indices.global_to_local(global_index);
+          const std::pair<size_type, size_type> indices =
+            parent.block_indices.global_to_local(global_index);
           current_block      = indices.first;
           index_within_block = indices.second;
 
-          next_break_backward
-            = parent.block_indices.local_to_global(current_block, 0);
-          next_break_forward
-            = (parent.block_indices.local_to_global(current_block, 0)
-               + parent.block_indices.block_size(current_block) - 1);
+          next_break_backward =
+            parent.block_indices.local_to_global(current_block, 0);
+          next_break_forward =
+            (parent.block_indices.local_to_global(current_block, 0) +
+             parent.block_indices.block_size(current_block) - 1);
         }
       else
         // past the end. only have one
@@ -1406,8 +1404,8 @@ namespace internal
 
           // compute new break forward
           if(current_block < parent->block_indices.size())
-            next_break_forward
-              += parent->block_indices.block_size(current_block);
+            next_break_forward +=
+              parent->block_indices.block_size(current_block);
           else
             // if we are beyond the end,
             // then move the next
@@ -1430,16 +1428,16 @@ namespace internal
           // ok, we traverse a boundary
           // between blocks:
           --current_block;
-          index_within_block
-            = parent->block_indices.block_size(current_block) - 1;
+          index_within_block =
+            parent->block_indices.block_size(current_block) - 1;
 
           // break forwards is now old
           // break backward
           next_break_forward = next_break_backward - 1;
 
           // compute new break forward
-          next_break_backward
-            -= parent->block_indices.block_size(current_block);
+          next_break_backward -=
+            parent->block_indices.block_size(current_block);
         }
       else
         // current block was 0, we now
@@ -1569,8 +1567,8 @@ template <class VectorType>
 inline bool
 BlockVectorBase<VectorType>::in_local_range(const size_type global_index) const
 {
-  const std::pair<size_type, size_type> local_index
-    = block_indices.global_to_local(global_index);
+  const std::pair<size_type, size_type> local_index =
+    block_indices.global_to_local(global_index);
 
   return components[local_index.first].in_local_range(global_index);
 }
@@ -1629,9 +1627,9 @@ BlockVectorBase<VectorType>::mean_value() const
   value_type sum = 0.;
   // need to do static_cast as otherwise it won't work with value_type=complex<T>
   for(size_type i = 0; i < n_blocks(); ++i)
-    sum += components[i].mean_value()
-           * (typename numbers::NumberTraits<value_type>::real_type(
-               components[i].size()));
+    sum += components[i].mean_value() *
+           (typename numbers::NumberTraits<value_type>::real_type(
+             components[i].size()));
 
   return sum / (typename numbers::NumberTraits<value_type>::real_type(size()));
 }
@@ -1920,8 +1918,8 @@ template <class VectorType>
 std::size_t
 BlockVectorBase<VectorType>::memory_consumption() const
 {
-  return (MemoryConsumption::memory_consumption(this->block_indices)
-          + MemoryConsumption::memory_consumption(this->components));
+  return (MemoryConsumption::memory_consumption(this->block_indices) +
+          MemoryConsumption::memory_consumption(this->components));
 }
 
 template <class VectorType>
@@ -2041,8 +2039,8 @@ template <class VectorType>
 inline typename BlockVectorBase<VectorType>::value_type
 BlockVectorBase<VectorType>::operator()(const size_type i) const
 {
-  const std::pair<unsigned int, size_type> local_index
-    = block_indices.global_to_local(i);
+  const std::pair<unsigned int, size_type> local_index =
+    block_indices.global_to_local(i);
   return components[local_index.first](local_index.second);
 }
 
@@ -2050,8 +2048,8 @@ template <class VectorType>
 inline typename BlockVectorBase<VectorType>::reference
 BlockVectorBase<VectorType>::operator()(const size_type i)
 {
-  const std::pair<unsigned int, size_type> local_index
-    = block_indices.global_to_local(i);
+  const std::pair<unsigned int, size_type> local_index =
+    block_indices.global_to_local(i);
   return components[local_index.first](local_index.second);
 }
 

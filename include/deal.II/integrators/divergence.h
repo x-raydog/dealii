@@ -222,8 +222,8 @@ namespace LocalIntegrators
 
           for(unsigned int i = 0; i < t_dofs; ++i)
             for(unsigned int d = 0; d < dim; ++d)
-              result(i)
-                += dx * input[k][d] * fetest.shape_value_component(i, k, d);
+              result(i) +=
+                dx * input[k][d] * fetest.shape_value_component(i, k, d);
         }
     }
 
@@ -258,8 +258,8 @@ namespace LocalIntegrators
 
           for(unsigned int i = 0; i < t_dofs; ++i)
             for(unsigned int d = 0; d < dim; ++d)
-              result(i)
-                -= dx * input[k] * fetest.shape_grad_component(i, k, d)[d];
+              result(i) -=
+                dx * input[k] * fetest.shape_grad_component(i, k, d)[d];
         }
     }
 
@@ -292,8 +292,8 @@ namespace LocalIntegrators
           for(unsigned int i = 0; i < t_dofs; ++i)
             for(unsigned int j = 0; j < n_dofs; ++j)
               for(unsigned int d = 0; d < dim; ++d)
-                M(i, j) += ndx[d] * fe.shape_value_component(j, k, d)
-                           * fetest.shape_value(i, k);
+                M(i, j) += ndx[d] * fe.shape_value_component(j, k, d) *
+                           fetest.shape_value(i, k);
         }
     }
 
@@ -358,13 +358,13 @@ namespace LocalIntegrators
 
       for(unsigned int k = 0; k < fetest.n_quadrature_points; ++k)
         {
-          const Tensor<1, dim> ndx
-            = factor * fetest.normal_vector(k) * fetest.JxW(k);
+          const Tensor<1, dim> ndx =
+            factor * fetest.normal_vector(k) * fetest.JxW(k);
 
           for(unsigned int i = 0; i < t_dofs; ++i)
             for(unsigned int d = 0; d < dim; ++d)
-              result(i)
-                += ndx[d] * fetest.shape_value_component(i, k, d) * data[k];
+              result(i) +=
+                ndx[d] * fetest.shape_value_component(i, k, d) * data[k];
         }
     }
 
@@ -414,10 +414,10 @@ namespace LocalIntegrators
             for(unsigned int j = 0; j < n_dofs; ++j)
               for(unsigned int d = 0; d < dim; ++d)
                 {
-                  const double un1 = fe1.shape_value_component(j, k, d)
-                                     * fe1.normal_vector(k)[d];
-                  const double un2 = -fe2.shape_value_component(j, k, d)
-                                     * fe1.normal_vector(k)[d];
+                  const double un1 = fe1.shape_value_component(j, k, d) *
+                                     fe1.normal_vector(k)[d];
+                  const double un2 = -fe2.shape_value_component(j, k, d) *
+                                     fe1.normal_vector(k)[d];
                   const double v1 = fetest1.shape_value(i, k);
                   const double v2 = fetest2.shape_value(i, k);
 
@@ -511,14 +511,14 @@ namespace LocalIntegrators
             for(unsigned int j = 0; j < n_dofs; ++j)
               for(unsigned int d = 0; d < dim; ++d)
                 {
-                  const double un1 = fe1.shape_value_component(j, k, d)
-                                     * fe1.normal_vector(k)[d];
-                  const double un2 = -fe2.shape_value_component(j, k, d)
-                                     * fe1.normal_vector(k)[d];
-                  const double vn1 = fe1.shape_value_component(i, k, d)
-                                     * fe1.normal_vector(k)[d];
-                  const double vn2 = -fe2.shape_value_component(i, k, d)
-                                     * fe1.normal_vector(k)[d];
+                  const double un1 = fe1.shape_value_component(j, k, d) *
+                                     fe1.normal_vector(k)[d];
+                  const double un2 = -fe2.shape_value_component(j, k, d) *
+                                     fe1.normal_vector(k)[d];
+                  const double vn1 = fe1.shape_value_component(i, k, d) *
+                                     fe1.normal_vector(k)[d];
+                  const double vn2 = -fe2.shape_value_component(i, k, d) *
+                                     fe1.normal_vector(k)[d];
 
                   M11(i, j) += dx * un1 * vn1;
                   M12(i, j) += dx * un2 * vn1;

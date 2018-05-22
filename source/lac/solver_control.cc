@@ -82,8 +82,8 @@ SolverControl::check(const unsigned int step, const double check_value)
       return success;
     }
 
-  if((step >= maxsteps) || std::isnan(check_value)
-     || (check_failure && (check_value > failure_residual)))
+  if((step >= maxsteps) || std::isnan(check_value) ||
+     (check_failure && (check_value > failure_residual)))
     {
       if(m_log_result)
         deallog << "Failure step " << step << " value " << check_value

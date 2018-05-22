@@ -43,10 +43,10 @@ std::size_t
 MappingQ<dim, spacedim>::InternalData::memory_consumption() const
 {
   return (
-    Mapping<dim, spacedim>::InternalDataBase::memory_consumption()
-    + MemoryConsumption::memory_consumption(use_mapping_q1_on_current_cell)
-    + MemoryConsumption::memory_consumption(mapping_q1_data)
-    + MemoryConsumption::memory_consumption(mapping_qp_data));
+    Mapping<dim, spacedim>::InternalDataBase::memory_consumption() +
+    MemoryConsumption::memory_consumption(use_mapping_q1_on_current_cell) +
+    MemoryConsumption::memory_consumption(mapping_q1_data) +
+    MemoryConsumption::memory_consumption(mapping_qp_data));
 }
 
 template <int dim, int spacedim>
@@ -59,8 +59,8 @@ MappingQ<dim, spacedim>::MappingQ(const unsigned int degree,
     // degree==1, then we are already that Q1 mapping, so we don't need
     // it; if dim!=spacedim, there is also no need for anything because
     // we're most likely on a curved manifold
-    use_mapping_q_on_all_cells(degree == 1 || use_mapping_q_on_all_cells
-                               || (dim != spacedim)),
+    use_mapping_q_on_all_cells(degree == 1 || use_mapping_q_on_all_cells ||
+                               (dim != spacedim)),
     // create a Q1 mapping for use on interior cells (if necessary)
     // or to create a good initial guess in transform_real_to_unit_cell()
     q1_mapping(std::make_shared<MappingQGeneric<dim, spacedim>>(1)),
@@ -80,8 +80,8 @@ MappingQ<dim, spacedim>::MappingQ(const MappingQ<dim, spacedim>& mapping)
 {
   // Note that we really do have to use clone() here, since mapping.q1_mapping
   // may be MappingQ1Eulerian and mapping.qp_mapping may be MappingQEulerian.
-  std::shared_ptr<const Mapping<dim, spacedim>> other_q1_map
-    = mapping.q1_mapping->clone();
+  std::shared_ptr<const Mapping<dim, spacedim>> other_q1_map =
+    mapping.q1_mapping->clone();
   q1_mapping = std::dynamic_pointer_cast<const MappingQGeneric<dim, spacedim>>(
     other_q1_map);
   Assert(q1_mapping != nullptr, ExcInternalError());
@@ -94,10 +94,10 @@ MappingQ<dim, spacedim>::MappingQ(const MappingQ<dim, spacedim>& mapping)
     }
   else
     {
-      std::shared_ptr<const Mapping<dim, spacedim>> other_qp_map
-        = mapping.qp_mapping->clone();
-      qp_mapping
-        = std::dynamic_pointer_cast<const MappingQGeneric<dim, spacedim>>(
+      std::shared_ptr<const Mapping<dim, spacedim>> other_qp_map =
+        mapping.qp_mapping->clone();
+      qp_mapping =
+        std::dynamic_pointer_cast<const MappingQGeneric<dim, spacedim>>(
           other_qp_map);
       Assert(qp_mapping != nullptr, ExcInternalError());
     }
@@ -121,8 +121,8 @@ template <int dim, int spacedim>
 UpdateFlags
 MappingQ<dim, spacedim>::requires_update_flags(const UpdateFlags in) const
 {
-  return (q1_mapping->requires_update_flags(in)
-          | qp_mapping->requires_update_flags(in));
+  return (q1_mapping->requires_update_flags(in) |
+          qp_mapping->requires_update_flags(in));
 }
 
 template <int dim, int spacedim>
@@ -163,8 +163,8 @@ MappingQ<dim, spacedim>::get_face_data(
   // build the Q1 and Qp internal data objects in parallel
   Threads::Task<
     std::unique_ptr<typename Mapping<dim, spacedim>::InternalDataBase>>
-    do_get_data
-    = Threads::new_task(&MappingQGeneric<dim, spacedim>::get_face_data,
+    do_get_data =
+      Threads::new_task(&MappingQGeneric<dim, spacedim>::get_face_data,
                         *qp_mapping,
                         update_flags,
                         quadrature);
@@ -192,8 +192,8 @@ MappingQ<dim, spacedim>::get_subface_data(
   // build the Q1 and Qp internal data objects in parallel
   Threads::Task<
     std::unique_ptr<typename Mapping<dim, spacedim>::InternalDataBase>>
-    do_get_data
-    = Threads::new_task(&MappingQGeneric<dim, spacedim>::get_subface_data,
+    do_get_data =
+      Threads::new_task(&MappingQGeneric<dim, spacedim>::get_subface_data,
                         *qp_mapping,
                         update_flags,
                         quadrature);
@@ -230,8 +230,8 @@ MappingQ<dim, spacedim>::fill_fe_values(
 
   // check whether this cell needs the full mapping or can be treated by a
   // reduced Q1 mapping, e.g. if the cell is in the interior of the domain
-  data.use_mapping_q1_on_current_cell
-    = !(use_mapping_q_on_all_cells || cell->has_boundary_lines());
+  data.use_mapping_q1_on_current_cell =
+    !(use_mapping_q_on_all_cells || cell->has_boundary_lines());
 
   // call the base class. we need to ensure that the flag indicating whether
   // we can use some similarity has to be modified - for a general MappingQ,
@@ -239,11 +239,11 @@ MappingQ<dim, spacedim>::fill_fe_values(
   // data. this needs to be known also for later operations, so modify the
   // variable here. this also affects the calculation of the next cell -- if
   // we use Q1 data on the next cell, the data will still be invalid.
-  const CellSimilarity::Similarity updated_cell_similarity
-    = ((data.use_mapping_q1_on_current_cell == false)
-           && (this->polynomial_degree > 1) ?
-         CellSimilarity::invalid_next_cell :
-         cell_similarity);
+  const CellSimilarity::Similarity updated_cell_similarity =
+    ((data.use_mapping_q1_on_current_cell == false) &&
+         (this->polynomial_degree > 1) ?
+       CellSimilarity::invalid_next_cell :
+       cell_similarity);
 
   // depending on the results above, decide whether the Q1 mapping or
   // the Qp mapping needs to handle this cell
@@ -285,8 +285,8 @@ MappingQ<dim, spacedim>::fill_fe_face_values(
   // is in the interior, as the mapping on the face depends on the mapping of
   // the cell, which in turn depends on the fact whether _any_ of the faces of
   // this cell is at the boundary, not only the present face
-  data.use_mapping_q1_on_current_cell
-    = !(use_mapping_q_on_all_cells || cell->has_boundary_lines());
+  data.use_mapping_q1_on_current_cell =
+    !(use_mapping_q_on_all_cells || cell->has_boundary_lines());
 
   // depending on the results above, decide whether the Q1 mapping or
   // the Qp mapping needs to handle this cell
@@ -321,8 +321,8 @@ MappingQ<dim, spacedim>::fill_fe_subface_values(
   // is in the interior, as the mapping on the face depends on the mapping of
   // the cell, which in turn depends on the fact whether _any_ of the faces of
   // this cell is at the boundary, not only the present face
-  data.use_mapping_q1_on_current_cell
-    = !(use_mapping_q_on_all_cells || cell->has_boundary_lines());
+  data.use_mapping_q1_on_current_cell =
+    !(use_mapping_q_on_all_cells || cell->has_boundary_lines());
 
   // depending on the results above, decide whether the Q1 mapping or
   // the Qp mapping needs to handle this cell
@@ -373,8 +373,7 @@ MappingQ<dim, spacedim>::transform(
 {
   AssertDimension(input.size(), output.size());
   Assert((dynamic_cast<const typename MappingQ<dim, spacedim>::InternalData*>(
-            &mapping_data)
-          != nullptr),
+            &mapping_data) != nullptr),
          ExcInternalError());
   const InternalData* data = dynamic_cast<const InternalData*>(&mapping_data);
 
@@ -396,8 +395,7 @@ MappingQ<dim, spacedim>::transform(
 {
   AssertDimension(input.size(), output.size());
   Assert((dynamic_cast<const typename MappingQ<dim, spacedim>::InternalData*>(
-            &mapping_data)
-          != nullptr),
+            &mapping_data) != nullptr),
          ExcInternalError());
   const InternalData* data = dynamic_cast<const InternalData*>(&mapping_data);
 
@@ -419,8 +417,7 @@ MappingQ<dim, spacedim>::transform(
 {
   AssertDimension(input.size(), output.size());
   Assert((dynamic_cast<const typename MappingQ<dim, spacedim>::InternalData*>(
-            &mapping_data)
-          != nullptr),
+            &mapping_data) != nullptr),
          ExcInternalError());
   const InternalData* data = dynamic_cast<const InternalData*>(&mapping_data);
 
@@ -442,8 +439,7 @@ MappingQ<dim, spacedim>::transform(
 {
   AssertDimension(input.size(), output.size());
   Assert((dynamic_cast<const typename MappingQ<dim, spacedim>::InternalData*>(
-            &mapping_data)
-          != nullptr),
+            &mapping_data) != nullptr),
          ExcInternalError());
   const InternalData* data = dynamic_cast<const InternalData*>(&mapping_data);
 
@@ -476,8 +472,8 @@ MappingQ<dim, spacedim>::transform_real_to_unit_cell(
   const typename Triangulation<dim, spacedim>::cell_iterator& cell,
   const Point<spacedim>&                                      p) const
 {
-  if(cell->has_boundary_lines() || use_mapping_q_on_all_cells
-     || (dim != spacedim))
+  if(cell->has_boundary_lines() || use_mapping_q_on_all_cells ||
+     (dim != spacedim))
     return qp_mapping->transform_real_to_unit_cell(cell, p);
   else
     return q1_mapping->transform_real_to_unit_cell(cell, p);

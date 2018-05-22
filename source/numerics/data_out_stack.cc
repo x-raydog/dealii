@@ -35,8 +35,8 @@ std::size_t
 DataOutStack<dim, spacedim, DoFHandlerType>::DataVector::memory_consumption()
   const
 {
-  return (MemoryConsumption::memory_consumption(data)
-          + MemoryConsumption::memory_consumption(names));
+  return (MemoryConsumption::memory_consumption(data) +
+          MemoryConsumption::memory_consumption(names));
 }
 
 template <int dim, int spacedim, typename DoFHandlerType>
@@ -104,15 +104,15 @@ DataOutStack<dim, spacedim, DoFHandlerType>::declare_data_vector(
       name != names.end();
       ++name)
     {
-      for(typename std::vector<DataVector>::const_iterator data_set
-          = dof_data.begin();
+      for(typename std::vector<DataVector>::const_iterator data_set =
+            dof_data.begin();
           data_set != dof_data.end();
           ++data_set)
         for(unsigned int i = 0; i < data_set->names.size(); ++i)
           Assert(*name != data_set->names[i], ExcNameAlreadyUsed(*name));
 
-      for(typename std::vector<DataVector>::const_iterator data_set
-          = cell_data.begin();
+      for(typename std::vector<DataVector>::const_iterator data_set =
+            cell_data.begin();
           data_set != cell_data.end();
           ++data_set)
         for(unsigned int i = 0; i < data_set->names.size(); ++i)
@@ -146,8 +146,8 @@ DataOutStack<dim, spacedim, DoFHandlerType>::add_data_vector(
   // if only one component or vector
   // is cell vector: we only need one
   // name
-  if((n_components == 1)
-     || (vec.size() == dof_handler->get_triangulation().n_active_cells()))
+  if((n_components == 1) ||
+     (vec.size() == dof_handler->get_triangulation().n_active_cells()))
     {
       names.resize(1, name);
     }
@@ -178,17 +178,16 @@ DataOutStack<dim, spacedim, DoFHandlerType>::add_data_vector(
          Exceptions::DataOutImplementation::ExcNoDoFHandlerSelected());
   // either cell data and one name,
   // or dof data and n_components names
-  Assert(((vec.size() == dof_handler->get_triangulation().n_active_cells())
-          && (names.size() == 1))
-           || ((vec.size() == dof_handler->n_dofs())
-               && (names.size() == dof_handler->get_fe(0).n_components())),
+  Assert(((vec.size() == dof_handler->get_triangulation().n_active_cells()) &&
+          (names.size() == 1)) ||
+           ((vec.size() == dof_handler->n_dofs()) &&
+            (names.size() == dof_handler->get_fe(0).n_components())),
          Exceptions::DataOutImplementation::ExcInvalidNumberOfNames(
            names.size(), dof_handler->get_fe(0).n_components()));
   for(unsigned int i = 0; i < names.size(); ++i)
     Assert(names[i].find_first_not_of("abcdefghijklmnopqrstuvwxyz"
                                       "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                      "0123456789_<>()")
-             == std::string::npos,
+                                      "0123456789_<>()") == std::string::npos,
            Exceptions::DataOutImplementation::ExcInvalidCharacter(
              names[i],
              names[i].find_first_not_of("abcdefghijklmnopqrstuvwxyz"
@@ -211,18 +210,18 @@ DataOutStack<dim, spacedim, DoFHandlerType>::add_data_vector(
       // n_dofs==n_cells, so only
       // bomb out if the next if
       // statement will not be run
-      if(dof_handler->n_dofs()
-         != dof_handler->get_triangulation().n_active_cells())
+      if(dof_handler->n_dofs() !=
+         dof_handler->get_triangulation().n_active_cells())
         Assert(false, ExcVectorNotDeclared(names[0]));
     }
 
   // search cell data
-  if((vec.size() != dof_handler->n_dofs())
-     || (dof_handler->n_dofs()
-         == dof_handler->get_triangulation().n_active_cells()))
+  if((vec.size() != dof_handler->n_dofs()) ||
+     (dof_handler->n_dofs() ==
+      dof_handler->get_triangulation().n_active_cells()))
     {
-      typename std::vector<DataVector>::iterator data_vector
-        = cell_data.begin();
+      typename std::vector<DataVector>::iterator data_vector =
+        cell_data.begin();
       for(; data_vector != cell_data.end(); ++data_vector)
         if(data_vector->names == names)
           {
@@ -246,8 +245,8 @@ DataOutStack<dim, spacedim, DoFHandlerType>::build_patches(
 {
   // this is mostly copied from the
   // DataOut class
-  unsigned int n_subdivisions
-    = (nnnn_subdivisions != 0) ? nnnn_subdivisions : this->default_subdivisions;
+  unsigned int n_subdivisions =
+    (nnnn_subdivisions != 0) ? nnnn_subdivisions : this->default_subdivisions;
 
   Assert(n_subdivisions >= 1,
          Exceptions::DataOutImplementation::ExcInvalidNumberOfSubdivisions(
@@ -258,15 +257,15 @@ DataOutStack<dim, spacedim, DoFHandlerType>::build_patches(
   this->validate_dataset_names();
 
   const unsigned int n_components = dof_handler->get_fe(0).n_components();
-  const unsigned int n_datasets
-    = dof_data.size() * n_components + cell_data.size();
+  const unsigned int n_datasets =
+    dof_data.size() * n_components + cell_data.size();
 
   // first count the cells we want to
   // create patches of and make sure
   // there is enough memory for that
   unsigned int n_patches = 0;
-  for(typename DoFHandlerType::active_cell_iterator cell
-      = dof_handler->begin_active();
+  for(typename DoFHandlerType::active_cell_iterator cell =
+        dof_handler->begin_active();
       cell != dof_handler->end();
       ++cell)
     ++n_patches;
@@ -311,11 +310,10 @@ DataOutStack<dim, spacedim, DoFHandlerType>::build_patches(
   // now loop over all cells and
   // actually create the patches
   typename std::vector<dealii::DataOutBase::Patch<dim + 1, dim + 1>>::iterator
-    patch
-    = patches.begin() + (patches.size() - n_patches);
+               patch       = patches.begin() + (patches.size() - n_patches);
   unsigned int cell_number = 0;
-  for(typename DoFHandlerType::active_cell_iterator cell
-      = dof_handler->begin_active();
+  for(typename DoFHandlerType::active_cell_iterator cell =
+        dof_handler->begin_active();
       cell != dof_handler->end();
       ++cell, ++patch, ++cell_number)
     {
@@ -335,10 +333,10 @@ DataOutStack<dim, spacedim, DoFHandlerType>::build_patches(
       switch(dim)
         {
           case 1:
-            patch->vertices[0]
-              = Point<dim + 1>(cell->vertex(0)(0), parameter - parameter_step);
-            patch->vertices[1]
-              = Point<dim + 1>(cell->vertex(1)(0), parameter - parameter_step);
+            patch->vertices[0] =
+              Point<dim + 1>(cell->vertex(0)(0), parameter - parameter_step);
+            patch->vertices[1] =
+              Point<dim + 1>(cell->vertex(1)(0), parameter - parameter_step);
             patch->vertices[2] = Point<dim + 1>(cell->vertex(0)(0), parameter);
             patch->vertices[3] = Point<dim + 1>(cell->vertex(1)(0), parameter);
             break;
@@ -356,14 +354,14 @@ DataOutStack<dim, spacedim, DoFHandlerType>::build_patches(
             patch->vertices[3] = Point<dim + 1>(cell->vertex(3)(0),
                                                 cell->vertex(3)(1),
                                                 parameter - parameter_step);
-            patch->vertices[4] = Point<dim + 1>(
-              cell->vertex(0)(0), cell->vertex(0)(1), parameter);
-            patch->vertices[5] = Point<dim + 1>(
-              cell->vertex(1)(0), cell->vertex(1)(1), parameter);
-            patch->vertices[6] = Point<dim + 1>(
-              cell->vertex(2)(0), cell->vertex(2)(1), parameter);
-            patch->vertices[7] = Point<dim + 1>(
-              cell->vertex(3)(0), cell->vertex(3)(1), parameter);
+            patch->vertices[4] =
+              Point<dim + 1>(cell->vertex(0)(0), cell->vertex(0)(1), parameter);
+            patch->vertices[5] =
+              Point<dim + 1>(cell->vertex(1)(0), cell->vertex(1)(1), parameter);
+            patch->vertices[6] =
+              Point<dim + 1>(cell->vertex(2)(0), cell->vertex(2)(1), parameter);
+            patch->vertices[7] =
+              Point<dim + 1>(cell->vertex(3)(0), cell->vertex(3)(1), parameter);
             break;
 
           default:
@@ -379,8 +377,8 @@ DataOutStack<dim, spacedim, DoFHandlerType>::build_patches(
       if(n_datasets > 0)
         {
           x_fe_patch_values.reinit(cell);
-          const FEValues<dim>& fe_patch_values
-            = x_fe_patch_values.get_present_fe_values();
+          const FEValues<dim>& fe_patch_values =
+            x_fe_patch_values.get_present_fe_values();
 
           // first fill dof_data
           for(unsigned int dataset = 0; dataset < dof_data.size(); ++dataset)
@@ -391,8 +389,8 @@ DataOutStack<dim, spacedim, DoFHandlerType>::build_patches(
                                                       patch_values);
                   for(unsigned int i = 0; i < n_subdivisions + 1; ++i)
                     for(unsigned int q = 0; q < n_q_points; ++q)
-                      patch->data(dataset, q + n_q_points * i)
-                        = patch_values[q];
+                      patch->data(dataset, q + n_q_points * i) =
+                        patch_values[q];
                 }
               else
                 // system of components
@@ -404,8 +402,8 @@ DataOutStack<dim, spacedim, DoFHandlerType>::build_patches(
                     for(unsigned int i = 0; i < n_subdivisions + 1; ++i)
                       for(unsigned int q = 0; q < n_q_points; ++q)
                         patch->data(dataset * n_components + component,
-                                    q + n_q_points * i)
-                          = patch_values_system[q](component);
+                                    q + n_q_points * i) =
+                          patch_values_system[q](component);
                 }
             }
 
@@ -416,8 +414,7 @@ DataOutStack<dim, spacedim, DoFHandlerType>::build_patches(
               for(unsigned int q = 0; q < n_q_points; ++q)
                 for(unsigned int i = 0; i < n_subdivisions + 1; ++i)
                   patch->data(dataset + dof_data.size() * n_components,
-                              q * (n_subdivisions + 1) + i)
-                    = value;
+                              q * (n_subdivisions + 1) + i) = value;
             }
         }
     }
@@ -444,13 +441,13 @@ template <int dim, int spacedim, typename DoFHandlerType>
 std::size_t
 DataOutStack<dim, spacedim, DoFHandlerType>::memory_consumption() const
 {
-  return (DataOutInterface<dim + 1>::memory_consumption()
-          + MemoryConsumption::memory_consumption(parameter)
-          + MemoryConsumption::memory_consumption(parameter_step)
-          + MemoryConsumption::memory_consumption(dof_handler)
-          + MemoryConsumption::memory_consumption(patches)
-          + MemoryConsumption::memory_consumption(dof_data)
-          + MemoryConsumption::memory_consumption(cell_data));
+  return (DataOutInterface<dim + 1>::memory_consumption() +
+          MemoryConsumption::memory_consumption(parameter) +
+          MemoryConsumption::memory_consumption(parameter_step) +
+          MemoryConsumption::memory_consumption(dof_handler) +
+          MemoryConsumption::memory_consumption(patches) +
+          MemoryConsumption::memory_consumption(dof_data) +
+          MemoryConsumption::memory_consumption(cell_data));
 }
 
 template <int dim, int spacedim, typename DoFHandlerType>
@@ -465,13 +462,13 @@ std::vector<std::string>
 DataOutStack<dim, spacedim, DoFHandlerType>::get_dataset_names() const
 {
   std::vector<std::string> names;
-  for(typename std::vector<DataVector>::const_iterator dataset
-      = dof_data.begin();
+  for(typename std::vector<DataVector>::const_iterator dataset =
+        dof_data.begin();
       dataset != dof_data.end();
       ++dataset)
     names.insert(names.end(), dataset->names.begin(), dataset->names.end());
-  for(typename std::vector<DataVector>::const_iterator dataset
-      = cell_data.begin();
+  for(typename std::vector<DataVector>::const_iterator dataset =
+        cell_data.begin();
       dataset != cell_data.end();
       ++dataset)
     names.insert(names.end(), dataset->names.begin(), dataset->names.end());

@@ -408,8 +408,8 @@ MappingManifold<dim, spacedim>::InternalData::
     {
       for(unsigned int i = 0; i < GeometryInfo<dim>::vertices_per_cell; ++i)
         {
-          cell_manifold_quadrature_weights[q][i]
-            = GeometryInfo<dim>::d_linear_shape_function(quad.point(q), i);
+          cell_manifold_quadrature_weights[q][i] =
+            GeometryInfo<dim>::d_linear_shape_function(quad.point(q), i);
         }
     }
 }

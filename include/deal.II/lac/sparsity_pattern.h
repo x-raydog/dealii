@@ -1185,10 +1185,10 @@ namespace SparsityPatternIterators
   inline bool
   Accessor::is_valid_entry() const
   {
-    return (index_within_sparsity
-              < sparsity_pattern->rowstart[sparsity_pattern->rows]
-            && sparsity_pattern->colnums[index_within_sparsity]
-                 != SparsityPattern::invalid_entry);
+    return (index_within_sparsity <
+              sparsity_pattern->rowstart[sparsity_pattern->rows] &&
+            sparsity_pattern->colnums[index_within_sparsity] !=
+              SparsityPattern::invalid_entry);
   }
 
   inline size_type
@@ -1230,8 +1230,8 @@ namespace SparsityPatternIterators
   inline bool
   Accessor::operator==(const Accessor& other) const
   {
-    return (sparsity_pattern == other.sparsity_pattern
-            && index_within_sparsity == other.index_within_sparsity);
+    return (sparsity_pattern == other.sparsity_pattern &&
+            index_within_sparsity == other.index_within_sparsity);
   }
 
   inline bool
@@ -1245,8 +1245,8 @@ namespace SparsityPatternIterators
   inline void
   Accessor::advance()
   {
-    Assert(index_within_sparsity
-             < sparsity_pattern->rowstart[sparsity_pattern->rows],
+    Assert(index_within_sparsity <
+             sparsity_pattern->rowstart[sparsity_pattern->rows],
            ExcIteratorPastEnd());
     ++index_within_sparsity;
   }
@@ -1428,8 +1428,8 @@ SparsityPattern::operator==(const SparsityPattern& sp2) const
   // comparing the essential ones, we can say that two sparsity patterns are
   // equal even if one is compressed and the other is not (in which case some
   // of the member variables are not yet set correctly)
-  if(rows != sp2.rows || cols != sp2.cols || compressed != sp2.compressed
-     || store_diagonal_first_in_row != sp2.store_diagonal_first_in_row)
+  if(rows != sp2.rows || cols != sp2.cols || compressed != sp2.compressed ||
+     store_diagonal_first_in_row != sp2.store_diagonal_first_in_row)
     return false;
 
   for(size_type i = 0; i < rows + 1; ++i)
@@ -1492,8 +1492,8 @@ SparsityPattern::copy_from(const size_type       n_rows,
   std::vector<unsigned int> row_lengths;
   row_lengths.reserve(n_rows);
   for(ForwardIterator i = begin; i != end; ++i)
-    row_lengths.push_back(std::distance(i->begin(), i->end())
-                          + (is_square ? 1 : 0));
+    row_lengths.push_back(std::distance(i->begin(), i->end()) +
+                          (is_square ? 1 : 0));
   reinit(n_rows, n_cols, row_lengths);
 
   // now enter all the elements into the matrix. note that if the matrix is
@@ -1511,9 +1511,8 @@ SparsityPattern::copy_from(const size_type       n_rows,
       const inner_iterator end_of_row = i->end();
       for(inner_iterator j = i->begin(); j != end_of_row; ++j)
         {
-          const size_type col
-            = internal::SparsityPatternTools::get_column_index_from_iterator(
-              *j);
+          const size_type col =
+            internal::SparsityPatternTools::get_column_index_from_iterator(*j);
           Assert(col < n_cols, ExcIndexRange(col, 0, n_cols));
 
           if((col != row) || !is_square)

@@ -68,8 +68,8 @@ namespace Functions
     Threads::Mutex::ScopedLock lock(acc_mutex);
 
     const double& x = p[0];
-    Assert(x >= interpolation_points.front()
-             && x <= interpolation_points.back(),
+    Assert(x >= interpolation_points.front() &&
+             x <= interpolation_points.back(),
            ExcCSplineRange(
              x, interpolation_points.front(), interpolation_points.back()));
 
@@ -86,8 +86,8 @@ namespace Functions
     Threads::Mutex::ScopedLock lock(acc_mutex);
 
     const double& x = p[0];
-    Assert(x >= interpolation_points.front()
-             && x <= interpolation_points.back(),
+    Assert(x >= interpolation_points.front() &&
+             x <= interpolation_points.back(),
            ExcCSplineRange(
              x, interpolation_points.front(), interpolation_points.back()));
 
@@ -107,8 +107,8 @@ namespace Functions
     Threads::Mutex::ScopedLock lock(acc_mutex);
 
     const double& x = p[0];
-    Assert(x >= interpolation_points.front()
-             && x <= interpolation_points.back(),
+    Assert(x >= interpolation_points.front() &&
+             x <= interpolation_points.back(),
            ExcCSplineRange(
              x, interpolation_points.front(), interpolation_points.back()));
 

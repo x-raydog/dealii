@@ -94,12 +94,12 @@ TensorProductPolynomialsConst<dim>::compute(
          ExcDimensionMismatch2(grads.size(), this->n_tensor_pols + 1, 0));
   Assert(grad_grads.size() == this->n_tensor_pols + 1 || grad_grads.size() == 0,
          ExcDimensionMismatch2(grad_grads.size(), this->n_tensor_pols + 1, 0));
-  Assert(third_derivatives.size() == this->n_tensor_pols + 1
-           || third_derivatives.size() == 0,
+  Assert(third_derivatives.size() == this->n_tensor_pols + 1 ||
+           third_derivatives.size() == 0,
          ExcDimensionMismatch2(
            third_derivatives.size(), this->n_tensor_pols + 1, 0));
-  Assert(fourth_derivatives.size() == this->n_tensor_pols + 1
-           || fourth_derivatives.size() == 0,
+  Assert(fourth_derivatives.size() == this->n_tensor_pols + 1 ||
+           fourth_derivatives.size() == 0,
          ExcDimensionMismatch2(
            fourth_derivatives.size(), this->n_tensor_pols + 1, 0));
 

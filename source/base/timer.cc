@@ -111,10 +111,10 @@ CPUClock::now() noexcept
     GetCurrentProcess(), &createTime, &exitTime, &sysTime, &cpuTime);
   if(succeeded)
     {
-      system_cpu_duration
-        = (double) (((unsigned long long) cpuTime.dwHighDateTime << 32)
-                    | cpuTime.dwLowDateTime)
-          / 1e7;
+      system_cpu_duration =
+        (double) (((unsigned long long) cpuTime.dwHighDateTime << 32) |
+                  cpuTime.dwLowDateTime) /
+        1e7;
     }
     // keep the zero value if GetProcessTimes didn't work
 #elif defined(DEAL_II_HAVE_SYS_RESOURCE_H)
@@ -178,21 +178,21 @@ Timer::stop()
     {
       running = false;
 
-      wall_times.last_lap_time
-        = wall_clock_type::now() - wall_times.current_lap_start_time;
-      cpu_times.last_lap_time
-        = cpu_clock_type::now() - cpu_times.current_lap_start_time;
+      wall_times.last_lap_time =
+        wall_clock_type::now() - wall_times.current_lap_start_time;
+      cpu_times.last_lap_time =
+        cpu_clock_type::now() - cpu_times.current_lap_start_time;
 
       last_lap_wall_time_data = Utilities::MPI::min_max_avg(
         internal::TimerImplementation::to_seconds(wall_times.last_lap_time),
         mpi_communicator);
       if(sync_lap_times)
         {
-          wall_times.last_lap_time
-            = internal::TimerImplementation::from_seconds<decltype(
+          wall_times.last_lap_time =
+            internal::TimerImplementation::from_seconds<decltype(
               wall_times)::duration_type>(last_lap_wall_time_data.max);
-          cpu_times.last_lap_time
-            = internal::TimerImplementation::from_seconds<decltype(
+          cpu_times.last_lap_time =
+            internal::TimerImplementation::from_seconds<decltype(
               cpu_times)::duration_type>(
               Utilities::MPI::min_max_avg(
                 internal::TimerImplementation::to_seconds(
@@ -215,8 +215,8 @@ Timer::cpu_time() const
   if(running)
     {
       const double running_time = internal::TimerImplementation::to_seconds(
-        cpu_clock_type::now() - cpu_times.current_lap_start_time
-        + cpu_times.accumulated_time);
+        cpu_clock_type::now() - cpu_times.current_lap_start_time +
+        cpu_times.accumulated_time);
       return Utilities::MPI::sum(running_time, mpi_communicator);
     }
   else
@@ -250,9 +250,9 @@ Timer::wall_time() const
 {
   wall_clock_type::duration current_elapsed_wall_time;
   if(running)
-    current_elapsed_wall_time = wall_clock_type::now()
-                                - wall_times.current_lap_start_time
-                                + wall_times.accumulated_time;
+    current_elapsed_wall_time = wall_clock_type::now() -
+                                wall_times.current_lap_start_time +
+                                wall_times.accumulated_time;
   else
     current_elapsed_wall_time = wall_times.accumulated_time;
 
@@ -327,9 +327,9 @@ TimerOutput::~TimerOutput()
         while(active_sections.size() > 0)
           leave_subsection();
         // don't print unless we leave all subsections
-        if((output_frequency == summary
-            || output_frequency == every_call_and_summary)
-           && output_is_enabled == true)
+        if((output_frequency == summary ||
+            output_frequency == every_call_and_summary) &&
+           output_is_enabled == true)
           print_summary();
       }
     catch(...)
@@ -370,10 +370,11 @@ TimerOutput::enter_subsection(const std::string& section_name)
 
   Assert(section_name.empty() == false, ExcMessage("Section string is empty."));
 
-  Assert(std::find(active_sections.begin(), active_sections.end(), section_name)
-           == active_sections.end(),
-         ExcMessage(std::string("Cannot enter the already active section <")
-                    + section_name + ">."));
+  Assert(std::find(active_sections.begin(),
+                   active_sections.end(),
+                   section_name) == active_sections.end(),
+         ExcMessage(std::string("Cannot enter the already active section <") +
+                    section_name + ">."));
 
   if(sections.find(section_name) == sections.end())
     {
@@ -413,20 +414,20 @@ TimerOutput::leave_subsection(const std::string& section_name)
     {
       Assert(sections.find(section_name) != sections.end(),
              ExcMessage("Cannot delete a section that was never created."));
-      Assert(
-        std::find(active_sections.begin(), active_sections.end(), section_name)
-          != active_sections.end(),
-        ExcMessage("Cannot delete a section that has not been entered."));
+      Assert(std::find(active_sections.begin(),
+                       active_sections.end(),
+                       section_name) != active_sections.end(),
+             ExcMessage("Cannot delete a section that has not been entered."));
     }
 
   // if no string is given, exit the last
   // active section.
-  const std::string actual_section_name
-    = (section_name == "" ? active_sections.back() : section_name);
+  const std::string actual_section_name =
+    (section_name == "" ? active_sections.back() : section_name);
 
   sections[actual_section_name].timer.stop();
-  sections[actual_section_name].total_wall_time
-    += sections[actual_section_name].timer.last_wall_time();
+  sections[actual_section_name].total_wall_time +=
+    sections[actual_section_name].timer.last_wall_time();
 
   // Get cpu time. On MPI systems, if constructed with an mpi_communicator
   // like MPI_COMM_WORLD, then the Timer will sum up the CPU time between
@@ -436,9 +437,9 @@ TimerOutput::leave_subsection(const std::string& section_name)
   sections[actual_section_name].total_cpu_time += cpu_time;
 
   // in case we have to print out something, do that here...
-  if((output_frequency == every_call
-      || output_frequency == every_call_and_summary)
-     && output_is_enabled == true)
+  if((output_frequency == every_call ||
+      output_frequency == every_call_and_summary) &&
+     output_is_enabled == true)
     {
       std::string        output_time;
       std::ostringstream cpu;
@@ -450,8 +451,8 @@ TimerOutput::leave_subsection(const std::string& section_name)
       else if(output_type == wall_times)
         output_time = ", wall time: " + wall.str() + ".";
       else
-        output_time
-          = ", CPU/wall time: " + cpu.str() + " / " + wall.str() + ".";
+        output_time =
+          ", CPU/wall time: " + cpu.str() + " / " + wall.str() + ".";
 
       out_stream << actual_section_name << output_time << std::endl;
     }
@@ -500,8 +501,8 @@ TimerOutput::print_summary() const
   // in case we want to write CPU times
   if(output_type != wall_times)
     {
-      double total_cpu_time
-        = Utilities::MPI::sum(timer_all(), mpi_communicator);
+      double total_cpu_time =
+        Utilities::MPI::sum(timer_all(), mpi_communicator);
 
       // check that the sum of all times is
       // less or equal than the total
@@ -639,8 +640,8 @@ TimerOutput::print_summary() const
               // if run time was less than 0.1%, just print a zero to avoid
               // printing silly things such as "2.45e-6%". otherwise print
               // the actual percentage
-              const double fraction
-                = i->second.total_wall_time / total_wall_time;
+              const double fraction =
+                i->second.total_wall_time / total_wall_time;
               if(fraction > 0.001)
                 {
                   out_stream << std::setprecision(2);

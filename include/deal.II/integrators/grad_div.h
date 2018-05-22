@@ -65,10 +65,10 @@ namespace LocalIntegrators
           for(unsigned int i = 0; i < n_dofs; ++i)
             for(unsigned int j = 0; j < n_dofs; ++j)
               {
-                const double divu
-                  = fe[FEValuesExtractors::Vector(0)].divergence(j, k);
-                const double divv
-                  = fe[FEValuesExtractors::Vector(0)].divergence(i, k);
+                const double divu =
+                  fe[FEValuesExtractors::Vector(0)].divergence(j, k);
+                const double divv =
+                  fe[FEValuesExtractors::Vector(0)].divergence(i, k);
 
                 M(i, j) += dx * divu * divv;
               }
@@ -102,8 +102,8 @@ namespace LocalIntegrators
           const double dx = factor * fetest.JxW(k);
           for(unsigned int i = 0; i < n_dofs; ++i)
             {
-              const double divv
-                = fetest[FEValuesExtractors::Vector(0)].divergence(i, k);
+              const double divv =
+                fetest[FEValuesExtractors::Vector(0)].divergence(i, k);
               double du = 0.;
               for(unsigned int d = 0; d < dim; ++d)
                 du += input[d][k][d];
@@ -140,10 +140,10 @@ namespace LocalIntegrators
           for(unsigned int i = 0; i < n_dofs; ++i)
             for(unsigned int j = 0; j < n_dofs; ++j)
               {
-                const double divu
-                  = fe[FEValuesExtractors::Vector(0)].divergence(j, k);
-                const double divv
-                  = fe[FEValuesExtractors::Vector(0)].divergence(i, k);
+                const double divu =
+                  fe[FEValuesExtractors::Vector(0)].divergence(j, k);
+                const double divv =
+                  fe[FEValuesExtractors::Vector(0)].divergence(i, k);
                 double un = 0., vn = 0.;
                 for(unsigned int d = 0; d < dim; ++d)
                   {
@@ -208,13 +208,13 @@ namespace LocalIntegrators
           for(unsigned int i = 0; i < n_dofs; ++i)
             {
               double       vn = 0.;
-              const double divv
-                = fe[FEValuesExtractors::Vector(0)].divergence(i, k);
+              const double divv =
+                fe[FEValuesExtractors::Vector(0)].divergence(i, k);
               for(unsigned int d = 0; d < dim; ++d)
                 vn += fe.shape_value_component(i, k, d) * n[d];
 
-              result(i)
-                += dx * (2. * penalty * umgn * vn - divv * umgn - divu * vn);
+              result(i) +=
+                dx * (2. * penalty * umgn * vn - divv * umgn - divu * vn);
             }
         }
     }
@@ -264,14 +264,14 @@ namespace LocalIntegrators
                 double       une = 0.;
                 double       vni = 0.;
                 double       vne = 0.;
-                const double divui
-                  = fe1[FEValuesExtractors::Vector(0)].divergence(j, k);
-                const double divue
-                  = fe2[FEValuesExtractors::Vector(0)].divergence(j, k);
-                const double divvi
-                  = fe1[FEValuesExtractors::Vector(0)].divergence(i, k);
-                const double divve
-                  = fe2[FEValuesExtractors::Vector(0)].divergence(i, k);
+                const double divui =
+                  fe1[FEValuesExtractors::Vector(0)].divergence(j, k);
+                const double divue =
+                  fe2[FEValuesExtractors::Vector(0)].divergence(j, k);
+                const double divvi =
+                  fe1[FEValuesExtractors::Vector(0)].divergence(i, k);
+                const double divve =
+                  fe2[FEValuesExtractors::Vector(0)].divergence(i, k);
 
                 for(unsigned int d = 0; d < dim; ++d)
                   {
@@ -280,18 +280,18 @@ namespace LocalIntegrators
                     vni += fe1.shape_value_component(i, k, d) * n[d];
                     vne += fe2.shape_value_component(i, k, d) * n[d];
                   }
-                M11(i, j) += dx
-                             * (-.5 * fi * divvi * uni - .5 * fi * divui * vni
-                                + f * penalty * uni * vni);
-                M12(i, j) += dx
-                             * (.5 * fi * divvi * une - .5 * fe * divue * vni
-                                - f * penalty * vni * une);
-                M21(i, j) += dx
-                             * (-.5 * fe * divve * uni + .5 * fi * divui * vne
-                                - f * penalty * uni * vne);
-                M22(i, j) += dx
-                             * (.5 * fe * divve * une + .5 * fe * divue * vne
-                                + f * penalty * une * vne);
+                M11(i, j) +=
+                  dx * (-.5 * fi * divvi * uni - .5 * fi * divui * vni +
+                        f * penalty * uni * vni);
+                M12(i, j) +=
+                  dx * (.5 * fi * divvi * une - .5 * fe * divue * vni -
+                        f * penalty * vni * une);
+                M21(i, j) +=
+                  dx * (-.5 * fe * divve * uni + .5 * fi * divui * vne -
+                        f * penalty * uni * vne);
+                M22(i, j) +=
+                  dx * (.5 * fe * divve * une + .5 * fe * divue * vne +
+                        f * penalty * une * vne);
               }
         }
     }
@@ -359,28 +359,24 @@ namespace LocalIntegrators
             {
               double       vni = 0.;
               double       vne = 0.;
-              const double divvi
-                = fe1[FEValuesExtractors::Vector(0)].divergence(i, k);
-              const double divve
-                = fe2[FEValuesExtractors::Vector(0)].divergence(i, k);
+              const double divvi =
+                fe1[FEValuesExtractors::Vector(0)].divergence(i, k);
+              const double divve =
+                fe2[FEValuesExtractors::Vector(0)].divergence(i, k);
               for(unsigned int d = 0; d < dim; ++d)
                 {
                   vni += fe1.shape_value_component(i, k, d) * n[d];
                   vne += fe2.shape_value_component(i, k, d) * n[d];
                 }
 
-              result1(i) += dx
-                            * (-.5 * fi * divvi * uni - .5 * fi * divui * vni
-                               + penalty * uni * vni);
-              result1(i) += dx
-                            * (.5 * fi * divvi * une - .5 * fe * divue * vni
-                               - penalty * vni * une);
-              result2(i) += dx
-                            * (-.5 * fe * divve * uni + .5 * fi * divui * vne
-                               - penalty * uni * vne);
-              result2(i) += dx
-                            * (.5 * fe * divve * une + .5 * fe * divue * vne
-                               + penalty * une * vne);
+              result1(i) += dx * (-.5 * fi * divvi * uni -
+                                  .5 * fi * divui * vni + penalty * uni * vni);
+              result1(i) += dx * (.5 * fi * divvi * une -
+                                  .5 * fe * divue * vni - penalty * vni * une);
+              result2(i) += dx * (-.5 * fe * divve * uni +
+                                  .5 * fi * divui * vne - penalty * uni * vne);
+              result2(i) += dx * (.5 * fe * divve * une +
+                                  .5 * fe * divue * vne + penalty * une * vne);
             }
         }
     }

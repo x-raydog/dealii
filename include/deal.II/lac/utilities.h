@@ -227,11 +227,11 @@ namespace Utilities
       const NumberType tau = g / f;
       AssertThrow(
         std::abs(tau) < 1.,
-        ExcMessage("real-valued Hyperbolic rotation does not exist for ("
-                   + std::to_string(f) + "," + std::to_string(g) + ")"));
-      const NumberType u
-        = std::copysign(sqrt((1. - tau) * (1. + tau)),
-                        f); // <-- more stable than std::sqrt(1.-tau*tau)
+        ExcMessage("real-valued Hyperbolic rotation does not exist for (" +
+                   std::to_string(f) + "," + std::to_string(g) + ")"));
+      const NumberType u =
+        std::copysign(sqrt((1. - tau) * (1. + tau)),
+                      f); // <-- more stable than std::sqrt(1.-tau*tau)
       std::array<NumberType, 3> csr;
       csr[0] = 1. / u;       // c
       csr[1] = csr[0] * tau; // s
@@ -440,8 +440,8 @@ namespace Utilities
       const double alpha = 1. / e;
       const double beta  = -c / e;
 
-      const double sigma1
-        = e / (a_L - c); // BUGFIX which is relevant for odd degrees
+      const double sigma1 =
+        e / (a_L - c); // BUGFIX which is relevant for odd degrees
       double       sigma = scale ? sigma1 : 1.;
       const double tau   = 2. / sigma;
       op.vmult(y, x);

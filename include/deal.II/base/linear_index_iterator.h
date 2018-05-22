@@ -417,8 +417,8 @@ LinearIndexIterator<DerivedIterator, AccessorType>::
 operator==(const DerivedIterator& other) const
 {
   const auto& other_2 = static_cast<decltype(*this)&>(other);
-  return accessor.container == other_2.accessor.container
-         && accessor.linear_index == other_2.accessor.linear_index;
+  return accessor.container == other_2.accessor.container &&
+         accessor.linear_index == other_2.accessor.linear_index;
 }
 
 template <class DerivedIterator, class AccessorType>

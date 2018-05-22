@@ -174,8 +174,8 @@ namespace Step38
   double
   Solution<3>::value(const Point<3>& p, const unsigned int) const
   {
-    return (std::sin(numbers::PI * p(0)) * std::cos(numbers::PI * p(1))
-            * exp(p(2)));
+    return (std::sin(numbers::PI * p(0)) * std::cos(numbers::PI * p(1)) *
+            exp(p(2)));
   }
 
   template <>
@@ -242,8 +242,8 @@ namespace Step38
     Point<3> normal = p;
     normal /= p.norm();
 
-    return (-trace(hessian) + 2 * (gradient * normal)
-            + (hessian * normal) * normal);
+    return (-trace(hessian) + 2 * (gradient * normal) +
+            (hessian * normal) * normal);
   }
 
   // @sect3{Implementation of the <code>LaplaceBeltramiProblem</code> class}
@@ -356,9 +356,9 @@ namespace Step38
     FEValues<dim, spacedim> fe_values(mapping,
                                       fe,
                                       quadrature_formula,
-                                      update_values | update_gradients
-                                        | update_quadrature_points
-                                        | update_JxW_values);
+                                      update_values | update_gradients |
+                                        update_quadrature_points |
+                                        update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -371,9 +371,9 @@ namespace Step38
 
     const RightHandSide<spacedim> rhs;
 
-    for(typename DoFHandler<dim, spacedim>::active_cell_iterator cell
-        = dof_handler.begin_active(),
-        endc = dof_handler.end();
+    for(typename DoFHandler<dim, spacedim>::active_cell_iterator
+          cell = dof_handler.begin_active(),
+          endc = dof_handler.end();
         cell != endc;
         ++cell)
       {
@@ -387,14 +387,14 @@ namespace Step38
         for(unsigned int i = 0; i < dofs_per_cell; ++i)
           for(unsigned int j = 0; j < dofs_per_cell; ++j)
             for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
-              cell_matrix(i, j) += fe_values.shape_grad(i, q_point)
-                                   * fe_values.shape_grad(j, q_point)
-                                   * fe_values.JxW(q_point);
+              cell_matrix(i, j) += fe_values.shape_grad(i, q_point) *
+                                   fe_values.shape_grad(j, q_point) *
+                                   fe_values.JxW(q_point);
 
         for(unsigned int i = 0; i < dofs_per_cell; ++i)
           for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
-            cell_rhs(i) += fe_values.shape_value(i, q_point)
-                           * rhs_values[q_point] * fe_values.JxW(q_point);
+            cell_rhs(i) += fe_values.shape_value(i, q_point) *
+                           rhs_values[q_point] * fe_values.JxW(q_point);
 
         cell->get_dof_indices(local_dof_indices);
         for(unsigned int i = 0; i < dofs_per_cell; ++i)

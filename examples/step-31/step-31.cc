@@ -180,15 +180,15 @@ namespace Step31
 
       Assert((dim == 2) || (dim == 3), ExcNotImplemented());
 
-      static const Point<dim> source_centers[3]
-        = {(dim == 2 ? Point<dim>(.3, .1) : Point<dim>(.3, .5, .1)),
-           (dim == 2 ? Point<dim>(.45, .1) : Point<dim>(.45, .5, .1)),
-           (dim == 2 ? Point<dim>(.75, .1) : Point<dim>(.75, .5, .1))};
+      static const Point<dim> source_centers[3] = {
+        (dim == 2 ? Point<dim>(.3, .1) : Point<dim>(.3, .5, .1)),
+        (dim == 2 ? Point<dim>(.45, .1) : Point<dim>(.45, .5, .1)),
+        (dim == 2 ? Point<dim>(.75, .1) : Point<dim>(.75, .5, .1))};
       static const double source_radius = (dim == 2 ? 1. / 32 : 1. / 8);
 
-      return ((source_centers[0].distance(p) < source_radius)
-                  || (source_centers[1].distance(p) < source_radius)
-                  || (source_centers[2].distance(p) < source_radius) ?
+      return ((source_centers[0].distance(p) < source_radius) ||
+                  (source_centers[1].distance(p) < source_radius) ||
+                  (source_centers[2].distance(p) < source_radius) ?
                 1 :
                 0);
     }
@@ -629,9 +629,10 @@ namespace Step31
 
     const FEValuesExtractors::Vector velocities(0);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = stokes_dof_handler.begin_active(),
-      endc = stokes_dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell = stokes_dof_handler
+                                                            .begin_active(),
+                                                   endc =
+                                                     stokes_dof_handler.end();
     for(; cell != endc; ++cell)
       {
         fe_values.reinit(cell);
@@ -686,8 +687,8 @@ namespace Step31
         double min_temperature = std::numeric_limits<double>::max(),
                max_temperature = -std::numeric_limits<double>::max();
 
-        typename DoFHandler<dim>::active_cell_iterator cell
-          = temperature_dof_handler.begin_active(),
+        typename DoFHandler<dim>::active_cell_iterator
+          cell = temperature_dof_handler.begin_active(),
           endc = temperature_dof_handler.end();
         for(; cell != endc; ++cell)
           {
@@ -699,9 +700,9 @@ namespace Step31
 
             for(unsigned int q = 0; q < n_q_points; ++q)
               {
-                const double temperature
-                  = (1. + time_step / old_time_step) * old_temperature_values[q]
-                    - time_step / old_time_step * old_old_temperature_values[q];
+                const double temperature =
+                  (1. + time_step / old_time_step) * old_temperature_values[q] -
+                  time_step / old_time_step * old_old_temperature_values[q];
 
                 min_temperature = std::min(min_temperature, temperature);
                 max_temperature = std::max(max_temperature, temperature);
@@ -715,8 +716,8 @@ namespace Step31
         double min_temperature = std::numeric_limits<double>::max(),
                max_temperature = -std::numeric_limits<double>::max();
 
-        typename DoFHandler<dim>::active_cell_iterator cell
-          = temperature_dof_handler.begin_active(),
+        typename DoFHandler<dim>::active_cell_iterator
+          cell = temperature_dof_handler.begin_active(),
           endc = temperature_dof_handler.end();
         for(; cell != endc; ++cell)
           {
@@ -789,36 +790,36 @@ namespace Step31
 
     for(unsigned int q = 0; q < n_q_points; ++q)
       {
-        const Tensor<1, dim> u
-          = (old_velocity_values[q] + old_old_velocity_values[q]) / 2;
+        const Tensor<1, dim> u =
+          (old_velocity_values[q] + old_old_velocity_values[q]) / 2;
 
-        const double dT_dt
-          = (old_temperature[q] - old_old_temperature[q]) / old_time_step;
-        const double u_grad_T
-          = u * (old_temperature_grads[q] + old_old_temperature_grads[q]) / 2;
+        const double dT_dt =
+          (old_temperature[q] - old_old_temperature[q]) / old_time_step;
+        const double u_grad_T =
+          u * (old_temperature_grads[q] + old_old_temperature_grads[q]) / 2;
 
-        const double kappa_Delta_T = EquationData::kappa
-                                     * (old_temperature_laplacians[q]
-                                        + old_old_temperature_laplacians[q])
-                                     / 2;
+        const double kappa_Delta_T =
+          EquationData::kappa *
+          (old_temperature_laplacians[q] + old_old_temperature_laplacians[q]) /
+          2;
 
-        const double residual = std::abs(
-          (dT_dt + u_grad_T - kappa_Delta_T - gamma_values[q])
-          * std::pow((old_temperature[q] + old_old_temperature[q]) / 2,
-                     alpha - 1.));
+        const double residual =
+          std::abs((dT_dt + u_grad_T - kappa_Delta_T - gamma_values[q]) *
+                   std::pow((old_temperature[q] + old_old_temperature[q]) / 2,
+                            alpha - 1.));
 
         max_residual = std::max(residual, max_residual);
         max_velocity = std::max(std::sqrt(u * u), max_velocity);
       }
 
     const double c_R            = std::pow(2., (4. - 2 * alpha) / dim);
-    const double global_scaling = c_R * global_u_infty * global_T_variation
-                                  * std::pow(global_Omega_diameter, alpha - 2.);
+    const double global_scaling = c_R * global_u_infty * global_T_variation *
+                                  std::pow(global_Omega_diameter, alpha - 2.);
 
-    return (beta * max_velocity
-            * std::min(cell_diameter,
-                       std::pow(cell_diameter, alpha) * max_residual
-                         / global_scaling));
+    return (
+      beta * max_velocity *
+      std::min(cell_diameter,
+               std::pow(cell_diameter, alpha) * max_residual / global_scaling));
   }
 
   // @sect4{BoussinesqFlowProblem::setup_dofs}
@@ -1055,8 +1056,8 @@ namespace Step31
     const QGauss<dim> quadrature_formula(stokes_degree + 2);
     FEValues<dim>     stokes_fe_values(stokes_fe,
                                    quadrature_formula,
-                                   update_JxW_values | update_values
-                                     | update_gradients);
+                                   update_JxW_values | update_values |
+                                     update_gradients);
 
     const unsigned int dofs_per_cell = stokes_fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -1070,9 +1071,10 @@ namespace Step31
     const FEValuesExtractors::Vector velocities(0);
     const FEValuesExtractors::Scalar pressure(dim);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = stokes_dof_handler.begin_active(),
-      endc = stokes_dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell = stokes_dof_handler
+                                                            .begin_active(),
+                                                   endc =
+                                                     stokes_dof_handler.end();
     for(; cell != endc; ++cell)
       {
         stokes_fe_values.reinit(cell);
@@ -1099,11 +1101,11 @@ namespace Step31
 
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
               for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                local_matrix(i, j)
-                  += (EquationData::eta
-                        * scalar_product(grad_phi_u[i], grad_phi_u[j])
-                      + (1. / EquationData::eta) * phi_p[i] * phi_p[j])
-                     * stokes_fe_values.JxW(q);
+                local_matrix(i, j) +=
+                  (EquationData::eta *
+                     scalar_product(grad_phi_u[i], grad_phi_u[j]) +
+                   (1. / EquationData::eta) * phi_p[i] * phi_p[j]) *
+                  stokes_fe_values.JxW(q);
           }
 
         cell->get_dof_indices(local_dof_indices);
@@ -1257,8 +1259,8 @@ namespace Step31
     FEValues<dim>     stokes_fe_values(
       stokes_fe,
       quadrature_formula,
-      update_values | update_quadrature_points | update_JxW_values
-        | (rebuild_stokes_matrix == true ? update_gradients : UpdateFlags(0)));
+      update_values | update_quadrature_points | update_JxW_values |
+        (rebuild_stokes_matrix == true ? update_gradients : UpdateFlags(0)));
 
     FEValues<dim> temperature_fe_values(
       temperature_fe, quadrature_formula, update_values);
@@ -1305,11 +1307,12 @@ namespace Step31
     // the update flags, zeroing out the local arrays and getting the values
     // of the old solution at the quadrature points. Then we are ready to loop
     // over the quadrature points on the cell.
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = stokes_dof_handler.begin_active(),
-      endc = stokes_dof_handler.end();
-    typename DoFHandler<dim>::active_cell_iterator temperature_cell
-      = temperature_dof_handler.begin_active();
+    typename DoFHandler<dim>::active_cell_iterator cell = stokes_dof_handler
+                                                            .begin_active(),
+                                                   endc =
+                                                     stokes_dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator temperature_cell =
+      temperature_dof_handler.begin_active();
 
     for(; cell != endc; ++cell, ++temperature_cell)
       {
@@ -1343,10 +1346,10 @@ namespace Step31
                 phi_u[k] = stokes_fe_values[velocities].value(k, q);
                 if(rebuild_stokes_matrix)
                   {
-                    grads_phi_u[k]
-                      = stokes_fe_values[velocities].symmetric_gradient(k, q);
-                    div_phi_u[k]
-                      = stokes_fe_values[velocities].divergence(k, q);
+                    grads_phi_u[k] =
+                      stokes_fe_values[velocities].symmetric_gradient(k, q);
+                    div_phi_u[k] =
+                      stokes_fe_values[velocities].divergence(k, q);
                     phi_p[k] = stokes_fe_values[pressure].value(k, q);
                   }
               }
@@ -1354,18 +1357,17 @@ namespace Step31
             if(rebuild_stokes_matrix)
               for(unsigned int i = 0; i < dofs_per_cell; ++i)
                 for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                  local_matrix(i, j)
-                    += (EquationData::eta * 2
-                          * (grads_phi_u[i] * grads_phi_u[j])
-                        - div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j])
-                       * stokes_fe_values.JxW(q);
+                  local_matrix(i, j) +=
+                    (EquationData::eta * 2 * (grads_phi_u[i] * grads_phi_u[j]) -
+                     div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j]) *
+                    stokes_fe_values.JxW(q);
 
-            const Point<dim> gravity
-              = -((dim == 2) ? (Point<dim>(0, 1)) : (Point<dim>(0, 0, 1)));
+            const Point<dim> gravity =
+              -((dim == 2) ? (Point<dim>(0, 1)) : (Point<dim>(0, 0, 1)));
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
-              local_rhs(i) += (-EquationData::density * EquationData::beta
-                               * gravity * phi_u[i] * old_temperature)
-                              * stokes_fe_values.JxW(q);
+              local_rhs(i) += (-EquationData::density * EquationData::beta *
+                               gravity * phi_u[i] * old_temperature) *
+                              stokes_fe_values.JxW(q);
           }
 
         // The last step in the loop over all cells is to enter the local
@@ -1425,8 +1427,8 @@ namespace Step31
     QGauss<dim>   quadrature_formula(temperature_degree + 2);
     FEValues<dim> temperature_fe_values(temperature_fe,
                                         quadrature_formula,
-                                        update_values | update_gradients
-                                          | update_JxW_values);
+                                        update_values | update_gradients |
+                                          update_JxW_values);
 
     const unsigned int dofs_per_cell = temperature_fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -1447,8 +1449,8 @@ namespace Step31
     // <code>EquationData::kappa</code>. Finally, we let the constraints
     // object insert these values into the global matrix, and directly
     // condense the constraints into the matrix.
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = temperature_dof_handler.begin_active(),
+    typename DoFHandler<dim>::active_cell_iterator
+      cell = temperature_dof_handler.begin_active(),
       endc = temperature_dof_handler.end();
     for(; cell != endc; ++cell)
       {
@@ -1468,11 +1470,11 @@ namespace Step31
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
               for(unsigned int j = 0; j < dofs_per_cell; ++j)
                 {
-                  local_mass_matrix(i, j)
-                    += (phi_T[i] * phi_T[j] * temperature_fe_values.JxW(q));
-                  local_stiffness_matrix(i, j)
-                    += (EquationData::kappa * grad_phi_T[i] * grad_phi_T[j]
-                        * temperature_fe_values.JxW(q));
+                  local_mass_matrix(i, j) +=
+                    (phi_T[i] * phi_T[j] * temperature_fe_values.JxW(q));
+                  local_stiffness_matrix(i, j) +=
+                    (EquationData::kappa * grad_phi_T[i] * grad_phi_T[j] *
+                     temperature_fe_values.JxW(q));
                 }
           }
 
@@ -1515,8 +1517,8 @@ namespace Step31
     if(use_bdf2_scheme == true)
       {
         temperature_matrix.copy_from(temperature_mass_matrix);
-        temperature_matrix
-          *= (2 * time_step + old_time_step) / (time_step + old_time_step);
+        temperature_matrix *=
+          (2 * time_step + old_time_step) / (time_step + old_time_step);
         temperature_matrix.add(time_step, temperature_stiffness_matrix);
       }
     else
@@ -1531,8 +1533,8 @@ namespace Step31
     FEValues<dim>     temperature_fe_values(
       temperature_fe,
       quadrature_formula,
-      update_values | update_gradients | update_hessians
-        | update_quadrature_points | update_JxW_values);
+      update_values | update_gradients | update_hessians |
+        update_quadrature_points | update_JxW_values);
     FEValues<dim> stokes_fe_values(
       stokes_fe, quadrature_formula, update_values);
 
@@ -1567,8 +1569,8 @@ namespace Step31
     std::vector<double>         phi_T(dofs_per_cell);
     std::vector<Tensor<1, dim>> grad_phi_T(dofs_per_cell);
 
-    const std::pair<double, double> global_T_range
-      = get_extrapolated_temperature_range();
+    const std::pair<double, double> global_T_range =
+      get_extrapolated_temperature_range();
 
     const FEValuesExtractors::Vector velocities(0);
 
@@ -1585,11 +1587,11 @@ namespace Step31
     // Stokes part we restrict ourselves to extracting the velocity part (and
     // ignoring the pressure part) by using
     // <code>stokes_fe_values[velocities].get_function_values</code>.
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = temperature_dof_handler.begin_active(),
+    typename DoFHandler<dim>::active_cell_iterator
+      cell = temperature_dof_handler.begin_active(),
       endc = temperature_dof_handler.end();
-    typename DoFHandler<dim>::active_cell_iterator stokes_cell
-      = stokes_dof_handler.begin_active();
+    typename DoFHandler<dim>::active_cell_iterator stokes_cell =
+      stokes_dof_handler.begin_active();
 
     for(; cell != endc; ++cell, ++stokes_cell)
       {
@@ -1632,19 +1634,19 @@ namespace Step31
         // used for the first time step. When all this is done, we distribute
         // the local vector into the global one (including hanging node
         // constraints).
-        const double nu
-          = compute_viscosity(old_temperature_values,
-                              old_old_temperature_values,
-                              old_temperature_grads,
-                              old_old_temperature_grads,
-                              old_temperature_laplacians,
-                              old_old_temperature_laplacians,
-                              old_velocity_values,
-                              old_old_velocity_values,
-                              gamma_values,
-                              maximal_velocity,
-                              global_T_range.second - global_T_range.first,
-                              cell->diameter());
+        const double nu =
+          compute_viscosity(old_temperature_values,
+                            old_old_temperature_values,
+                            old_temperature_grads,
+                            old_old_temperature_grads,
+                            old_temperature_laplacians,
+                            old_old_temperature_laplacians,
+                            old_velocity_values,
+                            old_old_velocity_values,
+                            gamma_values,
+                            maximal_velocity,
+                            global_T_range.second - global_T_range.first,
+                            cell->diameter());
 
         for(unsigned int q = 0; q < n_q_points; ++q)
           {
@@ -1654,33 +1656,32 @@ namespace Step31
                 phi_T[k]      = temperature_fe_values.shape_value(k, q);
               }
 
-            const double T_term_for_rhs
-              = (use_bdf2_scheme ?
-                   (old_temperature_values[q] * (1 + time_step / old_time_step)
-                    - old_old_temperature_values[q] * (time_step * time_step)
-                        / (old_time_step * (time_step + old_time_step))) :
-                   old_temperature_values[q]);
+            const double T_term_for_rhs =
+              (use_bdf2_scheme ?
+                 (old_temperature_values[q] * (1 + time_step / old_time_step) -
+                  old_old_temperature_values[q] * (time_step * time_step) /
+                    (old_time_step * (time_step + old_time_step))) :
+                 old_temperature_values[q]);
 
-            const Tensor<1, dim> ext_grad_T
-              = (use_bdf2_scheme ?
-                   (old_temperature_grads[q] * (1 + time_step / old_time_step)
-                    - old_old_temperature_grads[q] * time_step
-                        / old_time_step) :
-                   old_temperature_grads[q]);
+            const Tensor<1, dim> ext_grad_T =
+              (use_bdf2_scheme ?
+                 (old_temperature_grads[q] * (1 + time_step / old_time_step) -
+                  old_old_temperature_grads[q] * time_step / old_time_step) :
+                 old_temperature_grads[q]);
 
-            const Tensor<1, dim> extrapolated_u
-              = (use_bdf2_scheme ?
-                   (old_velocity_values[q] * (1 + time_step / old_time_step)
-                    - old_old_velocity_values[q] * time_step / old_time_step) :
-                   old_velocity_values[q]);
+            const Tensor<1, dim> extrapolated_u =
+              (use_bdf2_scheme ?
+                 (old_velocity_values[q] * (1 + time_step / old_time_step) -
+                  old_old_velocity_values[q] * time_step / old_time_step) :
+                 old_velocity_values[q]);
 
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
-              local_rhs(i)
-                += (T_term_for_rhs * phi_T[i]
-                    - time_step * extrapolated_u * ext_grad_T * phi_T[i]
-                    - time_step * nu * ext_grad_T * grad_phi_T[i]
-                    + time_step * gamma_values[q] * phi_T[i])
-                   * temperature_fe_values.JxW(q);
+              local_rhs(i) +=
+                (T_term_for_rhs * phi_T[i] -
+                 time_step * extrapolated_u * ext_grad_T * phi_T[i] -
+                 time_step * nu * ext_grad_T * grad_phi_T[i] +
+                 time_step * gamma_values[q] * phi_T[i]) *
+                temperature_fe_values.JxW(q);
           }
 
         cell->get_dof_indices(local_dof_indices);
@@ -1778,12 +1779,12 @@ namespace Step31
     const double maximal_velocity = get_maximal_velocity();
 
     if(maximal_velocity >= 0.01)
-      time_step = 1. / (1.7 * dim * std::sqrt(1. * dim)) / temperature_degree
-                  * GridTools::minimal_cell_diameter(triangulation)
-                  / maximal_velocity;
+      time_step = 1. / (1.7 * dim * std::sqrt(1. * dim)) / temperature_degree *
+                  GridTools::minimal_cell_diameter(triangulation) /
+                  maximal_velocity;
     else
-      time_step = 1. / (1.7 * dim * std::sqrt(1. * dim)) / temperature_degree
-                  * GridTools::minimal_cell_diameter(triangulation) / .01;
+      time_step = 1. / (1.7 * dim * std::sqrt(1. * dim)) / temperature_degree *
+                  GridTools::minimal_cell_diameter(triangulation) / .01;
 
     std::cout << "   "
               << "Time step: " << time_step << std::endl;
@@ -1835,10 +1836,10 @@ namespace Step31
              max_temperature = temperature_solution(0);
       for(unsigned int i = 0; i < temperature_solution.size(); ++i)
         {
-          min_temperature
-            = std::min<double>(min_temperature, temperature_solution(i));
-          max_temperature
-            = std::max<double>(max_temperature, temperature_solution(i));
+          min_temperature =
+            std::min<double>(min_temperature, temperature_solution(i));
+          max_temperature =
+            std::max<double>(max_temperature, temperature_solution(i));
         }
 
       std::cout << "   Temperature range: " << min_temperature << ' '
@@ -1880,8 +1881,8 @@ namespace Step31
       stokes_component_interpretation(
         dim + 1, DataComponentInterpretation::component_is_scalar);
     for(unsigned int i = 0; i < dim; ++i)
-      stokes_component_interpretation[i]
-        = DataComponentInterpretation::component_is_part_of_vector;
+      stokes_component_interpretation[i] =
+        DataComponentInterpretation::component_is_part_of_vector;
 
     DataOut<dim> data_out;
     data_out.add_data_vector(stokes_dof_handler,
@@ -1892,8 +1893,8 @@ namespace Step31
       temperature_dof_handler, temperature_solution, "T");
     data_out.build_patches(std::min(stokes_degree, temperature_degree));
 
-    std::ofstream output(
-      "solution-" + Utilities::int_to_string(timestep_number, 4) + ".vtk");
+    std::ofstream output("solution-" +
+                         Utilities::int_to_string(timestep_number, 4) + ".vtk");
     data_out.write_vtk(output);
   }
 
@@ -1946,8 +1947,8 @@ namespace Step31
     GridRefinement::refine_and_coarsen_fixed_fraction(
       triangulation, estimated_error_per_cell, 0.8, 0.1);
     if(triangulation.n_levels() > max_grid_level)
-      for(typename Triangulation<dim>::active_cell_iterator cell
-          = triangulation.begin_active(max_grid_level);
+      for(typename Triangulation<dim>::active_cell_iterator cell =
+            triangulation.begin_active(max_grid_level);
           cell != triangulation.end();
           ++cell)
         cell->clear_refine_flag();
@@ -2095,8 +2096,8 @@ namespace Step31
 
         std::cout << std::endl;
 
-        if((timestep_number == 0)
-           && (pre_refinement_step < n_pre_refinement_steps))
+        if((timestep_number == 0) &&
+           (pre_refinement_step < n_pre_refinement_steps))
           {
             refine_mesh(initial_refinement + n_pre_refinement_steps);
             ++pre_refinement_step;

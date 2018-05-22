@@ -89,8 +89,8 @@ void
 Explicit::operator()(AnyData& out, const AnyData& in)
 {
   const double timestep = *in.read_ptr<double>("Timestep");
-  if(this->notifications.test(Events::initial)
-     || this->notifications.test(Events::new_timestep_size))
+  if(this->notifications.test(Events::initial) ||
+     this->notifications.test(Events::new_timestep_size))
     {
       m.equ(-timestep, *matrix);
       for(unsigned int i = 0; i < m.m(); ++i)
@@ -110,8 +110,8 @@ void
 Implicit::operator()(AnyData& out, const AnyData& in)
 {
   const double timestep = *in.read_ptr<double>("Timestep");
-  if(this->notifications.test(Events::initial)
-     || this->notifications.test(Events::new_timestep_size))
+  if(this->notifications.test(Events::initial) ||
+     this->notifications.test(Events::new_timestep_size))
     {
       m.equ(timestep, *matrix);
       for(unsigned int i = 0; i < m.m(); ++i)

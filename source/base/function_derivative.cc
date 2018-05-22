@@ -90,17 +90,17 @@ FunctionDerivative<dim>::value(const Point<dim>&  p,
   switch(formula)
     {
       case AutoDerivativeFunction<dim>::Euler:
-        return (f.value(p + incr[0], component)
-                - f.value(p - incr[0], component))
-               / (2 * h);
+        return (f.value(p + incr[0], component) -
+                f.value(p - incr[0], component)) /
+               (2 * h);
       case AutoDerivativeFunction<dim>::UpwindEuler:
         return (f.value(p, component) - f.value(p - incr[0], component)) / h;
       case AutoDerivativeFunction<dim>::FourthOrder:
-        return (-f.value(p + 2 * incr[0], component)
-                + 8 * f.value(p + incr[0], component)
-                - 8 * f.value(p - incr[0], component)
-                + f.value(p - 2 * incr[0], component))
-               / (12 * h);
+        return (-f.value(p + 2 * incr[0], component) +
+                8 * f.value(p + incr[0], component) -
+                8 * f.value(p - incr[0], component) +
+                f.value(p - 2 * incr[0], component)) /
+               (12 * h);
       default:
         Assert(false, ExcNotImplemented());
     }

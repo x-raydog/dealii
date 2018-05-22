@@ -84,14 +84,14 @@ public:
     /**
      * Constructor.
      */
-    AdditionalData(const double relaxation      = 1.,
-                   const bool   invert_diagonal = true,
-                   const bool   same_diagonal   = false,
-                   const typename PreconditionBlockBase<
-                     InverseNumberType>::Inversion inversion
-                   = PreconditionBlockBase<InverseNumberType>::gauss_jordan,
-                   const double threshold         = 0.,
-                   VectorType*  temp_ghost_vector = nullptr);
+    AdditionalData(
+      const double relaxation      = 1.,
+      const bool   invert_diagonal = true,
+      const bool   same_diagonal   = false,
+      const typename PreconditionBlockBase<InverseNumberType>::Inversion
+                   inversion = PreconditionBlockBase<InverseNumberType>::gauss_jordan,
+      const double threshold         = 0.,
+      VectorType*  temp_ghost_vector = nullptr);
 
     /**
      * The mapping from indices to blocks. Each row of this pattern enumerates

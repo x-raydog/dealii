@@ -219,8 +219,8 @@ second_grid()
               // with this property flag this cell for later refinement. We can
               // then also break the loop over all vertices and move on to the
               // next cell.
-              const double distance_from_center
-                = center.distance(cell->vertex(v));
+              const double distance_from_center =
+                center.distance(cell->vertex(v));
 
               if(std::fabs(distance_from_center - inner_radius) < 1e-10)
                 {

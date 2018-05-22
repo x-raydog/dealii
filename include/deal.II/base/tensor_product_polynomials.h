@@ -470,8 +470,8 @@ TensorProductPolynomials<dim, PolynomialType>::compute_derivative(
     {
       case 1:
         {
-          Tensor<1, dim>& derivative_1
-            = *reinterpret_cast<Tensor<1, dim>*>(&derivative);
+          Tensor<1, dim>& derivative_1 =
+            *reinterpret_cast<Tensor<1, dim>*>(&derivative);
           for(unsigned int d = 0; d < dim; ++d)
             {
               derivative_1[d] = 1.;
@@ -489,8 +489,8 @@ TensorProductPolynomials<dim, PolynomialType>::compute_derivative(
         }
       case 2:
         {
-          Tensor<2, dim>& derivative_2
-            = *reinterpret_cast<Tensor<2, dim>*>(&derivative);
+          Tensor<2, dim>& derivative_2 =
+            *reinterpret_cast<Tensor<2, dim>*>(&derivative);
           for(unsigned int d1 = 0; d1 < dim; ++d1)
             for(unsigned int d2 = 0; d2 < dim; ++d2)
               {
@@ -511,8 +511,8 @@ TensorProductPolynomials<dim, PolynomialType>::compute_derivative(
         }
       case 3:
         {
-          Tensor<3, dim>& derivative_3
-            = *reinterpret_cast<Tensor<3, dim>*>(&derivative);
+          Tensor<3, dim>& derivative_3 =
+            *reinterpret_cast<Tensor<3, dim>*>(&derivative);
           for(unsigned int d1 = 0; d1 < dim; ++d1)
             for(unsigned int d2 = 0; d2 < dim; ++d2)
               for(unsigned int d3 = 0; d3 < dim; ++d3)
@@ -536,8 +536,8 @@ TensorProductPolynomials<dim, PolynomialType>::compute_derivative(
         }
       case 4:
         {
-          Tensor<4, dim>& derivative_4
-            = *reinterpret_cast<Tensor<4, dim>*>(&derivative);
+          Tensor<4, dim>& derivative_4 =
+            *reinterpret_cast<Tensor<4, dim>*>(&derivative);
           for(unsigned int d1 = 0; d1 < dim; ++d1)
             for(unsigned int d2 = 0; d2 < dim; ++d2)
               for(unsigned int d3 = 0; d3 < dim; ++d3)
@@ -588,8 +588,8 @@ AnisotropicPolynomials<dim>::compute_derivative(const unsigned int i,
     {
       case 1:
         {
-          Tensor<1, dim>& derivative_1
-            = *reinterpret_cast<Tensor<1, dim>*>(&derivative);
+          Tensor<1, dim>& derivative_1 =
+            *reinterpret_cast<Tensor<1, dim>*>(&derivative);
           for(unsigned int d = 0; d < dim; ++d)
             {
               derivative_1[d] = 1.;
@@ -607,8 +607,8 @@ AnisotropicPolynomials<dim>::compute_derivative(const unsigned int i,
         }
       case 2:
         {
-          Tensor<2, dim>& derivative_2
-            = *reinterpret_cast<Tensor<2, dim>*>(&derivative);
+          Tensor<2, dim>& derivative_2 =
+            *reinterpret_cast<Tensor<2, dim>*>(&derivative);
           for(unsigned int d1 = 0; d1 < dim; ++d1)
             for(unsigned int d2 = 0; d2 < dim; ++d2)
               {
@@ -629,8 +629,8 @@ AnisotropicPolynomials<dim>::compute_derivative(const unsigned int i,
         }
       case 3:
         {
-          Tensor<3, dim>& derivative_3
-            = *reinterpret_cast<Tensor<3, dim>*>(&derivative);
+          Tensor<3, dim>& derivative_3 =
+            *reinterpret_cast<Tensor<3, dim>*>(&derivative);
           for(unsigned int d1 = 0; d1 < dim; ++d1)
             for(unsigned int d2 = 0; d2 < dim; ++d2)
               for(unsigned int d3 = 0; d3 < dim; ++d3)
@@ -654,8 +654,8 @@ AnisotropicPolynomials<dim>::compute_derivative(const unsigned int i,
         }
       case 4:
         {
-          Tensor<4, dim>& derivative_4
-            = *reinterpret_cast<Tensor<4, dim>*>(&derivative);
+          Tensor<4, dim>& derivative_4 =
+            *reinterpret_cast<Tensor<4, dim>*>(&derivative);
           for(unsigned int d1 = 0; d1 < dim; ++d1)
             for(unsigned int d2 = 0; d2 < dim; ++d2)
               for(unsigned int d3 = 0; d3 < dim; ++d3)

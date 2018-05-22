@@ -90,8 +90,8 @@ namespace internal
                                   RefinementCase<dim>::cut_x;
         for(; ref_case <= RefinementCase<dim>::isotropic_refinement; ++ref_case)
           {
-            const unsigned int nc
-              = GeometryInfo<dim>::n_children(RefinementCase<dim>(ref_case));
+            const unsigned int nc =
+              GeometryInfo<dim>::n_children(RefinementCase<dim>(ref_case));
 
             for(unsigned int i = 0; i < nc; ++i)
               {
@@ -128,8 +128,8 @@ namespace internal
 
             //now create the mass matrix and all the right_hand sides
             unsigned int                                           child_no = 0;
-            typename dealii::DoFHandler<dim>::active_cell_iterator cell
-              = dh.begin_active();
+            typename dealii::DoFHandler<dim>::active_cell_iterator cell =
+              dh.begin_active();
             for(; cell != dh.end(); ++cell, ++child_no)
               {
                 fine.reinit(cell);
@@ -141,15 +141,15 @@ namespace internal
                       {
                         const unsigned int gdi = child_ldi[child_no][i];
                         const unsigned int gdj = child_ldi[child_no][j];
-                        fine_mass(gdi, gdj) += fine.shape_value(i, q)
-                                               * fine.shape_value(j, q)
-                                               * fine.JxW(q);
+                        fine_mass(gdi, gdj) += fine.shape_value(i, q) *
+                                               fine.shape_value(j, q) *
+                                               fine.JxW(q);
                         Point<dim> quad_tmp;
                         for(unsigned int k = 0; k < dim; ++k)
                           quad_tmp(k) = fine.quadrature_point(q)(k);
-                        coarse_rhs_matrix(gdi, j)
-                          += fine.shape_value(i, q)
-                             * fe.shape_value(j, quad_tmp) * fine.JxW(q);
+                        coarse_rhs_matrix(gdi, j) +=
+                          fine.shape_value(i, q) * fe.shape_value(j, quad_tmp) *
+                          fine.JxW(q);
                       }
               }
 
@@ -260,15 +260,15 @@ FE_Q_Bubbles<dim, spacedim>::get_name() const
   const unsigned int             n_points = this->degree;
   std::vector<double>            points(n_points);
   const unsigned int             dofs_per_cell = this->dofs_per_cell;
-  const std::vector<Point<dim>>& unit_support_points
-    = this->unit_support_points;
+  const std::vector<Point<dim>>& unit_support_points =
+    this->unit_support_points;
   unsigned int index = 0;
 
   // Decode the support points in one coordinate direction.
   for(unsigned int j = 0; j < dofs_per_cell; j++)
     {
-      if((dim > 1) ? (unit_support_points[j](1) == 0
-                      && ((dim > 2) ? unit_support_points[j](2) == 0 : true)) :
+      if((dim > 1) ? (unit_support_points[j](1) == 0 &&
+                      ((dim > 2) ? unit_support_points[j](2) == 0 : true)) :
                      true)
         {
           if(index == 0)
@@ -348,8 +348,8 @@ FE_Q_Bubbles<dim, spacedim>::
 
   for(unsigned int i = 0; i < this->dofs_per_cell - 1; ++i)
     {
-      const std::pair<unsigned int, unsigned int> index
-        = this->system_to_component_index(i);
+      const std::pair<unsigned int, unsigned int> index =
+        this->system_to_component_index(i);
       nodal_values[i] = support_point_values[i](index.first);
     }
 
@@ -370,8 +370,8 @@ FE_Q_Bubbles<dim, spacedim>::get_interpolation_matrix(
   typedef FE_Q_Bubbles<dim, spacedim> FEQBUBBLES;
 
   AssertThrow(
-    (x_source_fe.get_name().find("FE_Q_Bubbles<") == 0)
-      || (dynamic_cast<const FEQBUBBLES*>(&x_source_fe) != nullptr),
+    (x_source_fe.get_name().find("FE_Q_Bubbles<") == 0) ||
+      (dynamic_cast<const FEQBUBBLES*>(&x_source_fe) != nullptr),
     (typename FiniteElement<dim, spacedim>::ExcInterpolationNotImplemented()));
   Assert(interpolation_matrix.m() == this->dofs_per_cell,
          ExcDimensionMismatch(interpolation_matrix.m(), this->dofs_per_cell));
@@ -409,8 +409,8 @@ FE_Q_Bubbles<dim, spacedim>::get_dpo_vector(const unsigned int q_deg)
   for(unsigned int i = 1; i < dpo.size(); ++i)
     dpo[i] = dpo[i - 1] * (q_deg - 1);
 
-  dpo[dim]
-    += (q_deg <= 1 ? 1 : dim); //all the bubble functions are discontinuous
+  dpo[dim] +=
+    (q_deg <= 1 ? 1 : dim); //all the bubble functions are discontinuous
   return dpo;
 }
 

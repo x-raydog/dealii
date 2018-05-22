@@ -43,8 +43,8 @@ namespace PETScWrappers
       if(vector.ghosted)
         {
           PetscInt       begin, end;
-          PetscErrorCode ierr
-            = VecGetOwnershipRange(vector.vector, &begin, &end);
+          PetscErrorCode ierr =
+            VecGetOwnershipRange(vector.vector, &begin, &end);
           AssertThrow(ierr == 0, ExcPETScError(ierr));
 
           Vec locally_stored_elements = PETSC_NULL;
@@ -61,8 +61,8 @@ namespace PETScWrappers
 
           PetscScalar value;
 
-          if(index >= static_cast<size_type>(begin)
-             && index < static_cast<size_type>(end))
+          if(index >= static_cast<size_type>(begin) &&
+             index < static_cast<size_type>(end))
             {
               //local entry
               value = *(ptr + index - begin);
@@ -70,8 +70,8 @@ namespace PETScWrappers
           else
             {
               //ghost entry
-              const size_type ghostidx
-                = vector.ghost_indices.index_within_set(index);
+              const size_type ghostidx =
+                vector.ghost_indices.index_within_set(index);
 
               Assert(ghostidx + end - begin < (size_type) lsize,
                      ExcInternalError());
@@ -81,8 +81,8 @@ namespace PETScWrappers
           ierr = VecRestoreArray(locally_stored_elements, &ptr);
           AssertThrow(ierr == 0, ExcPETScError(ierr));
 
-          ierr
-            = VecGhostRestoreLocalForm(vector.vector, &locally_stored_elements);
+          ierr =
+            VecGhostRestoreLocalForm(vector.vector, &locally_stored_elements);
           AssertThrow(ierr == 0, ExcPETScError(ierr));
 
           return value;
@@ -96,8 +96,8 @@ namespace PETScWrappers
       PetscErrorCode ierr = VecGetOwnershipRange(vector.vector, &begin, &end);
       AssertThrow(ierr == 0, ExcPETScError(ierr));
 
-      AssertThrow((index >= static_cast<size_type>(begin))
-                    && (index < static_cast<size_type>(end)),
+      AssertThrow((index >= static_cast<size_type>(begin)) &&
+                    (index < static_cast<size_type>(end)),
                   ExcAccessToNonlocalElement(index, begin, end - 1));
 
       PetscInt    idx = index;
@@ -249,8 +249,8 @@ namespace PETScWrappers
   VectorBase::local_range() const
   {
     PetscInt             begin, end;
-    const PetscErrorCode ierr
-      = VecGetOwnershipRange(static_cast<const Vec&>(vector), &begin, &end);
+    const PetscErrorCode ierr =
+      VecGetOwnershipRange(static_cast<const Vec&>(vector), &begin, &end);
     AssertThrow(ierr == 0, ExcPETScError(ierr));
 
     return std::make_pair(begin, end);
@@ -338,9 +338,8 @@ namespace PETScWrappers
                                      get_mpi_communicator());
       AssertThrowMPI(ierr);
 
-      AssertThrow(all_int_last_action
-                    != (::dealii::VectorOperation::add
-                        | ::dealii::VectorOperation::insert),
+      AssertThrow(all_int_last_action != (::dealii::VectorOperation::add |
+                                          ::dealii::VectorOperation::insert),
                   ExcMessage("Error: not all processors agree on the last "
                              "VectorOperation before this compress() call."));
 #    endif
@@ -348,8 +347,8 @@ namespace PETScWrappers
     }
 
     AssertThrow(
-      last_action == ::dealii::VectorOperation::unknown
-        || last_action == operation,
+      last_action == ::dealii::VectorOperation::unknown ||
+        last_action == operation,
       ExcMessage(
         "Missing compress() or calling with wrong VectorOperation argument."));
 
@@ -758,8 +757,8 @@ namespace PETScWrappers
     //TODO[TH]:assert(is_compressed())
 
     // Set options
-    PetscErrorCode ierr
-      = PetscViewerSetFormat(PETSC_VIEWER_STDOUT_WORLD, format);
+    PetscErrorCode ierr =
+      PetscViewerSetFormat(PETSC_VIEWER_STDOUT_WORLD, format);
     AssertThrow(ierr == 0, ExcPETScError(ierr));
 
     // Write to screen
@@ -827,9 +826,9 @@ namespace PETScWrappers
   std::size_t
   VectorBase::memory_consumption() const
   {
-    std::size_t mem = sizeof(Vec) + sizeof(last_action)
-                      + MemoryConsumption::memory_consumption(ghosted)
-                      + MemoryConsumption::memory_consumption(ghost_indices);
+    std::size_t mem = sizeof(Vec) + sizeof(last_action) +
+                      MemoryConsumption::memory_consumption(ghosted) +
+                      MemoryConsumption::memory_consumption(ghost_indices);
 
     // TH: I am relatively sure that PETSc is
     // storing the local data in a contiguous
@@ -850,11 +849,11 @@ namespace PETScWrappers
                                    const PetscScalar* values,
                                    const bool         add_values)
   {
-    ::dealii::VectorOperation::values action
-      = (add_values ? ::dealii::VectorOperation::add :
-                      ::dealii::VectorOperation::insert);
-    Assert((last_action == action)
-             || (last_action == ::dealii::VectorOperation::unknown),
+    ::dealii::VectorOperation::values action =
+      (add_values ? ::dealii::VectorOperation::add :
+                    ::dealii::VectorOperation::insert);
+    Assert((last_action == action) ||
+             (last_action == ::dealii::VectorOperation::unknown),
            internal::VectorReference::ExcWrongMode(action, last_action));
     Assert(!has_ghost_elements(), ExcGhostsPresent());
     // VecSetValues complains if we
@@ -865,12 +864,12 @@ namespace PETScWrappers
     // (unlike the above calls)
     if(n_elements != 0)
       {
-        const PetscInt* petsc_indices
-          = reinterpret_cast<const PetscInt*>(indices);
+        const PetscInt* petsc_indices =
+          reinterpret_cast<const PetscInt*>(indices);
 
         const InsertMode     mode = (add_values ? ADD_VALUES : INSERT_VALUES);
-        const PetscErrorCode ierr
-          = VecSetValues(vector, n_elements, petsc_indices, values, mode);
+        const PetscErrorCode ierr =
+          VecSetValues(vector, n_elements, petsc_indices, values, mode);
         AssertThrow(ierr == 0, ExcPETScError(ierr));
       }
 

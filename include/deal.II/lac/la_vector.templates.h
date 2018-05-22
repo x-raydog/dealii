@@ -315,8 +315,8 @@ namespace LinearAlgebra
            ExcVectorTypeNotCompatible());
 
     // Downcast scaling_factors. If fails, throws an exception.
-    const Vector<Number>& down_scaling_factors
-      = dynamic_cast<const Vector<Number>&>(scaling_factors);
+    const Vector<Number>& down_scaling_factors =
+      dynamic_cast<const Vector<Number>&>(scaling_factors);
     Assert(
       down_scaling_factors.size() == this->size(),
       ExcMessage("Cannot add two vectors with different numbers of elements"));
@@ -408,8 +408,8 @@ namespace LinearAlgebra
       this->values.get());
     internal::VectorOperations::parallel_reduce(
       norm2, 0, this->size(), norm_square, this->thread_loop_partitioner);
-    if(numbers::is_finite(norm_square)
-       && norm_square >= std::numeric_limits<real_type>::min())
+    if(numbers::is_finite(norm_square) &&
+       norm_square >= std::numeric_limits<real_type>::min())
       return std::sqrt(norm_square);
     else
       {
@@ -420,8 +420,8 @@ namespace LinearAlgebra
           {
             if(this->values[i] != Number())
               {
-                const real_type abs_x
-                  = numbers::NumberTraits<Number>::abs(this->values[i]);
+                const real_type abs_x =
+                  numbers::NumberTraits<Number>::abs(this->values[i]);
                 if(scale < abs_x)
                   {
                     sum   = 1. + sum * (scale / abs_x) * (scale / abs_x);
@@ -504,8 +504,8 @@ namespace LinearAlgebra
 
     out.write(buf, std::strlen(buf));
     out.write(reinterpret_cast<const char*>(this->begin()),
-              reinterpret_cast<const char*>(this->end())
-                - reinterpret_cast<const char*>(this->begin()));
+              reinterpret_cast<const char*>(this->end()) -
+                reinterpret_cast<const char*>(this->begin()));
 
     // out << ']';
     const char outro = ']';
@@ -534,8 +534,8 @@ namespace LinearAlgebra
     AssertThrow(c == '[', ExcIO());
 
     in.read(reinterpret_cast<char*>(this->begin()),
-            reinterpret_cast<const char*>(this->end())
-              - reinterpret_cast<const char*>(this->begin()));
+            reinterpret_cast<const char*>(this->end()) -
+              reinterpret_cast<const char*>(this->begin()));
 
     // in >> c;
     in.read(&c, 1);

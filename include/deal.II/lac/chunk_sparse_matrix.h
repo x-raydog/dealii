@@ -1442,15 +1442,15 @@ ChunkSparseMatrix<number>::compute_location(const size_type i,
                                             const size_type j) const
 {
   const size_type chunk_size = cols->get_chunk_size();
-  const size_type chunk_index
-    = cols->sparsity_pattern(i / chunk_size, j / chunk_size);
+  const size_type chunk_index =
+    cols->sparsity_pattern(i / chunk_size, j / chunk_size);
 
   if(chunk_index == ChunkSparsityPattern::invalid_entry)
     return ChunkSparsityPattern::invalid_entry;
   else
     {
-      return (chunk_index * chunk_size * chunk_size
-              + (i % chunk_size) * chunk_size + (j % chunk_size));
+      return (chunk_index * chunk_size * chunk_size +
+              (i % chunk_size) * chunk_size + (j % chunk_size));
     }
 }
 
@@ -1522,9 +1522,9 @@ ChunkSparseMatrix<number>::operator*=(const number factor)
   // matrix -- but since multiplication with a number does not violate the
   // invariant of keeping these elements at zero nothing can happen
   number*             val_ptr = val.get();
-  const number* const end_ptr
-    = val.get()
-      + cols->sparsity_pattern.n_nonzero_elements() * chunk_size * chunk_size;
+  const number* const end_ptr =
+    val.get() +
+    cols->sparsity_pattern.n_nonzero_elements() * chunk_size * chunk_size;
   while(val_ptr != end_ptr)
     *val_ptr++ *= factor;
 
@@ -1548,9 +1548,9 @@ ChunkSparseMatrix<number>::operator/=(const number factor)
   // matrix -- but since multiplication with a number does not violate the
   // invariant of keeping these elements at zero nothing can happen
   number*             val_ptr = val.get();
-  const number* const end_ptr
-    = val.get()
-      + cols->sparsity_pattern.n_nonzero_elements() * chunk_size * chunk_size;
+  const number* const end_ptr =
+    val.get() +
+    cols->sparsity_pattern.n_nonzero_elements() * chunk_size * chunk_size;
 
   while(val_ptr != end_ptr)
     *val_ptr++ *= factor_inv;
@@ -1593,9 +1593,9 @@ ChunkSparseMatrix<number>::diag_element(const size_type i) const
   // Use that the first element in each row of a quadratic matrix is the main
   // diagonal of the chunk sparsity pattern
   const size_type chunk_size = cols->get_chunk_size();
-  return val[cols->sparsity_pattern.rowstart[i / chunk_size] * chunk_size
-               * chunk_size
-             + (i % chunk_size) * chunk_size + (i % chunk_size)];
+  return val[cols->sparsity_pattern.rowstart[i / chunk_size] * chunk_size *
+               chunk_size +
+             (i % chunk_size) * chunk_size + (i % chunk_size)];
 }
 
 template <typename number>
@@ -1650,10 +1650,10 @@ namespace ChunkSparseMatrixIterators
   inline number
   Accessor<number, true>::value() const
   {
-    const unsigned int chunk_size
-      = matrix->get_sparsity_pattern().get_chunk_size();
-    return matrix->val[reduced_index() * chunk_size * chunk_size
-                       + chunk_row * chunk_size + chunk_col];
+    const unsigned int chunk_size =
+      matrix->get_sparsity_pattern().get_chunk_size();
+    return matrix->val[reduced_index() * chunk_size * chunk_size +
+                       chunk_row * chunk_size + chunk_col];
   }
 
   template <typename number>
@@ -1672,23 +1672,22 @@ namespace ChunkSparseMatrixIterators
   template <typename number>
   inline Accessor<number, false>::Reference::operator number() const
   {
-    const unsigned int chunk_size
-      = accessor->matrix->get_sparsity_pattern().get_chunk_size();
+    const unsigned int chunk_size =
+      accessor->matrix->get_sparsity_pattern().get_chunk_size();
     return accessor->matrix
-      ->val[accessor->reduced_index() * chunk_size * chunk_size
-            + accessor->chunk_row * chunk_size + accessor->chunk_col];
+      ->val[accessor->reduced_index() * chunk_size * chunk_size +
+            accessor->chunk_row * chunk_size + accessor->chunk_col];
   }
 
   template <typename number>
   inline const typename Accessor<number, false>::Reference&
   Accessor<number, false>::Reference::operator=(const number n) const
   {
-    const unsigned int chunk_size
-      = accessor->matrix->get_sparsity_pattern().get_chunk_size();
+    const unsigned int chunk_size =
+      accessor->matrix->get_sparsity_pattern().get_chunk_size();
     accessor->matrix
-      ->val[accessor->reduced_index() * chunk_size * chunk_size
-            + accessor->chunk_row * chunk_size + accessor->chunk_col]
-      = n;
+      ->val[accessor->reduced_index() * chunk_size * chunk_size +
+            accessor->chunk_row * chunk_size + accessor->chunk_col] = n;
     return *this;
   }
 
@@ -1696,12 +1695,11 @@ namespace ChunkSparseMatrixIterators
   inline const typename Accessor<number, false>::Reference&
   Accessor<number, false>::Reference::operator+=(const number n) const
   {
-    const unsigned int chunk_size
-      = accessor->matrix->get_sparsity_pattern().get_chunk_size();
+    const unsigned int chunk_size =
+      accessor->matrix->get_sparsity_pattern().get_chunk_size();
     accessor->matrix
-      ->val[accessor->reduced_index() * chunk_size * chunk_size
-            + accessor->chunk_row * chunk_size + accessor->chunk_col]
-      += n;
+      ->val[accessor->reduced_index() * chunk_size * chunk_size +
+            accessor->chunk_row * chunk_size + accessor->chunk_col] += n;
     return *this;
   }
 
@@ -1709,12 +1707,11 @@ namespace ChunkSparseMatrixIterators
   inline const typename Accessor<number, false>::Reference&
   Accessor<number, false>::Reference::operator-=(const number n) const
   {
-    const unsigned int chunk_size
-      = accessor->matrix->get_sparsity_pattern().get_chunk_size();
+    const unsigned int chunk_size =
+      accessor->matrix->get_sparsity_pattern().get_chunk_size();
     accessor->matrix
-      ->val[accessor->reduced_index() * chunk_size * chunk_size
-            + accessor->chunk_row * chunk_size + accessor->chunk_col]
-      -= n;
+      ->val[accessor->reduced_index() * chunk_size * chunk_size +
+            accessor->chunk_row * chunk_size + accessor->chunk_col] -= n;
     return *this;
   }
 
@@ -1722,12 +1719,11 @@ namespace ChunkSparseMatrixIterators
   inline const typename Accessor<number, false>::Reference&
   Accessor<number, false>::Reference::operator*=(const number n) const
   {
-    const unsigned int chunk_size
-      = accessor->matrix->get_sparsity_pattern().get_chunk_size();
+    const unsigned int chunk_size =
+      accessor->matrix->get_sparsity_pattern().get_chunk_size();
     accessor->matrix
-      ->val[accessor->reduced_index() * chunk_size * chunk_size
-            + accessor->chunk_row * chunk_size + accessor->chunk_col]
-      *= n;
+      ->val[accessor->reduced_index() * chunk_size * chunk_size +
+            accessor->chunk_row * chunk_size + accessor->chunk_col] *= n;
     return *this;
   }
 
@@ -1735,12 +1731,11 @@ namespace ChunkSparseMatrixIterators
   inline const typename Accessor<number, false>::Reference&
   Accessor<number, false>::Reference::operator/=(const number n) const
   {
-    const unsigned int chunk_size
-      = accessor->matrix->get_sparsity_pattern().get_chunk_size();
+    const unsigned int chunk_size =
+      accessor->matrix->get_sparsity_pattern().get_chunk_size();
     accessor->matrix
-      ->val[accessor->reduced_index() * chunk_size * chunk_size
-            + accessor->chunk_row * chunk_size + accessor->chunk_col]
-      /= n;
+      ->val[accessor->reduced_index() * chunk_size * chunk_size +
+            accessor->chunk_row * chunk_size + accessor->chunk_col] /= n;
     return *this;
   }
 

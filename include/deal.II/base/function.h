@@ -491,8 +491,8 @@ namespace Functions
  * @deprecated use Functions::ConstantFunction instead.
  */
 template <int dim, typename RangeNumberType = double>
-using ConstantFunction DEAL_II_DEPRECATED
-  = Functions::ConstantFunction<dim, RangeNumberType>;
+using ConstantFunction DEAL_II_DEPRECATED =
+  Functions::ConstantFunction<dim, RangeNumberType>;
 
 /**
  * Provide a function which always returns zero.
@@ -500,8 +500,8 @@ using ConstantFunction DEAL_II_DEPRECATED
  * @deprecated use Functions::ZeroFunction instead.
  */
 template <int dim, typename RangeNumberType = double>
-using ZeroFunction DEAL_II_DEPRECATED
-  = Functions::ZeroFunction<dim, RangeNumberType>;
+using ZeroFunction DEAL_II_DEPRECATED =
+  Functions::ZeroFunction<dim, RangeNumberType>;
 
 /**
  * This is a constant vector-valued function, in which one or more components

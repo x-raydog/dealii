@@ -110,8 +110,8 @@ namespace internal
     DoFLevel<dim>::get_cell_cache_start(const unsigned int obj_index,
                                         const unsigned int dofs_per_cell) const
     {
-      Assert(obj_index * dofs_per_cell + dofs_per_cell
-               <= cell_dof_indices_cache.size(),
+      Assert(obj_index * dofs_per_cell + dofs_per_cell <=
+               cell_dof_indices_cache.size(),
              ExcInternalError());
 
       return cell_dof_indices_cache.data() + (obj_index * dofs_per_cell);
@@ -121,8 +121,8 @@ namespace internal
     inline std::size_t
     DoFLevel<dim>::memory_consumption() const
     {
-      return (MemoryConsumption::memory_consumption(cell_dof_indices_cache)
-              + MemoryConsumption::memory_consumption(dof_object));
+      return (MemoryConsumption::memory_consumption(cell_dof_indices_cache) +
+              MemoryConsumption::memory_consumption(dof_object));
     }
 
     template <int dim>

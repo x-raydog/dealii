@@ -217,8 +217,8 @@ namespace Step17
     point_1(0) = 0.5;
     point_2(0) = -0.5;
 
-    if(((p - point_1).norm_square() < 0.2 * 0.2)
-       || ((p - point_2).norm_square() < 0.2 * 0.2))
+    if(((p - point_1).norm_square() < 0.2 * 0.2) ||
+       ((p - point_2).norm_square() < 0.2 * 0.2))
       values(0) = 1;
     else
       values(0) = 0;
@@ -391,10 +391,10 @@ namespace Step17
     // as vectors are partitioned with which the matrix is multiplied, while
     // rows have to partitioned in the same way as destination vectors of
     // matrix-vector multiplications:
-    const std::vector<IndexSet> locally_owned_dofs_per_proc
-      = DoFTools::locally_owned_dofs_per_subdomain(dof_handler);
-    const IndexSet locally_owned_dofs
-      = locally_owned_dofs_per_proc[this_mpi_process];
+    const std::vector<IndexSet> locally_owned_dofs_per_proc =
+      DoFTools::locally_owned_dofs_per_subdomain(dof_handler);
+    const IndexSet locally_owned_dofs =
+      locally_owned_dofs_per_proc[this_mpi_process];
 
     system_matrix.reinit(
       locally_owned_dofs, locally_owned_dofs, dsp, mpi_communicator);
@@ -458,8 +458,8 @@ namespace Step17
     QGauss<dim>   quadrature_formula(2);
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -497,9 +497,9 @@ namespace Step17
     // distributing local contributions into the global matrix
     // and right hand sides also takes care of hanging node constraints in the
     // same way as is done in step-6.
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       if(cell->subdomain_id() == this_mpi_process)
         {
@@ -513,29 +513,29 @@ namespace Step17
 
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
             {
-              const unsigned int component_i
-                = fe.system_to_component_index(i).first;
+              const unsigned int component_i =
+                fe.system_to_component_index(i).first;
 
               for(unsigned int j = 0; j < dofs_per_cell; ++j)
                 {
-                  const unsigned int component_j
-                    = fe.system_to_component_index(j).first;
+                  const unsigned int component_j =
+                    fe.system_to_component_index(j).first;
 
                   for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
                     {
-                      cell_matrix(i, j)
-                        += ((fe_values.shape_grad(i, q_point)[component_i]
-                             * fe_values.shape_grad(j, q_point)[component_j]
-                             * lambda_values[q_point])
-                            + (fe_values.shape_grad(i, q_point)[component_j]
-                               * fe_values.shape_grad(j, q_point)[component_i]
-                               * mu_values[q_point])
-                            + ((component_i == component_j) ?
-                                 (fe_values.shape_grad(i, q_point)
-                                  * fe_values.shape_grad(j, q_point)
-                                  * mu_values[q_point]) :
-                                 0))
-                           * fe_values.JxW(q_point);
+                      cell_matrix(i, j) +=
+                        ((fe_values.shape_grad(i, q_point)[component_i] *
+                          fe_values.shape_grad(j, q_point)[component_j] *
+                          lambda_values[q_point]) +
+                         (fe_values.shape_grad(i, q_point)[component_j] *
+                          fe_values.shape_grad(j, q_point)[component_i] *
+                          mu_values[q_point]) +
+                         ((component_i == component_j) ?
+                            (fe_values.shape_grad(i, q_point) *
+                             fe_values.shape_grad(j, q_point) *
+                             mu_values[q_point]) :
+                            0)) *
+                        fe_values.JxW(q_point);
                     }
                 }
             }
@@ -544,13 +544,13 @@ namespace Step17
                                             rhs_values);
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
             {
-              const unsigned int component_i
-                = fe.system_to_component_index(i).first;
+              const unsigned int component_i =
+                fe.system_to_component_index(i).first;
 
               for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
-                cell_rhs(i) += fe_values.shape_value(i, q_point)
-                               * rhs_values[q_point](component_i)
-                               * fe_values.JxW(q_point);
+                cell_rhs(i) += fe_values.shape_value(i, q_point) *
+                               rhs_values[q_point](component_i) *
+                               fe_values.JxW(q_point);
             }
 
           cell->get_dof_indices(local_dof_indices);
@@ -804,9 +804,9 @@ namespace Step17
     // the elements that are nonzero, so we may miss a few that we
     // computed to zero, but this won't hurt since the original values
     // of the vector is zero anyway.
-    const unsigned int n_local_cells
-      = GridTools::count_cells_with_subdomain_association(triangulation,
-                                                          this_mpi_process);
+    const unsigned int n_local_cells =
+      GridTools::count_cells_with_subdomain_association(triangulation,
+                                                        this_mpi_process);
     PETScWrappers::MPI::Vector distributed_all_errors(
       mpi_communicator, triangulation.n_active_cells(), n_local_cells);
 

@@ -39,9 +39,9 @@ namespace internal
     template <bool... Values>
     struct all_true
     {
-      static constexpr bool value
-        = std::is_same<BoolStorage<Values..., true>,
-                       BoolStorage<true, Values...>>::value;
+      static constexpr bool value =
+        std::is_same<BoolStorage<Values..., true>,
+                     BoolStorage<true, Values...>>::value;
     };
   } // namespace TemplateConstraints
 } // namespace internal

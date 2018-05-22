@@ -285,27 +285,24 @@ KellyErrorEstimator<1, spacedim>::estimate(
   typedef typename InputVector::value_type number;
 #ifdef DEAL_II_WITH_P4EST
   if(dynamic_cast<const parallel::distributed::Triangulation<1, spacedim>*>(
-       &dof_handler.get_triangulation())
-     != nullptr)
+       &dof_handler.get_triangulation()) != nullptr)
     Assert(
-      (subdomain_id_ == numbers::invalid_subdomain_id)
-        || (subdomain_id_
-            == dynamic_cast<
-                 const parallel::distributed::Triangulation<1, spacedim>&>(
-                 dof_handler.get_triangulation())
-                 .locally_owned_subdomain()),
+      (subdomain_id_ == numbers::invalid_subdomain_id) ||
+        (subdomain_id_ ==
+         dynamic_cast<const parallel::distributed::Triangulation<1, spacedim>&>(
+           dof_handler.get_triangulation())
+           .locally_owned_subdomain()),
       ExcMessage("For parallel distributed triangulations, the only "
                  "valid subdomain_id that can be passed here is the "
                  "one that corresponds to the locally owned subdomain id."));
 
-  const types::subdomain_id subdomain_id
-    = ((dynamic_cast<const parallel::distributed::Triangulation<1, spacedim>*>(
-          &dof_handler.get_triangulation())
-        != nullptr) ?
-         dynamic_cast<const parallel::distributed::Triangulation<1, spacedim>&>(
-           dof_handler.get_triangulation())
-           .locally_owned_subdomain() :
-         subdomain_id_);
+  const types::subdomain_id subdomain_id =
+    ((dynamic_cast<const parallel::distributed::Triangulation<1, spacedim>*>(
+        &dof_handler.get_triangulation()) != nullptr) ?
+       dynamic_cast<const parallel::distributed::Triangulation<1, spacedim>&>(
+         dof_handler.get_triangulation())
+         .locally_owned_subdomain() :
+       subdomain_id_);
 #else
   const types::subdomain_id subdomain_id = subdomain_id_;
 #endif
@@ -314,15 +311,14 @@ KellyErrorEstimator<1, spacedim>::estimate(
   const unsigned int n_solution_vectors = solutions.size();
 
   // sanity checks
-  Assert(neumann_bc.find(numbers::internal_face_boundary_id)
-           == neumann_bc.end(),
+  Assert(neumann_bc.find(numbers::internal_face_boundary_id) ==
+           neumann_bc.end(),
          ExcMessage("You are not allowed to list the special boundary "
                     "indicator for internal boundaries in your boundary "
                     "value map."));
 
   for(typename FunctionMap<spacedim, typename InputVector::value_type>::type::
-        const_iterator i
-      = neumann_bc.begin();
+        const_iterator i = neumann_bc.begin();
       i != neumann_bc.end();
       ++i)
     Assert(i->second->n_components == n_components,
@@ -334,8 +330,9 @@ KellyErrorEstimator<1, spacedim>::estimate(
   Assert(component_mask.n_selected_components(n_components) > 0,
          ExcInvalidComponentMask());
 
-  Assert((coefficient == nullptr) || (coefficient->n_components == n_components)
-           || (coefficient->n_components == 1),
+  Assert((coefficient == nullptr) ||
+           (coefficient->n_components == n_components) ||
+           (coefficient->n_components == 1),
          ExcInvalidCoefficient());
 
   Assert(solutions.size() > 0, ExcNoSolutions());
@@ -345,13 +342,13 @@ KellyErrorEstimator<1, spacedim>::estimate(
     Assert(solutions[n]->size() == dof_handler.n_dofs(),
            ExcDimensionMismatch(solutions[n]->size(), dof_handler.n_dofs()));
 
-  Assert((coefficient == nullptr) || (coefficient->n_components == n_components)
-           || (coefficient->n_components == 1),
+  Assert((coefficient == nullptr) ||
+           (coefficient->n_components == n_components) ||
+           (coefficient->n_components == 1),
          ExcInvalidCoefficient());
 
   for(typename FunctionMap<spacedim, typename InputVector::value_type>::type::
-        const_iterator i
-      = neumann_bc.begin();
+        const_iterator i = neumann_bc.begin();
       i != neumann_bc.end();
       ++i)
     Assert(i->second->n_components == n_components,
@@ -404,14 +401,14 @@ KellyErrorEstimator<1, spacedim>::estimate(
   // loop over all cells and do something on the cells which we're told to
   // work on. note that the error indicator is only a sum over the two
   // contributions from the two vertices of each cell.
-  for(typename DoFHandlerType::active_cell_iterator cell
-      = dof_handler.begin_active();
+  for(typename DoFHandlerType::active_cell_iterator cell =
+        dof_handler.begin_active();
       cell != dof_handler.end();
       ++cell)
-    if(((subdomain_id == numbers::invalid_subdomain_id)
-        || (cell->subdomain_id() == subdomain_id))
-       && ((material_id == numbers::invalid_material_id)
-           || (cell->material_id() == material_id)))
+    if(((subdomain_id == numbers::invalid_subdomain_id) ||
+        (cell->subdomain_id() == subdomain_id)) &&
+       ((material_id == numbers::invalid_material_id) ||
+        (cell->material_id() == material_id)))
       {
         for(unsigned int n = 0; n < n_solution_vectors; ++n)
           (*errors[n])(cell->active_cell_index()) = 0;
@@ -444,16 +441,16 @@ KellyErrorEstimator<1, spacedim>::estimate(
                     *solutions[s], gradients_neighbor[s]);
 
                 fe_face_values.reinit(neighbor, n == 0 ? 1 : 0);
-                Tensor<1, spacedim> neighbor_normal
-                  = fe_face_values.get_present_fe_values()
-                      .get_all_normal_vectors()[0];
+                Tensor<1, spacedim> neighbor_normal =
+                  fe_face_values.get_present_fe_values()
+                    .get_all_normal_vectors()[0];
 
                 // extract the gradient in normal direction of all the components.
                 for(unsigned int s = 0; s < n_solution_vectors; ++s)
                   for(unsigned int c = 0; c < n_components; ++c)
-                    grad_dot_n_neighbor[s](c)
-                      = -(gradients_neighbor[s][n == 0 ? 1 : 0][c]
-                          * neighbor_normal);
+                    grad_dot_n_neighbor[s](c) =
+                      -(gradients_neighbor[s][n == 0 ? 1 : 0][c] *
+                        neighbor_normal);
               }
             else if(neumann_bc.find(n) != neumann_bc.end())
               // if Neumann b.c., then fill the gradients field which will be
@@ -461,8 +458,8 @@ KellyErrorEstimator<1, spacedim>::estimate(
               {
                 if(n_components == 1)
                   {
-                    const typename InputVector::value_type v
-                      = neumann_bc.find(n)->second->value(cell->vertex(n));
+                    const typename InputVector::value_type v =
+                      neumann_bc.find(n)->second->value(cell->vertex(n));
 
                     for(unsigned int s = 0; s < n_solution_vectors; ++s)
                       grad_dot_n_neighbor[s](0) = v;
@@ -504,23 +501,23 @@ KellyErrorEstimator<1, spacedim>::estimate(
                   {
                     // get gradient here
                     const typename ProductType<number, double>::type
-                      grad_dot_n_here
-                      = gradients_here[s][n][component] * normal;
+                      grad_dot_n_here =
+                        gradients_here[s][n][component] * normal;
 
-                    const typename ProductType<number, double>::type jump
-                      = ((grad_dot_n_here - grad_dot_n_neighbor[s](component))
-                         * coefficient_values(component));
-                    (*errors[s])(cell->active_cell_index())
-                      += numbers::NumberTraits<
-                           typename ProductType<number,
-                                                double>::type>::abs_square(jump)
-                         * cell->diameter();
+                    const typename ProductType<number, double>::type jump =
+                      ((grad_dot_n_here - grad_dot_n_neighbor[s](component)) *
+                       coefficient_values(component));
+                    (*errors[s])(cell->active_cell_index()) +=
+                      numbers::NumberTraits<
+                        typename ProductType<number,
+                                             double>::type>::abs_square(jump) *
+                      cell->diameter();
                   }
           }
 
         for(unsigned int s = 0; s < n_solution_vectors; ++s)
-          (*errors[s])(cell->active_cell_index())
-            = std::sqrt((*errors[s])(cell->active_cell_index()));
+          (*errors[s])(cell->active_cell_index()) =
+            std::sqrt((*errors[s])(cell->active_cell_index()));
       }
 }
 

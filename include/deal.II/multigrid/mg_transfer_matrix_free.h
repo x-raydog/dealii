@@ -473,11 +473,11 @@ MGTransferMatrixFree<dim, Number>::interpolate_to_mg(
          ExcDimensionMismatch(
            max_level, dof_handler.get_triangulation().n_global_levels() - 1));
 
-  const parallel::Triangulation<dim, spacedim>* p_tria
-    = (dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
+  const parallel::Triangulation<dim, spacedim>* p_tria =
+    (dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
       &dof_handler.get_triangulation()));
-  MPI_Comm mpi_communicator
-    = p_tria != nullptr ? p_tria->get_communicator() : MPI_COMM_SELF;
+  MPI_Comm mpi_communicator =
+    p_tria != nullptr ? p_tria->get_communicator() : MPI_COMM_SELF;
 
   // resize the dst vector if it's empty or has incorrect size
   MGLevelObject<IndexSet> relevant_dofs(min_level, max_level);
@@ -485,9 +485,9 @@ MGTransferMatrixFree<dim, Number>::interpolate_to_mg(
     {
       DoFTools::extract_locally_relevant_level_dofs(
         dof_handler, level, relevant_dofs[level]);
-      if(dst[level].size() != dof_handler.locally_owned_mg_dofs(level).size()
-         || dst[level].local_size()
-              != dof_handler.locally_owned_mg_dofs(level).n_elements())
+      if(dst[level].size() != dof_handler.locally_owned_mg_dofs(level).size() ||
+         dst[level].local_size() !=
+           dof_handler.locally_owned_mg_dofs(level).n_elements())
         dst[level].reinit(dof_handler.locally_owned_mg_dofs(level),
                           relevant_dofs[level],
                           mpi_communicator);
@@ -516,8 +516,8 @@ MGTransferMatrixFree<dim, Number>::interpolate_to_mg(
       Vector<Number>                       dof_values_fine(fe.dofs_per_cell);
       Vector<Number>                       tmp(fe.dofs_per_cell);
       std::vector<types::global_dof_index> dof_indices(fe.dofs_per_cell);
-      typename DoFHandler<dim>::cell_iterator cell
-        = dof_handler.begin(level - 1);
+      typename DoFHandler<dim>::cell_iterator cell =
+        dof_handler.begin(level - 1);
       typename DoFHandler<dim>::cell_iterator endc = dof_handler.end(level - 1);
       for(; cell != endc; ++cell)
         if(cell->is_locally_owned_on_level())
@@ -593,13 +593,12 @@ MGTransferBlockMatrixFree<dim, Number>::copy_to_mg(
   // dst == defect level block vector. At first run this vector is not
   // initialized. Do this below:
   {
-    const parallel::Triangulation<dim, spacedim>* tria
-      = (dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
+    const parallel::Triangulation<dim, spacedim>* tria =
+      (dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
         &(mg_dof[0]->get_triangulation())));
     for(unsigned int i = 1; i < n_blocks; ++i)
       AssertThrow((dynamic_cast<const parallel::Triangulation<dim, spacedim>*>(
-                     &(mg_dof[0]->get_triangulation()))
-                   == tria),
+                     &(mg_dof[0]->get_triangulation())) == tria),
                   ExcMessage("The DoFHandler use different Triangulations!"));
 
     for(unsigned int level = min_level; level <= max_level; ++level)
@@ -609,9 +608,9 @@ MGTransferBlockMatrixFree<dim, Number>::copy_to_mg(
         for(unsigned int b = 0; b < n_blocks; ++b)
           {
             LinearAlgebra::distributed::Vector<Number>& v = dst[level].block(b);
-            if(v.size() != mg_dof[b]->locally_owned_mg_dofs(level).size()
-               || v.local_size()
-                    != mg_dof[b]->locally_owned_mg_dofs(level).n_elements())
+            if(v.size() != mg_dof[b]->locally_owned_mg_dofs(level).size() ||
+               v.local_size() !=
+                 mg_dof[b]->locally_owned_mg_dofs(level).n_elements())
               {
                 v.reinit(mg_dof[b]->locally_owned_mg_dofs(level),
                          tria != nullptr ? tria->get_communicator() :

@@ -356,8 +356,8 @@ namespace internal
   template <typename T>
   class AlignedVectorCopy : private parallel::ParallelForInteger
   {
-    static const std::size_t minimum_parallel_grain_size
-      = 160000 / sizeof(T) + 1;
+    static const std::size_t minimum_parallel_grain_size =
+      160000 / sizeof(T) + 1;
 
   public:
     /**
@@ -421,8 +421,8 @@ namespace internal
   template <typename T>
   class AlignedVectorMove : private parallel::ParallelForInteger
   {
-    static const std::size_t minimum_parallel_grain_size
-      = 160000 / sizeof(T) + 1;
+    static const std::size_t minimum_parallel_grain_size =
+      160000 / sizeof(T) + 1;
 
   public:
     /**
@@ -497,8 +497,8 @@ namespace internal
   template <typename T, bool initialize_memory>
   class AlignedVectorSet : private parallel::ParallelForInteger
   {
-    static const std::size_t minimum_parallel_grain_size
-      = 160000 / sizeof(T) + 1;
+    static const std::size_t minimum_parallel_grain_size =
+      160000 / sizeof(T) + 1;
 
   public:
     /**
@@ -517,8 +517,8 @@ namespace internal
       // do not use memcmp for long double because on some systems it does not
       // completely fill its memory and may lead to false positives in
       // e.g. valgrind
-      if(std::is_trivial<T>::value == true
-         && std::is_same<T, long double>::value == false)
+      if(std::is_trivial<T>::value == true &&
+         std::is_same<T, long double>::value == false)
         {
           const unsigned char zero[sizeof(T)] = {};
           // cast element to (void*) to silence compiler warning for virtual
@@ -592,8 +592,8 @@ namespace internal
   template <typename T, bool initialize_memory>
   class AlignedVectorDefaultInitialize : private parallel::ParallelForInteger
   {
-    static const std::size_t minimum_parallel_grain_size
-      = 160000 / sizeof(T) + 1;
+    static const std::size_t minimum_parallel_grain_size =
+      160000 / sizeof(T) + 1;
 
   public:
     /**

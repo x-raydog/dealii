@@ -1441,13 +1441,13 @@ namespace FETools
       std::vector<const FiniteElement<dim, spacedim>*> fes;
       std::vector<unsigned int>                        multiplicities;
 
-      const auto extract
-        = [&fes, &multiplicities](
-            const std::pair<std::unique_ptr<FiniteElement<dim, spacedim>>,
-                            unsigned int>& fe_system) {
-            fes.push_back(fe_system.first.get());
-            multiplicities.push_back(fe_system.second);
-          };
+      const auto extract =
+        [&fes, &multiplicities](
+          const std::pair<std::unique_ptr<FiniteElement<dim, spacedim>>,
+                          unsigned int>& fe_system) {
+          fes.push_back(fe_system.first.get());
+          multiplicities.push_back(fe_system.second);
+        };
 
       for(const auto& p : fe_systems)
         extract(p);
@@ -1465,13 +1465,13 @@ namespace FETools
       std::vector<const FiniteElement<dim, spacedim>*> fes;
       std::vector<unsigned int>                        multiplicities;
 
-      const auto extract
-        = [&fes, &multiplicities](
-            const std::pair<std::unique_ptr<FiniteElement<dim, spacedim>>,
-                            unsigned int>& fe_system) {
-            fes.push_back(fe_system.first.get());
-            multiplicities.push_back(fe_system.second);
-          };
+      const auto extract =
+        [&fes, &multiplicities](
+          const std::pair<std::unique_ptr<FiniteElement<dim, spacedim>>,
+                          unsigned int>& fe_system) {
+          fes.push_back(fe_system.first.get());
+          multiplicities.push_back(fe_system.second);
+        };
 
       for(const auto& p : fe_systems)
         extract(p);
@@ -1489,13 +1489,13 @@ namespace FETools
       std::vector<const FiniteElement<dim, spacedim>*> fes;
       std::vector<unsigned int>                        multiplicities;
 
-      const auto extract
-        = [&fes, &multiplicities](
-            const std::pair<std::unique_ptr<FiniteElement<dim, spacedim>>,
-                            unsigned int>& fe_system) {
-            fes.push_back(fe_system.first.get());
-            multiplicities.push_back(fe_system.second);
-          };
+      const auto extract =
+        [&fes, &multiplicities](
+          const std::pair<std::unique_ptr<FiniteElement<dim, spacedim>>,
+                          unsigned int>& fe_system) {
+          fes.push_back(fe_system.first.get());
+          multiplicities.push_back(fe_system.second);
+        };
 
       for(const auto& p : fe_systems)
         extract(p);

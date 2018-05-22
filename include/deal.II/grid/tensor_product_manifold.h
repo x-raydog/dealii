@@ -355,10 +355,10 @@ TensorProductManifold<dim,
   internal::TensorProductManifoldImplementation::split_point(
     chart_point, chart_point_A, chart_point_B);
 
-  DerivativeForm<1, chartdim_A, spacedim_A> result_A
-    = manifold_A->push_forward_gradient(chart_point_A);
-  DerivativeForm<1, chartdim_B, spacedim_B> result_B
-    = manifold_B->push_forward_gradient(chart_point_B);
+  DerivativeForm<1, chartdim_A, spacedim_A> result_A =
+    manifold_A->push_forward_gradient(chart_point_A);
+  DerivativeForm<1, chartdim_B, spacedim_B> result_B =
+    manifold_B->push_forward_gradient(chart_point_B);
 
   DerivativeForm<1, chartdim, spacedim> result;
   for(unsigned int i = 0; i < chartdim_A; ++i)

@@ -78,8 +78,8 @@ Subscriptor::check_no_subscribers() const noexcept
               ++it)
             {
               if(it->second > 0)
-                infostring += std::string("\n  from Subscriber ")
-                              + std::string(it->first);
+                infostring +=
+                  std::string("\n  from Subscriber ") + std::string(it->first);
             }
 
           if(infostring == "")

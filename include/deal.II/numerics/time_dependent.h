@@ -764,8 +764,7 @@ public:
    * overload this function.
    */
   virtual void
-  solve_primal_problem()
-    = 0;
+  solve_primal_problem() = 0;
 
   /**
    * This function is called by the manager object when solving the dual
@@ -927,8 +926,7 @@ private:
    * to copy such an object.
    */
   TimeStepBase&
-  operator=(const TimeStepBase&)
-    = delete;
+  operator=(const TimeStepBase&) = delete;
 
   // make the manager object a friend
   friend class TimeDependent;
@@ -1140,8 +1138,8 @@ namespace TimeStepBase_Tria_Flags
                     const unsigned int min_cells_for_correction    = 0,
                     const double       cell_number_corridor_top    = (1 << dim),
                     const double       cell_number_corridor_bottom = 1,
-                    const CorrectionRelaxations& correction_relaxations
-                    = CorrectionRelaxations(),
+                    const CorrectionRelaxations& correction_relaxations =
+                      CorrectionRelaxations(),
                     const unsigned int cell_number_correction_steps  = 0,
                     const bool         mirror_flags_to_previous_grid = false,
                     const bool         adapt_grids                   = false);
@@ -1333,11 +1331,11 @@ public:
    * needed anyway; the refinement flags can be omitted if you do not intend
    * to call the refinement function of this class.
    */
-  TimeStepBase_Tria(const double                   time,
-                    const Triangulation<dim, dim>& coarse_grid,
-                    const Flags&                   flags,
-                    const RefinementFlags&         refinement_flags
-                    = RefinementFlags());
+  TimeStepBase_Tria(
+    const double                   time,
+    const Triangulation<dim, dim>& coarse_grid,
+    const Flags&                   flags,
+    const RefinementFlags&         refinement_flags = RefinementFlags());
 
   /**
    * Destructor. At present, this does not more than releasing the lock on the
@@ -1605,13 +1603,13 @@ TimeDependent::do_loop(InitFunctionObject      init_function,
       switch(direction)
         {
           case forward:
-            if((step - look_back >= 0)
-               && (step - look_back < static_cast<int>(n_timesteps)))
+            if((step - look_back >= 0) &&
+               (step - look_back < static_cast<int>(n_timesteps)))
               timesteps[step - look_back]->sleep(look_back);
             break;
           case backward:
-            if((step - look_back >= 0)
-               && (step - look_back < static_cast<int>(n_timesteps)))
+            if((step - look_back >= 0) &&
+               (step - look_back < static_cast<int>(n_timesteps)))
               timesteps[n_timesteps - (step - look_back) - 1]->sleep(look_back);
             break;
         };

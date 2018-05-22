@@ -43,8 +43,8 @@ DEAL_II_NAMESPACE_OPEN
    system, please let us know.
  */
 
-#  if defined(__linux__) || defined(__sun__) || defined(__osf__) \
-    || defined(_AIX)
+#  if defined(__linux__) || defined(__sun__) || defined(__osf__) || \
+    defined(_AIX)
 
 unsigned int
 MultithreadInfo::get_n_cpus()
@@ -133,8 +133,8 @@ MultithreadInfo::set_thread_limit(const unsigned int max_threads)
                   "When specifying the <DEAL_II_NUM_THREADS> environment "
                   "variable, it needs to be something that can be interpreted "
                   "as an integer. The text you have in the environment "
-                  "variable is <")
-                + penv + ">"));
+                  "variable is <") +
+                penv + ">"));
           }
 
         AssertThrow(

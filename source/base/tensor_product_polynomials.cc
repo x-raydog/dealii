@@ -235,19 +235,20 @@ TensorProductPolynomials<dim, PolynomialType>::compute(
          ExcDimensionMismatch2(grads.size(), n_tensor_pols, 0));
   Assert(grad_grads.size() == n_tensor_pols || grad_grads.size() == 0,
          ExcDimensionMismatch2(grad_grads.size(), n_tensor_pols, 0));
-  Assert(third_derivatives.size() == n_tensor_pols
-           || third_derivatives.size() == 0,
+  Assert(third_derivatives.size() == n_tensor_pols ||
+           third_derivatives.size() == 0,
          ExcDimensionMismatch2(third_derivatives.size(), n_tensor_pols, 0));
-  Assert(fourth_derivatives.size() == n_tensor_pols
-           || fourth_derivatives.size() == 0,
+  Assert(fourth_derivatives.size() == n_tensor_pols ||
+           fourth_derivatives.size() == 0,
          ExcDimensionMismatch2(fourth_derivatives.size(), n_tensor_pols, 0));
 
-  const bool update_values
-    = (values.size() == n_tensor_pols),
-    update_grads           = (grads.size() == n_tensor_pols),
-    update_grad_grads      = (grad_grads.size() == n_tensor_pols),
-    update_3rd_derivatives = (third_derivatives.size() == n_tensor_pols),
-    update_4th_derivatives = (fourth_derivatives.size() == n_tensor_pols);
+  const bool update_values     = (values.size() == n_tensor_pols),
+             update_grads      = (grads.size() == n_tensor_pols),
+             update_grad_grads = (grad_grads.size() == n_tensor_pols),
+             update_3rd_derivatives =
+               (third_derivatives.size() == n_tensor_pols),
+             update_4th_derivatives =
+               (fourth_derivatives.size() == n_tensor_pols);
 
   // check how many values/derivatives we have to compute
   unsigned int n_values_and_derivatives = 0;
@@ -506,19 +507,20 @@ AnisotropicPolynomials<dim>::compute(
          ExcDimensionMismatch2(grads.size(), n_tensor_pols, 0));
   Assert(grad_grads.size() == n_tensor_pols || grad_grads.size() == 0,
          ExcDimensionMismatch2(grad_grads.size(), n_tensor_pols, 0));
-  Assert(third_derivatives.size() == n_tensor_pols
-           || third_derivatives.size() == 0,
+  Assert(third_derivatives.size() == n_tensor_pols ||
+           third_derivatives.size() == 0,
          ExcDimensionMismatch2(third_derivatives.size(), n_tensor_pols, 0));
-  Assert(fourth_derivatives.size() == n_tensor_pols
-           || fourth_derivatives.size() == 0,
+  Assert(fourth_derivatives.size() == n_tensor_pols ||
+           fourth_derivatives.size() == 0,
          ExcDimensionMismatch2(fourth_derivatives.size(), n_tensor_pols, 0));
 
-  const bool update_values
-    = (values.size() == n_tensor_pols),
-    update_grads           = (grads.size() == n_tensor_pols),
-    update_grad_grads      = (grad_grads.size() == n_tensor_pols),
-    update_3rd_derivatives = (third_derivatives.size() == n_tensor_pols),
-    update_4th_derivatives = (fourth_derivatives.size() == n_tensor_pols);
+  const bool update_values     = (values.size() == n_tensor_pols),
+             update_grads      = (grads.size() == n_tensor_pols),
+             update_grad_grads = (grad_grads.size() == n_tensor_pols),
+             update_3rd_derivatives =
+               (third_derivatives.size() == n_tensor_pols),
+             update_4th_derivatives =
+               (fourth_derivatives.size() == n_tensor_pols);
 
   // check how many
   // values/derivatives we have to
@@ -607,8 +609,8 @@ AnisotropicPolynomials<dim>::compute(
                     if(d3 == x)
                       ++derivative;
 
-                    third_derivatives[i][d1][d2][d3]
-                      *= v[x][indices[x]][derivative];
+                    third_derivatives[i][d1][d2][d3] *=
+                      v[x][indices[x]][derivative];
                   }
               }
 
@@ -631,8 +633,8 @@ AnisotropicPolynomials<dim>::compute(
                       if(d4 == x)
                         ++derivative;
 
-                      fourth_derivatives[i][d1][d2][d3][d4]
-                        *= v[x][indices[x]][derivative];
+                      fourth_derivatives[i][d1][d2][d3][d4] *=
+                        v[x][indices[x]][derivative];
                     }
                 }
     }

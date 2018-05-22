@@ -610,8 +610,8 @@ namespace Step22
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_quadrature_points
-                              | update_JxW_values | update_gradients);
+                            update_values | update_quadrature_points |
+                              update_JxW_values | update_gradients);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
 
@@ -659,9 +659,9 @@ namespace Step22
     std::vector<double>                  div_phi_u(dofs_per_cell);
     std::vector<double>                  phi_p(dofs_per_cell);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
     for(; cell != endc; ++cell)
       {
         fe_values.reinit(cell);
@@ -676,8 +676,8 @@ namespace Step22
           {
             for(unsigned int k = 0; k < dofs_per_cell; ++k)
               {
-                symgrad_phi_u[k]
-                  = fe_values[velocities].symmetric_gradient(k, q);
+                symgrad_phi_u[k] =
+                  fe_values[velocities].symmetric_gradient(k, q);
                 div_phi_u[k] = fe_values[velocities].divergence(k, q);
                 phi_p[k]     = fe_values[pressure].value(k, q);
               }
@@ -686,13 +686,13 @@ namespace Step22
               {
                 for(unsigned int j = 0; j <= i; ++j)
                   {
-                    local_matrix(i, j)
-                      += (2 * (symgrad_phi_u[i] * symgrad_phi_u[j])
-                          - div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j])
-                         * fe_values.JxW(q);
+                    local_matrix(i, j) +=
+                      (2 * (symgrad_phi_u[i] * symgrad_phi_u[j]) -
+                       div_phi_u[i] * phi_p[j] - phi_p[i] * div_phi_u[j]) *
+                      fe_values.JxW(q);
 
-                    local_preconditioner_matrix(i, j)
-                      += (phi_p[i] * phi_p[j]) * fe_values.JxW(q);
+                    local_preconditioner_matrix(i, j) +=
+                      (phi_p[i] * phi_p[j]) * fe_values.JxW(q);
                   }
 
                 // For the right-hand side we use the fact that the shape
@@ -707,10 +707,10 @@ namespace Step22
                 // the correct component of the right-hand side vector to
                 // multiply with.
 
-                const unsigned int component_i
-                  = fe.system_to_component_index(i).first;
-                local_rhs(i) += fe_values.shape_value(i, q)
-                                * rhs_values[q](component_i) * fe_values.JxW(q);
+                const unsigned int component_i =
+                  fe.system_to_component_index(i).first;
+                local_rhs(i) += fe_values.shape_value(i, q) *
+                                rhs_values[q](component_i) * fe_values.JxW(q);
               }
           }
 
@@ -731,8 +731,8 @@ namespace Step22
           for(unsigned int j = i + 1; j < dofs_per_cell; ++j)
             {
               local_matrix(i, j) = local_matrix(j, i);
-              local_preconditioner_matrix(i, j)
-                = local_preconditioner_matrix(j, i);
+              local_preconditioner_matrix(i, j) =
+                local_preconditioner_matrix(j, i);
             }
 
         cell->get_dof_indices(local_dof_indices);
@@ -755,8 +755,8 @@ namespace Step22
     // use a sparse direct solver or an ILU:
     std::cout << "   Computing preconditioner..." << std::endl << std::flush;
 
-    A_preconditioner
-      = std::make_shared<typename InnerPreconditioner<dim>::type>();
+    A_preconditioner =
+      std::make_shared<typename InnerPreconditioner<dim>::type>();
     A_preconditioner->initialize(
       system_matrix.block(0, 0),
       typename InnerPreconditioner<dim>::type::AdditionalData());
@@ -964,10 +964,10 @@ namespace Step22
       std::vector<unsigned int> subdivisions(dim, 1);
       subdivisions[0] = 4;
 
-      const Point<dim> bottom_left
-        = (dim == 2 ? Point<dim>(-2, -1) : Point<dim>(-2, 0, -1));
-      const Point<dim> top_right
-        = (dim == 2 ? Point<dim>(2, 0) : Point<dim>(2, 1, 0));
+      const Point<dim> bottom_left =
+        (dim == 2 ? Point<dim>(-2, -1) : Point<dim>(-2, 0, -1));
+      const Point<dim> top_right =
+        (dim == 2 ? Point<dim>(2, 0) : Point<dim>(2, 1, 0));
 
       GridGenerator::subdivided_hyper_rectangle(
         triangulation, subdivisions, bottom_left, top_right);
@@ -977,8 +977,8 @@ namespace Step22
     // Dirichlet boundary conditions, i.e.  to faces that are located at 0 in
     // the last coordinate direction. See the example description above for
     // details.
-    for(typename Triangulation<dim>::active_cell_iterator cell
-        = triangulation.begin_active();
+    for(typename Triangulation<dim>::active_cell_iterator cell =
+          triangulation.begin_active();
         cell != triangulation.end();
         ++cell)
       for(unsigned int f = 0; f < GeometryInfo<dim>::faces_per_cell; ++f)

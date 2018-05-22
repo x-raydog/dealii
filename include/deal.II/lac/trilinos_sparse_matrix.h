@@ -596,8 +596,7 @@ namespace TrilinosWrappers
      * operator= is deleted.
      */
     SparseMatrix&
-    operator=(const SparseMatrix&)
-      = delete;
+    operator=(const SparseMatrix&) = delete;
 
     /**
      * Destructor. Made virtual so that one can use pointers to this class.
@@ -2325,9 +2324,9 @@ namespace TrilinosWrappers
          */
         template <typename Solver, typename Preconditioner>
         typename std::enable_if<
-          std::is_base_of<TrilinosWrappers::SolverBase, Solver>::value
-            && std::is_base_of<TrilinosWrappers::PreconditionBase,
-                               Preconditioner>::value,
+          std::is_base_of<TrilinosWrappers::SolverBase, Solver>::value &&
+            std::is_base_of<TrilinosWrappers::PreconditionBase,
+                            Preconditioner>::value,
           TrilinosPayload>::type
         inverse_payload(Solver&, const Preconditioner&) const;
 
@@ -2349,9 +2348,9 @@ namespace TrilinosWrappers
          */
         template <typename Solver, typename Preconditioner>
         typename std::enable_if<
-          !(std::is_base_of<TrilinosWrappers::SolverBase, Solver>::value
-            && std::is_base_of<TrilinosWrappers::PreconditionBase,
-                               Preconditioner>::value),
+          !(std::is_base_of<TrilinosWrappers::SolverBase, Solver>::value &&
+            std::is_base_of<TrilinosWrappers::PreconditionBase,
+                            Preconditioner>::value),
           TrilinosPayload>::type
         inverse_payload(Solver&, const Preconditioner&) const;
 
@@ -2763,9 +2762,9 @@ namespace TrilinosWrappers
           accessor.a_index = 0;
           ++accessor.a_row;
 
-          while((accessor.a_row < accessor.matrix->m())
-                && ((accessor.matrix->in_local_range(accessor.a_row) == false)
-                    || (accessor.matrix->row_length(accessor.a_row) == 0)))
+          while((accessor.a_row < accessor.matrix->m()) &&
+                ((accessor.matrix->in_local_range(accessor.a_row) == false) ||
+                 (accessor.matrix->row_length(accessor.a_row) == 0)))
             ++accessor.a_row;
 
           accessor.visit_present_row();
@@ -2798,8 +2797,8 @@ namespace TrilinosWrappers
     inline bool
     Iterator<Constness>::operator==(const Iterator<Constness>& other) const
     {
-      return (accessor.a_row == other.accessor.a_row
-              && accessor.a_index == other.accessor.a_index);
+      return (accessor.a_row == other.accessor.a_row &&
+              accessor.a_index == other.accessor.a_index);
     }
 
     template <bool Constness>
@@ -2813,9 +2812,9 @@ namespace TrilinosWrappers
     inline bool
     Iterator<Constness>::operator<(const Iterator<Constness>& other) const
     {
-      return (accessor.row() < other.accessor.row()
-              || (accessor.row() == other.accessor.row()
-                  && accessor.index() < other.accessor.index()));
+      return (accessor.row() < other.accessor.row() ||
+              (accessor.row() == other.accessor.row() &&
+               accessor.index() < other.accessor.index()));
     }
 
     template <bool Constness>
@@ -2917,8 +2916,8 @@ namespace TrilinosWrappers
     end   = matrix->RowMap().MaxMyGID64() + 1;
 #      endif
 
-    return ((index >= static_cast<size_type>(begin))
-            && (index < static_cast<size_type>(end)));
+    return ((index >= static_cast<size_type>(begin)) &&
+            (index < static_cast<size_type>(end)));
   }
 
   inline bool
@@ -3070,8 +3069,8 @@ namespace TrilinosWrappers
                        const bool                            copy_values,
                        const ::dealii::SparsityPattern*      use_this_sparsity)
   {
-    Epetra_Map map
-      = parallel_partitioning.make_trilinos_map(communicator, false);
+    Epetra_Map map =
+      parallel_partitioning.make_trilinos_map(communicator, false);
     reinit(parallel_partitioning,
            parallel_partitioning,
            sparse_matrix,
@@ -3122,9 +3121,9 @@ namespace TrilinosWrappers
     {
       template <typename Solver, typename Preconditioner>
       typename std::enable_if<
-        std::is_base_of<TrilinosWrappers::SolverBase, Solver>::value
-          && std::is_base_of<TrilinosWrappers::PreconditionBase,
-                             Preconditioner>::value,
+        std::is_base_of<TrilinosWrappers::SolverBase, Solver>::value &&
+          std::is_base_of<TrilinosWrappers::PreconditionBase,
+                          Preconditioner>::value,
         TrilinosPayload>::type
       TrilinosPayload::inverse_payload(
         Solver&               solver,
@@ -3173,9 +3172,9 @@ namespace TrilinosWrappers
 
       template <typename Solver, typename Preconditioner>
       typename std::enable_if<
-        !(std::is_base_of<TrilinosWrappers::SolverBase, Solver>::value
-          && std::is_base_of<TrilinosWrappers::PreconditionBase,
-                             Preconditioner>::value),
+        !(std::is_base_of<TrilinosWrappers::SolverBase, Solver>::value &&
+          std::is_base_of<TrilinosWrappers::PreconditionBase,
+                          Preconditioner>::value),
         TrilinosPayload>::type
       TrilinosPayload::inverse_payload(Solver&, const Preconditioner&) const
       {

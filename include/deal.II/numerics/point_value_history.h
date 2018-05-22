@@ -413,8 +413,8 @@ public:
    */
   void
   write_gnuplot(const std::string&             base_name,
-                const std::vector<Point<dim>>& postprocessor_locations
-                = std::vector<Point<dim>>());
+                const std::vector<Point<dim>>& postprocessor_locations =
+                  std::vector<Point<dim>>());
 
   /**
    * Return a @p Vector with the indices of selected points flagged with a 1.

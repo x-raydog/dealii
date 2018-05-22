@@ -81,8 +81,8 @@ namespace FESeries
     Table<dim, std::complex<double>>& fourier_coefficients)
   {
     ensure_existence(cell_active_fe_index);
-    const FullMatrix<std::complex<double>>& matrix
-      = fourier_transform_matrices[cell_active_fe_index];
+    const FullMatrix<std::complex<double>>& matrix =
+      fourier_transform_matrices[cell_active_fe_index];
 
     std::fill(unrolled_coefficients.begin(),
               unrolled_coefficients.end(),
@@ -111,8 +111,8 @@ namespace FESeries
     for(unsigned int q = 0; q < quadrature.size(); ++q)
       {
         const Point<dim>& x_q = quadrature.point(q);
-        sum += std::exp(std::complex<double>(0, 1) * (k_vector * x_q))
-               * fe.shape_value(j, x_q) * quadrature.weight(q);
+        sum += std::exp(std::complex<double>(0, 1) * (k_vector * x_q)) *
+               fe.shape_value(j, x_q) * quadrature.weight(q);
       }
     return sum;
   }
@@ -155,11 +155,11 @@ namespace FESeries
         for(unsigned int k2 = 0; k2 < k_vectors.size(1); ++k2)
           for(unsigned int k3 = 0; k3 < k_vectors.size(2); ++k3, k++)
             for(unsigned int j = 0; j < (*fe_collection)[fe].dofs_per_cell; ++j)
-              fourier_transform_matrices[fe](k, j)
-                = integrate((*fe_collection)[fe],
-                            (*q_collection)[fe],
-                            k_vectors(k1, k2, k3),
-                            j);
+              fourier_transform_matrices[fe](k, j) =
+                integrate((*fe_collection)[fe],
+                          (*q_collection)[fe],
+                          k_vectors(k1, k2, k3),
+                          j);
     }
   }
 
@@ -249,8 +249,8 @@ namespace FESeries
                            Table<dim, double>&           legendre_coefficients)
   {
     ensure_existence(cell_active_fe_index);
-    const FullMatrix<double>& matrix
-      = legendre_transform_matrices[cell_active_fe_index];
+    const FullMatrix<double>& matrix =
+      legendre_transform_matrices[cell_active_fe_index];
 
     std::fill(unrolled_coefficients.begin(), unrolled_coefficients.end(), 0.);
 
@@ -277,8 +277,8 @@ namespace FESeries
     for(unsigned int q = 0; q < quadrature.size(); ++q)
       {
         const Point<dim>& x_q = quadrature.point(q);
-        sum
-          += Lh(x_q, indices) * fe.shape_value(dof, x_q) * quadrature.weight(q);
+        sum +=
+          Lh(x_q, indices) * fe.shape_value(dof, x_q) * quadrature.weight(q);
       }
     return sum * multiplier(indices);
   }
@@ -290,8 +290,8 @@ namespace FESeries
     Assert(
       fe < fe_collection->size(),
       ExcIndexRange(
-        fe, 0, fe_collection->size())) if(legendre_transform_matrices[fe].m()
-                                          == 0)
+        fe, 0, fe_collection->size())) if(legendre_transform_matrices[fe].m() ==
+                                          0)
     {
       legendre_transform_matrices[fe].reinit(
         N, (*fe_collection)[fe].dofs_per_cell);
@@ -319,11 +319,11 @@ namespace FESeries
       for(unsigned int k1 = 0; k1 < N; ++k1)
         for(unsigned int k2 = 0; k2 < N; ++k2, k++)
           for(unsigned int j = 0; j < (*fe_collection)[fe].dofs_per_cell; ++j)
-            legendre_transform_matrices[fe](k, j)
-              = integrate_Legendre((*fe_collection)[fe],
-                                   (*q_collection)[fe],
-                                   TableIndices<2>(k1, k2),
-                                   j);
+            legendre_transform_matrices[fe](k, j) =
+              integrate_Legendre((*fe_collection)[fe],
+                                 (*q_collection)[fe],
+                                 TableIndices<2>(k1, k2),
+                                 j);
     }
   }
 
@@ -344,11 +344,11 @@ namespace FESeries
         for(unsigned int k2 = 0; k2 < N; ++k2)
           for(unsigned int k3 = 0; k3 < N; ++k3, k++)
             for(unsigned int j = 0; j < (*fe_collection)[fe].dofs_per_cell; ++j)
-              legendre_transform_matrices[fe](k, j)
-                = integrate_Legendre((*fe_collection)[fe],
-                                     (*q_collection)[fe],
-                                     TableIndices<3>(k1, k2, k3),
-                                     j);
+              legendre_transform_matrices[fe](k, j) =
+                integrate_Legendre((*fe_collection)[fe],
+                                   (*q_collection)[fe],
+                                   TableIndices<3>(k1, k2, k3),
+                                   j);
     }
   }
 

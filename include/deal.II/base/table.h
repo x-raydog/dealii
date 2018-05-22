@@ -2243,9 +2243,9 @@ TableBase<N, T>::position(const TableIndices<N>& indices) const
       case 2:
         return size_type(indices[0]) * table_size[1] + indices[1];
       case 3:
-        return ((size_type(indices[0]) * table_size[1] + indices[1])
-                  * table_size[2]
-                + indices[2]);
+        return ((size_type(indices[0]) * table_size[1] + indices[1]) *
+                  table_size[2] +
+                indices[2]);
       default:
         {
           unsigned int s = indices[0];
@@ -2521,8 +2521,8 @@ namespace TransposeTableIterators
   inline const Accessor<T, false>&
   Accessor<T, false>::operator=(const T& t) const
   {
-    Assert(0 <= this->linear_index
-             && this->linear_index < this->container->values.size(),
+    Assert(0 <= this->linear_index &&
+             this->linear_index < this->container->values.size(),
            ExcMessage("The current iterator points outside of the table."));
     this->container->values[this->linear_index] = t;
     return *this;
@@ -2532,8 +2532,8 @@ namespace TransposeTableIterators
   inline const Accessor<T, false>&
   Accessor<T, false>::operator=(T&& t) const
   {
-    Assert(0 <= this->linear_index
-             && this->linear_index < this->container->values.size(),
+    Assert(0 <= this->linear_index &&
+             this->linear_index < this->container->values.size(),
            ExcMessage("The current iterator points outside of the table."));
     this->container->values[this->linear_index] = t;
     return *this;
@@ -2543,8 +2543,8 @@ namespace TransposeTableIterators
   inline T&
   Accessor<T, false>::value() const
   {
-    Assert(0 <= this->linear_index
-             && this->linear_index < this->container->values.size(),
+    Assert(0 <= this->linear_index &&
+             this->linear_index < this->container->values.size(),
            ExcMessage("The current iterator points outside of the table."));
     return this->container->values[this->linear_index];
   }
@@ -2696,8 +2696,8 @@ inline dealii::internal::TableBaseAccessors::Accessor<3, T, true, 2>
   Table<3, T>::operator[](const size_type i) const
 {
   AssertIndexRange(i, this->table_size[0]);
-  const size_type subobject_size
-    = size_type(this->table_size[1]) * this->table_size[2];
+  const size_type subobject_size =
+    size_type(this->table_size[1]) * this->table_size[2];
   return (dealii::internal::TableBaseAccessors::Accessor<3, T, true, 2>(
     *this, this->values.begin() + i * subobject_size));
 }
@@ -2707,8 +2707,8 @@ inline dealii::internal::TableBaseAccessors::Accessor<3, T, false, 2>
   Table<3, T>::operator[](const size_type i)
 {
   AssertIndexRange(i, this->table_size[0]);
-  const size_type subobject_size
-    = size_type(this->table_size[1]) * this->table_size[2];
+  const size_type subobject_size =
+    size_type(this->table_size[1]) * this->table_size[2];
   return (dealii::internal::TableBaseAccessors::Accessor<3, T, false, 2>(
     *this, this->values.begin() + i * subobject_size));
 }
@@ -2722,8 +2722,8 @@ operator()(const size_type i, const size_type j, const size_type k) const
   AssertIndexRange(j, this->table_size[1]);
   AssertIndexRange(k, this->table_size[2]);
   return this
-    ->values[(size_type(i) * this->table_size[1] + j) * this->table_size[2]
-             + k];
+    ->values[(size_type(i) * this->table_size[1] + j) * this->table_size[2] +
+             k];
 }
 
 template <typename T>
@@ -2734,8 +2734,8 @@ Table<3, T>::operator()(const size_type i, const size_type j, const size_type k)
   AssertIndexRange(j, this->table_size[1]);
   AssertIndexRange(k, this->table_size[2]);
   return this
-    ->values[(size_type(i) * this->table_size[1] + j) * this->table_size[2]
-             + k];
+    ->values[(size_type(i) * this->table_size[1] + j) * this->table_size[2] +
+             k];
 }
 
 template <typename T>
@@ -2765,8 +2765,8 @@ inline dealii::internal::TableBaseAccessors::Accessor<4, T, true, 3>
   Table<4, T>::operator[](const size_type i) const
 {
   AssertIndexRange(i, this->table_size[0]);
-  const size_type subobject_size = size_type(this->table_size[1])
-                                   * this->table_size[2] * this->table_size[3];
+  const size_type subobject_size =
+    size_type(this->table_size[1]) * this->table_size[2] * this->table_size[3];
   return (dealii::internal::TableBaseAccessors::Accessor<4, T, true, 3>(
     *this, this->values.begin() + i * subobject_size));
 }
@@ -2776,8 +2776,8 @@ inline dealii::internal::TableBaseAccessors::Accessor<4, T, false, 3>
   Table<4, T>::operator[](const size_type i)
 {
   AssertIndexRange(i, this->table_size[0]);
-  const size_type subobject_size = size_type(this->table_size[1])
-                                   * this->table_size[2] * this->table_size[3];
+  const size_type subobject_size =
+    size_type(this->table_size[1]) * this->table_size[2] * this->table_size[3];
   return (dealii::internal::TableBaseAccessors::Accessor<4, T, false, 3>(
     *this, this->values.begin() + i * subobject_size));
 }
@@ -2794,10 +2794,10 @@ Table<4, T>::operator()(const size_type i,
   AssertIndexRange(k, this->table_size[2]);
   AssertIndexRange(l, this->table_size[3]);
   return this
-    ->values[((size_type(i) * this->table_size[1] + j) * this->table_size[2]
-              + k)
-               * this->table_size[3]
-             + l];
+    ->values[((size_type(i) * this->table_size[1] + j) * this->table_size[2] +
+              k) *
+               this->table_size[3] +
+             l];
 }
 
 template <typename T>
@@ -2812,10 +2812,10 @@ Table<4, T>::operator()(const size_type i,
   AssertIndexRange(k, this->table_size[2]);
   AssertIndexRange(l, this->table_size[3]);
   return this
-    ->values[((size_type(i) * this->table_size[1] + j) * this->table_size[2]
-              + k)
-               * this->table_size[3]
-             + l];
+    ->values[((size_type(i) * this->table_size[1] + j) * this->table_size[2] +
+              k) *
+               this->table_size[3] +
+             l];
 }
 
 template <typename T>
@@ -2846,9 +2846,9 @@ inline dealii::internal::TableBaseAccessors::Accessor<5, T, true, 4>
   Table<5, T>::operator[](const size_type i) const
 {
   AssertIndexRange(i, this->table_size[0]);
-  const size_type subobject_size = size_type(this->table_size[1])
-                                   * this->table_size[2] * this->table_size[3]
-                                   * this->table_size[4];
+  const size_type subobject_size = size_type(this->table_size[1]) *
+                                   this->table_size[2] * this->table_size[3] *
+                                   this->table_size[4];
   return (dealii::internal::TableBaseAccessors::Accessor<5, T, true, 4>(
     *this, this->values.begin() + i * subobject_size));
 }
@@ -2858,9 +2858,9 @@ inline dealii::internal::TableBaseAccessors::Accessor<5, T, false, 4>
   Table<5, T>::operator[](const size_type i)
 {
   AssertIndexRange(i, this->table_size[0]);
-  const size_type subobject_size = size_type(this->table_size[1])
-                                   * this->table_size[2] * this->table_size[3]
-                                   * this->table_size[4];
+  const size_type subobject_size = size_type(this->table_size[1]) *
+                                   this->table_size[2] * this->table_size[3] *
+                                   this->table_size[4];
   return (dealii::internal::TableBaseAccessors::Accessor<5, T, false, 4>(
     *this, this->values.begin() + i * subobject_size));
 }
@@ -2879,12 +2879,12 @@ Table<5, T>::operator()(const size_type i,
   AssertIndexRange(l, this->table_size[3]);
   AssertIndexRange(m, this->table_size[4]);
   return this
-    ->values[(((size_type(i) * this->table_size[1] + j) * this->table_size[2]
-               + k)
-                * this->table_size[3]
-              + l)
-               * this->table_size[4]
-             + m];
+    ->values[(((size_type(i) * this->table_size[1] + j) * this->table_size[2] +
+               k) *
+                this->table_size[3] +
+              l) *
+               this->table_size[4] +
+             m];
 }
 
 template <typename T>
@@ -2901,12 +2901,12 @@ Table<5, T>::operator()(const size_type i,
   AssertIndexRange(l, this->table_size[3]);
   AssertIndexRange(m, this->table_size[4]);
   return this
-    ->values[(((size_type(i) * this->table_size[1] + j) * this->table_size[2]
-               + k)
-                * this->table_size[3]
-              + l)
-               * this->table_size[4]
-             + m];
+    ->values[(((size_type(i) * this->table_size[1] + j) * this->table_size[2] +
+               k) *
+                this->table_size[3] +
+              l) *
+               this->table_size[4] +
+             m];
 }
 
 template <typename T>
@@ -2948,9 +2948,9 @@ inline dealii::internal::TableBaseAccessors::Accessor<6, T, true, 5>
   Table<6, T>::operator[](const size_type i) const
 {
   AssertIndexRange(i, this->table_size[0]);
-  const size_type subobject_size = size_type(this->table_size[1])
-                                   * this->table_size[2] * this->table_size[3]
-                                   * this->table_size[4] * this->table_size[5];
+  const size_type subobject_size = size_type(this->table_size[1]) *
+                                   this->table_size[2] * this->table_size[3] *
+                                   this->table_size[4] * this->table_size[5];
   return (dealii::internal::TableBaseAccessors::Accessor<6, T, true, 5>(
     *this, this->values.begin() + i * subobject_size));
 }
@@ -2960,9 +2960,9 @@ inline dealii::internal::TableBaseAccessors::Accessor<6, T, false, 5>
   Table<6, T>::operator[](const size_type i)
 {
   AssertIndexRange(i, this->table_size[0]);
-  const size_type subobject_size = size_type(this->table_size[1])
-                                   * this->table_size[2] * this->table_size[3]
-                                   * this->table_size[4] * this->table_size[5];
+  const size_type subobject_size = size_type(this->table_size[1]) *
+                                   this->table_size[2] * this->table_size[3] *
+                                   this->table_size[4] * this->table_size[5];
   return (dealii::internal::TableBaseAccessors::Accessor<6, T, false, 5>(
     *this, this->values.begin() + i * subobject_size));
 }
@@ -2983,14 +2983,14 @@ Table<6, T>::operator()(const size_type i,
   AssertIndexRange(m, this->table_size[4]);
   AssertIndexRange(n, this->table_size[5]);
   return this
-    ->values[((((size_type(i) * this->table_size[1] + j) * this->table_size[2]
-                + k)
-                 * this->table_size[3]
-               + l)
-                * this->table_size[4]
-              + m)
-               * this->table_size[5]
-             + n];
+    ->values[((((size_type(i) * this->table_size[1] + j) * this->table_size[2] +
+                k) *
+                 this->table_size[3] +
+               l) *
+                this->table_size[4] +
+              m) *
+               this->table_size[5] +
+             n];
 }
 
 template <typename T>
@@ -3009,14 +3009,14 @@ Table<6, T>::operator()(const size_type i,
   AssertIndexRange(m, this->table_size[4]);
   AssertIndexRange(n, this->table_size[5]);
   return this
-    ->values[((((size_type(i) * this->table_size[1] + j) * this->table_size[2]
-                + k)
-                 * this->table_size[3]
-               + l)
-                * this->table_size[4]
-              + m)
-               * this->table_size[5]
-             + n];
+    ->values[((((size_type(i) * this->table_size[1] + j) * this->table_size[2] +
+                k) *
+                 this->table_size[3] +
+               l) *
+                this->table_size[4] +
+              m) *
+               this->table_size[5] +
+             n];
 }
 
 template <typename T>
@@ -3060,9 +3060,9 @@ inline dealii::internal::TableBaseAccessors::Accessor<7, T, true, 6>
   Table<7, T>::operator[](const size_type i) const
 {
   AssertIndexRange(i, this->table_size[0]);
-  const size_type subobject_size
-    = size_type(this->table_size[1]) * this->table_size[2] * this->table_size[3]
-      * this->table_size[4] * this->table_size[5] * this->table_size[6];
+  const size_type subobject_size =
+    size_type(this->table_size[1]) * this->table_size[2] * this->table_size[3] *
+    this->table_size[4] * this->table_size[5] * this->table_size[6];
   return (dealii::internal::TableBaseAccessors::Accessor<7, T, true, 6>(
     *this, this->values.begin() + i * subobject_size));
 }
@@ -3072,9 +3072,9 @@ inline dealii::internal::TableBaseAccessors::Accessor<7, T, false, 6>
   Table<7, T>::operator[](const size_type i)
 {
   AssertIndexRange(i, this->table_size[0]);
-  const size_type subobject_size
-    = size_type(this->table_size[1]) * this->table_size[2] * this->table_size[3]
-      * this->table_size[4] * this->table_size[5] * this->table_size[6];
+  const size_type subobject_size =
+    size_type(this->table_size[1]) * this->table_size[2] * this->table_size[3] *
+    this->table_size[4] * this->table_size[5] * this->table_size[6];
   return (dealii::internal::TableBaseAccessors::Accessor<7, T, false, 6>(
     *this, this->values.begin() + i * subobject_size));
 }
@@ -3096,17 +3096,16 @@ Table<7, T>::operator()(const size_type i,
   AssertIndexRange(m, this->table_size[4]);
   AssertIndexRange(n, this->table_size[5]);
   AssertIndexRange(o, this->table_size[6]);
-  return this
-    ->values[(((((size_type(i) * this->table_size[1] + j) * this->table_size[2]
-                 + k)
-                  * this->table_size[3]
-                + l)
-                 * this->table_size[4]
-               + m)
-                * this->table_size[5]
-              + n)
-               * this->table_size[6]
-             + o];
+  return this->values
+    [(((((size_type(i) * this->table_size[1] + j) * this->table_size[2] + k) *
+          this->table_size[3] +
+        l) *
+         this->table_size[4] +
+       m) *
+        this->table_size[5] +
+      n) *
+       this->table_size[6] +
+     o];
 }
 
 template <typename T>
@@ -3126,17 +3125,16 @@ Table<7, T>::operator()(const size_type i,
   AssertIndexRange(m, this->table_size[4]);
   AssertIndexRange(n, this->table_size[5]);
   AssertIndexRange(o, this->table_size[6]);
-  return this
-    ->values[(((((size_type(i) * this->table_size[1] + j) * this->table_size[2]
-                 + k)
-                  * this->table_size[3]
-                + l)
-                 * this->table_size[4]
-               + m)
-                * this->table_size[5]
-              + n)
-               * this->table_size[6]
-             + o];
+  return this->values
+    [(((((size_type(i) * this->table_size[1] + j) * this->table_size[2] + k) *
+          this->table_size[3] +
+        l) *
+         this->table_size[4] +
+       m) *
+        this->table_size[5] +
+      n) *
+       this->table_size[6] +
+     o];
 }
 
 template <typename T>

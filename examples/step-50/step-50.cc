@@ -400,8 +400,8 @@ namespace Step50
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -414,9 +414,9 @@ namespace Step50
     const Coefficient<dim> coefficient;
     std::vector<double>    coefficient_values(n_q_points);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = mg_dof_handler.begin_active(),
-      endc = mg_dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell = mg_dof_handler
+                                                            .begin_active(),
+                                                   endc = mg_dof_handler.end();
     for(; cell != endc; ++cell)
       if(cell->is_locally_owned())
         {
@@ -432,13 +432,13 @@ namespace Step50
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
               {
                 for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                  cell_matrix(i, j) += (coefficient_values[q_point]
-                                        * fe_values.shape_grad(i, q_point)
-                                        * fe_values.shape_grad(j, q_point)
-                                        * fe_values.JxW(q_point));
+                  cell_matrix(i, j) +=
+                    (coefficient_values[q_point] *
+                     fe_values.shape_grad(i, q_point) *
+                     fe_values.shape_grad(j, q_point) * fe_values.JxW(q_point));
 
-                cell_rhs(i) += (fe_values.shape_value(i, q_point) * 10.0
-                                * fe_values.JxW(q_point));
+                cell_rhs(i) += (fe_values.shape_value(i, q_point) * 10.0 *
+                                fe_values.JxW(q_point));
               }
 
           cell->get_dof_indices(local_dof_indices);
@@ -478,8 +478,8 @@ namespace Step50
 
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_gradients
-                              | update_quadrature_points | update_JxW_values);
+                            update_values | update_gradients |
+                              update_quadrature_points | update_JxW_values);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -566,10 +566,10 @@ namespace Step50
           for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
             for(unsigned int i = 0; i < dofs_per_cell; ++i)
               for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                cell_matrix(i, j) += (coefficient_values[q_point]
-                                      * fe_values.shape_grad(i, q_point)
-                                      * fe_values.shape_grad(j, q_point)
-                                      * fe_values.JxW(q_point));
+                cell_matrix(i, j) +=
+                  (coefficient_values[q_point] *
+                   fe_values.shape_grad(i, q_point) *
+                   fe_values.shape_grad(j, q_point) * fe_values.JxW(q_point));
 
           // The rest of the assembly is again slightly
           // different. This starts with a gotcha that is easily
@@ -624,29 +624,28 @@ namespace Step50
           // the <code>solve()</code> function) be able to just pass
           // the transpose matrix where necessary.
 
-          const IndexSet& interface_dofs_on_level
-            = mg_constrained_dofs.get_refinement_edge_indices(cell->level());
+          const IndexSet& interface_dofs_on_level =
+            mg_constrained_dofs.get_refinement_edge_indices(cell->level());
           const unsigned int lvl = cell->level();
 
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
             for(unsigned int j = 0; j < dofs_per_cell; ++j)
-              if(
-                interface_dofs_on_level.is_element(
-                  local_dof_indices[i]) // at_refinement_edge(i)
-                && !interface_dofs_on_level.is_element(
-                     local_dof_indices[j]) // !at_refinement_edge(j)
-                && ((!mg_constrained_dofs.is_boundary_index(
-                       lvl, local_dof_indices[i])
-                     && !mg_constrained_dofs.is_boundary_index(
-                          lvl,
-                          local_dof_indices
-                            [j])) // ( !boundary(i) && !boundary(j) )
-                    || (mg_constrained_dofs.is_boundary_index(
-                          lvl, local_dof_indices[i])
-                        && local_dof_indices[i]
-                             == local_dof_indices
-                                  [j]) // ( boundary(i) && boundary(j) && i==j )
-                    ))
+              if(interface_dofs_on_level.is_element(
+                   local_dof_indices[i]) // at_refinement_edge(i)
+                 && !interface_dofs_on_level.is_element(
+                      local_dof_indices[j]) // !at_refinement_edge(j)
+                 &&
+                 ((!mg_constrained_dofs.is_boundary_index(
+                     lvl, local_dof_indices[i]) &&
+                   !mg_constrained_dofs.is_boundary_index(
+                     lvl,
+                     local_dof_indices[j])) // ( !boundary(i) && !boundary(j) )
+                  || (mg_constrained_dofs.is_boundary_index(
+                        lvl, local_dof_indices[i]) &&
+                      local_dof_indices[i] ==
+                        local_dof_indices
+                          [j]) // ( boundary(i) && boundary(j) && i==j )
+                  ))
                 {
                   // do nothing, so add entries to interface matrix
                 }
@@ -870,10 +869,10 @@ namespace Step50
 
     data_out.build_patches(0);
 
-    const std::string filename
-      = ("solution-" + Utilities::int_to_string(cycle, 5) + "."
-         + Utilities::int_to_string(triangulation.locally_owned_subdomain(), 4)
-         + ".vtu");
+    const std::string filename =
+      ("solution-" + Utilities::int_to_string(cycle, 5) + "." +
+       Utilities::int_to_string(triangulation.locally_owned_subdomain(), 4) +
+       ".vtu");
     std::ofstream output(filename);
     data_out.write_vtu(output);
 
@@ -883,16 +882,16 @@ namespace Step50
         for(unsigned int i = 0;
             i < Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
             ++i)
-          filenames.push_back(std::string("solution-")
-                              + Utilities::int_to_string(cycle, 5) + "."
-                              + Utilities::int_to_string(i, 4) + ".vtu");
-        const std::string pvtu_master_filename
-          = ("solution-" + Utilities::int_to_string(cycle, 5) + ".pvtu");
+          filenames.push_back(std::string("solution-") +
+                              Utilities::int_to_string(cycle, 5) + "." +
+                              Utilities::int_to_string(i, 4) + ".vtu");
+        const std::string pvtu_master_filename =
+          ("solution-" + Utilities::int_to_string(cycle, 5) + ".pvtu");
         std::ofstream pvtu_master(pvtu_master_filename);
         data_out.write_pvtu_record(pvtu_master, filenames);
 
-        const std::string visit_master_filename
-          = ("solution-" + Utilities::int_to_string(cycle, 5) + ".visit");
+        const std::string visit_master_filename =
+          ("solution-" + Utilities::int_to_string(cycle, 5) + ".visit");
         std::ofstream visit_master(visit_master_filename);
         DataOutBase::write_visit_record(visit_master, filenames);
 

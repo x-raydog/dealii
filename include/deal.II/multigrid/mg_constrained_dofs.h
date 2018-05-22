@@ -207,23 +207,23 @@ MGConstrainedDoFs::initialize(const DoFHandler<dim, spacedim>& dof)
                   if(cell->is_locally_owned_on_level())
                     {
                       Assert(
-                        cell->periodic_neighbor(f)->level_subdomain_id()
-                          != numbers::artificial_subdomain_id,
+                        cell->periodic_neighbor(f)->level_subdomain_id() !=
+                          numbers::artificial_subdomain_id,
                         ExcMessage(
                           "Periodic neighbor of a locally owned cell must either be owned or ghost."));
                     }
                   // Cell is a level-ghost and its neighbor is a level-artificial cell
                   // nothing to do here
-                  else if(cell->periodic_neighbor(f)->level_subdomain_id()
-                          == numbers::artificial_subdomain_id)
+                  else if(cell->periodic_neighbor(f)->level_subdomain_id() ==
+                          numbers::artificial_subdomain_id)
                     {
                       Assert(cell->is_locally_owned_on_level() == false,
                              ExcInternalError());
                       continue;
                     }
 
-                  const unsigned int dofs_per_face
-                    = cell->face(f)->get_fe(0).dofs_per_face;
+                  const unsigned int dofs_per_face =
+                    cell->face(f)->get_fe(0).dofs_per_face;
                   std::vector<types::global_dof_index> dofs_1(dofs_per_face);
                   std::vector<types::global_dof_index> dofs_2(dofs_per_face);
 
@@ -236,10 +236,10 @@ MGConstrainedDoFs::initialize(const DoFHandler<dim, spacedim>& dof)
                   // this can happen, for example, for a vertex dof at a periodic boundary that we
                   // visit from more than one cell
                   for(unsigned int i = 0; i < dofs_per_face; ++i)
-                    if(level_constraints[l].can_store_line(dofs_2[i])
-                       && level_constraints[l].can_store_line(dofs_1[i])
-                       && !level_constraints[l].is_constrained(dofs_2[i])
-                       && !level_constraints[l].is_constrained(dofs_1[i]))
+                    if(level_constraints[l].can_store_line(dofs_2[i]) &&
+                       level_constraints[l].can_store_line(dofs_1[i]) &&
+                       !level_constraints[l].is_constrained(dofs_2[i]) &&
+                       !level_constraints[l].is_constrained(dofs_1[i]))
                       {
                         level_constraints[l].add_line(dofs_2[i]);
                         level_constraints[l].add_entry(
@@ -326,8 +326,8 @@ MGConstrainedDoFs::is_interface_matrix_entry(
   const types::global_dof_index i,
   const types::global_dof_index j) const
 {
-  const IndexSet& interface_dofs_on_level
-    = this->get_refinement_edge_indices(level);
+  const IndexSet& interface_dofs_on_level =
+    this->get_refinement_edge_indices(level);
 
   return interface_dofs_on_level.is_element(i)     // at_refinement_edge(i)
          && !interface_dofs_on_level.is_element(j) // !at_refinement_edge(j)

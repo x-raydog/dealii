@@ -71,11 +71,11 @@ namespace Step54
       NormalToMeshProjection = 2
     };
 
-    TriangulationOnCAD(const std::string&   initial_mesh_filename,
-                       const std::string&   cad_file_name,
-                       const std::string&   output_filename,
-                       const ProjectionType surface_projection_kind
-                       = NormalProjection);
+    TriangulationOnCAD(
+      const std::string&   initial_mesh_filename,
+      const std::string&   cad_file_name,
+      const std::string&   output_filename,
+      const ProjectionType surface_projection_kind = NormalProjection);
 
     ~TriangulationOnCAD();
 
@@ -351,8 +351,8 @@ namespace Step54
   void
   TriangulationOnCAD::output_results(const unsigned int cycle)
   {
-    const std::string filename
-      = (output_filename + "_" + Utilities::int_to_string(cycle) + ".vtk");
+    const std::string filename =
+      (output_filename + "_" + Utilities::int_to_string(cycle) + ".vtk");
     std::ofstream logfile(filename);
     GridOut       grid_out;
     grid_out.write_vtk(tria, logfile);

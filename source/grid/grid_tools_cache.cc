@@ -25,8 +25,8 @@ namespace GridTools
                               const Mapping<dim, spacedim>&       mapping)
     : update_flags(update_all), tria(&tria), mapping(&mapping)
   {
-    tria_signal
-      = tria.signals.any_change.connect([&]() { mark_for_update(update_all); });
+    tria_signal =
+      tria.signals.any_change.connect([&]() { mark_for_update(update_all); });
   }
 
   template <int dim, int spacedim>

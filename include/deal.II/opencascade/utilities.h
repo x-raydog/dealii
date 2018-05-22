@@ -254,8 +254,8 @@ namespace OpenCASCADE
   std::vector<TopoDS_Edge>
   create_curves_from_triangulation_boundary(
     const Triangulation<2, spacedim>& triangulation,
-    const Mapping<2, spacedim>&       mapping
-    = StaticMappingQ1<2, spacedim>::mapping);
+    const Mapping<2, spacedim>&       mapping =
+      StaticMappingQ1<2, spacedim>::mapping);
 
   /**
    * Extract all compound shapes from a TopoDS_Shape, and store the results

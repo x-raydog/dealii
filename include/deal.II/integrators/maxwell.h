@@ -140,12 +140,12 @@ namespace LocalIntegrators
             result[1] = -normal[0] * (g1[0] - g0[1]);
             break;
           case 3:
-            result[0]
-              = normal[2] * (g2[1] - g0[2]) + normal[1] * (g1[0] - g0[1]);
-            result[1]
-              = normal[0] * (g0[2] - g1[0]) + normal[2] * (g2[1] - g1[2]);
-            result[2]
-              = normal[1] * (g1[0] - g2[1]) + normal[0] * (g0[2] - g2[0]);
+            result[0] =
+              normal[2] * (g2[1] - g0[2]) + normal[1] * (g1[0] - g0[1]);
+            result[1] =
+              normal[0] * (g0[2] - g1[0]) + normal[2] * (g2[1] - g1[2]);
+            result[2] =
+              normal[1] * (g1[0] - g2[1]) + normal[0] * (g0[2] - g2[0]);
             break;
           default:
             Assert(false, ExcNotImplemented());
@@ -197,10 +197,10 @@ namespace LocalIntegrators
                   const unsigned int d1 = (d + 1) % dim;
                   const unsigned int d2 = (d + 2) % dim;
 
-                  const double cv = fe.shape_grad_component(i, k, d2)[d1]
-                                    - fe.shape_grad_component(i, k, d1)[d2];
-                  const double cu = fe.shape_grad_component(j, k, d2)[d1]
-                                    - fe.shape_grad_component(j, k, d1)[d2];
+                  const double cv = fe.shape_grad_component(i, k, d2)[d1] -
+                                    fe.shape_grad_component(i, k, d1)[d2];
+                  const double cu = fe.shape_grad_component(j, k, d2)[d1] -
+                                    fe.shape_grad_component(j, k, d1)[d2];
 
                   M(i, j) += dx * cu * cv;
                 }
@@ -249,8 +249,8 @@ namespace LocalIntegrators
                   const unsigned int d2 = (d + 2) % dim;
 
                   const double vv = fetest.shape_value_component(i, k, d);
-                  const double cu = fe.shape_grad_component(j, k, d2)[d1]
-                                    - fe.shape_grad_component(j, k, d1)[d2];
+                  const double cu = fe.shape_grad_component(j, k, d2)[d1] -
+                                    fe.shape_grad_component(j, k, d1)[d2];
                   M(i, j) += dx * cu * vv;
                 }
         }
@@ -304,24 +304,24 @@ namespace LocalIntegrators
           const Tensor<1, dim> n  = fe.normal_vector(k);
           for(unsigned int i = 0; i < n_dofs; ++i)
             for(unsigned int j = 0; j < n_dofs; ++j)
-              if(fe.get_fe().has_support_on_face(i, face_no)
-                 && fe.get_fe().has_support_on_face(j, face_no))
+              if(fe.get_fe().has_support_on_face(i, face_no) &&
+                 fe.get_fe().has_support_on_face(j, face_no))
                 {
                   for(unsigned int d = 0; d < d_max; ++d)
                     {
                       const unsigned int d1 = (d + 1) % dim;
                       const unsigned int d2 = (d + 2) % dim;
 
-                      const double cv = fe.shape_grad_component(i, k, d2)[d1]
-                                        - fe.shape_grad_component(i, k, d1)[d2];
-                      const double cu = fe.shape_grad_component(j, k, d2)[d1]
-                                        - fe.shape_grad_component(j, k, d1)[d2];
-                      const double v
-                        = fe.shape_value_component(i, k, d1) * n[d2]
-                          - fe.shape_value_component(i, k, d2) * n[d1];
-                      const double u
-                        = fe.shape_value_component(j, k, d1) * n[d2]
-                          - fe.shape_value_component(j, k, d2) * n[d1];
+                      const double cv = fe.shape_grad_component(i, k, d2)[d1] -
+                                        fe.shape_grad_component(i, k, d1)[d2];
+                      const double cu = fe.shape_grad_component(j, k, d2)[d1] -
+                                        fe.shape_grad_component(j, k, d1)[d2];
+                      const double v =
+                        fe.shape_value_component(i, k, d1) * n[d2] -
+                        fe.shape_value_component(i, k, d2) * n[d1];
+                      const double u =
+                        fe.shape_value_component(j, k, d1) * n[d2] -
+                        fe.shape_value_component(j, k, d2) * n[d1];
 
                       M(i, j) += dx * (2. * penalty * u * v - cv * u - cu * v);
                     }
@@ -373,10 +373,10 @@ namespace LocalIntegrators
                   const unsigned int d1 = (d + 1) % dim;
                   const unsigned int d2 = (d + 2) % dim;
 
-                  const double v = fe.shape_value_component(i, k, d1) * n(d2)
-                                   - fe.shape_value_component(i, k, d2) * n(d1);
-                  const double u = fe.shape_value_component(j, k, d1) * n(d2)
-                                   - fe.shape_value_component(j, k, d2) * n(d1);
+                  const double v = fe.shape_value_component(i, k, d1) * n(d2) -
+                                   fe.shape_value_component(i, k, d2) * n(d1);
+                  const double u = fe.shape_value_component(j, k, d1) * n(d2) -
+                                   fe.shape_value_component(j, k, d2) * n(d1);
 
                   M(i, j) += dx * u * v;
                 }
@@ -450,41 +450,41 @@ namespace LocalIntegrators
                   const unsigned int d1 = (d + 1) % dim;
                   const unsigned int d2 = (d + 2) % dim;
                   // curl u, curl v
-                  const double cv1
-                    = nu1 * fe1.shape_grad_component(i, k, d2)[d1]
-                      - fe1.shape_grad_component(i, k, d1)[d2];
-                  const double cv2
-                    = nu2 * fe2.shape_grad_component(i, k, d2)[d1]
-                      - fe2.shape_grad_component(i, k, d1)[d2];
-                  const double cu1
-                    = nu1 * fe1.shape_grad_component(j, k, d2)[d1]
-                      - fe1.shape_grad_component(j, k, d1)[d2];
-                  const double cu2
-                    = nu2 * fe2.shape_grad_component(j, k, d2)[d1]
-                      - fe2.shape_grad_component(j, k, d1)[d2];
+                  const double cv1 =
+                    nu1 * fe1.shape_grad_component(i, k, d2)[d1] -
+                    fe1.shape_grad_component(i, k, d1)[d2];
+                  const double cv2 =
+                    nu2 * fe2.shape_grad_component(i, k, d2)[d1] -
+                    fe2.shape_grad_component(i, k, d1)[d2];
+                  const double cu1 =
+                    nu1 * fe1.shape_grad_component(j, k, d2)[d1] -
+                    fe1.shape_grad_component(j, k, d1)[d2];
+                  const double cu2 =
+                    nu2 * fe2.shape_grad_component(j, k, d2)[d1] -
+                    fe2.shape_grad_component(j, k, d1)[d2];
 
                   // u x n, v x n
-                  const double u1
-                    = fe1.shape_value_component(j, k, d1) * n(d2)
-                      - fe1.shape_value_component(j, k, d2) * n(d1);
-                  const double u2
-                    = -fe2.shape_value_component(j, k, d1) * n(d2)
-                      + fe2.shape_value_component(j, k, d2) * n(d1);
-                  const double v1
-                    = fe1.shape_value_component(i, k, d1) * n(d2)
-                      - fe1.shape_value_component(i, k, d2) * n(d1);
-                  const double v2
-                    = -fe2.shape_value_component(i, k, d1) * n(d2)
-                      + fe2.shape_value_component(i, k, d2) * n(d1);
+                  const double u1 =
+                    fe1.shape_value_component(j, k, d1) * n(d2) -
+                    fe1.shape_value_component(j, k, d2) * n(d1);
+                  const double u2 =
+                    -fe2.shape_value_component(j, k, d1) * n(d2) +
+                    fe2.shape_value_component(j, k, d2) * n(d1);
+                  const double v1 =
+                    fe1.shape_value_component(i, k, d1) * n(d2) -
+                    fe1.shape_value_component(i, k, d2) * n(d1);
+                  const double v2 =
+                    -fe2.shape_value_component(i, k, d1) * n(d2) +
+                    fe2.shape_value_component(i, k, d2) * n(d1);
 
-                  M11(i, j)
-                    += .5 * dx * (2. * penalty * u1 * v1 - cv1 * u1 - cu1 * v1);
-                  M12(i, j)
-                    += .5 * dx * (2. * penalty * v1 * u2 - cv1 * u2 - cu2 * v1);
-                  M21(i, j)
-                    += .5 * dx * (2. * penalty * u1 * v2 - cv2 * u1 - cu1 * v2);
-                  M22(i, j)
-                    += .5 * dx * (2. * penalty * u2 * v2 - cv2 * u2 - cu2 * v2);
+                  M11(i, j) +=
+                    .5 * dx * (2. * penalty * u1 * v1 - cv1 * u1 - cu1 * v1);
+                  M12(i, j) +=
+                    .5 * dx * (2. * penalty * v1 * u2 - cv1 * u2 - cu2 * v1);
+                  M21(i, j) +=
+                    .5 * dx * (2. * penalty * u1 * v2 - cv2 * u1 - cu1 * v2);
+                  M22(i, j) +=
+                    .5 * dx * (2. * penalty * u2 * v2 - cv2 * u2 - cu2 * v2);
                 }
         }
     }

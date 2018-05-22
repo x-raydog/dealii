@@ -242,8 +242,8 @@ FunctionParser<dim>::init_muparser() const
     {
       fp.get().emplace_back(new mu::Parser());
 
-      for(std::map<std::string, double>::const_iterator constant
-          = constants.begin();
+      for(std::map<std::string, double>::const_iterator constant =
+            constants.begin();
           constant != constants.end();
           ++constant)
         {
@@ -336,14 +336,15 @@ FunctionParser<dim>::init_muparser() const
                     break;
 
                   // replace whitespace until there no longer is any
-                  while(
-                    (pos + function_name_length < transformed_expression.size())
-                    && ((transformed_expression[pos + function_name_length]
-                         == ' ')
-                        || (transformed_expression[pos + function_name_length]
-                            == '\t')))
-                    transformed_expression.erase(transformed_expression.begin()
-                                                 + pos + function_name_length);
+                  while((pos + function_name_length <
+                         transformed_expression.size()) &&
+                        ((transformed_expression[pos + function_name_length] ==
+                          ' ') ||
+                         (transformed_expression[pos + function_name_length] ==
+                          '\t')))
+                    transformed_expression.erase(
+                      transformed_expression.begin() + pos +
+                      function_name_length);
 
                   // move the current search position by the size of the
                   // actual function name

@@ -307,8 +307,8 @@ AnyData::name(const unsigned int i) const
 inline unsigned int
 AnyData::try_find(const std::string& n) const
 {
-  std::vector<std::string>::const_iterator it
-    = std::find(names.begin(), names.end(), n);
+  std::vector<std::string>::const_iterator it =
+    std::find(names.begin(), names.end(), n);
 
   if(it == names.end())
     return numbers::invalid_unsigned_int;
@@ -395,8 +395,8 @@ inline const type*
 AnyData::try_read(const std::string& n) const
 {
   // Try to find name
-  std::vector<std::string>::const_iterator it
-    = std::find(names.begin(), names.end(), n);
+  std::vector<std::string>::const_iterator it =
+    std::find(names.begin(), names.end(), n);
   // Return null pointer if not found
   if(it == names.end())
     return nullptr;

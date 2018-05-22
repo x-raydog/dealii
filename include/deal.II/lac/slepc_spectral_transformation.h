@@ -222,9 +222,9 @@ namespace SLEPcWrappers
     /**
      * Constructor.
      */
-    TransformationSpectrumFolding(const MPI_Comm&       mpi_communicator,
-                                  const AdditionalData& data
-                                  = AdditionalData());
+    TransformationSpectrumFolding(
+      const MPI_Comm&       mpi_communicator,
+      const AdditionalData& data = AdditionalData());
 
   protected:
     /**

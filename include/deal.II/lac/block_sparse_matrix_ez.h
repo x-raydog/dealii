@@ -311,9 +311,10 @@ BlockSparseMatrixEZ<Number>::set(const size_type i,
 {
   AssertIsFinite(value);
 
-  const std::pair<size_type, size_type> row_index
-    = row_indices.global_to_local(i),
-    col_index = column_indices.global_to_local(j);
+  const std::pair<size_type, size_type> row_index =
+                                          row_indices.global_to_local(i),
+                                        col_index =
+                                          column_indices.global_to_local(j);
   block(row_index.first, col_index.first)
     .set(row_index.second, col_index.second, value);
 }
@@ -326,9 +327,10 @@ BlockSparseMatrixEZ<Number>::add(const size_type i,
 {
   AssertIsFinite(value);
 
-  const std::pair<unsigned int, size_type> row_index
-    = row_indices.global_to_local(i),
-    col_index = column_indices.global_to_local(j);
+  const std::pair<unsigned int, size_type> row_index =
+                                             row_indices.global_to_local(i),
+                                           col_index =
+                                             column_indices.global_to_local(j);
   block(row_index.first, col_index.first)
     .add(row_index.second, col_index.second, value);
 }

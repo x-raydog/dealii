@@ -859,9 +859,8 @@ namespace Polynomials
     // enough for all number types due to the quadratic convergence of
     // Newton's method
 
-    const Number tolerance
-      = 4
-        * std::max(static_cast<Number>(std::numeric_limits<double>::epsilon()),
+    const Number tolerance =
+      4 * std::max(static_cast<Number>(std::numeric_limits<double>::epsilon()),
                    std::numeric_limits<Number>::epsilon());
 
     // The following implementation follows closely the one given in the
@@ -875,10 +874,8 @@ namespace Polynomials
       {
         // we take the zeros of the Chebyshev polynomial (alpha=beta=-0.5) as
         // initial values, corrected by the initial value
-        Number r = 0.5
-                   - 0.5
-                       * std::cos(static_cast<Number>(2 * k + 1) / (2 * degree)
-                                  * numbers::PI);
+        Number r = 0.5 - 0.5 * std::cos(static_cast<Number>(2 * k + 1) /
+                                        (2 * degree) * numbers::PI);
         if(k > 0)
           r = (r + x[k - 1]) / 2;
 
@@ -890,16 +887,16 @@ namespace Polynomials
               s += 1. / (r - x[i]);
 
             // derivative of P_n^{alpha,beta}, rescaled to [0, 1]
-            const Number J_x
-              = (alpha + beta + degree + 1)
-                * jacobi_polynomial_value(degree - 1, alpha + 1, beta + 1, r);
+            const Number J_x =
+              (alpha + beta + degree + 1) *
+              jacobi_polynomial_value(degree - 1, alpha + 1, beta + 1, r);
 
             // value of P_n^{alpha,beta}
             const Number f = jacobi_polynomial_value(degree, alpha, beta, r);
             const Number delta = f / (f * s - J_x);
             r += delta;
-            if(converged == numbers::invalid_unsigned_int
-               && std::abs(delta) < tolerance)
+            if(converged == numbers::invalid_unsigned_int &&
+               std::abs(delta) < tolerance)
               converged = it;
 
             // do one more iteration to ensure accuracy also for tighter

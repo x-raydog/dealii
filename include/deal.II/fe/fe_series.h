@@ -384,8 +384,8 @@ FESeries::process_coefficients(
   fill_map(coefficients, predicate, pred_to_values);
 
   // now go through the map and populate the @p norm_values based on @p norm:
-  for(typename std::map<unsigned int, std::vector<T>>::const_iterator it
-      = pred_to_values.begin();
+  for(typename std::map<unsigned int, std::vector<T>>::const_iterator it =
+        pred_to_values.begin();
       it != pred_to_values.end();
       ++it)
     {

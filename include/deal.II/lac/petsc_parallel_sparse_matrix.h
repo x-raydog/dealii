@@ -212,8 +212,8 @@ namespace PETScWrappers
                    const size_type               local_columns,
                    const std::vector<size_type>& row_lengths,
                    const bool                    is_symmetric = false,
-                   const std::vector<size_type>& offdiag_row_lengths
-                   = std::vector<size_type>());
+                   const std::vector<size_type>& offdiag_row_lengths =
+                     std::vector<size_type>());
 
       /**
        * Initialize using the given sparsity pattern with communication
@@ -300,8 +300,8 @@ namespace PETScWrappers
              const size_type               local_columns,
              const std::vector<size_type>& row_lengths,
              const bool                    is_symmetric = false,
-             const std::vector<size_type>& offdiag_row_lengths
-             = std::vector<size_type>());
+             const std::vector<size_type>& offdiag_row_lengths =
+               std::vector<size_type>());
 
       /**
        * Initialize using the given sparsity pattern with communication
@@ -479,8 +479,8 @@ namespace PETScWrappers
                 const size_type               local_columns,
                 const std::vector<size_type>& row_lengths,
                 const bool                    is_symmetric = false,
-                const std::vector<size_type>& offdiag_row_lengths
-                = std::vector<size_type>());
+                const std::vector<size_type>& offdiag_row_lengths =
+                  std::vector<size_type>());
 
       /**
        * Same as previous functions.

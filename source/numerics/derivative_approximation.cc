@@ -280,11 +280,11 @@ namespace DerivativeApproximation
       //
       // if the d_11=a, d_22=b,
       // d_12=d_21=c
-      const double radicand
-        = dealii::sqr(d[0][0] - d[1][1]) + 4 * dealii::sqr(d[0][1]);
-      const double eigenvalues[2]
-        = {0.5 * (d[0][0] + d[1][1] + std::sqrt(radicand)),
-           0.5 * (d[0][0] + d[1][1] - std::sqrt(radicand))};
+      const double radicand =
+        dealii::sqr(d[0][0] - d[1][1]) + 4 * dealii::sqr(d[0][1]);
+      const double eigenvalues[2] = {
+        0.5 * (d[0][0] + d[1][1] + std::sqrt(radicand)),
+        0.5 * (d[0][0] + d[1][1] - std::sqrt(radicand))};
 
       return std::max(std::fabs(eigenvalues[0]), std::fabs(eigenvalues[1]));
     }
@@ -412,14 +412,14 @@ namespace DerivativeApproximation
       const double ss01 = s[0][1] * s[0][1], ss12 = s[1][2] * s[1][2],
                    ss02 = s[0][2] * s[0][2];
 
-      const double J2 = (s[0][0] * s[0][0] + s[1][1] * s[1][1]
-                         + s[2][2] * s[2][2] + 2 * (ss01 + ss02 + ss12))
-                        / 2.;
-      const double J3
-        = (std::pow(s[0][0], 3) + std::pow(s[1][1], 3) + std::pow(s[2][2], 3)
-           + 3. * s[0][0] * (ss01 + ss02) + 3. * s[1][1] * (ss01 + ss12)
-           + 3. * s[2][2] * (ss02 + ss12) + 6. * s[0][1] * s[0][2] * s[1][2])
-          / 3.;
+      const double J2 = (s[0][0] * s[0][0] + s[1][1] * s[1][1] +
+                         s[2][2] * s[2][2] + 2 * (ss01 + ss02 + ss12)) /
+                        2.;
+      const double J3 =
+        (std::pow(s[0][0], 3) + std::pow(s[1][1], 3) + std::pow(s[2][2], 3) +
+         3. * s[0][0] * (ss01 + ss02) + 3. * s[1][1] * (ss01 + ss12) +
+         3. * s[2][2] * (ss02 + ss12) + 6. * s[0][1] * s[0][2] * s[1][2]) /
+        3.;
 
       const double R = std::sqrt(4. * J2 / 3.);
 
@@ -614,11 +614,11 @@ namespace DerivativeApproximation
         for(unsigned int j = i + 1; j < dim; ++j)
           for(unsigned int k = j + 1; k < dim; ++k)
             {
-              const double s = (d[i][j][k] + d[i][k][j] + d[j][i][k]
-                                + d[j][k][i] + d[k][i][j] + d[k][j][i])
-                               / 6;
-              d[i][j][k] = d[i][k][j] = d[j][i][k] = d[j][k][i] = d[k][i][j]
-                = d[k][j][i]                                    = s;
+              const double s = (d[i][j][k] + d[i][k][j] + d[j][i][k] +
+                                d[j][k][i] + d[k][i][j] + d[k][j][i]) /
+                               6;
+              d[i][j][k] = d[i][k][j] = d[j][i][k] = d[j][k][i] = d[k][i][j] =
+                d[k][j][i]                                      = s;
             }
       // now do the case, where two indices are
       // equal
@@ -728,15 +728,15 @@ namespace DerivativeApproximation
       // collection of which we do a
       // shallow copy instead
       const hp::QCollection<dim>   q_collection(midpoint_rule);
-      const hp::FECollection<dim>& fe_collection
-        = dof_handler.get_fe_collection();
+      const hp::FECollection<dim>& fe_collection =
+        dof_handler.get_fe_collection();
       const hp::MappingCollection<dim> mapping_collection(mapping);
 
-      hp::FEValues<dim> x_fe_midpoint_value(mapping_collection,
-                                            fe_collection,
-                                            q_collection,
-                                            DerivativeDescription::update_flags
-                                              | update_quadrature_points);
+      hp::FEValues<dim> x_fe_midpoint_value(
+        mapping_collection,
+        fe_collection,
+        q_collection,
+        DerivativeDescription::update_flags | update_quadrature_points);
 
       // matrix Y=sum_i y_i y_i^T
       Tensor<2, dim> Y;
@@ -749,8 +749,8 @@ namespace DerivativeApproximation
         dealii::DoFCellAccessor<DoFHandlerType<dim, spacedim>, false>>>
         active_neighbors;
 
-      active_neighbors.reserve(GeometryInfo<dim>::faces_per_cell
-                               * GeometryInfo<dim>::max_children_per_face);
+      active_neighbors.reserve(GeometryInfo<dim>::faces_per_cell *
+                               GeometryInfo<dim>::max_children_per_face);
 
       // vector
       // g=sum_i y_i (f(x+y_i)-f(x))/|y_i|
@@ -760,14 +760,13 @@ namespace DerivativeApproximation
 
       // reinit fe values object...
       x_fe_midpoint_value.reinit(cell);
-      const FEValues<dim>& fe_midpoint_value
-        = x_fe_midpoint_value.get_present_fe_values();
+      const FEValues<dim>& fe_midpoint_value =
+        x_fe_midpoint_value.get_present_fe_values();
 
       // ...and get the value of the
       // projected derivative...
       const typename DerivativeDescription::ProjectedDerivative
-        this_midpoint_value
-        = DerivativeDescription::get_projected_derivative(
+        this_midpoint_value = DerivativeDescription::get_projected_derivative(
           fe_midpoint_value, solution, component);
       // ...and the place where it lives
       const Point<dim> this_center = fe_midpoint_value.quadrature_point(0);
@@ -792,8 +791,7 @@ namespace DerivativeApproximation
       // data we need
       typename std::vector<TriaActiveIterator<
         dealii::DoFCellAccessor<DoFHandlerType<dim, spacedim>, false>>>::
-        const_iterator neighbor_ptr
-        = active_neighbors.begin();
+        const_iterator neighbor_ptr = active_neighbors.begin();
       for(; neighbor_ptr != active_neighbors.end(); ++neighbor_ptr)
         {
           const TriaActiveIterator<
@@ -802,19 +800,19 @@ namespace DerivativeApproximation
 
           // reinit fe values object...
           x_fe_midpoint_value.reinit(neighbor);
-          const FEValues<dim>& neighbor_fe_midpoint_value
-            = x_fe_midpoint_value.get_present_fe_values();
+          const FEValues<dim>& neighbor_fe_midpoint_value =
+            x_fe_midpoint_value.get_present_fe_values();
 
           // ...and get the value of the
           // solution...
           const typename DerivativeDescription::ProjectedDerivative
-            neighbor_midpoint_value
-            = DerivativeDescription::get_projected_derivative(
-              neighbor_fe_midpoint_value, solution, component);
+            neighbor_midpoint_value =
+              DerivativeDescription::get_projected_derivative(
+                neighbor_fe_midpoint_value, solution, component);
 
           // ...and the place where it lives
-          const Point<dim> neighbor_center
-            = neighbor_fe_midpoint_value.quadrature_point(0);
+          const Point<dim> neighbor_center =
+            neighbor_fe_midpoint_value.quadrature_point(0);
 
           // vector for the
           // normalized
@@ -844,8 +842,8 @@ namespace DerivativeApproximation
           // of difference
           // quotients
           typename DerivativeDescription::ProjectedDerivative
-            projected_finite_difference
-            = (neighbor_midpoint_value - this_midpoint_value);
+            projected_finite_difference =
+              (neighbor_midpoint_value - this_midpoint_value);
           projected_finite_difference /= distance;
 
           projected_derivative += outer_product(y, projected_finite_difference);
@@ -913,8 +911,8 @@ namespace DerivativeApproximation
 
           // evaluate the norm and fill the vector
           //*derivative_norm_on_this_cell
-          *std::get<1>(*cell)
-            = DerivativeDescription::derivative_norm(derivative);
+          *std::get<1>(*cell) =
+            DerivativeDescription::derivative_norm(derivative);
         }
     }
 
@@ -940,8 +938,8 @@ namespace DerivativeApproximation
                            const unsigned int                   component,
                            Vector<float>&                       derivative_norm)
     {
-      Assert(derivative_norm.size()
-               == dof_handler.get_triangulation().n_active_cells(),
+      Assert(derivative_norm.size() ==
+               dof_handler.get_triangulation().n_active_cells(),
              ExcVectorLengthVsNActiveCells(
                derivative_norm.size(),
                dof_handler.get_triangulation().n_active_cells()));

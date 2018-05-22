@@ -97,8 +97,7 @@ namespace hp
      * Move assignment operator.
      */
     FECollection<dim, spacedim>&
-    operator=(FECollection<dim, spacedim>&&)
-      = default; // NOLINT
+    operator=(FECollection<dim, spacedim>&&) = default; // NOLINT
 
     /**
      * Equality comparison operator. All stored FiniteElement objects are compared in order.
@@ -638,8 +637,8 @@ namespace hp
 
     bool hp_constraints = true;
     for(unsigned int i = 0; i < finite_elements.size(); ++i)
-      hp_constraints = hp_constraints
-                       && finite_elements[i]->hp_constraints_are_implemented();
+      hp_constraints =
+        hp_constraints && finite_elements[i]->hp_constraints_are_implemented();
 
     return hp_constraints;
   }

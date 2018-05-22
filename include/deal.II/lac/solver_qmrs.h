@@ -362,8 +362,8 @@ SolverQMRS<VectorType>::iterate(const MatrixType&         A,
       const double sigma = q * t;
 
       // Check the breakdown criterion
-      if(additional_data.breakdown_testing == true
-         && std::fabs(sigma) < additional_data.breakdown_threshold)
+      if(additional_data.breakdown_testing == true &&
+         std::fabs(sigma) < additional_data.breakdown_threshold)
         return IterationResult(SolverControl::iterate, res);
       // Update the residual
       const double alpha = rho / sigma;
@@ -414,8 +414,8 @@ SolverQMRS<VectorType>::iterate(const MatrixType&         A,
       //--------------------------------------------------------------
       // Step 3: check breakdown criterion and update the vectors
       //--------------------------------------------------------------
-      if(additional_data.breakdown_testing == true
-         && std::fabs(sigma) < additional_data.breakdown_threshold)
+      if(additional_data.breakdown_testing == true &&
+         std::fabs(sigma) < additional_data.breakdown_threshold)
         return IterationResult(SolverControl::iterate, res);
 
       const double rho_old = rho;

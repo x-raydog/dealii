@@ -47,8 +47,8 @@ namespace OpenCASCADE
     Handle_Adaptor3d_HCurve
     curve_adaptor(const TopoDS_Shape& shape)
     {
-      Assert((shape.ShapeType() == TopAbs_WIRE)
-               || (shape.ShapeType() == TopAbs_EDGE),
+      Assert((shape.ShapeType() == TopAbs_WIRE) ||
+               (shape.ShapeType() == TopAbs_EDGE),
              ExcUnsupportedShape());
       if(shape.ShapeType() == TopAbs_WIRE)
         return Handle(BRepAdaptor_HCompCurve)(
@@ -98,8 +98,8 @@ namespace OpenCASCADE
 #  ifdef DEBUG
     for(unsigned int i = 0; i < surrounding_points.size(); ++i)
       Assert(closest_point(sh, surrounding_points[i], tolerance)
-                 .distance(surrounding_points[i])
-               < std::max(tolerance * surrounding_points[i].norm(), tolerance),
+                 .distance(surrounding_points[i]) <
+               std::max(tolerance * surrounding_points[i].norm(), tolerance),
              ExcPointNotOnManifold<spacedim>(surrounding_points[i]));
 #  endif
     return closest_point(sh, candidate, tolerance);
@@ -134,8 +134,8 @@ namespace OpenCASCADE
 #  ifdef DEBUG
     for(unsigned int i = 0; i < surrounding_points.size(); ++i)
       Assert(closest_point(sh, surrounding_points[i], tolerance)
-                 .distance(surrounding_points[i])
-               < std::max(tolerance * surrounding_points[i].norm(), tolerance),
+                 .distance(surrounding_points[i]) <
+               std::max(tolerance * surrounding_points[i].norm(), tolerance),
              ExcPointNotOnManifold<spacedim>(surrounding_points[i]));
 #  endif
     return line_intersection(sh, candidate, direction, tolerance);
@@ -174,11 +174,10 @@ namespace OpenCASCADE
 #  ifdef DEBUG
     for(unsigned int i = 0; i < surrounding_points.size(); ++i)
       {
-        Assert(
-          closest_point(sh, surrounding_points[i], tolerance)
-              .distance(surrounding_points[i])
-            < std::max(tolerance * surrounding_points[i].norm(), tolerance),
-          ExcPointNotOnManifold<spacedim>(surrounding_points[i]));
+        Assert(closest_point(sh, surrounding_points[i], tolerance)
+                   .distance(surrounding_points[i]) <
+                 std::max(tolerance * surrounding_points[i].norm(), tolerance),
+               ExcPointNotOnManifold<spacedim>(surrounding_points[i]));
       }
 #  endif
 

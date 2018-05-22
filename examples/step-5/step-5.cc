@@ -170,8 +170,8 @@ Step5<dim>::assemble_system()
 
   FEValues<dim> fe_values(fe,
                           quadrature_formula,
-                          update_values | update_gradients
-                            | update_quadrature_points | update_JxW_values);
+                          update_values | update_gradients |
+                            update_quadrature_points | update_JxW_values);
 
   const unsigned int dofs_per_cell = fe.dofs_per_cell;
   const unsigned int n_q_points    = quadrature_formula.size();
@@ -195,18 +195,17 @@ Step5<dim>::assemble_system()
 
       for(unsigned int q_index = 0; q_index < n_q_points; ++q_index)
         {
-          const double current_coefficient
-            = coefficient<dim>(fe_values.quadrature_point(q_index));
+          const double current_coefficient =
+            coefficient<dim>(fe_values.quadrature_point(q_index));
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
             {
               for(unsigned int j = 0; j < dofs_per_cell; ++j)
-                cell_matrix(i, j)
-                  += (current_coefficient * fe_values.shape_grad(i, q_index)
-                      * fe_values.shape_grad(j, q_index)
-                      * fe_values.JxW(q_index));
+                cell_matrix(i, j) +=
+                  (current_coefficient * fe_values.shape_grad(i, q_index) *
+                   fe_values.shape_grad(j, q_index) * fe_values.JxW(q_index));
 
-              cell_rhs(i) += (fe_values.shape_value(i, q_index) * 1.0
-                              * fe_values.JxW(q_index));
+              cell_rhs(i) += (fe_values.shape_value(i, q_index) * 1.0 *
+                              fe_values.JxW(q_index));
             }
         }
 

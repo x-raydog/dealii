@@ -99,11 +99,11 @@ InterGridMap<MeshType>::set_mapping(const cell_iterator& src_cell,
   // recurse further into the hierarchy
   if(src_cell->has_children() && dst_cell->has_children())
     {
-      Assert(src_cell->n_children()
-               == GeometryInfo<MeshType::dimension>::max_children_per_cell,
+      Assert(src_cell->n_children() ==
+               GeometryInfo<MeshType::dimension>::max_children_per_cell,
              ExcNotImplemented());
-      Assert(dst_cell->n_children()
-               == GeometryInfo<MeshType::dimension>::max_children_per_cell,
+      Assert(dst_cell->n_children() ==
+               GeometryInfo<MeshType::dimension>::max_children_per_cell,
              ExcNotImplemented());
       Assert(src_cell->refinement_case() == dst_cell->refinement_case(),
              ExcNotImplemented());
@@ -147,8 +147,8 @@ typename InterGridMap<MeshType>::cell_iterator InterGridMap<MeshType>::
          ExcInvalidKey(source_cell));
   Assert(source_cell->level() <= static_cast<int>(mapping.size()),
          ExcInvalidKey(source_cell));
-  Assert(source_cell->index()
-           <= static_cast<int>(mapping[source_cell->level()].size()),
+  Assert(source_cell->index() <=
+           static_cast<int>(mapping[source_cell->level()].size()),
          ExcInvalidKey(source_cell));
 
   return mapping[source_cell->level()][source_cell->index()];
@@ -181,9 +181,9 @@ template <class MeshType>
 std::size_t
 InterGridMap<MeshType>::memory_consumption() const
 {
-  return (MemoryConsumption::memory_consumption(mapping)
-          + MemoryConsumption::memory_consumption(source_grid)
-          + MemoryConsumption::memory_consumption(destination_grid));
+  return (MemoryConsumption::memory_consumption(mapping) +
+          MemoryConsumption::memory_consumption(source_grid) +
+          MemoryConsumption::memory_consumption(destination_grid));
 }
 
 // explicit instantiations

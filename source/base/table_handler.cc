@@ -160,9 +160,9 @@ TableHandler::Column::pad_column_below(const unsigned int size)
       entries.push_back(entries.back().get_default_constructed_copy());
       internal::TableEntry& entry = entries.back();
       entry.cache_string(scientific, precision);
-      max_length = std::max(
-        max_length,
-        static_cast<unsigned int>(entry.get_cached_string().length()));
+      max_length =
+        std::max(max_length,
+                 static_cast<unsigned int>(entry.get_cached_string().length()));
     }
 }
 
@@ -176,9 +176,9 @@ TableHandler::Column::invalidate_cache()
       ++it)
     {
       it->cache_string(this->scientific, this->precision);
-      max_length
-        = std::max(max_length,
-                   static_cast<unsigned int>(it->get_cached_string().length()));
+      max_length =
+        std::max(max_length,
+                 static_cast<unsigned int>(it->get_cached_string().length()));
     }
 }
 
@@ -192,8 +192,8 @@ TableHandler::declare_column(const std::string& key)
 {
   // see if the column already exists; insert it if not
   Assert(columns.find(key) == columns.end(),
-         ExcMessage("You are trying to declare a column with key <" + key
-                    + "> but such a column already exists."));
+         ExcMessage("You are trying to declare a column with key <" + key +
+                    "> but such a column already exists."));
 
   columns.insert(std::make_pair(key, Column(key)));
   column_order.push_back(key);
@@ -383,8 +383,8 @@ TableHandler::write_text(std::ostream& out, const TextOutputFormat format) const
   for(unsigned int j = 0; j < n_cols; ++j)
     {
       std::string                                         key = sel_columns[j];
-      const std::map<std::string, Column>::const_iterator col_iter
-        = columns.find(key);
+      const std::map<std::string, Column>::const_iterator col_iter =
+        columns.find(key);
       Assert(col_iter != columns.end(), ExcInternalError());
       cols.push_back(&(col_iter->second));
 
@@ -400,8 +400,8 @@ TableHandler::write_text(std::ostream& out, const TextOutputFormat format) const
           for(unsigned int j = 0; j < n_cols; ++j)
             {
               const std::string& key = sel_columns[j];
-              column_widths[j]
-                = std::max(column_widths[j], (unsigned int) key.length());
+              column_widths[j] =
+                std::max(column_widths[j], (unsigned int) key.length());
               out << std::setw(column_widths[j]);
               out << key << " | ";
             }
@@ -477,16 +477,14 @@ TableHandler::write_text(std::ostream& out, const TextOutputFormat format) const
                 // compute the width of this column or supercolumn
                 const std::map<std::string,
                                std::vector<std::string>>::const_iterator
-                  super_iter
-                  = supercolumns.find(key);
+                  super_iter = supercolumns.find(key);
                 if(super_iter != supercolumns.end())
                   {
                     const unsigned int n_subcolumns = super_iter->second.size();
                     for(unsigned int k = 0; k < n_subcolumns; ++k)
                       {
                         const std::map<std::string, Column>::const_iterator
-                          col_iter
-                          = columns.find(super_iter->second[k]);
+                          col_iter = columns.find(super_iter->second[k]);
                         Assert(col_iter != columns.end(), ExcInternalError());
 
                         width += col_iter->second.max_length;
@@ -495,8 +493,8 @@ TableHandler::write_text(std::ostream& out, const TextOutputFormat format) const
                   }
                 else
                   {
-                    const std::map<std::string, Column>::const_iterator col_iter
-                      = columns.find(key);
+                    const std::map<std::string, Column>::const_iterator
+                      col_iter = columns.find(key);
 
                     width = col_iter->second.max_length;
                   }
@@ -511,8 +509,7 @@ TableHandler::write_text(std::ostream& out, const TextOutputFormat format) const
 
                   const std::map<std::string,
                                  std::vector<std::string>>::const_iterator
-                    super_iter
-                    = supercolumns.find(key);
+                    super_iter = supercolumns.find(key);
                   if(super_iter != supercolumns.end())
                     colname = super_iter->second.back();
                   else
@@ -533,8 +530,8 @@ TableHandler::write_text(std::ostream& out, const TextOutputFormat format) const
 
               // now write key. try to center it somehow
               const unsigned int front_padding = (width - key.length()) / 2,
-                                 rear_padding
-                                 = (width - key.length()) - front_padding;
+                                 rear_padding =
+                                   (width - key.length()) - front_padding;
               for(unsigned int i = 0; i < front_padding; ++i)
                 out << ' ';
               out << key;
@@ -610,8 +607,7 @@ TableHandler::write_tex(std::ostream& out, const bool with_header) const
       std::string key = column_order[j];
       // avoid `supercolumns[key]'
       const std::map<std::string, std::vector<std::string>>::const_iterator
-        super_iter
-        = supercolumns.find(key);
+        super_iter = supercolumns.find(key);
 
       if(super_iter != supercolumns.end())
         {
@@ -619,8 +615,8 @@ TableHandler::write_tex(std::ostream& out, const bool with_header) const
           for(unsigned int k = 0; k < n_subcolumns; ++k)
             {
               // avoid `columns[supercolumns[key]]'
-              const std::map<std::string, Column>::const_iterator col_iter
-                = columns.find(super_iter->second[k]);
+              const std::map<std::string, Column>::const_iterator col_iter =
+                columns.find(super_iter->second[k]);
               Assert(col_iter != columns.end(), ExcInternalError());
 
               out << col_iter->second.tex_format << "|";
@@ -629,8 +625,8 @@ TableHandler::write_tex(std::ostream& out, const bool with_header) const
       else
         {
           // avoid `columns[key]';
-          const std::map<std::string, Column>::const_iterator col_iter
-            = columns.find(key);
+          const std::map<std::string, Column>::const_iterator col_iter =
+            columns.find(key);
           Assert(col_iter != columns.end(), ExcInternalError());
           out << col_iter->second.tex_format << "|";
         }
@@ -643,15 +639,14 @@ TableHandler::write_tex(std::ostream& out, const bool with_header) const
     {
       std::string key = column_order[j];
       const std::map<std::string, std::vector<std::string>>::const_iterator
-        super_iter
-        = supercolumns.find(key);
+        super_iter = supercolumns.find(key);
 
       if(super_iter != supercolumns.end())
         {
           const unsigned int n_subcolumns = super_iter->second.size();
           // avoid use of `tex_supercaptions[key]'
-          std::map<std::string, std::string>::const_iterator tex_super_cap_iter
-            = tex_supercaptions.find(key);
+          std::map<std::string, std::string>::const_iterator
+            tex_super_cap_iter = tex_supercaptions.find(key);
           out << std::endl
               << "\\multicolumn{" << n_subcolumns << "}{|c|}{"
               << tex_super_cap_iter->second << "}";
@@ -659,8 +654,8 @@ TableHandler::write_tex(std::ostream& out, const bool with_header) const
       else
         {
           // col_iter->second=columns[col];
-          const std::map<std::string, Column>::const_iterator col_iter
-            = columns.find(key);
+          const std::map<std::string, Column>::const_iterator col_iter =
+            columns.find(key);
           Assert(col_iter != columns.end(), ExcInternalError());
           out << col_iter->second.tex_caption;
         }
@@ -679,8 +674,8 @@ TableHandler::write_tex(std::ostream& out, const bool with_header) const
         {
           std::string key = sel_columns[j];
           // avoid `column[key]'
-          const std::map<std::string, Column>::const_iterator col_iter
-            = columns.find(key);
+          const std::map<std::string, Column>::const_iterator col_iter =
+            columns.find(key);
           Assert(col_iter != columns.end(), ExcInternalError());
 
           const Column& column = col_iter->second;
@@ -749,8 +744,7 @@ TableHandler::get_selected_columns(std::vector<std::string>& sel_columns) const
     {
       std::string key = column_order[j];
       const std::map<std::string, std::vector<std::string>>::const_iterator
-        super_iter
-        = supercolumns.find(key);
+        super_iter = supercolumns.find(key);
 
       if(super_iter != supercolumns.end())
         {

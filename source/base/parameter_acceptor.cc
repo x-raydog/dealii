@@ -70,10 +70,10 @@ ParameterAcceptor::initialize(
               prm.print_parameters(out, ParameterHandler::Text);
               out.close();
               AssertThrow(false,
-                          ExcMessage("You specified <" + filename
-                                     + "> as input "
-                                     + "parameter file, but it does not exist. "
-                                     + "We created it for you."));
+                          ExcMessage("You specified <" + filename +
+                                     "> as input " +
+                                     "parameter file, but it does not exist. " +
+                                     "We created it for you."));
             }
         }
       else if(filename.substr(filename.find_last_of('.') + 1) == "xml")
@@ -86,10 +86,10 @@ ParameterAcceptor::initialize(
               prm.print_parameters(out, ParameterHandler::XML);
               out.close();
               AssertThrow(false,
-                          ExcMessage("You specified <" + filename
-                                     + "> as input "
-                                     + "parameter file, but it does not exist. "
-                                     + "We created it for you."));
+                          ExcMessage("You specified <" + filename +
+                                     "> as input " +
+                                     "parameter file, but it does not exist. " +
+                                     "We created it for you."));
             }
           prm.parse_input_from_xml(is);
         }
@@ -104,8 +104,8 @@ ParameterAcceptor::initialize(
     {
       std::ofstream outfile(output_filename.c_str());
       Assert(outfile, ExcIO());
-      std::string extension
-        = output_filename.substr(output_filename.find_last_of('.') + 1);
+      std::string extension =
+        output_filename.substr(output_filename.find_last_of('.') + 1);
 
       if(extension == "prm")
         {
@@ -113,8 +113,8 @@ ParameterAcceptor::initialize(
                   << "# DEAL_II_PACKAGE_VERSION = " << DEAL_II_PACKAGE_VERSION
                   << std::endl;
           Assert(
-            output_style_for_prm_format == ParameterHandler::Text
-              || output_style_for_prm_format == ParameterHandler::ShortText,
+            output_style_for_prm_format == ParameterHandler::Text ||
+              output_style_for_prm_format == ParameterHandler::ShortText,
             ExcMessage(
               "Only Text or ShortText can be specified in output_style_for_prm_format."))
             prm.print_parameters(outfile, output_style_for_prm_format);
@@ -189,8 +189,8 @@ ParameterAcceptor::get_section_path() const
   const auto my_section_name = get_section_name();
   const bool is_absolute     = (my_section_name.front() == sep);
 
-  std::vector<std::string> sections
-    = Utilities::split_string_list(my_section_name, sep);
+  std::vector<std::string> sections =
+    Utilities::split_string_list(my_section_name, sep);
 
   // Split string list removes trailing empty strings, but not
   // preceding ones. Make sure that if we had an absolute path,
@@ -223,8 +223,8 @@ ParameterAcceptor::get_section_path() const
 }
 
 void
-ParameterAcceptor::enter_my_subsection(ParameterHandler& prm
-                                       = ParameterAcceptor::prm)
+ParameterAcceptor::enter_my_subsection(
+  ParameterHandler& prm = ParameterAcceptor::prm)
 {
   const auto sections = get_section_path();
   for(const auto& sec : sections)
@@ -234,8 +234,8 @@ ParameterAcceptor::enter_my_subsection(ParameterHandler& prm
 }
 
 void
-ParameterAcceptor::leave_my_subsection(ParameterHandler& prm
-                                       = ParameterAcceptor::prm)
+ParameterAcceptor::leave_my_subsection(
+  ParameterHandler& prm = ParameterAcceptor::prm)
 {
   const auto sections = get_section_path();
   for(unsigned int i = 0; i < sections.size(); ++i)

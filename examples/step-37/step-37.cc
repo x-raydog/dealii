@@ -311,8 +311,8 @@ namespace Step37
       {
         phi.reinit(cell);
         for(unsigned int q = 0; q < phi.n_q_points; ++q)
-          coefficient(cell, q)
-            = coefficient_function.value(phi.quadrature_point(q));
+          coefficient(cell, q) =
+            coefficient_function.value(phi.quadrature_point(q));
       }
   }
 
@@ -556,8 +556,8 @@ namespace Step37
   {
     this->inverse_diagonal_entries.reset(
       new DiagonalMatrix<LinearAlgebra::distributed::Vector<number>>());
-    LinearAlgebra::distributed::Vector<number>& inverse_diagonal
-      = this->inverse_diagonal_entries->get_vector();
+    LinearAlgebra::distributed::Vector<number>& inverse_diagonal =
+      this->inverse_diagonal_entries->get_vector();
     this->data->initialize_dof_vector(inverse_diagonal);
     unsigned int dummy = 0;
     this->data->cell_loop(
@@ -570,8 +570,8 @@ namespace Step37
         Assert(inverse_diagonal.local_element(i) > 0.,
                ExcMessage("No diagonal entry in a positive definite operator "
                           "should be zero"));
-        inverse_diagonal.local_element(i)
-          = 1. / inverse_diagonal.local_element(i);
+        inverse_diagonal.local_element(i) =
+          1. / inverse_diagonal.local_element(i);
       }
   }
 
@@ -753,8 +753,8 @@ namespace Step37
       // specified here. For detailed timings, removing the @p false argument
       // prints all the details.
       time_details(std::cout,
-                   false
-                     && Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
+                   false &&
+                     Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
   {}
 
   // @sect4{LaplaceProblem::setup_system}
@@ -819,10 +819,10 @@ namespace Step37
 
     {
       typename MatrixFree<dim, double>::AdditionalData additional_data;
-      additional_data.tasks_parallel_scheme
-        = MatrixFree<dim, double>::AdditionalData::none;
-      additional_data.mapping_update_flags
-        = (update_gradients | update_JxW_values | update_quadrature_points);
+      additional_data.tasks_parallel_scheme =
+        MatrixFree<dim, double>::AdditionalData::none;
+      additional_data.mapping_update_flags =
+        (update_gradients | update_JxW_values | update_quadrature_points);
       std::shared_ptr<MatrixFree<dim, double>> system_mf_storage(
         new MatrixFree<dim, double>());
       system_mf_storage->reinit(
@@ -870,10 +870,10 @@ namespace Step37
         level_constraints.close();
 
         typename MatrixFree<dim, float>::AdditionalData additional_data;
-        additional_data.tasks_parallel_scheme
-          = MatrixFree<dim, float>::AdditionalData::none;
-        additional_data.mapping_update_flags
-          = (update_gradients | update_JxW_values | update_quadrature_points);
+        additional_data.tasks_parallel_scheme =
+          MatrixFree<dim, float>::AdditionalData::none;
+        additional_data.mapping_update_flags =
+          (update_gradients | update_JxW_values | update_quadrature_points);
         additional_data.level_mg_handler = level;
         std::shared_ptr<MatrixFree<dim, float>> mg_mf_storage_level(
           new MatrixFree<dim, float>());
@@ -1013,8 +1013,8 @@ namespace Step37
             smoother_data[0].eig_cg_n_iterations = mg_matrices[0].m();
           }
         mg_matrices[level].compute_diagonal();
-        smoother_data[level].preconditioner
-          = mg_matrices[level].get_matrix_diagonal_inverse();
+        smoother_data[level].preconditioner =
+          mg_matrices[level].get_matrix_diagonal_inverse();
       }
     mg_smoother.initialize(mg_matrices, smoother_data);
 
@@ -1123,9 +1123,9 @@ namespace Step37
     data_out.build_patches();
 
     std::ofstream output(
-      "solution-" + std::to_string(cycle) + "."
-      + std::to_string(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD))
-      + ".vtu");
+      "solution-" + std::to_string(cycle) + "." +
+      std::to_string(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD)) +
+      ".vtu");
     data_out.write_vtu(output);
 
     if(Utilities::MPI::this_mpi_process(MPI_COMM_WORLD) == 0)
@@ -1134,11 +1134,11 @@ namespace Step37
         for(unsigned int i = 0;
             i < Utilities::MPI::n_mpi_processes(MPI_COMM_WORLD);
             ++i)
-          filenames.emplace_back("solution-" + std::to_string(cycle) + "."
-                                 + std::to_string(i) + ".vtu");
+          filenames.emplace_back("solution-" + std::to_string(cycle) + "." +
+                                 std::to_string(i) + ".vtu");
 
-        std::string master_name
-          = "solution-" + Utilities::to_string(cycle) + ".pvtu";
+        std::string master_name =
+          "solution-" + Utilities::to_string(cycle) + ".pvtu";
         std::ofstream master_output(master_name);
         data_out.write_pvtu_record(master_output, filenames);
       }
@@ -1157,8 +1157,8 @@ namespace Step37
   LaplaceProblem<dim>::run()
   {
     {
-      const unsigned int n_vect_doubles
-        = VectorizedArray<double>::n_array_elements;
+      const unsigned int n_vect_doubles =
+        VectorizedArray<double>::n_array_elements;
       const unsigned int n_vect_bits = 8 * sizeof(double) * n_vect_doubles;
 
       pcout << "Vectorization over " << n_vect_doubles

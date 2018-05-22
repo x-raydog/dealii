@@ -231,9 +231,9 @@ template <typename number>
 std::size_t
 SwappableVector<number>::memory_consumption() const
 {
-  return (MemoryConsumption::memory_consumption(filename) + sizeof(lock)
-          + MemoryConsumption::memory_consumption(data_is_preloaded)
-          + Vector<number>::memory_consumption());
+  return (MemoryConsumption::memory_consumption(filename) + sizeof(lock) +
+          MemoryConsumption::memory_consumption(data_is_preloaded) +
+          Vector<number>::memory_consumption());
 }
 
 DEAL_II_NAMESPACE_CLOSE

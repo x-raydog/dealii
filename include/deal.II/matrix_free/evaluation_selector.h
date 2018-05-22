@@ -248,10 +248,9 @@ namespace
       const int runtime_n_q_points_1d = shape_info.n_q_points_1d;
       if(runtime_n_q_points_1d == n_q_points_1d)
         {
-          if(n_q_points_1d == degree + 1
-             && shape_info.element_type
-                  == internal::MatrixFreeFunctions::
-                       tensor_symmetric_collocation)
+          if(n_q_points_1d == degree + 1 &&
+             shape_info.element_type ==
+               internal::MatrixFreeFunctions::tensor_symmetric_collocation)
             internal::
               FEEvaluationImplCollocation<dim, degree, n_components, Number>::
                 evaluate(shape_info,
@@ -321,10 +320,9 @@ namespace
       const int runtime_n_q_points_1d = shape_info.n_q_points_1d;
       if(runtime_n_q_points_1d == n_q_points_1d)
         {
-          if(n_q_points_1d == degree + 1
-             && shape_info.element_type
-                  == internal::MatrixFreeFunctions::
-                       tensor_symmetric_collocation)
+          if(n_q_points_1d == degree + 1 &&
+             shape_info.element_type ==
+               internal::MatrixFreeFunctions::tensor_symmetric_collocation)
             internal::
               FEEvaluationImplCollocation<dim, degree, n_components, Number>::
                 integrate(shape_info,
@@ -394,8 +392,8 @@ namespace
     const bool                                              evaluate_gradients,
     const bool                                              evaluate_hessians)
   {
-    Assert(shape_info.element_type
-             <= internal::MatrixFreeFunctions::tensor_symmetric,
+    Assert(shape_info.element_type <=
+             internal::MatrixFreeFunctions::tensor_symmetric,
            ExcInternalError());
     Factory<dim, n_components, Number>::evaluate(shape_info,
                                                  values_dofs_actual,
@@ -423,8 +421,8 @@ namespace
     const bool                                              integrate_values,
     const bool                                              integrate_gradients)
   {
-    Assert(shape_info.element_type
-             <= internal::MatrixFreeFunctions::tensor_symmetric,
+    Assert(shape_info.element_type <=
+             internal::MatrixFreeFunctions::tensor_symmetric,
            ExcInternalError());
     Factory<dim, n_components, Number>::integrate(shape_info,
                                                   values_dofs_actual,
@@ -561,9 +559,9 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::evaluate(
 {
   Assert(fe_degree >= 0 && n_q_points_1d > 0, ExcInternalError());
 
-  if(fe_degree + 1 == n_q_points_1d
-     && shape_info.element_type
-          == internal::MatrixFreeFunctions::tensor_symmetric_collocation)
+  if(fe_degree + 1 == n_q_points_1d &&
+     shape_info.element_type ==
+       internal::MatrixFreeFunctions::tensor_symmetric_collocation)
     {
       internal::
         FEEvaluationImplCollocation<dim, fe_degree, n_components, Number>::
@@ -577,9 +575,9 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::evaluate(
                    evaluate_gradients,
                    evaluate_hessians);
     }
-  else if(fe_degree < n_q_points_1d
-          && shape_info.element_type
-               <= internal::MatrixFreeFunctions::tensor_symmetric)
+  else if(fe_degree < n_q_points_1d &&
+          shape_info.element_type <=
+            internal::MatrixFreeFunctions::tensor_symmetric)
     {
       internal::FEEvaluationImplTransformToCollocation<
         dim,
@@ -596,8 +594,8 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::evaluate(
                           evaluate_gradients,
                           evaluate_hessians);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::tensor_symmetric)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::tensor_symmetric)
     {
       internal::FEEvaluationImpl<
         internal::MatrixFreeFunctions::tensor_symmetric,
@@ -615,8 +613,8 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::evaluate(
                           evaluate_gradients,
                           evaluate_hessians);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0)
     {
       internal::FEEvaluationImpl<
         internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0,
@@ -634,8 +632,8 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::evaluate(
                           evaluate_gradients,
                           evaluate_hessians);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::truncated_tensor)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::truncated_tensor)
     {
       internal::FEEvaluationImpl<
         internal::MatrixFreeFunctions::truncated_tensor,
@@ -653,8 +651,8 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::evaluate(
                           evaluate_gradients,
                           evaluate_hessians);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::tensor_general)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::tensor_general)
     {
       internal::FEEvaluationImpl<internal::MatrixFreeFunctions::tensor_general,
                                  dim,
@@ -692,9 +690,9 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::integrate(
 {
   Assert(fe_degree >= 0 && n_q_points_1d > 0, ExcInternalError());
 
-  if(fe_degree + 1 == n_q_points_1d
-     && shape_info.element_type
-          == internal::MatrixFreeFunctions::tensor_symmetric_collocation)
+  if(fe_degree + 1 == n_q_points_1d &&
+     shape_info.element_type ==
+       internal::MatrixFreeFunctions::tensor_symmetric_collocation)
     {
       internal::
         FEEvaluationImplCollocation<dim, fe_degree, n_components, Number>::
@@ -707,9 +705,9 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::integrate(
                     integrate_gradients,
                     false);
     }
-  else if(fe_degree < n_q_points_1d
-          && shape_info.element_type
-               <= internal::MatrixFreeFunctions::tensor_symmetric)
+  else if(fe_degree < n_q_points_1d &&
+          shape_info.element_type <=
+            internal::MatrixFreeFunctions::tensor_symmetric)
     {
       internal::FEEvaluationImplTransformToCollocation<
         dim,
@@ -725,8 +723,8 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::integrate(
                            integrate_gradients,
                            false);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::tensor_symmetric)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::tensor_symmetric)
     {
       internal::FEEvaluationImpl<
         internal::MatrixFreeFunctions::tensor_symmetric,
@@ -743,8 +741,8 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::integrate(
                            integrate_gradients,
                            false);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0)
     {
       internal::FEEvaluationImpl<
         internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0,
@@ -761,8 +759,8 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::integrate(
                            integrate_gradients,
                            false);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::truncated_tensor)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::truncated_tensor)
     {
       internal::FEEvaluationImpl<
         internal::MatrixFreeFunctions::truncated_tensor,
@@ -779,8 +777,8 @@ SelectEvaluator<dim, fe_degree, n_q_points_1d, n_components, Number>::integrate(
                            integrate_gradients,
                            false);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::tensor_general)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::tensor_general)
     {
       internal::FEEvaluationImpl<internal::MatrixFreeFunctions::tensor_general,
                                  dim,
@@ -813,8 +811,8 @@ SelectEvaluator<dim, -1, dummy, n_components, Number>::evaluate(
   const bool                                              evaluate_gradients,
   const bool                                              evaluate_hessians)
 {
-  if(shape_info.element_type
-     == internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0)
+  if(shape_info.element_type ==
+     internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0)
     {
       internal::FEEvaluationImpl<
         internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0,
@@ -832,8 +830,8 @@ SelectEvaluator<dim, -1, dummy, n_components, Number>::evaluate(
                           evaluate_gradients,
                           evaluate_hessians);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::truncated_tensor)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::truncated_tensor)
     {
       internal::FEEvaluationImpl<
         internal::MatrixFreeFunctions::truncated_tensor,
@@ -851,8 +849,8 @@ SelectEvaluator<dim, -1, dummy, n_components, Number>::evaluate(
                           evaluate_gradients,
                           evaluate_hessians);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::tensor_general)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::tensor_general)
     internal::FEEvaluationImpl<internal::MatrixFreeFunctions::tensor_general,
                                dim,
                                -1,
@@ -890,8 +888,8 @@ SelectEvaluator<dim, -1, dummy, n_components, Number>::integrate(
   const bool                                              integrate_values,
   const bool                                              integrate_gradients)
 {
-  if(shape_info.element_type
-     == internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0)
+  if(shape_info.element_type ==
+     internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0)
     {
       internal::FEEvaluationImpl<
         internal::MatrixFreeFunctions::tensor_symmetric_plus_dg0,
@@ -908,8 +906,8 @@ SelectEvaluator<dim, -1, dummy, n_components, Number>::integrate(
                            integrate_gradients,
                            false);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::truncated_tensor)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::truncated_tensor)
     {
       internal::FEEvaluationImpl<
         internal::MatrixFreeFunctions::truncated_tensor,
@@ -926,8 +924,8 @@ SelectEvaluator<dim, -1, dummy, n_components, Number>::integrate(
                            integrate_gradients,
                            false);
     }
-  else if(shape_info.element_type
-          == internal::MatrixFreeFunctions::tensor_general)
+  else if(shape_info.element_type ==
+          internal::MatrixFreeFunctions::tensor_general)
     internal::FEEvaluationImpl<internal::MatrixFreeFunctions::tensor_general,
                                dim,
                                -1,

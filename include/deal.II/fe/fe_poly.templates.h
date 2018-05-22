@@ -176,13 +176,13 @@ FE_Poly<PolynomialType, dim, spacedim>::requires_update_flags(
   if(flags & update_gradients)
     out |= update_gradients | update_covariant_transformation;
   if(flags & update_hessians)
-    out |= update_hessians | update_covariant_transformation | update_gradients
-           | update_jacobian_pushed_forward_grads;
+    out |= update_hessians | update_covariant_transformation |
+           update_gradients | update_jacobian_pushed_forward_grads;
   if(flags & update_3rd_derivatives)
-    out |= update_3rd_derivatives | update_covariant_transformation
-           | update_hessians | update_gradients
-           | update_jacobian_pushed_forward_grads
-           | update_jacobian_pushed_forward_2nd_derivatives;
+    out |= update_3rd_derivatives | update_covariant_transformation |
+           update_hessians | update_gradients |
+           update_jacobian_pushed_forward_grads |
+           update_jacobian_pushed_forward_2nd_derivatives;
   if(flags & update_normal_vectors)
     out |= update_normal_vectors | update_JxW_values;
 
@@ -240,13 +240,13 @@ FE_Poly<PolynomialType, dim, spacedim>::fill_fe_values(
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         for(unsigned int i = 0; i < quadrature.size(); ++i)
           for(unsigned int j = 0; j < spacedim; ++j)
-            output_data.shape_hessians[k][i]
-              -= mapping_data.jacobian_pushed_forward_grads[i][j]
-                 * output_data.shape_gradients[k][i][j];
+            output_data.shape_hessians[k][i] -=
+              mapping_data.jacobian_pushed_forward_grads[i][j] *
+              output_data.shape_gradients[k][i][j];
     }
 
-  if(flags & update_3rd_derivatives
-     && cell_similarity != CellSimilarity::translation)
+  if(flags & update_3rd_derivatives &&
+     cell_similarity != CellSimilarity::translation)
     {
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         mapping.transform(
@@ -289,12 +289,12 @@ FE_Poly<PolynomialType, dim, spacedim>::fill_fe_face_values(
   // to take (all data sets for all
   // faces are stored contiguously)
 
-  const typename QProjector<dim>::DataSetDescriptor offset
-    = QProjector<dim>::DataSetDescriptor::face(face_no,
-                                               cell->face_orientation(face_no),
-                                               cell->face_flip(face_no),
-                                               cell->face_rotation(face_no),
-                                               quadrature.size());
+  const typename QProjector<dim>::DataSetDescriptor offset =
+    QProjector<dim>::DataSetDescriptor::face(face_no,
+                                             cell->face_orientation(face_no),
+                                             cell->face_flip(face_no),
+                                             cell->face_rotation(face_no),
+                                             quadrature.size());
 
   const UpdateFlags flags(fe_data.update_each);
 
@@ -326,9 +326,9 @@ FE_Poly<PolynomialType, dim, spacedim>::fill_fe_face_values(
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         for(unsigned int i = 0; i < quadrature.size(); ++i)
           for(unsigned int j = 0; j < spacedim; ++j)
-            output_data.shape_hessians[k][i]
-              -= mapping_data.jacobian_pushed_forward_grads[i][j]
-                 * output_data.shape_gradients[k][i][j];
+            output_data.shape_hessians[k][i] -=
+              mapping_data.jacobian_pushed_forward_grads[i][j] *
+              output_data.shape_gradients[k][i][j];
     }
 
   if(flags & update_3rd_derivatives)
@@ -376,15 +376,14 @@ FE_Poly<PolynomialType, dim, spacedim>::fill_fe_subface_values(
   // to take (all data sets for all
   // sub-faces are stored contiguously)
 
-  const typename QProjector<dim>::DataSetDescriptor offset
-    = QProjector<dim>::DataSetDescriptor::subface(
-      face_no,
-      sub_no,
-      cell->face_orientation(face_no),
-      cell->face_flip(face_no),
-      cell->face_rotation(face_no),
-      quadrature.size(),
-      cell->subface_case(face_no));
+  const typename QProjector<dim>::DataSetDescriptor offset =
+    QProjector<dim>::DataSetDescriptor::subface(face_no,
+                                                sub_no,
+                                                cell->face_orientation(face_no),
+                                                cell->face_flip(face_no),
+                                                cell->face_rotation(face_no),
+                                                quadrature.size(),
+                                                cell->subface_case(face_no));
 
   const UpdateFlags flags(fe_data.update_each);
 
@@ -416,9 +415,9 @@ FE_Poly<PolynomialType, dim, spacedim>::fill_fe_subface_values(
       for(unsigned int k = 0; k < this->dofs_per_cell; ++k)
         for(unsigned int i = 0; i < quadrature.size(); ++i)
           for(unsigned int j = 0; j < spacedim; ++j)
-            output_data.shape_hessians[k][i]
-              -= mapping_data.jacobian_pushed_forward_grads[i][j]
-                 * output_data.shape_gradients[k][i][j];
+            output_data.shape_hessians[k][i] -=
+              mapping_data.jacobian_pushed_forward_grads[i][j] *
+              output_data.shape_gradients[k][i][j];
     }
 
   if(flags & update_3rd_derivatives)
@@ -453,16 +452,16 @@ FE_Poly<PolynomialType, dim, spacedim>::correct_third_derivatives(
         for(unsigned int l = 0; l < spacedim; ++l)
           for(unsigned int m = 0; m < spacedim; ++m)
             {
-              output_data.shape_3rd_derivatives[dof][i][j][k][l]
-                -= (mapping_data.jacobian_pushed_forward_grads[i][m][j][l]
-                    * output_data.shape_hessians[dof][i][k][m])
-                   + (mapping_data.jacobian_pushed_forward_grads[i][m][k][l]
-                      * output_data.shape_hessians[dof][i][j][m])
-                   + (mapping_data.jacobian_pushed_forward_grads[i][m][j][k]
-                      * output_data.shape_hessians[dof][i][l][m])
-                   + (mapping_data
-                        .jacobian_pushed_forward_2nd_derivatives[i][m][j][k][l]
-                      * output_data.shape_gradients[dof][i][m]);
+              output_data.shape_3rd_derivatives[dof][i][j][k][l] -=
+                (mapping_data.jacobian_pushed_forward_grads[i][m][j][l] *
+                 output_data.shape_hessians[dof][i][k][m]) +
+                (mapping_data.jacobian_pushed_forward_grads[i][m][k][l] *
+                 output_data.shape_hessians[dof][i][j][m]) +
+                (mapping_data.jacobian_pushed_forward_grads[i][m][j][k] *
+                 output_data.shape_hessians[dof][i][l][m]) +
+                (mapping_data
+                   .jacobian_pushed_forward_2nd_derivatives[i][m][j][k][l] *
+                 output_data.shape_gradients[dof][i][m]);
             }
 }
 

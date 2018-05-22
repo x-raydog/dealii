@@ -177,10 +177,9 @@ namespace Step25
             const double m  = 0.5;
             const double c1 = 0.;
             const double c2 = 0.;
-            return -4.
-                   * std::atan(m / std::sqrt(1. - m * m)
-                               * std::sin(std::sqrt(1. - m * m) * t + c2)
-                               / std::cosh(m * p[0] + c1));
+            return -4. * std::atan(m / std::sqrt(1. - m * m) *
+                                   std::sin(std::sqrt(1. - m * m) * t + c2) /
+                                   std::cosh(m * p[0] + c1));
           }
 
         case 2:
@@ -189,10 +188,9 @@ namespace Step25
             const double lambda = 1.;
             const double a0     = 1.;
             const double s      = 1.;
-            const double arg
-              = p[0] * std::cos(theta)
-                + std::sin(theta)
-                    * (p[1] * std::cosh(lambda) + t * std::sinh(lambda));
+            const double arg    = p[0] * std::cos(theta) +
+                               std::sin(theta) * (p[1] * std::cosh(lambda) +
+                                                  t * std::sinh(lambda));
             return 4. * std::atan(a0 * std::exp(s * arg));
           }
 
@@ -203,10 +201,10 @@ namespace Step25
             const double tau   = 1.;
             const double c0    = 1.;
             const double s     = 1.;
-            const double arg
-              = p[0] * std::cos(theta) + p[1] * std::sin(theta) * std::cos(phi)
-                + std::sin(theta) * std::sin(phi)
-                    * (p[2] * std::cosh(tau) + t * std::sinh(tau));
+            const double arg   = p[0] * std::cos(theta) +
+                               p[1] * std::sin(theta) * std::cos(phi) +
+                               std::sin(theta) * std::sin(phi) *
+                                 (p[2] * std::cosh(tau) + t * std::sinh(tau));
             return 4. * std::atan(c0 * std::exp(s * arg));
           }
 
@@ -408,8 +406,8 @@ namespace Step25
     const QGauss<dim> quadrature_formula(3);
     FEValues<dim>     fe_values(fe,
                             quadrature_formula,
-                            update_values | update_JxW_values
-                              | update_quadrature_points);
+                            update_values | update_JxW_values |
+                              update_quadrature_points);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -419,9 +417,9 @@ namespace Step25
     std::vector<double>                  old_data_values(n_q_points);
     std::vector<double>                  new_data_values(n_q_points);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
 
     for(; cell != endc; ++cell)
       {
@@ -441,10 +439,10 @@ namespace Step25
         // the desired quadrature formula.
         for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
-            local_nl_term(i)
-              += (std::sin(theta * new_data_values[q_point]
-                           + (1 - theta) * old_data_values[q_point])
-                  * fe_values.shape_value(i, q_point) * fe_values.JxW(q_point));
+            local_nl_term(i) +=
+              (std::sin(theta * new_data_values[q_point] +
+                        (1 - theta) * old_data_values[q_point]) *
+               fe_values.shape_value(i, q_point) * fe_values.JxW(q_point));
 
         // We conclude by adding up the contributions of the integrals over
         // the cells to the global integral.
@@ -473,8 +471,8 @@ namespace Step25
     QGauss<dim>   quadrature_formula(3);
     FEValues<dim> fe_values(fe,
                             quadrature_formula,
-                            update_values | update_JxW_values
-                              | update_quadrature_points);
+                            update_values | update_JxW_values |
+                              update_quadrature_points);
 
     const unsigned int dofs_per_cell = fe.dofs_per_cell;
     const unsigned int n_q_points    = quadrature_formula.size();
@@ -484,9 +482,9 @@ namespace Step25
     std::vector<double>                  old_data_values(n_q_points);
     std::vector<double>                  new_data_values(n_q_points);
 
-    typename DoFHandler<dim>::active_cell_iterator cell
-      = dof_handler.begin_active(),
-      endc = dof_handler.end();
+    typename DoFHandler<dim>::active_cell_iterator cell =
+                                                     dof_handler.begin_active(),
+                                                   endc = dof_handler.end();
 
     for(; cell != endc; ++cell)
       {
@@ -503,12 +501,11 @@ namespace Step25
         for(unsigned int q_point = 0; q_point < n_q_points; ++q_point)
           for(unsigned int i = 0; i < dofs_per_cell; ++i)
             for(unsigned int j = 0; j < dofs_per_cell; ++j)
-              local_nl_matrix(i, j)
-                += (std::cos(theta * new_data_values[q_point]
-                             + (1 - theta) * old_data_values[q_point])
-                    * fe_values.shape_value(i, q_point)
-                    * fe_values.shape_value(j, q_point)
-                    * fe_values.JxW(q_point));
+              local_nl_matrix(i, j) +=
+                (std::cos(theta * new_data_values[q_point] +
+                          (1 - theta) * old_data_values[q_point]) *
+                 fe_values.shape_value(i, q_point) *
+                 fe_values.shape_value(j, q_point) * fe_values.JxW(q_point));
 
         // Finally, we add up the contributions of the integrals over the
         // cells to the global integral.
@@ -576,8 +573,8 @@ namespace Step25
     data_out.add_data_vector(solution, "u");
     data_out.build_patches();
 
-    const std::string filename
-      = "solution-" + Utilities::int_to_string(timestep_number, 3) + ".vtk";
+    const std::string filename =
+      "solution-" + Utilities::int_to_string(timestep_number, 3) + ".vtk";
 
     std::ofstream output(filename);
     data_out.write_vtk(output);

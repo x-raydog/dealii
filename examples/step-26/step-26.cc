@@ -146,8 +146,8 @@ namespace Step26
     Assert(dim == 2, ExcNotImplemented());
 
     const double time = this->get_time();
-    const double point_within_period
-      = (time / period - std::floor(time / period));
+    const double point_within_period =
+      (time / period - std::floor(time / period));
 
     if((point_within_period >= 0.0) && (point_within_period <= 0.2))
       {
@@ -290,8 +290,8 @@ namespace Step26
 
     data_out.build_patches();
 
-    const std::string filename
-      = "solution-" + Utilities::int_to_string(timestep_number, 3) + ".vtk";
+    const std::string filename =
+      "solution-" + Utilities::int_to_string(timestep_number, 3) + ".vtk";
     std::ofstream output(filename);
     data_out.write_vtk(output);
   }
@@ -336,13 +336,13 @@ namespace Step26
       triangulation, estimated_error_per_cell, 0.6, 0.4);
 
     if(triangulation.n_levels() > max_grid_level)
-      for(typename Triangulation<dim>::active_cell_iterator cell
-          = triangulation.begin_active(max_grid_level);
+      for(typename Triangulation<dim>::active_cell_iterator cell =
+            triangulation.begin_active(max_grid_level);
           cell != triangulation.end();
           ++cell)
         cell->clear_refine_flag();
-    for(typename Triangulation<dim>::active_cell_iterator cell
-        = triangulation.begin_active(min_grid_level);
+    for(typename Triangulation<dim>::active_cell_iterator cell =
+          triangulation.begin_active(min_grid_level);
         cell != triangulation.end_active(min_grid_level);
         ++cell)
       cell->clear_coarsen_flag();
@@ -535,12 +535,12 @@ namespace Step26
         // The time loop and, indeed, the main part of the program ends
         // with starting into the next time step by setting old_solution
         // to the solution we have just computed.
-        if((timestep_number == 1)
-           && (pre_refinement_step < n_adaptive_pre_refinement_steps))
+        if((timestep_number == 1) &&
+           (pre_refinement_step < n_adaptive_pre_refinement_steps))
           {
             refine_mesh(initial_global_refinement,
-                        initial_global_refinement
-                          + n_adaptive_pre_refinement_steps);
+                        initial_global_refinement +
+                          n_adaptive_pre_refinement_steps);
             ++pre_refinement_step;
 
             tmp.reinit(solution.size());
@@ -553,8 +553,8 @@ namespace Step26
         else if((timestep_number > 0) && (timestep_number % 5 == 0))
           {
             refine_mesh(initial_global_refinement,
-                        initial_global_refinement
-                          + n_adaptive_pre_refinement_steps);
+                        initial_global_refinement +
+                          n_adaptive_pre_refinement_steps);
             tmp.reinit(solution.size());
             forcing_terms.reinit(solution.size());
           }

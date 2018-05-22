@@ -254,8 +254,8 @@ BlockSparsityPatternBase<DynamicSparsityPattern>::print(std::ostream& out) const
           for(size_type jb = 0; jb < n_block_cols(); ++jb)
             {
               const DynamicSparsityPattern& b = block(ib, jb);
-              if(b.row_index_set().size() == 0
-                 || b.row_index_set().is_element(i))
+              if(b.row_index_set().size() == 0 ||
+                 b.row_index_set().is_element(i))
                 for(size_type j = 0; j < b.n_cols(); ++j)
                   if(b.exists(i, j))
                     out << ',' << l + j;
@@ -342,11 +342,11 @@ std::size_t
 BlockSparsityPattern::memory_consumption() const
 {
   std::size_t mem = 0;
-  mem += (MemoryConsumption::memory_consumption(rows)
-          + MemoryConsumption::memory_consumption(columns)
-          + MemoryConsumption::memory_consumption(sub_objects)
-          + MemoryConsumption::memory_consumption(row_indices)
-          + MemoryConsumption::memory_consumption(column_indices));
+  mem += (MemoryConsumption::memory_consumption(rows) +
+          MemoryConsumption::memory_consumption(columns) +
+          MemoryConsumption::memory_consumption(sub_objects) +
+          MemoryConsumption::memory_consumption(row_indices) +
+          MemoryConsumption::memory_consumption(column_indices));
   for(size_type r = 0; r < rows; ++r)
     for(size_type c = 0; c < columns; ++c)
       mem += MemoryConsumption::memory_consumption(*sub_objects[r][c]);

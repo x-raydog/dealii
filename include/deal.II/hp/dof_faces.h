@@ -367,12 +367,13 @@ namespace internal
       Assert(
         fe_index < dof_handler.get_fe_collection().size(),
         ExcIndexRange(fe_index, 0, dof_handler.get_fe_collection().size()));
-      Assert(local_index < dof_handler.get_fe(fe_index)
-                             .template n_dofs_per_object<structdim>(),
-             ExcIndexRange(local_index,
-                           0,
-                           dof_handler.get_fe(fe_index)
-                             .template n_dofs_per_object<structdim>()));
+      Assert(
+        local_index <
+          dof_handler.get_fe(fe_index).template n_dofs_per_object<structdim>(),
+        ExcIndexRange(local_index,
+                      0,
+                      dof_handler.get_fe(fe_index)
+                        .template n_dofs_per_object<structdim>()));
       Assert(obj_index < dof_offsets.size(),
              ExcIndexRange(obj_index, 0, dof_offsets.size()));
 
@@ -402,8 +403,8 @@ namespace internal
           else
             pointer += static_cast<types::global_dof_index>(
               dof_handler.get_fe(*pointer)
-                .template n_dofs_per_object<structdim>()
-              + 1);
+                .template n_dofs_per_object<structdim>() +
+              1);
         }
     }
 
@@ -425,12 +426,13 @@ namespace internal
       Assert(
         fe_index < dof_handler.get_fe_collection().size(),
         ExcIndexRange(fe_index, 0, dof_handler.get_fe_collection().size()));
-      Assert(local_index < dof_handler.get_fe(fe_index)
-                             .template n_dofs_per_object<structdim>(),
-             ExcIndexRange(local_index,
-                           0,
-                           dof_handler.get_fe(fe_index)
-                             .template n_dofs_per_object<structdim>()));
+      Assert(
+        local_index <
+          dof_handler.get_fe(fe_index).template n_dofs_per_object<structdim>(),
+        ExcIndexRange(local_index,
+                      0,
+                      dof_handler.get_fe(fe_index)
+                        .template n_dofs_per_object<structdim>()));
       Assert(obj_index < dof_offsets.size(),
              ExcIndexRange(obj_index, 0, dof_offsets.size()));
 
@@ -462,8 +464,8 @@ namespace internal
             }
           else
             pointer += dof_handler.get_fe(*pointer)
-                         .template n_dofs_per_object<structdim>()
-                       + 1;
+                         .template n_dofs_per_object<structdim>() +
+                       1;
         }
     }
 
@@ -503,8 +505,8 @@ namespace internal
             {
               ++counter;
               pointer += dof_handler.get_fe(*pointer)
-                           .template n_dofs_per_object<structdim>()
-                         + 1;
+                           .template n_dofs_per_object<structdim>() +
+                         1;
             }
         }
     }
@@ -557,8 +559,8 @@ namespace internal
 
           ++counter;
           pointer += dof_handler.get_fe(fe_index)
-                       .template n_dofs_per_object<structdim>()
-                     + 1;
+                       .template n_dofs_per_object<structdim>() +
+                     1;
         }
     }
 
@@ -610,8 +612,8 @@ namespace internal
           else
             pointer += static_cast<types::global_dof_index>(
               dof_handler.get_fe(*pointer)
-                .template n_dofs_per_object<structdim>()
-              + 1);
+                .template n_dofs_per_object<structdim>() +
+              1);
         }
     }
 

@@ -175,8 +175,8 @@ public:
    * for more information.
    */
   void
-  compress(::dealii::VectorOperation::values operation
-           = ::dealii::VectorOperation::unknown);
+  compress(::dealii::VectorOperation::values operation =
+             ::dealii::VectorOperation::unknown);
 
   /**
    * Copy operator: fill all components of the vector with the given scalar
@@ -197,8 +197,7 @@ public:
    * the contents of the given argument vector.
    */
   BlockVector<Number>&
-  operator=(BlockVector<Number>&& /*v*/)
-    = default; // NOLINT
+  operator=(BlockVector<Number>&& /*v*/) = default; // NOLINT
 
   /**
    * Copy operator for template arguments of different types. Resize the
