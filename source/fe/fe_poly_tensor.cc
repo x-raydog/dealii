@@ -1578,12 +1578,12 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                                                           this->dofs_per_face,
                                                           fe_data.sign_change);
 
-  for (unsigned int i = 0; i < this->dofs_per_cell; ++i)
+  for (unsigned int dof_n = 0; dof_n < this->dofs_per_cell; ++dof_n)
     {
       const unsigned int first =
-        output_data.shape_function_to_row_table[i * this->n_components() +
-                                                this->get_nonzero_components(i)
-                                                  .first_selected_component()];
+        output_data.shape_function_to_row_table
+          [dof_n * this->n_components() +
+           this->get_nonzero_components(dof_n).first_selected_component()];
 
       if (fe_data.update_each & update_values)
         {
@@ -1594,7 +1594,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     for (unsigned int d = 0; d < dim; ++d)
                       output_data.shape_values(first + d, k) =
-                        fe_data.shape_values[i][k + offset][d];
+                        fe_data.shape_values[dof_n][k + offset][d];
                   break;
                 }
 
@@ -1607,7 +1607,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                                       offset,
                                       n_q_points);
                   mapping.transform(make_array_view(fe_data.shape_values,
-                                                    i,
+                                                    dof_n,
                                                     offset,
                                                     n_q_points),
                                     mapping_type,
@@ -1632,7 +1632,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                                       n_q_points);
 
                   mapping.transform(make_array_view(fe_data.shape_values,
-                                                    i,
+                                                    dof_n,
                                                     offset,
                                                     n_q_points),
                                     mapping_piola,
@@ -1641,7 +1641,8 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     for (unsigned int d = 0; d < dim; ++d)
                       output_data.shape_values(first + d, k) =
-                        fe_data.sign_change[i] * transformed_shape_values[k][d];
+                        fe_data.sign_change[dof_n] *
+                        transformed_shape_values[k][d];
                   break;
                 }
 
@@ -1654,7 +1655,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                                       n_q_points);
 
                   mapping.transform(make_array_view(fe_data.shape_values,
-                                                    i,
+                                                    dof_n,
                                                     offset,
                                                     n_q_points),
                                     mapping_covariant,
@@ -1664,7 +1665,8 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     for (unsigned int d = 0; d < dim; ++d)
                       output_data.shape_values(first + d, k) =
-                        fe_data.sign_change[i] * transformed_shape_values[k][d];
+                        fe_data.sign_change[dof_n] *
+                        transformed_shape_values[k][d];
 
                   break;
                 }
@@ -1684,11 +1686,13 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
             {
               case mapping_none:
                 {
-                  mapping.transform(
-                    make_array_view(fe_data.shape_grads, i, offset, n_q_points),
-                    mapping_covariant,
-                    mapping_internal,
-                    transformed_shape_grads);
+                  mapping.transform(make_array_view(fe_data.shape_grads,
+                                                    dof_n,
+                                                    offset,
+                                                    n_q_points),
+                                    mapping_covariant,
+                                    mapping_internal,
+                                    transformed_shape_grads);
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     for (unsigned int d = 0; d < dim; ++d)
                       output_data.shape_gradients[first + d][k] =
@@ -1698,11 +1702,13 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
 
               case mapping_covariant:
                 {
-                  mapping.transform(
-                    make_array_view(fe_data.shape_grads, i, offset, n_q_points),
-                    mapping_covariant_gradient,
-                    mapping_internal,
-                    transformed_shape_grads);
+                  mapping.transform(make_array_view(fe_data.shape_grads,
+                                                    dof_n,
+                                                    offset,
+                                                    n_q_points),
+                                    mapping_covariant_gradient,
+                                    mapping_internal,
+                                    transformed_shape_grads);
 
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     for (unsigned int d = 0; d < spacedim; ++d)
@@ -1723,7 +1729,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                 {
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     fe_data.untransformed_shape_grads[k + offset] =
-                      fe_data.shape_grads[i][k + offset];
+                      fe_data.shape_grads[dof_n][k + offset];
 
                   mapping.transform(
                     make_array_view(fe_data.untransformed_shape_grads,
@@ -1753,7 +1759,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                 {
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     fe_data.untransformed_shape_grads[k + offset] =
-                      fe_data.shape_grads[i][k + offset];
+                      fe_data.shape_grads[dof_n][k + offset];
 
                   mapping.transform(
                     make_array_view(fe_data.untransformed_shape_grads,
@@ -1776,7 +1782,8 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     for (unsigned int d = 0; d < dim; ++d)
                       output_data.shape_gradients[first + d][k] =
-                        fe_data.sign_change[i] * transformed_shape_grads[k][d];
+                        fe_data.sign_change[dof_n] *
+                        transformed_shape_grads[k][d];
 
                   break;
                 }
@@ -1794,7 +1801,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                   // the real cell.
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     fe_data.untransformed_shape_grads[k + offset] =
-                      fe_data.shape_grads[i][k + offset];
+                      fe_data.shape_grads[dof_n][k + offset];
 
                   mapping.transform(
                     make_array_view(fe_data.untransformed_shape_grads,
@@ -1814,7 +1821,8 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     for (unsigned int d = 0; d < dim; ++d)
                       output_data.shape_gradients[first + d][k] =
-                        fe_data.sign_change[i] * transformed_shape_grads[k][d];
+                        fe_data.sign_change[dof_n] *
+                        transformed_shape_grads[k][d];
 
                   break;
                 }
@@ -1836,7 +1844,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                                       offset,
                                       n_q_points);
                   mapping.transform(make_array_view(fe_data.shape_grad_grads,
-                                                    i,
+                                                    dof_n,
                                                     offset,
                                                     n_q_points),
                                     mapping_covariant_gradient,
@@ -1861,7 +1869,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                 {
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     fe_data.untransformed_shape_hessian_tensors[k + offset] =
-                      fe_data.shape_grad_grads[i][k + offset];
+                      fe_data.shape_grad_grads[dof_n][k + offset];
 
                   const ArrayView<Tensor<3, spacedim>>
                     transformed_shape_hessians =
@@ -1910,7 +1918,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                 {
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     fe_data.untransformed_shape_hessian_tensors[k + offset] =
-                      fe_data.shape_grad_grads[i][k + offset];
+                      fe_data.shape_grad_grads[dof_n][k + offset];
 
                   const ArrayView<Tensor<3, spacedim>>
                     transformed_shape_hessians =
@@ -1976,7 +1984,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                 {
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     fe_data.untransformed_shape_hessian_tensors[k + offset] =
-                      fe_data.shape_grad_grads[i][k + offset];
+                      fe_data.shape_grad_grads[dof_n][k + offset];
 
                   const ArrayView<Tensor<3, spacedim>>
                     transformed_shape_hessians =
@@ -2062,7 +2070,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     for (unsigned int d = 0; d < dim; ++d)
                       output_data.shape_hessians[first + d][k] =
-                        fe_data.sign_change[i] *
+                        fe_data.sign_change[dof_n] *
                         transformed_shape_hessians[k][d];
 
                   break;
@@ -2072,7 +2080,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                 {
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     fe_data.untransformed_shape_hessian_tensors[k + offset] =
-                      fe_data.shape_grad_grads[i][k + offset];
+                      fe_data.shape_grad_grads[dof_n][k + offset];
 
                   const ArrayView<Tensor<3, spacedim>>
                     transformed_shape_hessians =
@@ -2112,7 +2120,7 @@ FE_PolyTensor<PolynomialType, dim, spacedim>::fill_fe_subface_values(
                   for (unsigned int k = 0; k < n_q_points; ++k)
                     for (unsigned int d = 0; d < dim; ++d)
                       output_data.shape_hessians[first + d][k] =
-                        fe_data.sign_change[i] *
+                        fe_data.sign_change[dof_n] *
                         transformed_shape_hessians[k][d];
 
                   break;

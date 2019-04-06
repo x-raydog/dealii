@@ -2313,7 +2313,7 @@ namespace GridTools
     Assert(indices.begin() + triangulation.locally_owned_subdomain() <
              indices.end(),
            ExcInternalError());
-    const types::global_vertex_index shift =
+    const types::global_vertex_index index_shift =
       std::accumulate(indices.begin(),
                       indices.begin() + triangulation.locally_owned_subdomain(),
                       types::global_vertex_index(0));
@@ -2322,7 +2322,7 @@ namespace GridTools
       global_index_it = local_to_global_vertex_index.begin(),
       global_index_end = local_to_global_vertex_index.end();
     for (; global_index_it != global_index_end; ++global_index_it)
-      global_index_it->second += shift;
+      global_index_it->second += index_shift;
 
     // In a first message, send the global ID of the vertices and the local
     // positions in the cells. In a second messages, send the cell ID as a

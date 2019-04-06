@@ -655,13 +655,13 @@ namespace Utilities
 
           std::vector<char> all_hostnames(max_hostname_size *
                                           MPI::n_mpi_processes(MPI_COMM_WORLD));
-          const int         ierr = MPI_Allgather(hostname_array.data(),
-                                         max_hostname_size,
-                                         MPI_CHAR,
-                                         all_hostnames.data(),
-                                         max_hostname_size,
-                                         MPI_CHAR,
-                                         MPI_COMM_WORLD);
+          ierr = MPI_Allgather(hostname_array.data(),
+                               max_hostname_size,
+                               MPI_CHAR,
+                               all_hostnames.data(),
+                               max_hostname_size,
+                               MPI_CHAR,
+                               MPI_COMM_WORLD);
           AssertThrowMPI(ierr);
 
           // search how often our own hostname appears and the how-manyth

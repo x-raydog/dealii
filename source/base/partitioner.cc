@@ -291,13 +291,13 @@ namespace Utilities
           send_buffer[ghost_targets_data[i].first] =
             ghost_targets_data[i].second;
 
-        const int ierr = MPI_Alltoall(send_buffer.data(),
-                                      1,
-                                      MPI_INT,
-                                      receive_buffer.data(),
-                                      1,
-                                      MPI_INT,
-                                      communicator);
+        ierr = MPI_Alltoall(send_buffer.data(),
+                            1,
+                            MPI_INT,
+                            receive_buffer.data(),
+                            1,
+                            MPI_INT,
+                            communicator);
         AssertThrowMPI(ierr);
 
         // allocate memory for import data
@@ -324,14 +324,13 @@ namespace Utilities
                                                  n_ghost_targets);
         for (unsigned int i = 0; i < import_targets_data.size(); i++)
           {
-            const int ierr =
-              MPI_Irecv(&expanded_import_indices[current_index_start],
-                        import_targets_data[i].second,
-                        DEAL_II_DOF_INDEX_MPI_TYPE,
-                        import_targets_data[i].first,
-                        import_targets_data[i].first,
-                        communicator,
-                        &import_requests[i]);
+            ierr = MPI_Irecv(&expanded_import_indices[current_index_start],
+                             import_targets_data[i].second,
+                             DEAL_II_DOF_INDEX_MPI_TYPE,
+                             import_targets_data[i].first,
+                             import_targets_data[i].first,
+                             communicator,
+                             &import_requests[i]);
             AssertThrowMPI(ierr);
             current_index_start += import_targets_data[i].second;
           }
@@ -342,14 +341,13 @@ namespace Utilities
         current_index_start = 0;
         for (unsigned int i = 0; i < n_ghost_targets; i++)
           {
-            const int ierr =
-              MPI_Isend(&expanded_ghost_indices[current_index_start],
-                        ghost_targets_data[i].second,
-                        DEAL_II_DOF_INDEX_MPI_TYPE,
-                        ghost_targets_data[i].first,
-                        my_pid,
-                        communicator,
-                        &import_requests[import_targets_data.size() + i]);
+            ierr = MPI_Isend(&expanded_ghost_indices[current_index_start],
+                             ghost_targets_data[i].second,
+                             DEAL_II_DOF_INDEX_MPI_TYPE,
+                             ghost_targets_data[i].first,
+                             my_pid,
+                             communicator,
+                             &import_requests[import_targets_data.size() + i]);
             AssertThrowMPI(ierr);
             current_index_start += ghost_targets_data[i].second;
           }
@@ -358,9 +356,9 @@ namespace Utilities
         // wait for all import from other processes to be done
         if (import_requests.size() > 0)
           {
-            const int ierr = MPI_Waitall(import_requests.size(),
-                                         import_requests.data(),
-                                         MPI_STATUSES_IGNORE);
+            ierr = MPI_Waitall(import_requests.size(),
+                               import_requests.data(),
+                               MPI_STATUSES_IGNORE);
             AssertThrowMPI(ierr);
           }
 

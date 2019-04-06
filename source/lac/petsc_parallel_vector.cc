@@ -387,15 +387,15 @@ namespace PETScWrappers
                 {
                   out << "[Proc" << i << " " << istart << "-" << iend - 1 << "]"
                       << ' ';
-                  for (PetscInt i = 0; i < nlocal; ++i)
-                    out << val[i] << ' ';
+                  for (PetscInt ii = 0; ii < nlocal; ++ii)
+                    out << val[ii] << ' ';
                 }
               else
                 {
                   out << "[Proc " << i << " " << istart << "-" << iend - 1
                       << "]" << std::endl;
-                  for (PetscInt i = 0; i < nlocal; ++i)
-                    out << val[i] << std::endl;
+                  for (PetscInt ii = 0; ii < nlocal; ++ii)
+                    out << val[ii] << std::endl;
                 }
               out << std::endl;
             }

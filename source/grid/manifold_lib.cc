@@ -868,21 +868,22 @@ namespace
           // Then compute its contribution to the Hessian.
           gradient = 0.;
           Hessian  = 0.;
-          for (unsigned int i = 0; i < n_merged_points; ++i)
-            if (std::abs(weights[i]) > 1.e-15)
+          for (unsigned int point_n = 0; point_n < n_merged_points; ++point_n)
+            if (std::abs(weights[point_n]) > 1.e-15)
               {
-                vPerp = internal::projected_direction(directions[i], candidate);
+                vPerp =
+                  internal::projected_direction(directions[point_n], candidate);
                 const double sinthetaSq = vPerp.norm_square();
                 const double sintheta   = std::sqrt(sinthetaSq);
                 if (sintheta < tolerance)
                   {
-                    Hessian[0][0] += weights[i];
-                    Hessian[1][1] += weights[i];
+                    Hessian[0][0] += weights[point_n];
+                    Hessian[1][1] += weights[point_n];
                   }
                 else
                   {
-                    const double costheta     = (directions[i]) * candidate;
-                    const double theta        = std::atan2(sintheta, costheta);
+                    const double costheta = (directions[point_n]) * candidate;
+                    const double theta    = std::atan2(sintheta, costheta);
                     const double sincthetaInv = theta / sintheta;
 
                     const double cosphi = vPerp * Clocalx;
@@ -890,9 +891,9 @@ namespace
 
                     gradlocal[0] = cosphi;
                     gradlocal[1] = sinphi;
-                    gradient += (weights[i] * sincthetaInv) * gradlocal;
+                    gradient += (weights[point_n] * sincthetaInv) * gradlocal;
 
-                    const double wt       = weights[i] / sinthetaSq;
+                    const double wt       = weights[point_n] / sinthetaSq;
                     const double sinphiSq = sinphi * sinphi;
                     const double cosphiSq = cosphi * cosphi;
                     const double tt       = sincthetaInv * costheta;

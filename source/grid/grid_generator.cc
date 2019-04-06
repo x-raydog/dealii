@@ -2102,18 +2102,21 @@ namespace GridGenerator
             const auto face = cell->face(face_n);
             if (face->at_boundary())
               {
-                const Point<2> center = face->center();
+                const Point<2> face_center = face->center();
                 // left side
-                if (std::abs(center[0] - bl[0]) < tol * std::abs(bl[0]))
+                if (std::abs(face_center[0] - bl[0]) < tol * std::abs(bl[0]))
                   face->set_boundary_id(0);
                 // right side
-                else if (std::abs(center[0] - tr[0]) < tol * std::abs(tr[0]))
+                else if (std::abs(face_center[0] - tr[0]) <
+                         tol * std::abs(tr[0]))
                   face->set_boundary_id(1);
                 // bottom
-                else if (std::abs(center[1] - bl[1]) < tol * std::abs(bl[1]))
+                else if (std::abs(face_center[1] - bl[1]) <
+                         tol * std::abs(bl[1]))
                   face->set_boundary_id(2);
                 // top
-                else if (std::abs(center[1] - tr[1]) < tol * std::abs(tr[1]))
+                else if (std::abs(face_center[1] - tr[1]) <
+                         tol * std::abs(tr[1]))
                   face->set_boundary_id(3);
                 // cylinder boundary
                 else
@@ -2370,12 +2373,12 @@ namespace GridGenerator
       for (const auto &face : tria.active_face_iterators())
         if (face->at_boundary())
           {
-            const Point<2> center = face->center();
+            const Point<2> face_center = face->center();
             // left side
-            if (std::abs(center[0] - 0.0) < 1e-10)
+            if (std::abs(face_center[0] - 0.0) < 1e-10)
               face->set_boundary_id(0);
             // right side
-            else if (std::abs(center[0] - 2.2) < 1e-10)
+            else if (std::abs(face_center[0] - 2.2) < 1e-10)
               face->set_boundary_id(1);
             // cylinder boundary
             else if (face->manifold_id() == polar_manifold_id)
@@ -2383,8 +2386,8 @@ namespace GridGenerator
             // sides of channel
             else
               {
-                Assert(std::abs(center[1] - 0.00) < 1.0e-10 ||
-                         std::abs(center[1] - 0.41) < 1.0e-10,
+                Assert(std::abs(face_center[1] - 0.00) < 1.0e-10 ||
+                         std::abs(face_center[1] - 0.41) < 1.0e-10,
                        ExcInternalError());
                 face->set_boundary_id(3);
               }

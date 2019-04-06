@@ -1599,13 +1599,13 @@ namespace GridTools
                 refinement_necessary = true;
               }
             else
-              for (unsigned int i = 0; i < patch.size(); ++i)
+              for (const auto &current_patch : patch)
                 {
                   // Even though vertices may not be exactly the same, the
                   // appropriate cells will match since == for TriAccessors
                   // checks only cell level and index.
                   if (patch_to_global_tria_map_tmp[active_tria_cell] ==
-                      patch[i])
+                      current_patch)
                     {
                       // adjust the cell vertices of the local_triangulation to
                       // match cell vertices of the global triangulation
@@ -1613,7 +1613,7 @@ namespace GridTools
                            v < GeometryInfo<
                                  Container::dimension>::vertices_per_cell;
                            ++v)
-                        active_tria_cell->vertex(v) = patch[i]->vertex(v);
+                        active_tria_cell->vertex(v) = current_patch->vertex(v);
 
                       Assert(active_tria_cell->center().distance(
                                patch_to_global_tria_map_tmp[active_tria_cell]

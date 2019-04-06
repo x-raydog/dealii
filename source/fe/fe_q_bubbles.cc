@@ -165,7 +165,7 @@ namespace internal
             fine_mass.mmult(solution, coarse_rhs_matrix);
 
             // and distribute to the fine cell matrices
-            for (unsigned int child_no = 0; child_no < nc; ++child_no)
+            for (child_no = 0; child_no < nc; ++child_no)
               for (unsigned int i = 0; i < dpc; ++i)
                 for (unsigned int j = 0; j < dpc; ++j)
                   {

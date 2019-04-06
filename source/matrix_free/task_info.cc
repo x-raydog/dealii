@@ -1483,7 +1483,7 @@ namespace internal
               unsigned int ncomp = (irregular_cells[mcell] > 0) ?
                                      irregular_cells[mcell] :
                                      vectorization_length;
-              for (unsigned int c = 0; c < ncomp; ++c, ++cell)
+              for (unsigned int cc = 0; cc < ncomp; ++cc, ++cell)
                 {
                   cell_blocks[i].push_back(cell);
                   touched_cells[cell] = i;

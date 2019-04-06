@@ -502,16 +502,16 @@ namespace NonMatching
       cell = immersed_dh.begin_active(),
       endc = immersed_dh.end();
 
-    for (unsigned int j = 0; cell != endc; ++cell, ++j)
+    for (unsigned int cell_n = 0; cell != endc; ++cell, ++cell_n)
       {
         // Reinitialize the cell and the fe_values
         fe_v.reinit(cell);
         cell->get_dof_indices(dofs);
 
         // Get a list of outer cells, qpoints and maps.
-        const auto &cells   = cell_container[j];
-        const auto &qpoints = qpoints_container[j];
-        const auto &maps    = maps_container[j];
+        const auto &cells   = cell_container[cell_n];
+        const auto &qpoints = qpoints_container[cell_n];
+        const auto &maps    = maps_container[cell_n];
 
         for (unsigned int c = 0; c < cells.size(); ++c)
           {

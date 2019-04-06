@@ -410,15 +410,15 @@ GridIn<dim, spacedim>::read_vtk(std::istream &in)
                       // assumption that cells come before all faces and
                       // lines has been verified above via an assertion, so
                       // the order used in the following blocks makes sense
-                      for (unsigned int i = 0; i < cells.size(); i++)
+                      for (auto &cell : cells)
                         {
                           double id;
                           in >> id;
                           if (set == "MaterialID")
-                            cells[i].material_id =
+                            cells.material_id =
                               static_cast<types::material_id>(id);
                           else if (set == "ManifoldID")
-                            cells[i].manifold_id =
+                            cells.manifold_id =
                               static_cast<types::manifold_id>(id);
                           else
                             Assert(false, ExcInternalError());

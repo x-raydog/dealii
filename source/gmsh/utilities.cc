@@ -91,7 +91,7 @@ namespace Gmsh
     command << DEAL_II_GMSH_EXECUTABLE_PATH << " -2 " << geo_file_name << " 1> "
             << log_file_name << " 2> " << warnings_file_name;
 
-    const auto ret_value = std::system(command.str().c_str());
+    auto ret_value = std::system(command.str().c_str());
     AssertThrow(ret_value == 0,
                 ExcMessage("Gmsh failed to run. Check the " + log_file_name +
                            " file."));
@@ -119,11 +119,11 @@ namespace Gmsh
            &warnings_file_name}};
         for (const std::string *filename : filenames)
           {
-            const auto ret_value = std::remove(filename->c_str());
+            ret_value = std::remove(filename->c_str());
             AssertThrow(ret_value == 0,
                         ExcMessage("Failed to remove " + *filename));
           }
-        const auto ret_value = std::remove(dir_template);
+        ret_value = std::remove(dir_template);
         AssertThrow(ret_value == 0,
                     ExcMessage("Failed to remove " +
                                std::string(dir_template)));
