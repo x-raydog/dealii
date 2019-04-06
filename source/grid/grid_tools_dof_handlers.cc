@@ -1908,10 +1908,6 @@ namespace GridTools
                         if (c != subface) // don't repeat work on dofs of
                                           // original cell
                           {
-                            const unsigned int n_dofs_per_face =
-                              cell->get_fe().dofs_per_face;
-                            local_face_dof_indices.resize(n_dofs_per_face);
-
                             Assert(cell->neighbor(f)
                                        ->face(face_no)
                                        ->child(c)
@@ -1996,12 +1992,6 @@ namespace GridTools
                             Assert(parent_line->child(c)->has_children() ==
                                      false,
                                    ExcInternalError());
-
-                            const unsigned int n_dofs_per_line =
-                              2 * cell->get_fe().dofs_per_vertex +
-                              cell->get_fe().dofs_per_line;
-                            local_line_dof_indices.resize(n_dofs_per_line);
-
                             parent_line->child(c)->get_dof_indices(
                               local_line_dof_indices);
                             for (unsigned int i = 0; i < n_dofs_per_line; ++i)

@@ -160,17 +160,12 @@ namespace parallel
         {
           // get active halo layer of (ghost) cells
           // parallel::shared::Triangulation<dim>::
-          std::function<bool(
-            const typename parallel::shared::Triangulation<dim, spacedim>::
-              active_cell_iterator &)>
-            predicate = IteratorFilters::SubdomainEqualTo(this->my_subdomain);
-
           const std::vector<typename parallel::shared::Triangulation<
             dim,
             spacedim>::active_cell_iterator>
             active_halo_layer_vector =
-              dealii::GridTools::compute_active_cell_halo_layer(*this,
-                                                                predicate);
+              dealii::GridTools::compute_active_cell_halo_layer(
+                *this, IteratorFilters::SubdomainEqualTo(this->my_subdomain));
           std::set<typename parallel::shared::Triangulation<dim, spacedim>::
                      active_cell_iterator>
             active_halo_layer(active_halo_layer_vector.begin(),
@@ -191,10 +186,6 @@ namespace parallel
             {
               true_level_subdomain_ids_of_cells.resize(this->n_levels());
 
-              std::function<bool(
-                const typename parallel::shared::Triangulation<dim, spacedim>::
-                  cell_iterator &)>
-                predicate = IteratorFilters::LocallyOwnedLevelCell();
               for (unsigned int lvl = 0; lvl < this->n_levels(); ++lvl)
                 {
                   true_level_subdomain_ids_of_cells[lvl].resize(
@@ -205,7 +196,7 @@ namespace parallel
                     spacedim>::cell_iterator>
                     level_halo_layer_vector =
                       dealii::GridTools::compute_cell_halo_layer_on_level(
-                        *this, predicate, lvl);
+                        *this, IteratorFilters::LocallyOwnedLevelCell(), lvl);
                   std::set<typename parallel::shared::
                              Triangulation<dim, spacedim>::cell_iterator>
                     level_halo_layer(level_halo_layer_vector.begin(),
