@@ -1091,12 +1091,11 @@ namespace
         // mark first child with CELL_REFINE and the remaining children with
         // CELL_INVALID, but associate them all with the parent cell unpack
         // algorithm will be called only on CELL_REFINE flagged quadrant
-        int                                               child_idx;
         typename Triangulation<dim, spacedim>::CellStatus cell_status;
         for (unsigned int i = 0; i < GeometryInfo<dim>::max_children_per_cell;
              ++i)
           {
-            child_idx = sc_array_bsearch(
+            const int child_idx = sc_array_bsearch(
               const_cast<sc_array_t *>(&tree.quadrants),
               &p4est_child[i],
               dealii::internal::p4est::functions<dim>::quadrant_compare);
@@ -3572,7 +3571,6 @@ namespace parallel
           // check mesh for ghost cells, refine as necessary. iterate over
           // every ghostquadrant, find corresponding deal coarsecell and
           // recurse.
-          typename dealii::internal::p4est::types<dim>::quadrant *quadr;
           types::subdomain_id                                  ghost_owner = 0;
           typename dealii::internal::p4est::types<dim>::topidx ghost_tree  = 0;
 
@@ -3587,7 +3585,7 @@ namespace parallel
                                 parallel_ghost->tree_offsets[ghost_tree + 1]))
                 ++ghost_tree;
 
-              quadr = static_cast<
+              const auto *quadr = static_cast<
                 typename dealii::internal::p4est::types<dim>::quadrant *>(
                 sc_array_index(&parallel_ghost->ghosts, g_idx));
 
