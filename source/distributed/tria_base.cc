@@ -284,7 +284,6 @@ namespace parallel
            it != this->number_cache.level_ghost_owners.end();
            ++it)
         {
-          unsigned int dummy;
           ierr = MPI_Recv(&dummy,
                           1,
                           MPI_UNSIGNED,

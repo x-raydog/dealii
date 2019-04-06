@@ -516,7 +516,6 @@ namespace deal_II_exceptions
     std::string
     get_cusolver_error_string(cusolverStatus_t error_code)
     {
-      std::string message;
       switch (error_code)
         {
           case CUSOLVER_STATUS_NOT_INITIALIZED:

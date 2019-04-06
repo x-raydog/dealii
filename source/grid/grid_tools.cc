@@ -5273,13 +5273,6 @@ namespace GridTools
     const std::vector<std::vector<BoundingBox<spacedim>>> global_bboxes =
       Utilities::MPI::all_gather(mpi_communicator, local_description);
 
-    // Preparing to flatten the vector
-    const unsigned int n_procs =
-      Utilities::MPI::n_mpi_processes(mpi_communicator);
-    // The i'th element of the following vector contains the index of the first
-    // local bounding box from the process of rank i
-    std::vector<unsigned int> bboxes_position(n_procs);
-
     unsigned int tot_bboxes = 0;
     for (const auto &process_bboxes : global_bboxes)
       tot_bboxes += process_bboxes.size();

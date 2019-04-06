@@ -3898,7 +3898,6 @@ MappingQGeneric<dim, spacedim>::add_line_support_points(
     // otherwise call the more complicated functions and ask for inner points
     // from the manifold description
     {
-      std::vector<Point<spacedim>> tmp_points;
       for (unsigned int line_no = 0;
            line_no < GeometryInfo<dim>::lines_per_cell;
            ++line_no)
@@ -3943,8 +3942,6 @@ MappingQGeneric<3, 3>::add_quad_support_points(
   const unsigned int faces_per_cell = GeometryInfo<3>::faces_per_cell;
 
   // used if face quad at boundary or entirely in the interior of the domain
-  std::vector<Point<3>> tmp_points;
-
   // loop over all faces and collect points on them
   for (unsigned int face_no = 0; face_no < faces_per_cell; ++face_no)
     {
