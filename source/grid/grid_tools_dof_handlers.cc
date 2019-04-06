@@ -688,17 +688,10 @@ namespace GridTools
                   mesh,
                   my_cell->vertex_index(first_vertex + (d << free_direction)));
                 for (const auto &cell : tentative_cells)
-                  {
-                    bool cell_not_yet_present = true;
-                    for (const auto &other_cell : cells_to_add)
-                      if (cell == other_cell)
-                        {
-                          cell_not_yet_present = false;
-                          break;
-                        }
-                    if (cell_not_yet_present)
-                      cells_to_add.push_back(cell);
-                  }
+                  if (std::find(cells_to_add.begin(),
+                                cells_to_add.end(),
+                                cell) == cells_to_add.end())
+                    cells_to_add.push_back(cell);
               }
           }
 

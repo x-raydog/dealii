@@ -263,18 +263,13 @@ namespace parallel
 
 #  ifdef DEBUG
       {
-        // Assert that each cell is owned by a processor
-        unsigned int n_my_cells = 0;
-        typename parallel::shared::Triangulation<dim,
-                                                 spacedim>::active_cell_iterator
-          cell = this->begin_active(),
-          endc = this->end();
-        for (; cell != endc; ++cell)
-          if (cell->is_locally_owned())
-            n_my_cells += 1;
-
+        const unsigned int n_local_cells =
+          std::count_if(this->begin_active(),
+                        static_cast<active_cell_iterator>(this->end()),
+                        [](const CellAccessor<dim, spacedim> &c)
+                        {return c.is_locally_owned();});
         const unsigned int total_cells =
-          Utilities::MPI::sum(n_my_cells, this->get_communicator());
+          Utilities::MPI::sum(n_local_cells, this->get_communicator());
         Assert(total_cells == this->n_active_cells(),
                ExcMessage("Not all cells are assigned to a processor."));
       }
@@ -283,17 +278,15 @@ namespace parallel
       // cell is owned by a processor
       if (settings & construct_multigrid_hierarchy)
         {
-          unsigned int n_my_cells = 0;
-          typename parallel::shared::Triangulation<dim, spacedim>::cell_iterator
-            cell = this->begin(),
-            endc = this->end();
-          for (; cell != endc; ++cell)
-            if (cell->is_locally_owned_on_level())
-              n_my_cells += 1;
+          const unsigned int n_local_level_cells =
+            std::count_if(this->begin(),
+                          this->end(),
+                          [](const CellAccessor<dim, spacedim> &c)
+                          {return c.is_locally_owned_on_level();});
 
-          const unsigned int total_cells =
-            Utilities::MPI::sum(n_my_cells, this->get_communicator());
-          Assert(total_cells == this->n_cells(),
+          const unsigned int total_level_cells =
+            Utilities::MPI::sum(n_local_level_cells, this->get_communicator());
+          Assert(total_level_cells == this->n_cells(),
                  ExcMessage("Not all cells are assigned to a processor."));
         }
 #  endif

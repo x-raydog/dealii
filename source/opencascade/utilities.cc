@@ -596,14 +596,16 @@ namespace OpenCASCADE
         interpolation_curves.push_back(
           interpolation_curve(pointlist, Tensor<1, spacedim>(), true));
 
-        finished = true;
-        for (const auto &f : visited_faces)
-          if (f.second == false)
-            {
-              face_index = f.first;
-              finished   = false;
-              break;
-            }
+        const auto face_it =
+          std::find_if(visited_faces.begin(),
+                       visited_faces.end(),
+                       [](const std::pair<unsigned int, bool> &p) {
+                         return p.second == false;
+                       });
+        if (face_it == visited_faces.end())
+          finished = true;
+        else
+          face_index = face_it->first;
       }
     return interpolation_curves;
   }

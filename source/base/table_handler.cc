@@ -260,12 +260,9 @@ TableHandler::add_column_to_supercolumn(const std::string &key,
       supercolumns.insert(new_column);
       // replace key in column_order
       // by superkey
-      for (auto &column : column_order)
-        if (column == key)
-          {
-            column = superkey;
-            break;
-          }
+      auto it = std::find(column_order.begin(), column_order.end(), key);
+      if (it != column_order.end())
+        *it = superkey;
     }
   else
     {
