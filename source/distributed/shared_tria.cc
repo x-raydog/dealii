@@ -148,13 +148,7 @@ namespace parallel
           !(settings & partition_custom_signal))
         dealii::GridTools::partition_multigrid_levels(*this);
 
-      true_subdomain_ids_of_cells.resize(this->n_active_cells());
-
-      // loop over all cells and mark artificial:
-      typename parallel::shared::Triangulation<dim,
-                                               spacedim>::active_cell_iterator
-        cell = this->begin_active(),
-        endc = this->end();
+      true_subdomain_ids_of_cells.reserve(this->n_active_cells());
 
       if (allow_artificial_cells)
         {
@@ -171,10 +165,10 @@ namespace parallel
             active_halo_layer(active_halo_layer_vector.begin(),
                               active_halo_layer_vector.end());
 
-          for (unsigned int index = 0; cell != endc; cell++, index++)
+          for (auto &cell : this->active_cell_iterators())
             {
               // store original/true subdomain ids:
-              true_subdomain_ids_of_cells[index] = cell->subdomain_id();
+              true_subdomain_ids_of_cells.push_back(cell->subdomain_id());
 
               if (cell->is_locally_owned() == false &&
                   active_halo_layer.find(cell) == active_halo_layer.end())
@@ -188,7 +182,7 @@ namespace parallel
 
               for (unsigned int lvl = 0; lvl < this->n_levels(); ++lvl)
                 {
-                  true_level_subdomain_ids_of_cells[lvl].resize(
+                  true_level_subdomain_ids_of_cells[lvl].reserve(
                     this->n_cells(lvl));
 
                   const std::vector<typename parallel::shared::Triangulation<
@@ -202,15 +196,12 @@ namespace parallel
                     level_halo_layer(level_halo_layer_vector.begin(),
                                      level_halo_layer_vector.end());
 
-                  typename parallel::shared::Triangulation<dim, spacedim>::
-                    cell_iterator cell = this->begin(lvl),
-                                  endc = this->end(lvl);
-                  for (unsigned int index = 0; cell != endc; cell++, index++)
+                  for (const auto &cell : this->active_cell_iterators_on_level(lvl))
                     {
                       // Store true level subdomain IDs before setting
                       // artificial
-                      true_level_subdomain_ids_of_cells[lvl][index] =
-                        cell->level_subdomain_id();
+                      true_level_subdomain_ids_of_cells[lvl].push_back(
+                        cell->level_subdomain_id());
 
                       // for active cells, we must have knowledge of level
                       // subdomain ids of all neighbors to our subdomain, not
@@ -257,8 +248,8 @@ namespace parallel
       else
         {
           // just store true subdomain ids
-          for (unsigned int index = 0; cell != endc; cell++, index++)
-            true_subdomain_ids_of_cells[index] = cell->subdomain_id();
+          for (const auto &cell : this->active_cell_iterators())
+            true_subdomain_ids_of_cells.push_back(cell->subdomain_id());
         }
 
 #  ifdef DEBUG

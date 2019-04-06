@@ -3216,9 +3216,7 @@ namespace internal
               // level, as those lines logically belong to the same
               // level as the cell, at least for for isotropic
               // refinement
-              typename DoFHandler<2, spacedim>::level_cell_iterator cell,
-                endc = dof_handler.end(level);
-              for (cell = dof_handler.begin(level); cell != endc; ++cell)
+              for (auto &cell : dof_handler.cell_iterators_on_level(level))
                 if (cell->level_subdomain_id() !=
                     numbers::artificial_subdomain_id)
                   for (unsigned int line = 0;
@@ -3226,10 +3224,7 @@ namespace internal
                        ++line)
                     cell->face(line)->set_user_flag();
 
-              for (typename DoFHandler<2, spacedim>::cell_iterator cell =
-                     dof_handler.begin();
-                   cell != dof_handler.end();
-                   ++cell)
+              for (auto &cell : dof_handler.cell_iterators())
                 for (unsigned int l = 0; l < GeometryInfo<2>::lines_per_cell;
                      ++l)
                   if (cell->line(l)->user_flag_set())
@@ -3286,9 +3281,7 @@ namespace internal
               // flag all lines adjacent to cells of the current
               // level, as those lines logically belong to the same
               // level as the cell, at least for isotropic refinement
-              typename DoFHandler<3, spacedim>::level_cell_iterator cell,
-                endc = dof_handler.end(level);
-              for (cell = dof_handler.begin(level); cell != endc; ++cell)
+              for (auto &cell : dof_handler.cell_iterators_on_level(level))
                 if (cell->level_subdomain_id() !=
                     numbers::artificial_subdomain_id)
                   for (unsigned int line = 0;
@@ -3296,10 +3289,7 @@ namespace internal
                        ++line)
                     cell->line(line)->set_user_flag();
 
-              for (typename DoFHandler<3, spacedim>::cell_iterator cell =
-                     dof_handler.begin();
-                   cell != dof_handler.end();
-                   ++cell)
+              for (auto &cell : dof_handler.cell_iterators())
                 for (unsigned int l = 0; l < GeometryInfo<3>::lines_per_cell;
                      ++l)
                   if (cell->line(l)->user_flag_set())
@@ -3329,7 +3319,7 @@ namespace internal
               // flag all quads adjacent to cells of the current level, as
               // those quads logically belong to the same level as the cell,
               // at least for isotropic refinement
-              for (cell = dof_handler.begin(level); cell != endc; ++cell)
+              for (auto &cell : dof_handler.cell_iterators_on_level(level))
                 if (cell->level_subdomain_id() !=
                     numbers::artificial_subdomain_id)
                   for (unsigned int quad = 0;
@@ -3337,10 +3327,7 @@ namespace internal
                        ++quad)
                     cell->quad(quad)->set_user_flag();
 
-              for (typename DoFHandler<3, spacedim>::cell_iterator cell =
-                     dof_handler.begin();
-                   cell != dof_handler.end();
-                   ++cell)
+              for (auto &cell : dof_handler.cell_iterators())
                 for (unsigned int l = 0; l < GeometryInfo<3>::quads_per_cell;
                      ++l)
                   if (cell->quad(l)->user_flag_set())

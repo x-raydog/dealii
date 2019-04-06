@@ -3286,10 +3286,7 @@ namespace parallel
             // store highest level one of the cells adjacent to a vertex
             // belongs to
             std::fill(vertex_level.begin(), vertex_level.end(), 0);
-            typename Triangulation<dim, spacedim>::active_cell_iterator
-              cell = tria.begin_active(),
-              endc = tria.end();
-            for (; cell != endc; ++cell)
+            for (const auto &cell : tria.active_cell_iterators())
               {
                 if (cell->refine_flag_set())
                   for (unsigned int vertex = 0;
@@ -3340,7 +3337,8 @@ namespace parallel
             // refinement flags, but we will also have to remove
             // coarsening flags on cells adjacent to vertices that will
             // see refinement
-            for (cell = tria.last_active(); cell != endc; --cell)
+            const auto endc = tria.end();
+            for (auto cell = tria.last_active(); cell != endc; --cell)
               if (cell->refine_flag_set() == false)
                 {
                   for (unsigned int vertex = 0;
@@ -3381,10 +3379,7 @@ namespace parallel
                 }
 
             // clear coarsen flag if not all children were marked
-            for (typename Triangulation<dim, spacedim>::cell_iterator cell =
-                   tria.begin();
-                 cell != tria.end();
-                 ++cell)
+            for (auto &cell : tria.cell_iterators())
               {
                 // nothing to do if we are already on the finest level
                 if (cell->active())

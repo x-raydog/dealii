@@ -1054,11 +1054,6 @@ GridOut::write_msh(const Triangulation<dim, spacedim> &tria,
 
   const unsigned int n_vertices = tria.n_used_vertices();
 
-  typename Triangulation<dim, spacedim>::active_cell_iterator cell =
-    tria.begin_active();
-  const typename Triangulation<dim, spacedim>::active_cell_iterator endc =
-    tria.end();
-
   // Write Header
   // The file format is:
   /*
@@ -1148,7 +1143,7 @@ GridOut::write_msh(const Triangulation<dim, spacedim> &tria,
 
   // write cells. Enumerate cells
   // consecutively, starting with 1
-  for (cell = tria.begin_active(); cell != endc; ++cell)
+  for (const auto &cell : tria.active_cell_iterators())
     {
       out << cell->active_cell_index() + 1 << ' ' << elm_type << ' '
           << static_cast<unsigned int>(cell->material_id()) << ' '
@@ -1201,11 +1196,6 @@ GridOut::write_ucd(const Triangulation<dim, spacedim> &tria,
 
   const unsigned int n_vertices = tria.n_used_vertices();
 
-  typename Triangulation<dim, spacedim>::active_cell_iterator cell =
-    tria.begin_active();
-  const typename Triangulation<dim, spacedim>::active_cell_iterator endc =
-    tria.end();
-
   // write preamble
   if (ucd_flags.write_preamble)
     {
@@ -1249,7 +1239,7 @@ GridOut::write_ucd(const Triangulation<dim, spacedim> &tria,
 
   // write cells. Enumerate cells
   // consecutively, starting with 1
-  for (cell = tria.begin_active(); cell != endc; ++cell)
+  for (const auto &cell : tria.active_cell_iterators())
     {
       out << cell->active_cell_index() + 1 << ' '
           << static_cast<unsigned int>(cell->material_id()) << ' ';

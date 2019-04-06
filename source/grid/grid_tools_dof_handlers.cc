@@ -1579,12 +1579,8 @@ namespace GridTools
     do
       {
         refinement_necessary = false;
-        for (typename Triangulation<Container::dimension,
-                                    Container::space_dimension>::
-               active_cell_iterator active_tria_cell =
-                 local_triangulation.begin_active();
-             active_tria_cell != local_triangulation.end();
-             ++active_tria_cell)
+        for (auto &active_tria_cell :
+             local_triangulation.active_cell_iterators())
           {
             if (patch_to_global_tria_map_tmp[active_tria_cell]->has_children())
               {

@@ -415,10 +415,10 @@ GridIn<dim, spacedim>::read_vtk(std::istream &in)
                           double id;
                           in >> id;
                           if (set == "MaterialID")
-                            cells.material_id =
+                            cell.material_id =
                               static_cast<types::material_id>(id);
                           else if (set == "ManifoldID")
-                            cells.manifold_id =
+                            cell.manifold_id =
                               static_cast<types::manifold_id>(id);
                           else
                             Assert(false, ExcInternalError());
