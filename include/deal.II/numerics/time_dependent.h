@@ -406,7 +406,7 @@ public:
      * scheme), this value will be one.
      *
      * The value of this number determines, how many time steps after having
-     * done computations on a tim level the time step manager will call the @p
+     * done computations on a time level the time step manager will call the @p
      * sleep function for each time step.
      */
     const unsigned int look_back;
