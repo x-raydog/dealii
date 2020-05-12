@@ -278,7 +278,7 @@ inconvenience this causes.
  </li>
 
  <li>
-  Chaned: VectorizedArray::n_array_elements has been deprecated.
+  Changed: VectorizedArray::n_array_elements has been deprecated.
   Please use the method VectorizedArray::size() to access the same information.
   <br>
   (Peter Munch, 2020/03/20)
@@ -523,7 +523,7 @@ inconvenience this causes.
  </li>
 
  <li>
-  Removed: The deprecated PreconditionChebyshev member variables nonzero_strarting
+  Removed: The deprecated PreconditionChebyshev member variables nonzero_starting
   and matrix_diagonal_inverse were removed.
   <br>
   (Daniel Arndt, 2019/07/11)
@@ -693,7 +693,7 @@ inconvenience this causes.
  </li>
 
  <li>
-  New: The SymbolicFunction<dim> class allows one to leaverage the SymEngine library to generate
+  New: The SymbolicFunction<dim> class allows one to leverage the SymEngine library to generate
   dealii::Function objects where the gradients, Laplacians, and Hessians are computed symbolically
   providing also the possibility to extract the time derivative of the SymbolicFunction<dim> object
   as another SymbolicFunction<dim> object.
@@ -825,7 +825,7 @@ inconvenience this causes.
 
  <li>
   Changed: The order by which MatrixFree::cell_loop() and MatrixFree::loop()
-  pass through cells has been changed to preferrably group cells with the same
+  pass through cells has been changed to preferably group cells with the same
   parent into the same batch of cells with vectorization, which increases data
   locality and slightly improves performance.
   <br>
@@ -953,7 +953,7 @@ inconvenience this causes.
   slightly changed. It concerns the points along the straight faces and in the
   interior. The new positions have been determined to balance the sizes and
   aspect ratios (expressed by the minimal and maximal singular values of the
-  Jacobian from reference to real coordinates), producting a slightly better
+  Jacobian from reference to real coordinates), producing a slightly better
   mesh quality.
   <br> (Martin Kronbichler, 2020/04/02)
  </li>
@@ -1111,7 +1111,7 @@ inconvenience this causes.
   New: Introduce a new communication-pattern class Utilities::MPI::NoncontiguousPartitioner.
   It is similar to Utilities::MPI::Partitioner, however, does not make any
   restrictions regarding to the ordering of the underlying index sets. This class enables
-  efficient repartitioning of vectors, which might be benefitial in interfacing with
+  efficient repartitioning of vectors, which might be beneficial in interfacing with
   external libraries that expect a certain fixed order (like checkerboard partitioning).
   <br>
   (Peter Munch, 2020/03/04)
@@ -1247,7 +1247,7 @@ inconvenience this causes.
 
  <li>
   New: ParameterHandler::parse_input_from_json() and  ParameterHandler::parse_input_from_xml() can skip
-  undifined sections and entries.
+  undefined sections and entries.
   <br>
   (Peter Munch, 2020/01/27)
  </li>
@@ -1962,7 +1962,7 @@ inconvenience this causes.
  </li>
 
  <li>
-  New: compare_and_apply_mask() allows to use a ternary operater idiom with
+  New: compare_and_apply_mask() allows to use a ternary operator idiom with
   VectorizedArray that is based on generating a mask via component-wise
   comparison. Such a computational idiom is useful as an alternative to
   branching whenever the control flow itself would depend on (computed) data
@@ -2420,7 +2420,7 @@ inconvenience this causes.
  </li>
 
  <li>
-  Improved: All member funtions and free functions related to Tensor
+  Improved: All member functions and free functions related to Tensor
   that can be used in CUDA code so far have been annotated accordingly.
   <br>
   (Daniel Arndt, 2019/07/03)
