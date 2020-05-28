@@ -423,7 +423,8 @@ public:
   static const unsigned int space_dimension = spacedim;
 
   /**
-   * Make the type of this DoFHandler available in function templates.
+   * Boolean indicating whether or not the current DoFHander has hp
+   * capabilities.
    */
   const bool hp_capability_enabled;
 
@@ -1270,6 +1271,22 @@ public:
                  << arg1 << ", but the finite element collection only has "
                  << arg2 << " elements");
 
+  /**
+   * Exception used when a certain feature doesn't make sense when
+   * DoFHandler does not hp capabilities.
+   */
+  DeclExceptionMsg(ExcNotAvailableWithoutHP,
+                   "The current function doesn't make sense when used with a "
+                   "DoFHandler without hp capabilities.");
+
+  /**
+   * Exception used when a certain feature is not implemented when the
+   * DoFHandler has hp capabilities.
+   */
+  DeclExceptionMsg(ExcNotImplementedWithHP,
+                   "The current function has not yet been implemented for a "
+                   "DoFHandler with hp capabilities.");
+
 private:
   /**
    * A data structure that is used to store the DoF indices associated with a
@@ -1891,7 +1908,7 @@ template <int dim, int spacedim>
 inline const BlockInfo &
 DoFHandler<dim, spacedim>::block_info() const
 {
-  Assert(this->hp_capability_enabled == false, ExcNotImplemented());
+  Assert(this->hp_capability_enabled == false, ExcNotImplementedWithHP());
 
   return block_info_object;
 }
@@ -1906,7 +1923,7 @@ DoFHandler<dim, spacedim>::n_boundary_dofs(
     &boundary_ids) const
 {
   Assert(!(dim == 2 && spacedim == 3) || this->hp_capability_enabled == false,
-         ExcNotImplemented());
+         ExcNotImplementedWithHP());
 
   // extract the set of boundary ids and forget about the function object
   // pointers

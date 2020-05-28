@@ -653,7 +653,8 @@ namespace internal
         const unsigned int local_index,
         const std::integral_constant<int, 1>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<1, spacedim>::ExcNotImplementedWithHP()));
 
         return mg_level->dof_object.get_dof_index(
           static_cast<const DoFHandler<1, spacedim> &>(dof_handler),
@@ -695,7 +696,8 @@ namespace internal
         const unsigned int local_index,
         const std::integral_constant<int, 2>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<2, spacedim>::ExcNotImplementedWithHP()));
         return mg_level->dof_object.get_dof_index(
           static_cast<const DoFHandler<2, spacedim> &>(dof_handler),
           obj_index,
@@ -716,7 +718,8 @@ namespace internal
         const unsigned int local_index,
         const std::integral_constant<int, 1>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<3, spacedim>::ExcNotImplementedWithHP()));
         return mg_faces->lines.get_dof_index(
           static_cast<const DoFHandler<3, spacedim> &>(dof_handler),
           obj_index,
@@ -737,7 +740,8 @@ namespace internal
         const unsigned int local_index,
         const std::integral_constant<int, 2>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<3, spacedim>::ExcNotImplementedWithHP()));
         return mg_faces->quads.get_dof_index(
           static_cast<const DoFHandler<3, spacedim> &>(dof_handler),
           obj_index,
@@ -758,7 +762,8 @@ namespace internal
         const unsigned int local_index,
         const std::integral_constant<int, 3>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<3, spacedim>::ExcNotImplementedWithHP()));
         return mg_level->dof_object.get_dof_index(
           static_cast<const DoFHandler<3, spacedim> &>(dof_handler),
           obj_index,
@@ -780,7 +785,8 @@ namespace internal
         const types::global_dof_index global_index,
         const std::integral_constant<int, 1>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<1, spacedim>::ExcNotImplementedWithHP()));
         mg_level->dof_object.set_dof_index(
           static_cast<const DoFHandler<1, spacedim> &>(dof_handler),
           obj_index,
@@ -803,7 +809,8 @@ namespace internal
         const types::global_dof_index global_index,
         const std::integral_constant<int, 1>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<2, spacedim>::ExcNotImplementedWithHP()));
         mg_faces->lines.set_dof_index(
           static_cast<const DoFHandler<2, spacedim> &>(dof_handler),
           obj_index,
@@ -826,7 +833,8 @@ namespace internal
         const types::global_dof_index global_index,
         const std::integral_constant<int, 2>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<2, spacedim>::ExcNotImplementedWithHP()));
         mg_level->dof_object.set_dof_index(
           static_cast<const DoFHandler<2, spacedim> &>(dof_handler),
           obj_index,
@@ -849,7 +857,8 @@ namespace internal
         const types::global_dof_index global_index,
         const std::integral_constant<int, 1>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<3, spacedim>::ExcNotImplementedWithHP()));
         mg_faces->lines.set_dof_index(
           static_cast<const DoFHandler<3, spacedim> &>(dof_handler),
           obj_index,
@@ -872,7 +881,8 @@ namespace internal
         const types::global_dof_index global_index,
         const std::integral_constant<int, 2>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<3, spacedim>::ExcNotImplementedWithHP()));
         mg_faces->quads.set_dof_index(
           static_cast<const DoFHandler<3, spacedim> &>(dof_handler),
           obj_index,
@@ -895,7 +905,8 @@ namespace internal
         const types::global_dof_index global_index,
         const std::integral_constant<int, 3>)
       {
-        Assert(dof_handler.hp_capability_enabled == false, ExcNotImplemented());
+        Assert(dof_handler.hp_capability_enabled == false,
+               (typename DoFHandler<3, spacedim>::ExcNotImplementedWithHP()));
         mg_level->dof_object.set_dof_index(
           static_cast<const DoFHandler<3, spacedim> &>(dof_handler),
           obj_index,
@@ -1659,8 +1670,9 @@ namespace internal
         static void
         communicate_active_fe_indices(DoFHandler<dim, spacedim> &dof_handler)
         {
-          Assert(dof_handler.hp_capability_enabled == true,
-                 ExcNotImplemented());
+          Assert(
+            dof_handler.hp_capability_enabled == true,
+            (typename DoFHandler<dim, spacedim>::ExcNotAvailableWithoutHP()));
 
           if (const dealii::parallel::shared::Triangulation<dim, spacedim> *tr =
                 dynamic_cast<
@@ -2231,7 +2243,7 @@ types::global_dof_index
 DoFHandler<dim, spacedim>::n_boundary_dofs() const
 {
   Assert(!(dim == 2 && spacedim == 3) || hp_capability_enabled == false,
-         ExcNotImplemented());
+         ExcNotImplementedWithHP());
 
   Assert(this->fe_collection.size() > 0, ExcNoFESelected());
 
@@ -2280,7 +2292,7 @@ DoFHandler<dim, spacedim>::n_boundary_dofs(
   const std::set<types::boundary_id> &boundary_ids) const
 {
   Assert(!(dim == 2 && spacedim == 3) || hp_capability_enabled == false,
-         ExcNotImplemented());
+         ExcNotImplementedWithHP());
 
   Assert(this->fe_collection.size() > 0, ExcNoFESelected());
   Assert(boundary_ids.find(numbers::internal_face_boundary_id) ==
@@ -2548,7 +2560,7 @@ template <int dim, int spacedim>
 void
 DoFHandler<dim, spacedim>::distribute_mg_dofs()
 {
-  AssertThrow(hp_capability_enabled == false, ExcNotImplemented());
+  AssertThrow(hp_capability_enabled == false, ExcNotImplementedWithHP());
 
   Assert(
     this->object_dof_indices.size() > 0,
@@ -2580,7 +2592,7 @@ template <int dim, int spacedim>
 void
 DoFHandler<dim, spacedim>::initialize_local_block_info()
 {
-  AssertThrow(hp_capability_enabled == false, ExcNotImplemented());
+  AssertThrow(hp_capability_enabled == false, ExcNotImplementedWithHP());
 
   this->block_info_object.initialize_local(*this);
 }
@@ -2791,7 +2803,7 @@ DoFHandler<dim, spacedim>::renumber_dofs(
   const unsigned int                          level,
   const std::vector<types::global_dof_index> &new_numbers)
 {
-  AssertThrow(hp_capability_enabled == false, ExcNotImplemented());
+  AssertThrow(hp_capability_enabled == false, ExcNotImplementedWithHP());
 
   Assert(
     this->mg_levels.size() > 0 && this->object_dof_indices.size() > 0,
@@ -3064,7 +3076,7 @@ template <int dim, int spacedim>
 void
 DoFHandler<dim, spacedim>::create_active_fe_table()
 {
-  AssertThrow(hp_capability_enabled == true, ExcNotImplemented());
+  AssertThrow(hp_capability_enabled == true, ExcNotAvailableWithoutHP());
 
 
   // Create sufficiently many hp::DoFLevels.
