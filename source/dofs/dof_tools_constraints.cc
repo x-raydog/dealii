@@ -3070,6 +3070,10 @@ namespace DoFTools
     const InterGridMap<DoFHandler<dim, spacedim>> &coarse_to_fine_grid_map,
     AffineConstraints<double> &                    constraints)
   {
+    Assert(coarse_grid.get_fe_collection().size() == 1 &&
+             fine_grid.get_fe_collection().size() == 1,
+           ExcMessage("This function is not yet implemented for DoFHandlers "
+                      "using hp capabilities."));
     // store the weights with which a dof on the parameter grid contributes to a
     // dof on the fine grid. see the long doc below for more info
     //
@@ -3251,6 +3255,10 @@ namespace DoFTools
     std::vector<std::map<types::global_dof_index, float>>
       &transfer_representation)
   {
+    Assert(coarse_grid.get_fe_collection().size() == 1 &&
+             fine_grid.get_fe_collection().size() == 1,
+           ExcMessage("This function is not yet implemented for DoFHandlers "
+                      "using hp capabilities."));
     // store the weights with which a dof on the parameter grid contributes to a
     // dof on the fine grid. see the long doc below for more info
     //
