@@ -311,7 +311,7 @@ namespace internal
                                                   [other_fe_index];
                           for (const auto &identity : identities)
                             {
-                              const types::global_dof_index master_dof_index =
+                              const types::global_dof_index primary_dof_index =
                                 dealii::internal::DoFAccessorImplementation::
                                   Implementation::get_dof_index(
                                     dof_handler,
@@ -320,15 +320,16 @@ namespace internal
                                     most_dominating_fe_index,
                                     identity.first,
                                     std::integral_constant<int, 0>());
-                              const types::global_dof_index slave_dof_index =
-                                dealii::internal::DoFAccessorImplementation::
-                                  Implementation::get_dof_index(
-                                    dof_handler,
-                                    0,
-                                    vertex_index,
-                                    other_fe_index,
-                                    identity.second,
-                                    std::integral_constant<int, 0>());
+                              const types::global_dof_index
+                                dependent_dof_index =
+                                  dealii::internal::DoFAccessorImplementation::
+                                    Implementation::get_dof_index(
+                                      dof_handler,
+                                      0,
+                                      vertex_index,
+                                      other_fe_index,
+                                      identity.second,
+                                      std::integral_constant<int, 0>());
 
                               // on subdomain boundaries, we will
                               // encounter invalid DoFs on ghost cells,
@@ -343,7 +344,8 @@ namespace internal
                               // to overwrite a valid DoF. we will skip
                               // constraining invalid DoFs for now, and
                               // consider them later in Phase 5.
-                              if (slave_dof_index != numbers::invalid_dof_index)
+                              if (dependent_dof_index !=
+                                  numbers::invalid_dof_index)
                                 {
                                   // if the DoF indices of both elements
                                   // are already distributed, i.e., both
@@ -352,17 +354,17 @@ namespace internal
                                   // should either not have a dof_identity
                                   // yet, or it must come out here to be
                                   // exactly as we had computed before
-                                  if (master_dof_index !=
+                                  if (primary_dof_index !=
                                       numbers::invalid_dof_index)
-                                    Assert((dof_identities.find(
-                                              master_dof_index) ==
-                                            dof_identities.end()) ||
-                                             (dof_identities[slave_dof_index] ==
-                                              master_dof_index),
-                                           ExcInternalError());
+                                    Assert(
+                                      (dof_identities.find(primary_dof_index) ==
+                                       dof_identities.end()) ||
+                                        (dof_identities[dependent_dof_index] ==
+                                         primary_dof_index),
+                                      ExcInternalError());
 
-                                  dof_identities[slave_dof_index] =
-                                    master_dof_index;
+                                  dof_identities[dependent_dof_index] =
+                                    primary_dof_index;
                                 }
                             }
                         }
@@ -542,10 +544,10 @@ namespace internal
                                          ++j)
                                       {
                                         const types::global_dof_index
-                                          master_dof_index = line->dof_index(
+                                          primary_dof_index = line->dof_index(
                                             j, dominating_fe_index);
                                         const types::global_dof_index
-                                          slave_dof_index =
+                                          dependent_dof_index =
                                             line->dof_index(j, other_fe_index);
 
                                         // on subdomain boundaries, we will
@@ -562,18 +564,18 @@ namespace internal
                                         // will skip constraining invalid DoFs
                                         // for now, and consider them later in
                                         // Phase 5.
-                                        if (slave_dof_index !=
+                                        if (dependent_dof_index !=
                                             numbers::invalid_dof_index)
                                           {
-                                            if (master_dof_index !=
+                                            if (primary_dof_index !=
                                                 numbers::invalid_dof_index)
                                               {
-                                                // if master dof was already
+                                                // if primary dof was already
                                                 // constrained, constrain to
                                                 // that one, otherwise constrain
-                                                // slave to master
+                                                // dependent to primary
                                                 if (dof_identities.find(
-                                                      master_dof_index) !=
+                                                      primary_dof_index) !=
                                                     dof_identities.end())
                                                   {
                                                     // if the DoF indices of
@@ -590,14 +592,14 @@ namespace internal
                                                     Assert(
                                                       dof_identities.find(
                                                         dof_identities
-                                                          [master_dof_index]) ==
+                                                          [primary_dof_index]) ==
                                                         dof_identities.end(),
                                                       ExcInternalError());
 
                                                     dof_identities
-                                                      [slave_dof_index] =
+                                                      [dependent_dof_index] =
                                                         dof_identities
-                                                          [master_dof_index];
+                                                          [primary_dof_index];
                                                   }
                                                 else
                                                   {
@@ -606,25 +608,25 @@ namespace internal
                                                     // assertion
                                                     Assert(
                                                       (dof_identities.find(
-                                                         master_dof_index) ==
+                                                         primary_dof_index) ==
                                                        dof_identities.end()) ||
                                                         (dof_identities
-                                                           [slave_dof_index] ==
-                                                         master_dof_index),
+                                                           [dependent_dof_index] ==
+                                                         primary_dof_index),
                                                       ExcInternalError());
 
                                                     dof_identities
-                                                      [slave_dof_index] =
-                                                        master_dof_index;
+                                                      [dependent_dof_index] =
+                                                        primary_dof_index;
                                                   }
                                               }
                                             else
                                               {
-                                                // set slave_dof to
-                                                // master_dof_index, which is
+                                                // set dependent_dof to
+                                                // primary_dof_index, which is
                                                 // invalid
                                                 dof_identities
-                                                  [slave_dof_index] =
+                                                  [dependent_dof_index] =
                                                     numbers::invalid_dof_index;
                                               }
                                           }
@@ -682,11 +684,11 @@ namespace internal
                                 for (const auto &identity : identities)
                                   {
                                     const types::global_dof_index
-                                      master_dof_index = line->dof_index(
+                                      primary_dof_index = line->dof_index(
                                         identity.first,
                                         most_dominating_fe_index);
                                     const types::global_dof_index
-                                      slave_dof_index =
+                                      dependent_dof_index =
                                         line->dof_index(identity.second,
                                                         other_fe_index);
 
@@ -703,7 +705,7 @@ namespace internal
                                     // to overwrite a valid DoF. we will skip
                                     // constraining invalid DoFs for now, and
                                     // consider them later in Phase 5.
-                                    if (slave_dof_index !=
+                                    if (dependent_dof_index !=
                                         numbers::invalid_dof_index)
                                       {
                                         // if the DoF indices of both elements
@@ -713,18 +715,18 @@ namespace internal
                                         // should either not have a dof_identity
                                         // yet, or it must come out here to be
                                         // exactly as we had computed before
-                                        if (master_dof_index !=
+                                        if (primary_dof_index !=
                                             numbers::invalid_dof_index)
                                           Assert((dof_identities.find(
-                                                    master_dof_index) ==
+                                                    primary_dof_index) ==
                                                   dof_identities.end()) ||
                                                    (dof_identities
-                                                      [slave_dof_index] ==
-                                                    master_dof_index),
+                                                      [dependent_dof_index] ==
+                                                    primary_dof_index),
                                                  ExcInternalError());
 
-                                        dof_identities[slave_dof_index] =
-                                          master_dof_index;
+                                        dof_identities[dependent_dof_index] =
+                                          primary_dof_index;
                                       }
                                   }
                               }
@@ -847,19 +849,21 @@ namespace internal
                                                   [other_fe_index];
                             for (const auto &identity : identities)
                               {
-                                const types::global_dof_index master_dof_index =
-                                  quad->dof_index(identity.first,
-                                                  most_dominating_fe_index);
-                                const types::global_dof_index slave_dof_index =
-                                  quad->dof_index(identity.second,
-                                                  other_fe_index);
+                                const types::global_dof_index
+                                  primary_dof_index =
+                                    quad->dof_index(identity.first,
+                                                    most_dominating_fe_index);
+                                const types::global_dof_index
+                                  dependent_dof_index =
+                                    quad->dof_index(identity.second,
+                                                    other_fe_index);
 
                                 // we only store an identity if we are about to
                                 // overwrite a valid degree of freedom. we will
                                 // skip invalid degrees of freedom (that are
                                 // associated with ghost cells) for now, and
                                 // consider them later in phase 5.
-                                if (slave_dof_index !=
+                                if (dependent_dof_index !=
                                     numbers::invalid_dof_index)
                                   {
                                     // if the DoF indices of both elements are
@@ -869,18 +873,18 @@ namespace internal
                                     // not have a dof_identity yet, or it must
                                     // come out here to be exactly as we had
                                     // computed before
-                                    if (master_dof_index !=
+                                    if (primary_dof_index !=
                                         numbers::invalid_dof_index)
-                                      Assert(
-                                        (dof_identities.find(
-                                           master_dof_index) ==
-                                         dof_identities.end()) ||
-                                          (dof_identities[slave_dof_index] ==
-                                           master_dof_index),
-                                        ExcInternalError());
+                                      Assert((dof_identities.find(
+                                                primary_dof_index) ==
+                                              dof_identities.end()) ||
+                                               (dof_identities
+                                                  [dependent_dof_index] ==
+                                                primary_dof_index),
+                                             ExcInternalError());
 
-                                    dof_identities[slave_dof_index] =
-                                      master_dof_index;
+                                    dof_identities[dependent_dof_index] =
+                                      primary_dof_index;
                                   }
                               }
                           }
@@ -1163,7 +1167,7 @@ namespace internal
                               for (const auto &identity : identities)
                                 {
                                   const types::global_dof_index
-                                    master_dof_index = dealii::internal::
+                                    primary_dof_index = dealii::internal::
                                       DoFAccessorImplementation::
                                         Implementation::get_dof_index(
                                           dof_handler,
@@ -1173,7 +1177,7 @@ namespace internal
                                           identity.first,
                                           std::integral_constant<int, 0>());
                                   const types::global_dof_index
-                                    slave_dof_index = dealii::internal::
+                                    dependent_dof_index = dealii::internal::
                                       DoFAccessorImplementation::
                                         Implementation::get_dof_index(
                                           dof_handler,
@@ -1195,9 +1199,9 @@ namespace internal
                                   // we only have to set the indices of
                                   // degrees of freedom that have been
                                   // previously flagged invalid.
-                                  if ((slave_dof_index ==
+                                  if ((dependent_dof_index ==
                                        numbers::invalid_dof_index) &&
-                                      (master_dof_index !=
+                                      (primary_dof_index !=
                                        numbers::invalid_dof_index))
                                     dealii::internal::
                                       DoFAccessorImplementation::
@@ -1208,7 +1212,7 @@ namespace internal
                                           other_fe_index,
                                           identity.second,
                                           std::integral_constant<int, 0>(),
-                                          master_dof_index);
+                                          primary_dof_index);
                                 }
                             }
                       }
@@ -1374,10 +1378,10 @@ namespace internal
                                          ++j)
                                       {
                                         const types::global_dof_index
-                                          master_dof_index = line->dof_index(
+                                          primary_dof_index = line->dof_index(
                                             j, dominating_fe_index);
                                         const types::global_dof_index
-                                          slave_dof_index =
+                                          dependent_dof_index =
                                             line->dof_index(j, other_fe_index);
 
                                         // check if we are on an interface
@@ -1393,12 +1397,12 @@ namespace internal
                                         // have to set the indices of degrees
                                         // of freedom that have been previously
                                         // flagged invalid.
-                                        if ((slave_dof_index ==
+                                        if ((dependent_dof_index ==
                                              numbers::invalid_dof_index) &&
-                                            (master_dof_index !=
+                                            (primary_dof_index !=
                                              numbers::invalid_dof_index))
                                           line->set_dof_index(j,
-                                                              master_dof_index,
+                                                              primary_dof_index,
                                                               fe_index_2);
                                       }
                                   }
@@ -1454,11 +1458,11 @@ namespace internal
                                 for (const auto &identity : identities)
                                   {
                                     const types::global_dof_index
-                                      master_dof_index = line->dof_index(
+                                      primary_dof_index = line->dof_index(
                                         identity.first,
                                         most_dominating_fe_index);
                                     const types::global_dof_index
-                                      slave_dof_index =
+                                      dependent_dof_index =
                                         line->dof_index(identity.second,
                                                         other_fe_index);
 
@@ -1474,12 +1478,12 @@ namespace internal
                                     // we only have to set the indices of
                                     // degrees of freedom that have been
                                     // previously flagged invalid.
-                                    if ((slave_dof_index ==
+                                    if ((dependent_dof_index ==
                                          numbers::invalid_dof_index) &&
-                                        (master_dof_index !=
+                                        (primary_dof_index !=
                                          numbers::invalid_dof_index))
                                       line->set_dof_index(identity.second,
-                                                          master_dof_index,
+                                                          primary_dof_index,
                                                           other_fe_index);
                                   }
                               }
@@ -1602,12 +1606,14 @@ namespace internal
                                                   [other_fe_index];
                             for (const auto &identity : identities)
                               {
-                                const types::global_dof_index master_dof_index =
-                                  quad->dof_index(identity.first,
-                                                  most_dominating_fe_index);
-                                const types::global_dof_index slave_dof_index =
-                                  quad->dof_index(identity.second,
-                                                  other_fe_index);
+                                const types::global_dof_index
+                                  primary_dof_index =
+                                    quad->dof_index(identity.first,
+                                                    most_dominating_fe_index);
+                                const types::global_dof_index
+                                  dependent_dof_index =
+                                    quad->dof_index(identity.second,
+                                                    other_fe_index);
 
                                 // check if we are on an interface between
                                 // a locally owned and a ghost cell on which
@@ -1620,12 +1626,12 @@ namespace internal
                                 // exchange in Phase 5). thus, we only have to
                                 // set the indices of degrees of freedom that
                                 // have been previously flagged invalid.
-                                if ((slave_dof_index ==
+                                if ((dependent_dof_index ==
                                      numbers::invalid_dof_index) &&
-                                    (master_dof_index !=
+                                    (primary_dof_index !=
                                      numbers::invalid_dof_index))
                                   quad->set_dof_index(identity.second,
-                                                      master_dof_index,
+                                                      primary_dof_index,
                                                       other_fe_index);
                               }
                           }

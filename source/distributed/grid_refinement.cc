@@ -277,7 +277,7 @@ namespace internal
                 // now adjust the range. if we have too many cells, we take the
                 // upper half of the previous range, otherwise the lower half.
                 // if we have hit the right number, then set the range to the
-                // exact value. slave nodes also update their own
+                // exact value. Dependent nodes also update their own
                 // interesting_range, however their results are not significant
                 // since the values will be overwritten by MPI_Bcast from the
                 // master node in next loop.
